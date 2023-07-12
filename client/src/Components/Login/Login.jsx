@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import '../../styles/Login.css';
 import ApiContext from '../../ApiContext';
 
-import background from '../../background/background.jpg';
-import tech19 from '../../background/tech19.png';
+// import background from '../../background/background.jpg';
+// import tech19 from '../../background/tech19.png';
 
 const Login = ({onLogIn, isLoggedIn}) => {
   const [username, setUsername] = useState('');
@@ -93,12 +93,12 @@ const Login = ({onLogIn, isLoggedIn}) => {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <p className='login-error'>{loginError}</p>
-            {/*<button className="submit-button" type="submit">Login</button>*/}
-            {/*<button className="submit-button" type="button" onClick={handleSubmitRegister} >Register</button>*/}
+            <button className="submit-button" type="submit" onClick={handleLogin}>Login</button>
+            <button className="submit-button" type="button" onClick={handleSubmitRegister} >Register</button>
           </form>
         </div>
         {/*<img className="background" src={background} alt="Image 1" />*/}
-        <img className="logo" src={tech19} alt="Image 2" />
+        {/*<img className="logo" src={tech19} alt="Image 2" />*/}
       </main>
   );
 };
