@@ -1,5 +1,5 @@
 import Login from './Components/Login/Login'
-import Register from './Components/Register/Register'
+import topNav from "./Components/TopNav/TopNav.jsx";
 import { useUserUpdate } from './UserContext'
 import { useState, useEffect } from 'react'
 import {BrowserRouter, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom'
@@ -26,7 +26,6 @@ function App() {
     userUpdated(user);
   }
   function getNav(){
-    if (isLoggedIn){
         return (
             <nav>
                 <ul className="navbar">
@@ -37,7 +36,7 @@ function App() {
                 </ul>
             </nav>
         )
-    }
+
   }
 
   return (
@@ -45,7 +44,6 @@ function App() {
         {getNav()}
         <Routes>
           <Route exact path="/" element={ isLoggedIn ? <Navigate to="/UserInfo" /> : <Navigate to="/Login" />}>
-            
           </Route>
           <Route path="/Login" element={<Login onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
           <Route path="/Register" element={<Register onRegister={handleSubmit} />} />
