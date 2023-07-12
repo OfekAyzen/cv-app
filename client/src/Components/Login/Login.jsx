@@ -3,6 +3,7 @@ import { useUserUpdate } from '../../UserContext'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/Login.css';
 import ApiContext from '../../ApiContext';
+import TopNav from "../TopNav/TopNav.jsx";
 
 // import background from '../../background/background.jpg';
 // import tech19 from '../../background/tech19.png';
@@ -71,6 +72,8 @@ const Login = ({onLogIn, isLoggedIn}) => {
   };
 
   return (
+    <>
+      {<TopNav/>}
       <main>
         <h1>Welcome back</h1>
         <h2>Welcome back! please enter your details.</h2>
@@ -100,6 +103,7 @@ const Login = ({onLogIn, isLoggedIn}) => {
         {/*<img className="background" src={background} alt="Image 1" />*/}
         {/*<img className="logo" src={tech19} alt="Image 2" />*/}
       </main>
+    </>
   );
 };
 

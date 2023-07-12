@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #646cff; /* Change this to your desired background color */
+  background-color: #1a1a1a; /* Change this to your desired background color */
   overflow: hidden;
 }
 
@@ -12,7 +12,7 @@
   display: block;
   color: #f9f9f9; /* Change this to your desired text color */
   text-align: center;
-  padding: 14px 16px;
+  padding: 30px;
   text-decoration: none;
 }
 
