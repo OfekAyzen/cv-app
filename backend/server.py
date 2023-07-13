@@ -1,11 +1,11 @@
 
 from flask import Flask, jsonify, request, session,redirect, url_for, render_template, flash
 from flask_cors import CORS 
-from datetime import timedelta
-import psycopg2
-import psycopg2.extras
+from datetime import time-delta
+import scope2
+import scope2.extras
 import secrets
-from pathlib import Path
+from path import Path
 import re 
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import config

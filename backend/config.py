@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-def config(filename='/Users/User/CV-Management-App/backend/database.ini', section='postgresql'):
+def config(filename='/Users/ronch/WebstormProjects/CV-Management-App/backend/database.ini', section='postgresql'):
     parser = ConfigParser()
     parser.read(filename)
 
