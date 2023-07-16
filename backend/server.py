@@ -1,15 +1,18 @@
 
 from flask import Flask, jsonify, request, session,redirect, url_for, render_template, flash
 from flask_cors import CORS 
-from datetime import time-delta
-import scope2
-import scope2.extras
+from datetime import timedelta
+import psycopg2
+import psycopg2.extras
 import secrets
-from path import Path
+from pathlib import Path
 import re 
 from werkzeug.security import generate_password_hash, check_password_hash
-from config import config
+from db_connection import get_db_connection
+from candidates import Candidate_users
+from manager import Manager_users
 app = Flask(__name__)
+
 #app.config['SECRET_KEY'] = ''
 
 #store secret key for session 
@@ -25,15 +28,6 @@ except FileNotFoundError:
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=10)
 CORS(app) 
 
-
-def get_db_connection():
-    conn=None
-    try:
-        params = config()
-        conn = psycopg2.connect(**params)
-        return conn
-    except(Exception, psycopg2.Error) as error:
-        print(error)
 
     
 
@@ -73,9 +67,11 @@ def login():
                 # Password is correct, log in the user by setting session variables
                 session['username'] = username
                 session['loggedin'] = True
+                session['role']="Manager"
                 cursor.close()
+                conn.close()
                 print('Logged in successfully')
-                return jsonify({'message' : 'You are logged in successfully.'})
+                return jsonify({'message' : 'You are logged in successfully ...'})
                 #print('Logged in successfully')
                 
                 #return redirect(url_for('candidate'))
@@ -107,30 +103,102 @@ def logout():
         session.pop('loggedin', None)
         return jsonify({'message' : 'You successfully logged out'})
 
-@app.route('/candidate')
 
+
+@app.route('/candidate',methods=['GET'])
 def candidate():
     try:
-        if 'username' in session and session['loggedin']:
-            # User is logged in
-            conn = get_db_connection()
-            print("Opened database successfully")
-            cur = conn.cursor()
-            cur.execute("SELECT * from candidate")
-            rows = cur.fetchall()
-            for row in rows:
-                print (rows)
-                print ("Operation done successfully")
-            cur.close()
-            conn.close()
-            
-            return jsonify(rows)
+        if 'username' in session and session['loggedin'] :
+           
+            candidate_obj = Manager_users()
+            result = candidate_obj.view_candidate()
+            return jsonify(result)
+        
         else:
             # User is not logged in
             return jsonify({'message': 'Profile page- user not loggedin'})
     except:
         print('Error')
 
+#filter the candidate by education,gender,work_experience
+@app.route('/filter_candidate',methods=['GET'])
+def filter_candidate():
+    try:
+        if 'username' in session and session['loggedin'] :
+            
+            filters = {
+                'education': request.args.get('education'),
+                'gender': request.args.get('gender'),
+                'work_experience': request.args.get('work_experience')
+            }
+            
+            candidate_obj = Manager_users()
+            print("filters :",filters)
+            result = candidate_obj.filter_candidate(filters=filters)
+            print("result:", type(result))
+            return jsonify(result)
+        
+        else:
+            # User is not logged in
+            return jsonify({'message': 'Profile page- user not loggedin'})
+    except:
+        print('Error')
+
+
+
+#registration \ job application ?
+
+@app.route('/add_application', methods=['POST'])
+def insert_candidate():
+    try:
+        if 'username' in session : 
+            can=Candidate_users().add_candidate(request)
+            print("new candidate added " ,can)
+            print(type(can))
+            return jsonify({'message': 'Candidate inserted successfully'})
+        else:
+            return jsonify({'message': 'You are not logged in'})
+    
+    except Exception as e:
+        print('Error:', str(e))
+        return jsonify({'message': 'An error occurred'})
+
+
+@app.route('/delete', methods=['POST'])
+def delete_cand():
+    _json = request.json
+    candidate_id=_json['candidate_id']
+    print(candidate_id)
+    try:
+        if 'username' in session : 
+            can=Manager_users()
+            data=can.delete_candidate(candidate_id)
+            print("Delete candidate ")
+
+            return jsonify({'message': 'Candidate id deleted successfully'})
+        else:
+            return jsonify({'message': 'Error deleting candidate'})
+    
+    except Exception as e:
+        print('Error:', str(e))
+        return jsonify({'message': 'An error occurred'})
+  
+@app.route('/edit_candidate', methods=['POST'])
+def edit_candidate():
+    try:
+        if 'username' in session : 
+            candidate_obj = Manager_users()
+            candidate_obj.edit_candidate(request)
+            
+            return jsonify({'message': 'Candidate updated successfully'})
+
+           
+        else:
+            return jsonify({'message': 'You are not logged in'})
+    
+    except Exception as e:
+        print('Error:', str(e))
+        return jsonify({'message': 'An error occurred'})
 
 if __name__=='__main__':
     app.run(debug=True)
