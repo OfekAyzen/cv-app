@@ -1,15 +1,10 @@
-from configparser import ConfigParser
 
-def config(filename='/Users/User/CVManagment-App/CV-Management-App/backend/database.ini', section='postgresql'):
-    parser = ConfigParser()
-    parser.read(filename)
 
-    db = {}
-    if parser.has_section(section):
-        params = parser.items(section)
-        for param in params:
-            db[param[0]] = param[1]
-    else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+# Define the database connection settings
+DB_USERNAME = 'postgres'
+DB_PASSWORD = 'Tech1919'
+DB_HOST = 'localhost'
+DB_NAME = 'dev'
 
-    return db
+# Construct the database URI
+SQLALCHEMY_DATABASE_URI = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"

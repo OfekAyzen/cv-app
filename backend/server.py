@@ -1,23 +1,25 @@
-
-from flask import Flask, jsonify, request, session,redirect, url_for, render_template, flash
-from flask_cors import CORS 
-from datetime import timedelta
+from flask import Flask, render_template, flash, redirect, url_for, request,jsonify,session
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import os
+#import magic
+import urllib.request
+from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import func
+from sqlalchemy.orm import Session  
+from sqlalchemy.exc import NoResultFound
 import psycopg2
 import psycopg2.extras
 import secrets
 from pathlib import Path
-import re 
-from werkzeug.security import generate_password_hash, check_password_hash
-from db_connection import get_db_connection
-from candidates import Candidate_users
-from manager import Manager_users
-
-
+from datetime import timedelta
+import config
 app = Flask(__name__)
+ 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
+db=SQLAlchemy(app)
 
-#app.config['SECRET_KEY'] = ''
-
-#store secret key for session 
 SECRET_FILE_PATH = Path(".flask_secret")
 try:
     with SECRET_FILE_PATH.open("r") as secret_file:
@@ -28,220 +30,389 @@ except FileNotFoundError:
         app.secret_key = secrets.token_hex(32)
         secret_file.write(app.secret_key) 
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=10)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
 
 
-    
+#app.config['SECRET_KEY'] = 'somekey'
+  
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ 
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+   
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+   
+def allowed_file(filename):
+  return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+ 
+
+class Manager(db.Model):
+    __tablename__ = 'users'
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(40))
+    password = db.Column(db.String(40))
+    email = db.Column(db.String(40))
+    role = db.Column(db.String(20))
+
+    def __init__(self,user_id, username, password, email, role):
+        self.user_id=user_id
+        self.username = username
+        self.password = password
+        self.email = email
+        self.role = role
+
+class Candidate(db.Model):
+    __tablename__ = 'candidate'
+    candidate_id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(40))
+    last_name = db.Column(db.String(40))
+    location = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    phone_number = db.Column(db.String(20))
+    gender = db.Column(db.String(10))
+    education = db.Column(db.String(100))
+    work_experience = db.Column(db.String(100))
+    skills = db.Column(db.String(200))
+    department = db.Column(db.String(100))
+    certifications = db.Column(db.String(200))
+    username = db.Column(db.String(40))
+    password = db.Column(db.String(40))
+    role = db.Column(db.String(20))
+
+    def __init__(self, candidate_id, first_name, last_name, location, email, phone_number, gender, education,
+                 work_experience, skills, department, certifications, username, password, role='candidate'):
+        self.candidate_id = candidate_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.location = location
+        self.email = email
+        self.phone_number = phone_number
+        self.gender = gender
+        self.education = education
+        self.work_experience = work_experience
+        self.skills = skills
+        self.department = department
+        self.certifications = certifications
+        self.username = username
+        self.password = password
+        self.role = role
+
+
 
 @app.route('/')
-def home():
-    # Check if user is loggedin
-    #redirect(url_for('login'))
-    print("home")
+def index():
+    #return render_template('index.html')
+    print("index ...")
+    return jsonify("indexx")
+
+
+from sqlalchemy.sql import text
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+    first_name = data['first_name']
+    last_name = data['last_name']
+    email = data['email']
+    phone_number = data['phone_number']
+    username = data['username']
+    password = data['password']
+
+    # Hash the password before saving it to the database
+    hashed_password = generate_password_hash(password)
+    candidate_id=generate_candidate_id()
+    try:
+        new_candidate = Candidate(
+            candidate_id=candidate_id,
+            first_name=first_name,
+            last_name=last_name,
+            location=None,
+            email=email,
+            phone_number=phone_number,
+            username=username,
+            password=hashed_password,
+            gender=None,
+            education=None,
+            work_experience=None,
+            skills=None,
+            department=None,
+            certifications=None,
+        )
+
+        # Add the new candidate to the session
+        db.session.add(new_candidate)
+
+        # Commit the transaction to persist the new candidate to the database
+        db.session.commit()
+
+        return jsonify({'message': 'Signup successful!'})
+    except Exception as e:
+        db.session.rollback()
+        print("e",e)
+        return jsonify({'message': 'Error occurred during signup.'})
     
- 
-def check_login(username, password):
-    # Connect to the PostgreSQL database
-    conn = get_db_connection()
-    cursor = conn.cursor()
 
-    # Check if the user is a manager
-    cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
-    manager = cursor.fetchone()
+def generate_candidate_id():
+    # maximum candidate_id value from the database
+    max_candidate_id = db.session.query(func.max(Candidate.candidate_id)).scalar()
 
-    if manager:
-        print("if manager =",manager)
-        # Account exists in the 'users' table
-        session['role']="manager"
-        # Password and role are correct for a manager
-        return 'manager'
+    # Increment the maximum candidate_id by 1 to generate a new candidate ID
+    candidate_id = max_candidate_id + 1 if max_candidate_id else 1
 
-    # Check if the user is a candidate
-    cursor.execute("SELECT * FROM candidate WHERE username = %s", (username,))
-    candidate = cursor.fetchone()
-    
-    if candidate:
-        print("if candidate =",candidate)
-        # Account exists in the 'candidates' table
-        
-        session['role']="candidate"
-        # Password and role are correct for a candidate
-        return 'candidate'
+    return candidate_id
 
-    # Close the database connection
-    cursor.close()
-    conn.close()
 
-    return None
+
+#adding job application after candidate is loggedin
+@app.route('/add_candidate', methods=['POST'])
+def add_candidate():
+    if 'loggedin' not in session or session['role'] != 'candidate':
+        print("not loggedin")
+        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+
+    candidate_id = session['candidate_id']
+    print("candidate id :",candidate_id)
+    username = session['username']
+    password = session['password']
+
+    data = request.json
+    first_name = data['first_name']
+    last_name = data['last_name']
+    location = data['location']
+    email = data['email']
+    phone_number = data['phone_number']
+    gender = data['gender']
+    education = data['education']
+    work_experience = data['work_experience']
+    skills = data['skills']
+    department = data['department']
+    certifications = data['certifications']
+
+    try:
+        # Check if the candidate_id already exists in the database
+        existing_candidate = Candidate.query.get(candidate_id)
+
+        if existing_candidate:
+            # Update the existing candidate's information
+            existing_candidate.first_name = first_name
+            existing_candidate.last_name = last_name
+            existing_candidate.location = location
+            existing_candidate.email = email
+            existing_candidate.phone_number = phone_number
+            existing_candidate.gender = gender
+            existing_candidate.education = education
+            existing_candidate.work_experience = work_experience
+            existing_candidate.skills = skills
+            existing_candidate.department = department
+            existing_candidate.certifications = certifications
+        else:
+            # Insert a new candidate with the provided candidate_id
+            new_candidate = Candidate(
+                candidate_id=candidate_id,
+                first_name=first_name,
+                last_name=last_name,
+                location=location,
+                email=email,
+                phone_number=phone_number,
+                gender=gender,
+                education=education,
+                work_experience=work_experience,
+                skills=skills,
+                department=department,
+                certifications=certifications
+            )
+            db.session.add(new_candidate)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Job application added successfully!'})
+    except Exception as e:
+        db.session.rollback()
+        print("eror : ",e)
+        return jsonify({'message': 'Error occurred during job application.'})
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
+    data = request.json
     username = data['username']
     password = data['password']
     
+    # set the candidate_id, username, and password in the session
+    candidate_id = get_candidate_id_from_database(username, password)
+
     role = check_login(username, password)
-    session['username'] = username
-    session['password'] = password
+    
     if role == 'manager':
         session['loggedin'] = True
-        session['role']="manager"
-        return jsonify({'message': 'Logged in as manager'})
+        session['role'] = 'manager'
+        return jsonify({'message': 'Logged in as manager ...'})
     elif role == 'candidate':
+        
         session['loggedin'] = True
-        
-        session['role']="candidate"
-        
+        session['role'] = 'candidate'
+        session['candidate_id'] = candidate_id
+        session['username'] = username
+        session['password'] = password
         return jsonify({'message': 'Logged in as candidate'})
     else:
         return jsonify({'message': 'Incorrect username or password'})
 
+def get_candidate_id_from_database(username, password):
+    try:
+        # find the candidate with  username
+        candidate = Candidate.query.filter_by(username=username).one()
 
+        #  password matches 
+        if check_password_hash(candidate.password, password):
+            return candidate.candidate_id
+        else:
+            return None
+    except NoResultFound:
+        
+        return None
+
+
+
+def check_login(username, password):
+    # check the username and password
+    manager = Manager.query.filter_by(username=username).first()
+    print("manager = ",manager)
+    if manager and manager.role == 'manager' and check_password_hash(manager.password, password):
+        print("role = ",manager.role)
+        return 'manager'
     
-@app.route('/logout')
+    candidate = Candidate.query.filter_by(username=username).first()
+    if candidate and candidate.role == 'candidate' and check_password_hash(candidate.password, password):
+        print("role = ",candidate.role)
+        return 'candidate'
+    
+    return None
+
+
+@app.route('/delete_candidate/<int:candidate_id>', methods=['DELETE'])
+def delete_candidate(candidate_id):
+    # Check if the user is logged in and is a manager
+    if 'loggedin' in session and session['loggedin'] and 'role' in session and session['role'] == 'manager':
+        try:
+            candidate = Candidate.query.get(candidate_id)
+            if candidate:
+                # Delete the candidate from the db
+                db.session.delete(candidate)
+                db.session.commit()
+                return jsonify({'message': 'Candidate deleted successfully'})
+            else:
+                return jsonify({'message': 'Candidate not found'})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'message': 'Error occurred while deleting candidate.'})
+    else:
+        return jsonify({'message': 'You are not authorized to perform this action.'})
+    
+
+@app.route('/logout', methods=['POST'])
 def logout():
-    if 'username' in session :
-        session.pop('username', None)
-        session.pop('loggedin', None)
-        return jsonify({'message' : 'You successfully logged out'})
+    # Clear the session data
+    session.clear()
+    return jsonify({'message': 'Logged out successfully'})
 
 
-
-@app.route('/candidate',methods=['GET'])
-def candidate():
-    try:
-        if 'username' in session and session['loggedin'] :
-            
-            candidate_obj = Manager_users()
-            result = candidate_obj.view_candidate()
-            return jsonify(result)
-        
-        else:
-            # User is not logged in
-            return jsonify({'message': 'Profile page- user not loggedin'})
-    except:
-        print('Error')
-
-#filter the candidate by education,gender,work_experience
-@app.route('/filter_candidate',methods=['GET'])
-def filter_candidate():
-    try:
-        if 'username' in session and session['loggedin'] :
-            
-            filters = {
-                'education': request.args.get('education'),
-                'gender': request.args.get('gender'),
-                'work_experience': request.args.get('work_experience')
-            }
-            
-            candidate_obj = Manager_users()
-            print("filters :",filters)
-            result = candidate_obj.filter_candidate(filters=filters)
-            print("result:", type(result))
-            return jsonify(result)
-        
-        else:
-            # User is not logged in
-            return jsonify({'message': 'Profile page- user not loggedin'})
-    except:
-        print('Error')
-
-
-
-#registration \ job application ?
-
-@app.route('/add_application', methods=['POST'])
-def insert_candidate():
-    username = session['username']
-    password = session['password']
-    try:
-        if session['role']=="candidate":
-            candidate_obj = Candidate_users()
-            candidate_id = candidate_obj.get_candidate_id(username, password)
-            print("candidate id : ",str(candidate_id))
-            request.json['candidate_id'] = candidate_id
-            request.json['username'] = username
-            request.json['password'] = password
-            can=candidate_obj.add_candidate(request)
-            print("new aaplicatiob added " ,can)
-            print(type(can))
-            return jsonify({'message': 'Candidate inserted successfully'})
-        else:
-            return jsonify({'message': 'You are not logged in'})
+@app.route('/filter_candidates', methods=['POST'])
+def filter_candidates():
+    data = request.get_json()
+    filters = {}
     
-       
+    # Extract the filters from the request body
+    education = data.get('education')
+    gender = data.get('gender')
+    work_experience = data.get('work_experience')
+    
+    # Add filters to the 'filters' dictionary if they are provided
+    if education:
+        filters['education'] = education
+    if gender:
+        filters['gender'] = gender
+    if work_experience:
+        filters['work_experience'] = work_experience
+
+    try:
+        # Query the database using the filters provided
+        candidates = Candidate.query.filter_by(**filters).all()
+
+        # Create a list of dictionaries to hold the filtered candidates' information
+        filtered_candidates = []
+        for candidate in candidates:
+            filtered_candidates.append({
+                'candidate_id': candidate.candidate_id,
+                'first_name': candidate.first_name,
+                'last_name': candidate.last_name,
+                'location': candidate.location,
+                'email': candidate.email,
+                'phone_number': candidate.phone_number,
+                'gender': candidate.gender,
+                'education': candidate.education,
+                'work_experience': candidate.work_experience,
+                'skills': candidate.skills,
+                'department': candidate.department,
+                'certifications': candidate.certifications
+            })
+
+        return jsonify({'candidates': filtered_candidates})
     except Exception as e:
-        print('Error:', str(e))
-        return jsonify({'message': 'An error occurred'})
+        return jsonify({'message': 'Error occurred during filtering candidates.'})
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files['inputFile']
+    fname = request.form['fname']
+    lname = request.form['lname']
+    filename = secure_filename(file.filename)
+   
+    if file and allowed_file(file.filename):
+       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+   
+       #newFile = Student(profile_pic=file.filename, fname=fname, lname=lname, email='cairocoders@gmail.com')
+       db.session.add(newFile)
+       db.session.commit()
+       flash('File successfully uploaded ' + file.filename + ' to the database!')
+       return redirect('/')
+    else:
+       flash('Invalid Uplaod only txt, pdf, png, jpg, jpeg, gif') 
+    return redirect('/')    
 
 
-@app.route('/delete', methods=['POST'])
-def delete_cand():
-    _json = request.json
-    candidate_id=_json['candidate_id']
-    print(candidate_id)
+#edit candidate for manager 
+@app.route('/edit_candidate/<int:candidate_id>', methods=['POST'])
+def edit_candidate(candidate_id):
+    data = request.json
+
     try:
-        if 'username' in session : 
-            can=Manager_users()
-            data=can.delete_candidate(candidate_id)
-            print("Delete candidate ")
+        # Check if the candidate with the given candidate_id exists
+        candidate = Candidate.query.get(candidate_id)
 
-            return jsonify({'message': 'Candidate id deleted successfully'})
-        else:
-            return jsonify({'message': 'Error deleting candidate'})
-    
+        if not candidate:
+            return jsonify({'message': 'Candidate not found.'}), 404
+
+        # Update the candidate's information with the new data
+        candidate.first_name = data.get('first_name', candidate.first_name)
+        candidate.last_name = data.get('last_name', candidate.last_name)
+        candidate.location = data.get('location', candidate.location)
+        candidate.email = data.get('email', candidate.email)
+        candidate.phone_number = data.get('phone_number', candidate.phone_number)
+        candidate.gender = data.get('gender', candidate.gender)
+        candidate.education = data.get('education', candidate.education)
+        candidate.work_experience = data.get('work_experience', candidate.work_experience)
+        candidate.skills = data.get('skills', candidate.skills)
+        candidate.department = data.get('department', candidate.department)
+        candidate.certifications = data.get('certifications', candidate.certifications)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Candidate updated successfully.'}), 200
     except Exception as e:
-        print('Error:', str(e))
-        return jsonify({'message': 'An error occurred'})
-  
-@app.route('/edit_candidate', methods=['POST'])
-def edit_candidate():
-    try:
-        if 'username' in session : 
-            candidate_obj = Manager_users()
-            candidate_obj.edit_candidate(request)         
-            return jsonify({'message': 'Candidate updated successfully'})
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred during candidate update.'}), 500
 
-        else:
-            return jsonify({'message': 'You are not logged in'})
-    
-    except Exception as e:
-        print('Error:', str(e))
-        return jsonify({'message': 'An error occurred'})
 
-# Handle the file upload
-@app.route('/upload_cv', methods=['POST'])
-def upload_cv():
-    # Get the uploaded file
-    cv_file = request.files['cv']
 
-    # Read the file content as bytes
-    cv_content = cv_file.read()
-
-    # Connect to the PostgreSQL database
-    conn = psycopg2.connect(database='your_database', user='your_user', password='your_password', host='your_host', port='your_port')
-    cursor = conn.cursor()
-
-    # Insert the binary data into the table
-    cursor.execute("INSERT INTO cv_table (cv_data) VALUES (%s)", (psycopg2.Binary(cv_content),))
-
-    # Commit the transaction and close the connection
-    conn.commit()
-    conn.close()
-
-    return 'CV file uploaded successfully'
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    
-    can=Candidate_users().sign_up(request)
-    print("Successfully signed up...")
-
-    #return redirect(url_for('login'))
-    return jsonify("Successfully signed up...")
-
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
-    #app.run(host='localhost', port=5173)
-
-
