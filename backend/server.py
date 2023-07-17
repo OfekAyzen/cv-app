@@ -11,6 +11,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db_connection import get_db_connection
 from candidates import Candidate_users
 from manager import Manager_users
+
+
 app = Flask(__name__)
 
 #app.config['SECRET_KEY'] = ''
@@ -26,7 +28,7 @@ except FileNotFoundError:
         app.secret_key = secrets.token_hex(32)
         secret_file.write(app.secret_key) 
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=10)
-CORS(app) 
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
 
 
     
@@ -34,67 +36,67 @@ CORS(app)
 @app.route('/')
 def home():
     # Check if user is loggedin
+    #redirect(url_for('login'))
     print("home")
     
  
-
-#log in
-@app.route("/login/",methods=['POST'])
-
-def login():
-    # Establish a database connection
+def check_login(username, password):
+    # Connect to the PostgreSQL database
     conn = get_db_connection()
+    cursor = conn.cursor()
 
-    # Extract username and password from the request payload
-    _json = request.json
-    _username = _json['username']
-    _password = _json['password']
+    # Check if the user is a manager
+    cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+    manager = cursor.fetchone()
 
-    # Check if both username and password are provided
-    if _username and _password:
-        # Retrieve the user account from the database based on the provided username
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute("SELECT * FROM users WHERE username=%s", (_username,))
-        account = cursor.fetchone()
+    if manager:
+        print("if manager =",manager)
+        # Account exists in the 'users' table
+        session['role']="manager"
+        # Password and role are correct for a manager
+        return 'manager'
 
-        if account:
-            # Account exists
-            username = account['username']
-            password = account['password']
-
-            # Check if the provided password matches the hashed password
-            if check_password_hash(password, _password):
-                # Password is correct, log in the user by setting session variables
-                session['username'] = username
-                session['loggedin'] = True
-                session['role']="Manager"
-                cursor.close()
-                conn.close()
-                print('Logged in successfully')
-                return jsonify({'message' : 'You are logged in successfully ...'})
-                #print('Logged in successfully')
-                
-                #return redirect(url_for('candidate'))
-            else:
-                # Incorrect password
-                resp = jsonify({'message': 'Incorrect username/password'})
-                session['loggedin'] = False
-                resp.status_code = 400
-                return resp
-        else:
-            # Account does not exist
-            resp = jsonify({'message': 'Incorrect username/password'})
-            session['loggedin'] = False
-            resp.status_code = 400
-            return resp
+    # Check if the user is a candidate
+    cursor.execute("SELECT * FROM candidate WHERE username = %s", (username,))
+    candidate = cursor.fetchone()
+    
+    if candidate:
+        print("if candidate =",candidate)
+        # Account exists in the 'candidates' table
         
+        session['role']="candidate"
+        # Password and role are correct for a candidate
+        return 'candidate'
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    return None
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
     
+    role = check_login(username, password)
+    session['username'] = username
+    session['password'] = password
+    if role == 'manager':
+        session['loggedin'] = True
+        session['role']="manager"
+        return jsonify({'message': 'Logged in as manager'})
+    elif role == 'candidate':
+        session['loggedin'] = True
+        
+        session['role']="candidate"
+        
+        return jsonify({'message': 'Logged in as candidate'})
     else:
-        # Missing username or password in the request
-        resp = jsonify({'message': 'Bad Request - incorrect username/password'})
-        resp.status_code = 400
-        return resp
-    
+        return jsonify({'message': 'Incorrect username or password'})
+
+
     
 @app.route('/logout')
 def logout():
@@ -109,7 +111,7 @@ def logout():
 def candidate():
     try:
         if 'username' in session and session['loggedin'] :
-           
+            
             candidate_obj = Manager_users()
             result = candidate_obj.view_candidate()
             return jsonify(result)
@@ -150,15 +152,24 @@ def filter_candidate():
 
 @app.route('/add_application', methods=['POST'])
 def insert_candidate():
+    username = session['username']
+    password = session['password']
     try:
-        if 'username' in session : 
-            can=Candidate_users().add_candidate(request)
-            print("new candidate added " ,can)
+        if session['role']=="candidate":
+            candidate_obj = Candidate_users()
+            candidate_id = candidate_obj.get_candidate_id(username, password)
+            print("candidate id : ",str(candidate_id))
+            request.json['candidate_id'] = candidate_id
+            request.json['username'] = username
+            request.json['password'] = password
+            can=candidate_obj.add_candidate(request)
+            print("new aaplicatiob added " ,can)
             print(type(can))
             return jsonify({'message': 'Candidate inserted successfully'})
         else:
             return jsonify({'message': 'You are not logged in'})
     
+       
     except Exception as e:
         print('Error:', str(e))
         return jsonify({'message': 'An error occurred'})
@@ -188,11 +199,9 @@ def edit_candidate():
     try:
         if 'username' in session : 
             candidate_obj = Manager_users()
-            candidate_obj.edit_candidate(request)
-            
+            candidate_obj.edit_candidate(request)         
             return jsonify({'message': 'Candidate updated successfully'})
 
-           
         else:
             return jsonify({'message': 'You are not logged in'})
     
@@ -200,7 +209,39 @@ def edit_candidate():
         print('Error:', str(e))
         return jsonify({'message': 'An error occurred'})
 
+# Handle the file upload
+@app.route('/upload_cv', methods=['POST'])
+def upload_cv():
+    # Get the uploaded file
+    cv_file = request.files['cv']
+
+    # Read the file content as bytes
+    cv_content = cv_file.read()
+
+    # Connect to the PostgreSQL database
+    conn = psycopg2.connect(database='your_database', user='your_user', password='your_password', host='your_host', port='your_port')
+    cursor = conn.cursor()
+
+    # Insert the binary data into the table
+    cursor.execute("INSERT INTO cv_table (cv_data) VALUES (%s)", (psycopg2.Binary(cv_content),))
+
+    # Commit the transaction and close the connection
+    conn.commit()
+    conn.close()
+
+    return 'CV file uploaded successfully'
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    
+    can=Candidate_users().sign_up(request)
+    print("Successfully signed up...")
+
+    #return redirect(url_for('login'))
+    return jsonify("Successfully signed up...")
+
 if __name__=='__main__':
     app.run(debug=True)
+    #app.run(host='localhost', port=5173)
 
 
