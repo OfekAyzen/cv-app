@@ -14,6 +14,9 @@ import secrets
 from pathlib import Path
 from datetime import timedelta
 import config
+from datetime import datetime
+from flask_cors import CORS
+
 app = Flask(__name__)
  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -30,20 +33,12 @@ except FileNotFoundError:
         app.secret_key = secrets.token_hex(32)
         secret_file.write(app.secret_key) 
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=10)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
 
+app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/backend/uploads'  # Adjust this path
 
-#app.config['SECRET_KEY'] = 'somekey'
+ALLOWED_EXTENSIONS = {'pdf'}
   
-UPLOAD_FOLDER = 'static/uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
- 
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-   
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-   
-def allowed_file(filename):
-  return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
- 
 
 class Manager(db.Model):
     __tablename__ = 'users'
@@ -96,8 +91,21 @@ class Candidate(db.Model):
         self.password = password
         self.role = role
 
+class CV(db.Model):
+    __tablename__ = 'cv'
+    cv_id = db.Column(db.Integer, primary_key=True)
+    candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.candidate_id'))
+    file_path = db.Column(db.String(150))
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(20), default='Pending')
 
-
+    def __init__(self,cv_id,candidate_id,file_path,upload_date,status):
+        self.cv_id = cv_id
+        self.candidate_id = candidate_id
+        self.file_path = file_path
+        self.upload_date = upload_date
+        self.status = status
+        
 @app.route('/')
 def index():
     #return render_template('index.html')
@@ -105,7 +113,7 @@ def index():
     return jsonify("indexx")
 
 
-from sqlalchemy.sql import text
+
 
 
 @app.route('/signup', methods=['POST'])
@@ -161,6 +169,51 @@ def generate_candidate_id():
 
     return candidate_id
 
+def generate_cv_id():
+    # maximum candidate_id value from the database
+    max_cv_id = db.session.query(func.max(CV.cv_id)).scalar()
+
+    # Increment the maximum candidate_id by 1 to generate a new candidate ID
+    cv_id = max_cv_id + 1 if max_cv_id else 1
+
+    return cv_id
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def Upload_file(candidate_id):
+    print("Upload file for candidate number : ",candidate_id)
+    new_cv = CV(
+                candidate_id=candidate_id,
+                cv_id = generate_cv_id(),
+                file_path = None,
+                upload_date = None,
+                status = None
+            )
+    db.session.add(new_cv)
+    db.session.commit()
+    try:
+        
+        # Insert CV data into the cv table
+        cv_file = request.files.get('cv_file')
+        if cv_file and allowed_file(cv_file.filename):
+            filename = secure_filename(cv_file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            cv_file.save(file_path)
+
+            new_cv = CV(
+                candidate_id=candidate_id,
+                file_path=file_path
+            )
+            db.session.add(new_cv)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Candidate CV added successfully!'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred during candidate and CV addition.'})
 
 
 #adding job application after candidate is loggedin
@@ -205,6 +258,8 @@ def add_candidate():
             existing_candidate.skills = skills
             existing_candidate.department = department
             existing_candidate.certifications = certifications
+            Upload_file(candidate_id)
+            
         else:
             # Insert a new candidate with the provided candidate_id
             new_candidate = Candidate(
@@ -220,7 +275,9 @@ def add_candidate():
                 skills=skills,
                 department=department,
                 certifications=certifications
+                
             )
+            Upload_file(candidate_id)
             db.session.add(new_candidate)
 
         db.session.commit()
@@ -293,6 +350,7 @@ def check_login(username, password):
 def delete_candidate(candidate_id):
     # Check if the user is logged in and is a manager
     if 'loggedin' in session and session['loggedin'] and 'role' in session and session['role'] == 'manager':
+        print("manager delete candidate")
         try:
             candidate = Candidate.query.get(candidate_id)
             if candidate:
@@ -360,24 +418,6 @@ def filter_candidates():
     except Exception as e:
         return jsonify({'message': 'Error occurred during filtering candidates.'})
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    file = request.files['inputFile']
-    fname = request.form['fname']
-    lname = request.form['lname']
-    filename = secure_filename(file.filename)
-   
-    if file and allowed_file(file.filename):
-       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-   
-       #newFile = Student(profile_pic=file.filename, fname=fname, lname=lname, email='cairocoders@gmail.com')
-       db.session.add(newFile)
-       db.session.commit()
-       flash('File successfully uploaded ' + file.filename + ' to the database!')
-       return redirect('/')
-    else:
-       flash('Invalid Uplaod only txt, pdf, png, jpg, jpeg, gif') 
-    return redirect('/')    
 
 
 #edit candidate for manager 
