@@ -36,14 +36,14 @@ class Candidate(db.Model):
     education = db.Column(db.String(100))
     work_experience = db.Column(db.String(100))
     skills = db.Column(db.String(200))
-    department = db.Column(db.String(100))
+    position = db.Column(db.String(100))
     certifications = db.Column(db.String(200))
     username = db.Column(db.String(40))
     password = db.Column(db.String(40))
     role = db.Column(db.String(20))
 
     def __init__(self, candidate_id, first_name, last_name, location, email, phone_number, gender, education,
-                 work_experience, skills, department, certifications, username, password, role='candidate'):
+                 work_experience, skills, position, certifications, username, password, role='candidate'):
         self.candidate_id = candidate_id
         self.first_name = first_name
         self.last_name = last_name
@@ -54,7 +54,7 @@ class Candidate(db.Model):
         self.education = education
         self.work_experience = work_experience
         self.skills = skills
-        self.department = department
+        self.position = position
         self.certifications = certifications
         self.username = username
         self.password = password

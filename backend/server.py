@@ -36,12 +36,13 @@ except FileNotFoundError:
     with SECRET_FILE_PATH.open("w") as secret_file:
         app.secret_key = secrets.token_hex(32)
         secret_file.write(app.secret_key) 
-app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=10)
+app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=30)
+
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
 
 app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/backend/uploads'  # Adjust this path
 
-ALLOWED_EXTENSIONS = {'pdf'}
+ALLOWED_EXTENSIONS = {'pdf','word'}
   
 
         
@@ -80,7 +81,7 @@ def signup():
             education=None,
             work_experience=None,
             skills=None,
-            department=None,
+            position=None,
             certifications=None,
         )
 
@@ -125,6 +126,40 @@ def generate_cv_id():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    print("UPLOAD")
+    print(session)
+    # Extract candidate_id from the session
+    
+    candidate_id = session.get('candidate_id')
+    if not candidate_id:
+        return jsonify({'message': 'Candidate ID not found in the session.'}), 401
+
+    file = request.files['inputFile']
+    
+    filename = secure_filename(file.filename)
+
+    if file and allowed_file(file.filename):
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # Create a new CV entry in the database
+        new_cv = CV(
+            cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
+            candidate_id=candidate_id,
+            file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
+            upload_date=datetime.utcnow(),
+            status='Pending'
+        )
+        db.session.add(new_cv)
+        db.session.commit()
+        flash('File successfully uploaded ' + file.filename + ' to the database!')
+        return redirect('/')
+    else:
+        flash('Invalid Upload, only word, pdf files are allowed') 
+        return redirect('/')
+    
 
 
 
@@ -177,9 +212,9 @@ def add_candidate():
 
     candidate_id = session['candidate_id']
     print("candidate id :",candidate_id)
-    username = session['username']
-    password = session['password']
-    print(request.headers)
+    #username = session['username']
+    #password = session['password']
+    
     data = request.json
     first_name = data['first_name']
     last_name = data['last_name']
@@ -190,7 +225,7 @@ def add_candidate():
     education = data['education']
     work_experience = data['work_experience']
     skills = data['skills']
-    department = data['department']
+    position = data['position']
     certifications = data['certifications']
     
     try:
@@ -208,9 +243,9 @@ def add_candidate():
             existing_candidate.education = education
             existing_candidate.work_experience = work_experience
             existing_candidate.skills = skills
-            existing_candidate.department = department
+            existing_candidate.position = position
             existing_candidate.certifications = certifications
-            Upload_file(candidate_id)
+            
             
         else:
             # Insert a new candidate with the provided candidate_id
@@ -225,11 +260,11 @@ def add_candidate():
                 education=education,
                 work_experience=work_experience,
                 skills=skills,
-                department=department,
+                position=position,
                 certifications=certifications
                 
             )
-            Upload_file(candidate_id)
+            
             db.session.add(new_candidate)
 
         db.session.commit()
@@ -264,9 +299,10 @@ def login():
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-        return jsonify({'message': 'Logged in as candidate'})
+        print(session)
+        return jsonify({'message': 'Logged in as candidate','candidate_id': candidate_id})
     else:
-        return jsonify({'message': 'Incorrect username or password'})
+        return jsonify({'message': 'Incorrect password or username.'}), 401
 
 def get_candidate_id_from_database(username, password):
     try:
@@ -373,7 +409,7 @@ def filter_candidates():
                 'education': candidate.education,
                 'work_experience': candidate.work_experience,
                 'skills': candidate.skills,
-                'department': candidate.department,
+                'position': candidate.position,
                 'certifications': candidate.certifications
             })
 
@@ -411,7 +447,7 @@ def edit_candidate(candidate_id):
         candidate.education = data.get('education', candidate.education)
         candidate.work_experience = data.get('work_experience', candidate.work_experience)
         candidate.skills = data.get('skills', candidate.skills)
-        candidate.department = data.get('department', candidate.department)
+        candidate.position = data.get('position', candidate.position)
         candidate.certifications = data.get('certifications', candidate.certifications)
 
         db.session.commit()
