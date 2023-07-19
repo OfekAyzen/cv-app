@@ -16,12 +16,16 @@ from datetime import timedelta
 import config
 from datetime import datetime
 from flask_cors import CORS
-
+from database import db
+from Manager import Manager
+from Candidates import Candidate
+from Cv import CV
+from Jobs import Jobs
 app = Flask(__name__)
  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
-db=SQLAlchemy(app)
+db.init_app(app)
 
 SECRET_FILE_PATH = Path(".flask_secret")
 try:
@@ -40,79 +44,12 @@ app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/bac
 ALLOWED_EXTENSIONS = {'pdf'}
   
 
-class Manager(db.Model):
-    __tablename__ = 'users'
-    user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40))
-    password = db.Column(db.String(40))
-    email = db.Column(db.String(40))
-    role = db.Column(db.String(20))
-
-    def __init__(self,user_id, username, password, email, role):
-        self.user_id=user_id
-        self.username = username
-        self.password = password
-        self.email = email
-        self.role = role
-
-class Candidate(db.Model):
-    __tablename__ = 'candidate'
-    candidate_id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(40))
-    last_name = db.Column(db.String(40))
-    location = db.Column(db.String(100))
-    email = db.Column(db.String(100))
-    phone_number = db.Column(db.String(20))
-    gender = db.Column(db.String(10))
-    education = db.Column(db.String(100))
-    work_experience = db.Column(db.String(100))
-    skills = db.Column(db.String(200))
-    department = db.Column(db.String(100))
-    certifications = db.Column(db.String(200))
-    username = db.Column(db.String(40))
-    password = db.Column(db.String(40))
-    role = db.Column(db.String(20))
-
-    def __init__(self, candidate_id, first_name, last_name, location, email, phone_number, gender, education,
-                 work_experience, skills, department, certifications, username, password, role='candidate'):
-        self.candidate_id = candidate_id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.location = location
-        self.email = email
-        self.phone_number = phone_number
-        self.gender = gender
-        self.education = education
-        self.work_experience = work_experience
-        self.skills = skills
-        self.department = department
-        self.certifications = certifications
-        self.username = username
-        self.password = password
-        self.role = role
-
-class CV(db.Model):
-    __tablename__ = 'cv'
-    cv_id = db.Column(db.Integer, primary_key=True)
-    candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.candidate_id'))
-    file_path = db.Column(db.String(150))
-    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
-    status = db.Column(db.String(20), default='Pending')
-
-    def __init__(self,cv_id,candidate_id,file_path,upload_date,status):
-        self.cv_id = cv_id
-        self.candidate_id = candidate_id
-        self.file_path = file_path
-        self.upload_date = upload_date
-        self.status = status
         
 @app.route('/')
 def index():
     #return render_template('index.html')
     print("index ...")
     return jsonify("indexx")
-
-
 
 
 
@@ -159,7 +96,14 @@ def signup():
         print("e",e)
         return jsonify({'message': 'Error occurred during signup.'})
     
+def generate_job_id():
+    # maximum candidate_id value from the database
+    max_job_id = db.session.query(func.max(Jobs.job_id)).scalar()
 
+    # Increment the maximum candidate_id by 1 to generate a new candidate ID
+    candidate_id = max_job_id + 1 if max_job_id else 1
+
+    return candidate_id
 def generate_candidate_id():
     # maximum candidate_id value from the database
     max_candidate_id = db.session.query(func.max(Candidate.candidate_id)).scalar()
@@ -182,38 +126,46 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+
+
 def Upload_file(candidate_id):
-    print("Upload file for candidate number : ",candidate_id)
+    print("Upload file for candidate number:", candidate_id)
     new_cv = CV(
-                candidate_id=candidate_id,
-                cv_id = generate_cv_id(),
-                file_path = None,
-                upload_date = None,
-                status = None
-            )
+        candidate_id=candidate_id,
+        cv_id=generate_cv_id(),
+        file_path=None,
+        upload_date=None,
+        status=None
+    )
     db.session.add(new_cv)
     db.session.commit()
+
     try:
-        
         # Insert CV data into the cv table
-        cv_file = request.files.get('cv_file')
-        if cv_file and allowed_file(cv_file.filename):
-            filename = secure_filename(cv_file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            cv_file.save(file_path)
+        print(" TRY Insert CV data into the cv table:", candidate_id)
+        if 'cv_file' in request.files:
+            cv_file = request.files['cv_file']
+            if cv_file and allowed_file(cv_file.filename):
+                filename = secure_filename(cv_file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                cv_file.save(file_path)
 
-            new_cv = CV(
-                candidate_id=candidate_id,
-                file_path=file_path
-            )
-            db.session.add(new_cv)
+                new_cv = CV(
+                    candidate_id=candidate_id,
+                    file_path=file_path
+                )
+                db.session.add(new_cv)
+                db.session.commit()
 
-        db.session.commit()
-
-        return jsonify({'message': 'Candidate CV added successfully!'})
+                return jsonify({'message': 'Candidate CV added successfully!'})
+            else:
+                return jsonify({'message': 'Invalid file. Allowed file types are PDF.'}), 400
+        else:
+            return jsonify({'message': 'CV file not found in the request.'}), 400
     except Exception as e:
+        print(e)
         db.session.rollback()
-        return jsonify({'message': 'Error occurred during candidate and CV addition.'})
+        return jsonify({'message': 'Error occurred during candidate and CV addition.'}), 500
 
 
 #adding job application after candidate is loggedin
@@ -227,7 +179,7 @@ def add_candidate():
     print("candidate id :",candidate_id)
     username = session['username']
     password = session['password']
-
+    print(request.headers)
     data = request.json
     first_name = data['first_name']
     last_name = data['last_name']
@@ -240,7 +192,7 @@ def add_candidate():
     skills = data['skills']
     department = data['department']
     certifications = data['certifications']
-
+    
     try:
         # Check if the candidate_id already exists in the database
         existing_candidate = Candidate.query.get(candidate_id)
@@ -287,6 +239,8 @@ def add_candidate():
         db.session.rollback()
         print("eror : ",e)
         return jsonify({'message': 'Error occurred during job application.'})
+
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -373,9 +327,13 @@ def logout():
     session.clear()
     return jsonify({'message': 'Logged out successfully'})
 
-
+#filter by education, work experience, skills, gender and location.
 @app.route('/filter_candidates', methods=['POST'])
 def filter_candidates():
+    if 'loggedin' not in session or session['role'] != 'manager':
+        print("not loggedin")
+        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+
     data = request.get_json()
     filters = {}
     
@@ -383,6 +341,8 @@ def filter_candidates():
     education = data.get('education')
     gender = data.get('gender')
     work_experience = data.get('work_experience')
+    location=data.get('location')
+    skills=data.get('skills')
     
     # Add filters to the 'filters' dictionary if they are provided
     if education:
@@ -391,7 +351,10 @@ def filter_candidates():
         filters['gender'] = gender
     if work_experience:
         filters['work_experience'] = work_experience
-
+    if location:
+        filters['location']=location
+    if skills:
+        filters['skills']=skills
     try:
         # Query the database using the filters provided
         candidates = Candidate.query.filter_by(**filters).all()
@@ -423,6 +386,12 @@ def filter_candidates():
 #edit candidate for manager 
 @app.route('/edit_candidate/<int:candidate_id>', methods=['POST'])
 def edit_candidate(candidate_id):
+
+    if 'loggedin' not in session or session['role'] != 'manager':
+        print("not loggedin")
+        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+    
+    
     data = request.json
 
     try:
@@ -452,7 +421,92 @@ def edit_candidate(candidate_id):
         db.session.rollback()
         return jsonify({'message': 'Error occurred during candidate update.'}), 500
 
+#adding job application after candidate is loggedin
+@app.route('/add_job', methods=['POST'])
+def add_job():
+    if 'loggedin' not in session or session['role'] != 'manager':
+        print("not loggedin")
+        return jsonify({'message': 'You are not logged in as a manager.'}), 401
 
+    
+    
+    data = request.json
+    job_title = data['job_title']
+    job_description = data['job_description']
+    qualifications = data['qualifications']
+    job_id = generate_job_id()
+    
+    
+    try:
+        
+        new_job = Jobs(
+            job_title = job_title,
+            job_description  = job_description ,
+            qualifications = qualifications,
+            job_id = job_id
+                
+        )
+        print("new_jobs : ",new_job)
+        db.session.add(new_job)
+
+        db.session.commit()
+
+        return jsonify({'message': 'New job added successfully!'})
+    except Exception as e:
+        db.session.rollback()
+        print("eror : ",e)
+        return jsonify({'message': 'Error occurred during added new job.'})
+
+#edit job posting  
+@app.route('/delete_job/<int:job_id>', methods=['DELETE'])
+def delete_job(job_id):
+        # Check if the user is logged in and is a manager
+    if 'loggedin' in session and session['loggedin'] and 'role' in session and session['role'] == 'manager':
+        
+        print("manager delete job")
+        try:
+            job =Jobs.query.get(job_id)
+            if job:
+                # Delete the candidate from the db
+                db.session.delete(job)
+                db.session.commit()
+                return jsonify({'message': 'Job deleted successfully'})
+            else:
+                return jsonify({'message': 'Job not found'})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'message': 'Error occurred while deleting possition.'})
+    else:
+        return jsonify({'message': 'You are not authorized to perform this action.'})
+    
+@app.route('/edit_job/<int:job_id>', methods=['POST'])
+def edit_job(job_id):
+
+    if 'loggedin' not in session or session['role'] != 'manager':
+        print("not loggedin")
+        return jsonify({'message': 'You are not logged in as a manager.'}), 401
+    
+    
+    data = request.json
+
+    try:
+        # Check if the candidate with the given candidate_id exists
+        job = Jobs.query.get(job_id)
+
+        if not job:
+            return jsonify({'message': 'Possition is not found.'}), 404
+
+        # Update the candidate's information with the new data
+        job.job_title = data.get('job_title', job.job_title)
+        job.job_description = data.get('job_description', job.job_description)
+        job.qualifications = data.get('qualifications', job.qualifications)
+        
+        db.session.commit()
+
+        return jsonify({'message': 'Possition updated successfully.'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred during possition update.'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
