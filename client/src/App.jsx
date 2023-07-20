@@ -1,8 +1,11 @@
-import Login from './Components/Login/Login'
+import Login from './Pages/Login/Login'
 import { useUserUpdate } from './UserContext'
 import { useState, useEffect } from 'react'
 import {BrowserRouter, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom'
-import Login_k from './Components/Login/Login_k'
+import Login_k from './Pages/Login/Login_k'
+import ViweCandidate from './Pages/ViweCandidate/ViweCandidate'
+
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -58,7 +61,8 @@ function App() {
             
           </Route>
           <Route path="/Login" element={<Login onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
-          
+            <Route path="/Login_k" element={<Login_k onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
+            <Route path="/Todos" element={<ViweCandidate />} />
         </Routes>
       </BrowserRouter>
   )
