@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import '../../styles/Login.css';
 import ApiContext from '../../ApiContext.jsx';
 import TopNav from "../TopNav/TopNav.jsx";
+import axios from 'axios';
+
 
 
 // import background from '../../background/background.jpg';
@@ -13,13 +15,17 @@ const Login = ({onLogIn, isLoggedIn}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const api = useContext(ApiContext);
-  async function getUser(username, password) {
-    return api.post("/login", {
-      username: username ,
-      password: password
-    })
-  }
+
+
+
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState('');
+  const [candidateId, setCandidateId] = useState(null);
+
+
+  const handleLoginSuccess = (candidateId) => {
+    setCandidateId(candidateId);
+  };
 
   const userUpdatedFunction = useUserUpdate();
   const navigate = useNavigate();
@@ -34,39 +40,39 @@ const Login = ({onLogIn, isLoggedIn}) => {
 
 
   const handleLogin = async (event) => {
-  //   event.preventDefault();
-  //   //console.log(await getUsers())
-  //   if (username === '') {
-  //     console.log('Login Failed');
-  //     setLoginError('Please enter a username');
-  //     return;
-  //   }
-  //   if (password === '') {
-  //     console.log('Login Failed');
-  //     setLoginError('Please enter a password');
-  //     return;
-  //   }
-  //   getUser(username, password).then((response) => {
-  //     if (response.status === 200) {
-  //       console.log(response.data);
-  //       alert("Login successful");
-  //       const user = response.data;
-  //       user.password = password;
-  //       navigate('/ViweCandidate');
-  //       userUpdatedFunction(user);
-  //       onLogIn(user);
-  //     }
-  //     else {
-  //       console.log('Login Failed');
-  //       setLoginError('Mismatched password');
-  //     }
-  //   }).catch((error) => {
-  //     console.log(error)
-  //     setLoginError('Error logging in');
-  //   });
     event.preventDefault();
-    navigate("/Home");
+    //console.log(await getUsers())
+    if (username === '') {
+      console.log('Login Failed');
+      setLoginError('Please enter a username');
+      return;
+    }
+    if (password === '') {
+      console.log('Login Failed');
+      setLoginError('Please enter a password');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/login', {
+        username: username,
+        password: password
+      });
 
+      if (response.status === 200) {
+        // Login successful
+        const candidateId = response.data.candidate_id;
+        handleLoginSuccess(candidateId); // Call handleLoginSuccess with candidateId
+        onLogIn(response.data.user);
+        navigate("/Todos");
+      } else {
+        // Login failed
+        setLoginError('Incorrect username or password');
+      }
+    } catch (error) {
+      // Error occurred
+      console.log(error);
+      setLoginError('Error logging in');
+    }
   };
 
   const handleSubmitRegister = (event) => {
