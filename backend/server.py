@@ -21,6 +21,7 @@ from Manager import Manager
 from Candidates import Candidate
 from Cv import CV
 from Jobs import Jobs
+from Application import Application
 app = Flask(__name__)
  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -123,6 +124,15 @@ def generate_cv_id():
 
     return cv_id
 
+def generate_application_id():
+    # maximum candidate_id value from the database
+    max_application_id = db.session.query(func.max(Application.application_id)).scalar()
+
+    # Increment the maximum candidate_id by 1 to generate a new candidate ID
+    application_id = max_application_id + 1 if max_application_id else 1
+
+    return application_id
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -162,45 +172,6 @@ def upload():
     
 
 
-
-def Upload_file(candidate_id):
-    print("Upload file for candidate number:", candidate_id)
-    new_cv = CV(
-        candidate_id=candidate_id,
-        cv_id=generate_cv_id(),
-        file_path=None,
-        upload_date=None,
-        status=None
-    )
-    db.session.add(new_cv)
-    db.session.commit()
-
-    try:
-        # Insert CV data into the cv table
-        print(" TRY Insert CV data into the cv table:", candidate_id)
-        if 'cv_file' in request.files:
-            cv_file = request.files['cv_file']
-            if cv_file and allowed_file(cv_file.filename):
-                filename = secure_filename(cv_file.filename)
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                cv_file.save(file_path)
-
-                new_cv = CV(
-                    candidate_id=candidate_id,
-                    file_path=file_path
-                )
-                db.session.add(new_cv)
-                db.session.commit()
-
-                return jsonify({'message': 'Candidate CV added successfully!'})
-            else:
-                return jsonify({'message': 'Invalid file. Allowed file types are PDF.'}), 400
-        else:
-            return jsonify({'message': 'CV file not found in the request.'}), 400
-    except Exception as e:
-        print(e)
-        db.session.rollback()
-        return jsonify({'message': 'Error occurred during candidate and CV addition.'}), 500
 
 
 #adding job application after candidate is loggedin
@@ -457,6 +428,10 @@ def edit_candidate(candidate_id):
         db.session.rollback()
         return jsonify({'message': 'Error occurred during candidate update.'}), 500
 
+
+
+
+
 #adding job application after candidate is loggedin
 @app.route('/add_job', methods=['POST'])
 def add_job():
@@ -543,6 +518,166 @@ def edit_job(job_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'Error occurred during possition update.'}), 500
+
+@app.route('/view_jobs', methods=['GET'])
+def view_jobs():
+    try:
+        # Get all the jobs from the database
+        all_jobs = Jobs.query.all()
+
+        # Create a list to store job details
+        jobs_list = []
+
+        # Loop through each job and add its details to the list
+        for job in all_jobs:
+            job_details = {
+                'job_id': job.job_id,
+                'job_title': job.job_title,
+                'job_description': job.job_description,
+                'qualifications': job.qualifications
+            }
+            jobs_list.append(job_details)
+
+        return jsonify(jobs_list)
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'message': 'Error occurred while fetching jobs.'})
+
+@app.route('/apply/<int:job_id>', methods=['POST'])
+def apply(job_id):
+    if 'loggedin' not in session or session['role'] != 'candidate':
+        print("not logged in")
+        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+
+    candidate_id = session.get('candidate_id')
+    if not candidate_id:
+        return jsonify({'message': 'Candidate ID not found in the session.'}), 401
+
+    try:
+        # Check if the job_id exists in the Jobs table
+        job = Jobs.query.get(job_id)
+        if not job:
+            return jsonify({'message': 'Job not found in the database.'}), 404
+
+        # Check if the candidate already applied for the job
+        existing_application = Application.query.filter_by(job_id=job_id, candidate_id=candidate_id).first()
+
+        cv_entry = CV.query.filter_by(candidate_id=candidate_id).first()
+        if not cv_entry:
+            return jsonify({'message': 'CV not found for the candidate.'}), 404
+
+        cv_id = cv_entry.cv_id
+
+        if existing_application:
+            # If the candidate already applied, update the application
+            existing_application.cv_id = cv_id
+        else:
+            # If the candidate is applying for the first time, create a new application
+            new_application = Application(
+                application_id=generate_application_id(),
+                job_id=job_id,
+                candidate_id=candidate_id,
+                cv_id=cv_id,
+                application_date=datetime.utcnow(),
+                status='Pending'
+            )
+            db.session.add(new_application)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Application submitted successfully!'})
+
+    except Exception as e:
+        db.session.rollback()
+        print("error:", e)
+        return jsonify({'message': 'Error occurred during application submission.'}), 500
+    
+
+@app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
+def view_applyed(candidate_id):
+    print("View applied positions")
+    
+    try:
+        # Check if the candidate_id is found in the session
+        if 'loggedin' not in session or session['role'] != 'candidate':
+            print("Not logged in as a candidate")
+            return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+
+        # Check if the candidate_id exists in the database
+        candidate = Candidate.query.filter_by(candidate_id=candidate_id).first()
+        if not candidate:
+            print("Candidate not found")
+            return jsonify({'message': 'Candidate not found.'}), 404
+        
+        candidate_applications = Application.query.filter_by(candidate_id=candidate_id).all()
+        application_list = []
+
+        # Loop application 
+        for application in candidate_applications:
+            application_details = {
+                'job_id': application.job_id,
+                'status': application.status,
+                'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            application_list.append(application_details)
+
+        # Get all the jobs corresponding to the applications
+        job_ids = [app.job_id for app in candidate_applications]
+        all_jobs = Jobs.query.filter(Jobs.job_id.in_(job_ids)).all()
+
+        # Create a list to store job details
+        jobs_list = []
+
+        # Loop through each job and add its details to the list
+        for job in all_jobs:
+            job_details = {
+                'job_id': job.job_id,
+                'job_title': job.job_title,
+                'job_description': job.job_description,
+                'qualifications': job.qualifications
+            }
+            jobs_list.append(job_details)
+
+        return jsonify({'applications': application_list, 'jobs': jobs_list})
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'message': 'Error occurred while fetching applications.'})
+
+@app.route('/view_all_applications', methods=['GET'])
+def view_all_applications():
+    try:
+        # Check if the user is logged in as a manager
+        if 'loggedin' not in session or session['role'] != 'manager':
+            print("Not logged in as a manager")
+            return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+        # Get all the applications from the database
+        all_applications = Application.query.all()
+
+        # Create a list to store application details
+        application_list = []
+
+        # Loop through each application and add its details to the list
+        for application in all_applications:
+            application_details = {
+                'application_id': application.application_id,
+                'job_id': application.job_id,
+                'candidate_id': application.candidate_id,
+                'cv_id': application.cv_id,
+                'status': application.status,
+                'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            application_list.append(application_details)
+
+        return jsonify({'applications': application_list})
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'message': 'Error occurred while fetching applications.'})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
