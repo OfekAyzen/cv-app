@@ -325,7 +325,7 @@ def login():
         session['password'] = password
 
         # Redirect to the home page with candidate data
-        return redirect(url_for('Home', candidate_id=candidate_id, username=username))
+        return redirect(url_for('home', candidate_id=candidate_id, username=username))
     else:
         return jsonify({'message': 'Incorrect password or username.'}), 401
 
