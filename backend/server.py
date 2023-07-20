@@ -22,6 +22,7 @@ from Candidates import Candidate
 from Cv import CV
 from Jobs import Jobs
 from Application import Application
+import re
 app = Flask(__name__)
  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -65,9 +66,22 @@ def signup():
     username = data['username']
     password = data['password']
 
+    # Check if the email is valid
+    if not is_valid_email(email):
+        return jsonify({'message': 'Invalid email address.'}), 400
+
+    # Check if the username is available (not already taken)
+    if is_username_taken(username):
+        return jsonify({'message': 'Username is already taken. Please choose a different one.'}), 400
+
+    # Check if the password meets the minimum requirements (e.g., minimum length)
+    if len(password) < 8:
+        return jsonify({'message': 'Password must be at least 8 characters long.'}), 400
+
     # Hash the password before saving it to the database
     hashed_password = generate_password_hash(password)
-    candidate_id=generate_candidate_id()
+    candidate_id = generate_candidate_id()
+
     try:
         new_candidate = Candidate(
             candidate_id=candidate_id,
@@ -91,12 +105,23 @@ def signup():
 
         # Commit the transaction to persist the new candidate to the database
         db.session.commit()
+        
 
-        return jsonify({'message': 'Signup successful!'})
+        return jsonify({'message': 'Signup successful!'}), 201
     except Exception as e:
         db.session.rollback()
-        print("e",e)
-        return jsonify({'message': 'Error occurred during signup.'})
+        print("e", e)
+        return jsonify({'message': 'Error occurred during signup.'}), 500
+
+def is_valid_email(email):
+    # Basic email format validation using regex
+    email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(email_pattern, email)
+
+def is_username_taken(username):
+    # Check if the username is already in the database
+    existing_candidate = Candidate.query.filter_by(username=username).first()
+    return existing_candidate is not None
     
 def generate_job_id():
     # maximum candidate_id value from the database
@@ -139,6 +164,9 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    if 'loggedin' not in session or session['role'] != 'candidate':
+        print("not loggedin")
+        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
     print("UPLOAD")
     print(session)
     # Extract candidate_id from the session
@@ -248,6 +276,32 @@ def add_candidate():
 
 
 
+# @app.route('/login', methods=['POST'])
+# def login():
+#     data = request.json
+#     username = data['username']
+#     password = data['password']
+    
+#     # set the candidate_id, username, and password in the session
+#     candidate_id = get_candidate_id_from_database(username, password)
+
+#     role = check_login(username, password)
+    
+#     if role == 'manager':
+#         session['loggedin'] = True
+#         session['role'] = 'manager'
+#         return jsonify({'message': 'Logged in as manager ...'})
+#     elif role == 'candidate':
+        
+#         session['loggedin'] = True
+#         session['role'] = 'candidate'
+#         session['candidate_id'] = candidate_id
+#         session['username'] = username
+#         session['password'] = password
+#         print(session)
+#         return jsonify({'message': 'Logged in as candidate','candidate_id': candidate_id})
+#     else:
+#         return jsonify({'message': 'Incorrect password or username.'}), 401
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
@@ -262,16 +316,16 @@ def login():
     if role == 'manager':
         session['loggedin'] = True
         session['role'] = 'manager'
-        return jsonify({'message': 'Logged in as manager ...'})
+        return jsonify({'message': 'Logged in as manager ....'})
     elif role == 'candidate':
-        
         session['loggedin'] = True
         session['role'] = 'candidate'
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-        print(session)
-        return jsonify({'message': 'Logged in as candidate','candidate_id': candidate_id})
+
+        # Redirect to the home page with candidate data
+        return redirect(url_for('Home', candidate_id=candidate_id, username=username))
     else:
         return jsonify({'message': 'Incorrect password or username.'}), 401
 
@@ -395,7 +449,7 @@ def filter_candidates():
 def edit_candidate(candidate_id):
 
     if 'loggedin' not in session or session['role'] != 'manager':
-        print("not loggedin")
+       
         return jsonify({'message': 'You are not logged in as a candidate.'}), 401
     
     
@@ -429,6 +483,44 @@ def edit_candidate(candidate_id):
         return jsonify({'message': 'Error occurred during candidate update.'}), 500
 
 
+@app.route('/view_all_candidates', methods=['GET'])
+def view_all_candidates():
+    try:
+        # Check if the user is logged in as a manager
+        if 'loggedin' not in session or session['role'] != 'manager':
+            print("Not logged in as a manager")
+            return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+        # Get all the candidates from the database
+        all_candidates = Candidate.query.all()
+
+        # Create a list to store candidate details
+        candidate_list = []
+
+        # Loop through each candidate and add their details to the list
+        for candidate in all_candidates:
+            candidate_details = {
+                'candidate_id': candidate.candidate_id,
+                'first_name': candidate.first_name,
+                'last_name': candidate.last_name,
+                'email': candidate.email,
+                'location' : candidate.location,
+                'phone_number' : candidate.phone_number,
+                'gender' : candidate.gender,
+                'education' : candidate.education,
+                'work_experience' : candidate.work_experience,
+                'skills' : candidate.skills,
+                'position' : candidate.position,
+                'certifications' : candidate.certifications
+
+            }
+            candidate_list.append(candidate_details)
+
+        return jsonify({'candidates': candidate_list})
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'message': 'Error occurred while fetching candidates.'})
 
 
 
