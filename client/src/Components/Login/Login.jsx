@@ -33,36 +33,38 @@ const Login = ({onLogIn, isLoggedIn}) => {
 
 
   const handleLogin = async (event) => {
+    // event.preventDefault();
+    // //console.log(await getUsers())
+    // if (username === '') {
+    //   console.log('Login Failed');
+    //   setLoginError('Please enter a username');
+    //   return;
+    // }
+    // if (password === '') {
+    //   console.log('Login Failed');
+    //   setLoginError('Please enter a password');
+    //   return;
+    // }
+    // getUser(username, password).then((response) => {
+    //   if (response.status === 200) {
+    //     console.log(response.data);
+    //     alert("Login successful");
+    //     const user = response.data;
+    //     user.password = password;
+    //     navigate('/UserInfo');
+    //     userUpdatedFunction(user);
+    //     onLogIn(user);
+    //   }
+    //   else {
+    //     console.log('Login Failed');
+    //     setLoginError('Mismatched password');
+    //   }
+    // }).catch((error) => {
+    //   console.log(error)
+    //   setLoginError('Error logging in');
+    // });
     event.preventDefault();
-    //console.log(await getUsers())
-    if (username === '') {
-      console.log('Login Failed');
-      setLoginError('Please enter a username');
-      return;
-    }
-    if (password === '') {
-      console.log('Login Failed');
-      setLoginError('Please enter a password');
-      return;
-    }
-    getUser(username, password).then((response) => {
-      if (response.status === 200) {
-        console.log(response.data);
-        alert("Login successful");
-        const user = response.data;
-        user.password = password;
-        navigate('/UserInfo');
-        userUpdatedFunction(user);
-        onLogIn(user);
-      }
-      else {
-        console.log('Login Failed');
-        setLoginError('Mismatched password');
-      }
-    }).catch((error) => {
-      console.log(error)
-      setLoginError('Error logging in');
-    });
+    navigate("/Home");
 
   };
 
@@ -96,8 +98,8 @@ const Login = ({onLogIn, isLoggedIn}) => {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <p className='login-error'>{loginError}</p>
-            <button className="submit-button" type="submit" onClick={handleLogin}>Login</button>
-            <button className="submit-button" type="button" onClick={handleSubmitRegister} >Register</button>
+            <button className="submit-button-login" type="button" onClick={handleLogin}>Login</button>
+            <button className="submit-button-register" type="button" onClick={handleSubmitRegister} >Register</button>
           </form>
         </div>
         {/*<img className="background" src={background} alt="Image 1" />*/}
