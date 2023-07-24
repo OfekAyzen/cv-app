@@ -300,7 +300,7 @@ def login():
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-        return jsonify({'candidate_id':candidate_id,'username':username})
+        return jsonify({'candidate_id':candidate_id,'username':username,'role':role})
         # Redirect to the home page with candidate data
         #return redirect(url_for('home', candidate_id=candidate_id, username=username))
     else:
