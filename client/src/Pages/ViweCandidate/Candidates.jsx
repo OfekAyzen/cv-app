@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {CandidatesList} from "client/src/Components/Candidate/CandidatesDisplay/CandidatesList.jsx";
+import {CandidateList} from "../../Components/Candidate/CandidatesDisplay/CandidatesList.jsx";
 import {NavLink} from "react-router-dom";
 
 

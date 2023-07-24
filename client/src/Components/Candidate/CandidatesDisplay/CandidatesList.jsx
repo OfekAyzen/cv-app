@@ -1,5 +1,5 @@
 import {SimpleCandidateDisplay} from "../CandidateDisplay/SimpleCandidateDisplay.jsx";
-import "./CandidateList.css";
+import "./CandidatesList.css";
 
 export function CandidatesList({candidates}) {
     return (

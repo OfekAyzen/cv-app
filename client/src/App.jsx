@@ -49,11 +49,11 @@ function App() {
             <Route exact path="/" element={ isLoggedIn ? <Navigate to="/UserInfo" /> : <Navigate to="/Login" />}>
             </Route>
             <Route path="/Login" element={<Login onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
-            <Route path="/ViweCandidate">
-                <Route index element={<Candidates />} />
-                <Route path=":id" element={<candidate />} />
-                <Route path="NewCandidate" element={<NewCandidate></NewCandidate>}></Route>
-            </Route>
+            {/*<Route path="/ViweCandidate">*/}
+            {/*    <Route index element={<Candidates />} />*/}
+            {/*    <Route path=":id" element={<candidate />} />*/}
+            {/*    <Route path="NewCandidate" element={<NewCandidate></NewCandidate>}></Route>*/}
+            {/*</Route>*/}
 
         </Routes>
       </BrowserRouter>
