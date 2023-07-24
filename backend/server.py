@@ -293,18 +293,19 @@ def login():
         session['loggedin'] = True
         session['role'] = 'manager'
         session['user_id']=user_id
-        return jsonify({'role':role,'user_id' : user_id})
+        print('user id ',user_id)
+        return jsonify({'role':role,'user_id' : user_id}) ,200
     elif role == 'candidate':
         session['loggedin'] = True
         session['role'] = 'candidate'
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-        return jsonify({'candidate_id':candidate_id,'username':username,'role':role})
+        return jsonify({'candidate_id':candidate_id,'username':username,'role':role}) ,200
         # Redirect to the home page with candidate data
         #return redirect(url_for('home', candidate_id=candidate_id, username=username))
     else:
-        return jsonify({'message': 'Incorrect password or username.'}), 401
+        return jsonify({'message': 'Incorrect password or username...'}), 401
 
 def get_candidate_id_from_database(username, password):
     try:
