@@ -41,39 +41,44 @@ const Login = ({onLogIn, isLoggedIn}) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    navigate("/ViweCandidate");
-    // //console.log(await getUsers())
-    // if (username === '') {
-    //   console.log('Login Failed');
-    //   setLoginError('Please enter a username');
-    //   return;
-    // }
-    // if (password === '') {
-    //   console.log('Login Failed');
-    //   setLoginError('Please enter a password');
-    //   return;
-    // }
-    // try {
-    //   const response = await axios.post('http://localhost:5000/login', {
-    //     username: username,
-    //     password: password
-    //   });
-    //
-    //   if (response.status === 200) {
-    //     // Login successful
-    //     const candidateId = response.data.candidate_id;
-    //     handleLoginSuccess(candidateId); // Call handleLoginSuccess with candidateId
-    //     onLogIn(response.data.user);
-    //     navigate("/Todos");
-    //   } else {
-    //     // Login failed
-    //     setLoginError('Incorrect username or password');
-    //   }
-    // } catch (error) {
-    //   // Error occurred
-    //   console.log(error);
-    //   setLoginError('Error logging in');
-    // }
+    //console.log(await getUsers())
+    if (username === '') {
+      console.log('Login Failed');
+      setLoginError('Please enter a username');
+      return;
+    }
+    if (password === '') {
+      console.log('Login Failed');
+      setLoginError('Please enter a password');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/login', {
+        username: username,
+        password: password
+      });
+
+      if (response.status === 200) {
+        // Login successful
+        const userId = response.data.user.id;
+        const roll = response.data.user.role;
+        handleLoginSuccess(userId); // Call handleLoginSuccess with candidateId
+        onLogIn(response.data.user);
+        alert("Login successful");
+        console.log(response)
+        const user = response.data.user;
+        navigate("/ViewCandidate");
+        userUpdatedFunction(user);
+        onLogIn(user);
+      } else {
+        // Login failed
+        setLoginError('Incorrect username or password');
+      }
+    } catch (error) {
+      // Error occurred
+      console.log(error);
+      setLoginError('Error logging in');
+    }
   };
 
   const handleSubmitRegister = (event) => {

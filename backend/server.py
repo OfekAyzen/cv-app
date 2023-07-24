@@ -276,56 +276,32 @@ def add_candidate():
 
 
 
-# @app.route('/login', methods=['POST'])
-# def login():
-#     data = request.json
-#     username = data['username']
-#     password = data['password']
-    
-#     # set the candidate_id, username, and password in the session
-#     candidate_id = get_candidate_id_from_database(username, password)
-
-#     role = check_login(username, password)
-    
-#     if role == 'manager':
-#         session['loggedin'] = True
-#         session['role'] = 'manager'
-#         return jsonify({'message': 'Logged in as manager ...'})
-#     elif role == 'candidate':
-        
-#         session['loggedin'] = True
-#         session['role'] = 'candidate'
-#         session['candidate_id'] = candidate_id
-#         session['username'] = username
-#         session['password'] = password
-#         print(session)
-#         return jsonify({'message': 'Logged in as candidate','candidate_id': candidate_id})
-#     else:
-#         return jsonify({'message': 'Incorrect password or username.'}), 401
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
     username = data['username']
     password = data['password']
-    
+
     # set the candidate_id, username, and password in the session
     candidate_id = get_candidate_id_from_database(username, password)
 
     role = check_login(username, password)
     
     if role == 'manager':
+        user_id=data['user_id']
         session['loggedin'] = True
         session['role'] = 'manager'
-        return jsonify({'message': 'Logged in as manager ....'})
+        session['user_id'] = user_id
+        return jsonify({'role':role,'user_id' : user_id})
     elif role == 'candidate':
         session['loggedin'] = True
         session['role'] = 'candidate'
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-
+        return jsonify({'candidate_id':candidate_id,'username':username})
         # Redirect to the home page with candidate data
-        return redirect(url_for('home', candidate_id=candidate_id, username=username))
+        #return redirect(url_for('home', candidate_id=candidate_id, username=username))
     else:
         return jsonify({'message': 'Incorrect password or username.'}), 401
 

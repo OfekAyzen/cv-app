@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
-import {CandidateList} from "../../Components/Candidate/CandidatesDisplay/CandidatesList.jsx";
+import {CandidatesList} from "../..//Components/Candidate/CandidatesDisplay/CandidatesList.jsx"
 import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 
 export function Candidates() {
@@ -8,17 +9,19 @@ export function Candidates() {
         const localValue = localStorage.getItem("Candidates");
         if (localValue == null) return [];
 
-        return JSON.parse(localValue);
 
     });
 
     useEffect(() => {
-        // const userID = JSON.parse(localStorage.getItem("User")).id;
-        // if (posts.length === 0) {
-        //     fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userID}`)
-        //         .then((response) => response.json())
-        //         .then((data) => setPosts(data));
-        // }
+
+                axios.get("http://localhost:5000/view_all_candidates").then((response) => {
+                    console.log(response.data);
+                    setCandidates(response.data);
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
     }, []);
 
     useEffect(() => {
@@ -28,12 +31,10 @@ export function Candidates() {
 
     return (
         <main>
-            <NavLink to={`/Candidates/NewCandidate`}>
-                <button>Create a new Candidate here</button>
-            </NavLink>
+
             <div className="candidatesBody">
                 <h1 className="header">Your Candidates</h1>
-                <CandidateList candidates={candidates}/>
+                {/*<CandidateList candidates={candidates}/>*/}
             </div>
         </main>
     );

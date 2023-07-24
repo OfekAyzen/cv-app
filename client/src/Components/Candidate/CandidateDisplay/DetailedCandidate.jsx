@@ -1,4 +1,4 @@
-import "DetailedCandidate.css";
+import DeatiledCandidate from './DetailedCandidate';
 
 export default function DetailedCandidate({ ID, FirstName, LastName, Email, Phone, location, gender, Education, work_experience, skills, position, certifications, deleteCandidate }) {
     return (
