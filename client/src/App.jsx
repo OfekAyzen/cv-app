@@ -1,9 +1,12 @@
 import Login from './Pages/Login/Login'
 import { useUserUpdate } from './UserContext'
 import { useState, useEffect } from 'react'
+import candidate from "./Pages/ViweCandidate/Candidates.jsx";
+import Candidates from "./Pages/ViweCandidate/Candidates.jsx";
+import NewCandidate from "./Pages/ViweCandidate/NewCandidate.jsx";
 import {BrowserRouter, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom'
-import Login_k from './Pages/Login/Login_k'
-import ViweCandidate from './Pages/ViweCandidate/ViweCandidate'
+// import Login_k from './Pages/Login/Login_k'
+// import Vi from './Pages/ViweCandidate/ViweCandidate'
 
 
 
@@ -32,21 +35,7 @@ function App() {
         return (
             <nav>
                 <ul className="navbar">
-                    <li>
-                    <NavLink to="/Login" activeClassName="active">{isLoggedIn ? "Logout" : "Login"}</NavLink>
-                    </li>
-                    <li>
-                    <NavLink to="/Todos" activeClassName="active">Todos</NavLink>
-                    </li>
-                    <li>
-                    <NavLink to="/Posts" activeClassName="active">Posts</NavLink>
-                    </li>
-                    <li>
-                    <NavLink to="/UserInfo" activeClassName="active">Info</NavLink>
-                    </li>
-                    <li style={{ marginLeft: "auto" }}>
-                    {userName}
-                    </li>
+
                 </ul>
             </nav>
         )
@@ -57,12 +46,15 @@ function App() {
       <BrowserRouter>
         {getNav()}
         <Routes>
-          <Route exact path="/" element={ isLoggedIn ? <Navigate to="/UserInfo" /> : <Navigate to="/Login" />}>
-            
-          </Route>
-          <Route path="/Login" element={<Login onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
-            <Route path="/Login_k" element={<Login_k onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
-            <Route path="/Todos" element={<ViweCandidate />} />
+            <Route exact path="/" element={ isLoggedIn ? <Navigate to="/UserInfo" /> : <Navigate to="/Login" />}>
+            </Route>
+            <Route path="/Login" element={<Login onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
+            <Route path="/ViweCandidate">
+                <Route index element={<Candidates />} />
+                <Route path=":id" element={<candidate />} />
+                <Route path="NewCandidate" element={<NewCandidate></NewCandidate>}></Route>
+            </Route>
+
         </Routes>
       </BrowserRouter>
   )

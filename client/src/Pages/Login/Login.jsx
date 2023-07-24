@@ -41,38 +41,39 @@ const Login = ({onLogIn, isLoggedIn}) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    //console.log(await getUsers())
-    if (username === '') {
-      console.log('Login Failed');
-      setLoginError('Please enter a username');
-      return;
-    }
-    if (password === '') {
-      console.log('Login Failed');
-      setLoginError('Please enter a password');
-      return;
-    }
-    try {
-      const response = await axios.post('http://localhost:5000/login', {
-        username: username,
-        password: password
-      });
-
-      if (response.status === 200) {
-        // Login successful
-        const candidateId = response.data.candidate_id;
-        handleLoginSuccess(candidateId); // Call handleLoginSuccess with candidateId
-        onLogIn(response.data.user);
-        navigate("/Todos");
-      } else {
-        // Login failed
-        setLoginError('Incorrect username or password');
-      }
-    } catch (error) {
-      // Error occurred
-      console.log(error);
-      setLoginError('Error logging in');
-    }
+    navigate("/ViweCandidate");
+    // //console.log(await getUsers())
+    // if (username === '') {
+    //   console.log('Login Failed');
+    //   setLoginError('Please enter a username');
+    //   return;
+    // }
+    // if (password === '') {
+    //   console.log('Login Failed');
+    //   setLoginError('Please enter a password');
+    //   return;
+    // }
+    // try {
+    //   const response = await axios.post('http://localhost:5000/login', {
+    //     username: username,
+    //     password: password
+    //   });
+    //
+    //   if (response.status === 200) {
+    //     // Login successful
+    //     const candidateId = response.data.candidate_id;
+    //     handleLoginSuccess(candidateId); // Call handleLoginSuccess with candidateId
+    //     onLogIn(response.data.user);
+    //     navigate("/Todos");
+    //   } else {
+    //     // Login failed
+    //     setLoginError('Incorrect username or password');
+    //   }
+    // } catch (error) {
+    //   // Error occurred
+    //   console.log(error);
+    //   setLoginError('Error logging in');
+    // }
   };
 
   const handleSubmitRegister = (event) => {
@@ -106,7 +107,7 @@ const Login = ({onLogIn, isLoggedIn}) => {
             />
             <p className='login-error'>{loginError}</p>
             <button className="submit-button-login" type="button" onClick={handleLogin}>Login</button>
-            <button className="submit-button-register" type="button" onClick={handleSubmitRegister} >Register</button>
+            {/*<button className="submit-button-register" type="button" onClick={handleSubmitRegister} >Register</button>*/}
           </form>
         </div>
         {/*<img className="background" src={background} alt="Image 1" />*/}
