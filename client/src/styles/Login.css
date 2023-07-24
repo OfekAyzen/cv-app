@@ -1,3 +1,17 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Calibri, sans-serif;
+    background-color: #f0f0f0;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+}
+
 
 h1{
     /* Welcome back! */
@@ -62,7 +76,7 @@ h2{
     height: 50px;
     left: 127px;
     top: 392px;
-    /*font-family: 'Assistant';*/
+    /*font-family: 'Assistant;*/
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
