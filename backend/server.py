@@ -281,17 +281,18 @@ def login():
     data = request.json
     username = data['username']
     password = data['password']
+    
 
     # set the candidate_id, username, and password in the session
     candidate_id = get_candidate_id_from_database(username, password)
-
+    user_id=get_user_id_from_database(username,password)
     role = check_login(username, password)
     
     if role == 'manager':
-        user_id=data['user_id']
+        
         session['loggedin'] = True
         session['role'] = 'manager'
-        session['user_id'] = user_id
+        session['user_id']=user_id
         return jsonify({'role':role,'user_id' : user_id})
     elif role == 'candidate':
         session['loggedin'] = True
@@ -319,7 +320,19 @@ def get_candidate_id_from_database(username, password):
         
         return None
 
+def get_user_id_from_database(username, password):
+    try:
+        # find the user with  username
+        user = Manager.query.filter_by(username=username).one()
 
+        #  password matches 
+        if check_password_hash(user.password, password):
+            return user.user_id
+        else:
+            return None
+    except NoResultFound:
+        
+        return None
 
 def check_login(username, password):
     # check the username and password
