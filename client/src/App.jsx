@@ -6,7 +6,6 @@ import Candidates from "./Pages/ViweCandidate/Candidates.jsx";
 import NewCandidate from "./Pages/ViweCandidate/NewCandidate.jsx";
 import {BrowserRouter, Route, Routes, NavLink, Navigate, useNavigate } from 'react-router-dom'
 // import Login_k from './Pages/Login/Login_k'
-// import Vi from './Pages/ViweCandidate/ViweCandidate'
 
 
 
