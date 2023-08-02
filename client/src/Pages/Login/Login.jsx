@@ -12,6 +12,7 @@ import axios from 'axios';
 // import tech19 from '../../background/tech19.png';
 
 const Login = ({onLogIn, isLoggedIn}) => {
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -56,17 +57,18 @@ const Login = ({onLogIn, isLoggedIn}) => {
       const response = await axios.post('http://localhost:5000/login', {
         username: username,
         password: password
-      });
+      },{withCredentials: true});
 
       if (response.status === 200) {
         // Login successful
-        const userId = response.data.user.id;
-        const roll = response.data.user.role;
-        handleLoginSuccess(userId); // Call handleLoginSuccess with candidateId
-        onLogIn(response.data.user);
+        onLogIn(response.data.role); // Notify parent component that user is logged in with role
+        //const userId = response.data.user.id;
+        //const roll = response.data.user.role;
+       // handleLoginSuccess(userId); // Call handleLoginSuccess with candidateId
+        //onLogIn(response.data.user);
         alert("Login successful");
         console.log(response)
-        const user = response.data.user;
+       // const user = response.data.user;
         navigate("/ViewCandidate");
         userUpdatedFunction(user);
         onLogIn(user);

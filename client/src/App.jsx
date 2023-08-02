@@ -1,3 +1,53 @@
+
+
+import React, { useState } from 'react';
+import axios from 'axios';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import LoginPage from './Pages/Login/LoginPage';
+import LandingPage from './Pages/ViweCandidate/LandingPage';
+import Login from './Pages/Login/Login';
+import '../src/styles/App.css';
+function App() {
+  const [userRole, setUserRole] = useState(null);
+
+  const handleLogin = (role) => {
+    console.log("user role:", role)
+    setUserRole(role);
+  };
+
+  return (
+    <div >
+     
+       <BrowserRouter>
+        
+        <Routes>
+         
+          <Route exact path="/" element={ userRole ? <Navigate to="/ViewCandidate" /> : <Navigate to="/Login" />}></Route>
+          <Route path="/ViewCandidate" index element={<LandingPage userRole={userRole}/>}/>
+          <Route path="/Login" element={<Login onLogIn={handleLogin} />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+
+/**
+ *  {userRole ? (
+        <LandingPage userRole={userRole} />
+      ) : (
+        <LoginPage onLogIn={handleLogin} />
+      )}
+ * 
+ */
+
+
+/** 
 import Login from './Pages/Login/Login'
 import { useUserUpdate } from './UserContext'
 import { useState, useEffect } from 'react'
@@ -5,7 +55,7 @@ import {BrowserRouter, Route, Routes, NavLink, Navigate, useNavigate } from 'rea
 import Candidates from "./Pages/ViweCandidate/Candidates.jsx";
 // import Login_k from './Pages/Login/Login_k'
 // import Vi from './Pages/ViweCandidate/ViweCandidate'
-
+import LoginPage from './Pages/Login/LoginPage';
 
 
 function App() {
@@ -46,7 +96,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={ isLoggedIn ? <Navigate to="/UserInfo" /> : <Navigate to="/Login" />}>
           </Route>
-          <Route path="/Login" element={<Login onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
+          <Route path="/LandingPage" exact component={LandingPage} />
+          <Route path="/Login" element={<LoginPage onLogIn={handleSubmit} isLoggedIn={isLoggedIn} />} />
             <Route path="/ViewCandidate">
                 <Route index element={<Candidates />} />
 
@@ -59,3 +110,4 @@ function App() {
 }
 
 export default App
+*/

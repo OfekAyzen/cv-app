@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\ronch\WebstormProjects\CV-Management-App\backend\.venv"
+VIRTUAL_ENV="C:\Users\User\CVManagment-App\CV-Management-App\.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

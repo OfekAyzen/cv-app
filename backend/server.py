@@ -1,4 +1,5 @@
-from flask import Flask, render_template, flash, redirect, url_for, request,jsonify,session
+import string
+from flask import Flask, render_template, flash, redirect, url_for, request,jsonify,session,send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
@@ -8,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func
 from sqlalchemy.orm import Session  
 from sqlalchemy.exc import NoResultFound
-import psycopg2
+import psycopg2 #pip install psycopg2 
 import psycopg2.extras
 import secrets
 from pathlib import Path
@@ -23,6 +24,8 @@ from Cv import CV
 from Jobs import Jobs
 from Application import Application
 import re
+from flask_mail import Mail, Message
+
 app = Flask(__name__)
  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -40,9 +43,11 @@ except FileNotFoundError:
         secret_file.write(app.secret_key) 
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=30)
 
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST"]}})
+CORS(app,supports_credentials=True, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST","DELETE"]}})
 
-app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/backend/uploads'  # Adjust this path
+
+
+app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/backend/uploads'  # Adjust this path to upload cv for candidates
 
 ALLOWED_EXTENSIONS = {'pdf','word'}
   
@@ -54,6 +59,55 @@ def index():
     print("index ...")
     return jsonify("indexx")
 
+# Configure Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'tech19yeruham@gmail.com'  # Replace with your Gmail email address
+app.config['MAIL_PASSWORD'] = 'Tech1919@'  # Replace with your Gmail password
+
+mail = Mail(app)
+
+# Function to generate a random password
+def generate_random_password(length=12):
+    password_characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(secrets.choice(password_characters) for i in range(length))
+    return password
+
+@app.route('/forgot_password', methods=['POST'])
+def forgot_password():
+    data = request.json
+    username = data['username']
+
+    # Check if the candidate exists in the database
+    candidate = Candidate.query.filter_by(username=username).first()
+    if not candidate:
+        return jsonify({'message': 'Candidate not found.'}), 404
+
+    # Generate a new password
+    new_password = generate_random_password()
+
+    # Update the candidate's password in the database
+    candidate.password = generate_password_hash(new_password)
+    db.session.commit()
+
+    # Send an email to the candidate with the new password
+    try:
+        # Create a Flask-Mail Message object
+        msg = Message(
+            subject='Password Reset',  # Subject of the email
+            recipients=[candidate.email],  # List of email recipients
+            sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
+            body=f'Your new password is: {new_password}'  # Body of the email
+        )
+
+        # Send the email using the Mail object
+        mail.send(msg)
+
+        return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
+    except Exception as e:
+        print("Error sending email:", e)
+        return jsonify({'message': 'Error sending email. Please try again later.'}), 500
 
 
 @app.route('/signup', methods=['POST'])
@@ -294,14 +348,21 @@ def login():
         session['role'] = 'manager'
         session['user_id']=user_id
         print('user id ',user_id)
-        return jsonify({'role':role,'user_id' : user_id}) ,200
+        response = jsonify({'role': role, 'user_id': user_id})
+        response.set_cookie('login_cookie', 'user_logged_in')
+        return response ,200
     elif role == 'candidate':
         session['loggedin'] = True
         session['role'] = 'candidate'
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-        return jsonify({'candidate_id':candidate_id,'username':username,'role':role}) ,200
+        response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
+
+        # Set the login cookie in the response
+        response.set_cookie('login_cookie', 'user_logged_in')
+
+        return response, 200
         # Redirect to the home page with candidate data
         #return redirect(url_for('home', candidate_id=candidate_id, username=username))
     else:
@@ -759,6 +820,21 @@ def view_all_applications():
         print("Error:", e)
         return jsonify({'message': 'Error occurred while fetching applications.'})
 
+
+
+
+#download cv file for manager
+@app.route('/download/<int:candidate_id>', methods=['GET'])
+def download(candidate_id):
+   
+    # Retrieve the CV record from the database based on candidate_id
+    cv = CV.query.filter_by(candidate_id=candidate_id).first()
+    if not cv or not cv.cv_id:
+        return jsonify({'message': 'CV not found.'}), 404
+
+
+    # Return the file to download
+    return send_file(cv.file_path, as_attachment=True)
 
 
 if __name__ == '__main__':
