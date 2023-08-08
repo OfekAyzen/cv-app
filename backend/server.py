@@ -113,13 +113,21 @@ def forgot_password():
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.json
+
+    
+    # Check if all required fields are present and not empty in the request data
+    required_fields = ['first_name', 'last_name', 'email', 'phone_number', 'username', 'password']
+    for field in required_fields:
+        if field not in data or not data[field]:
+            return jsonify({'message': f'Missing or empty required field: {field}.'}), 400
+
     first_name = data['first_name']
     last_name = data['last_name']
     email = data['email']
     phone_number = data['phone_number']
     username = data['username']
     password = data['password']
-
+  
     # Check if the email is valid
     if not is_valid_email(email):
         return jsonify({'message': 'Invalid email address.'}), 400
@@ -439,59 +447,59 @@ def logout():
     session.clear()
     return jsonify({'message': 'Logged out successfully'})
 
-#filter by education, work experience, skills, gender and location.
-@app.route('/filter_candidates', methods=['POST'])
-def filter_candidates():
-    if 'loggedin' not in session or session['role'] != 'manager':
-        print("not loggedin")
-        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+# #filter by education, work experience, skills, gender and location.
+# @app.route('/filter_candidates', methods=['POST'])
+# def filter_candidates():
+#     if 'loggedin' not in session or session['role'] != 'manager':
+#         print("not loggedin")
+#         return jsonify({'message': 'You are not logged in as a candidate.'}), 401
 
-    data = request.get_json()
-    filters = {}
+#     data = request.get_json()
+#     filters = {}
     
-    # Extract the filters from the request body
-    education = data.get('education')
-    gender = data.get('gender')
-    work_experience = data.get('work_experience')
-    location=data.get('location')
-    skills=data.get('skills')
+#     # Extract the filters from the request body
+#     education = data.get('education')
+#     gender = data.get('gender')
+#     work_experience = data.get('work_experience')
+#     location=data.get('location')
+#     skills=data.get('skills')
     
-    # Add filters to the 'filters' dictionary if they are provided
-    if education:
-        filters['education'] = education
-    if gender:
-        filters['gender'] = gender
-    if work_experience:
-        filters['work_experience'] = work_experience
-    if location:
-        filters['location']=location
-    if skills:
-        filters['skills']=skills
-    try:
-        # Query the database using the filters provided
-        candidates = Candidate.query.filter_by(**filters).all()
+#     # Add filters to the 'filters' dictionary if they are provided
+#     if education:
+#         filters['education'] = education
+#     if gender:
+#         filters['gender'] = gender
+#     if work_experience:
+#         filters['work_experience'] = work_experience
+#     if location:
+#         filters['location']=location
+#     if skills:
+#         filters['skills']=skills
+#     try:
+#         # Query the database using the filters provided
+#         candidates = Candidate.query.filter_by(**filters).all()
 
-        # Create a list of dictionaries to hold the filtered candidates' information
-        filtered_candidates = []
-        for candidate in candidates:
-            filtered_candidates.append({
-                'candidate_id': candidate.candidate_id,
-                'first_name': candidate.first_name,
-                'last_name': candidate.last_name,
-                'location': candidate.location,
-                'email': candidate.email,
-                'phone_number': candidate.phone_number,
-                'gender': candidate.gender,
-                'education': candidate.education,
-                'work_experience': candidate.work_experience,
-                'skills': candidate.skills,
-                'position': candidate.position,
-                'certifications': candidate.certifications
-            })
+#         # Create a list of dictionaries to hold the filtered candidates' information
+#         filtered_candidates = []
+#         for candidate in candidates:
+#             filtered_candidates.append({
+#                 'candidate_id': candidate.candidate_id,
+#                 'first_name': candidate.first_name,
+#                 'last_name': candidate.last_name,
+#                 'location': candidate.location,
+#                 'email': candidate.email,
+#                 'phone_number': candidate.phone_number,
+#                 'gender': candidate.gender,
+#                 'education': candidate.education,
+#                 'work_experience': candidate.work_experience,
+#                 'skills': candidate.skills,
+#                 'position': candidate.position,
+#                 'certifications': candidate.certifications
+#             })
 
-        return jsonify({'candidates': filtered_candidates})
-    except Exception as e:
-        return jsonify({'message': 'Error occurred during filtering candidates.'})
+#         return jsonify({'candidates': filtered_candidates})
+#     except Exception as e:
+#         return jsonify({'message': 'Error occurred during filtering candidates.'})
 
 
 

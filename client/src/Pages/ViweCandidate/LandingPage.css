@@ -125,3 +125,24 @@
 
   color: #ad2069 !important;
 }
+.css-128fb87-MuiDataGrid-toolbarContainer {
+  
+  background-color: white !important;
+  
+  border-radius: 15px ! important;
+}
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root {
+
+  height: 50px !important;
+  width: 120px !important;
+  /* border-left: ridge; */
+  border: outset !important;
+}
+.css-5wly58-MuiDataGrid-root .MuiDataGrid-row {
+
+  background-color: white !important;
+}
+.css-rtrcn9-MuiTablePagination-root {
+ 
+  display: none !important;
+}

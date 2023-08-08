@@ -4,16 +4,26 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import './LandingPage.css';
 import Header from '../../Components/Header';
-import { DataGrid , GridToolbar  } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 
-import Candidate_details from './Candidate_details';
+import {
 
+  GridToolbarContainer,
+
+  GridToolbarFilterButton,
+  GridToolbarExport,
+
+} from '@mui/x-data-grid';
+import Candidate_details from './Candidate_details';
+import { Link } from 'react-router-dom';
+import ToolBar from './ToolBar';
 const VISIBLE_FIELDS = ['first_name', 'last_name', 'location', 'gender', 'position',
 'education',
-'workExperience',
+'workExperience' ,
 'skills',
 'gender',
 'location',
@@ -26,7 +36,16 @@ const LandingPage = ({ userRole }) => {
   const [error, setError] = useState(null);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
 
- 
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+   
+        <GridToolbarFilterButton />
+       
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
   useEffect(() => {
     const fetchCandidatesData = async () => {
       console.log('fetch data role =', userRole);
@@ -70,8 +89,13 @@ const LandingPage = ({ userRole }) => {
   const columns = VISIBLE_FIELDS.map((field) => ({
     field,
     headerName: field === 'position' ? 'Position' : field,
+   // field:'first_name',hideable: false ,//
+   // headerName: field === 'first_name' ? hideable: false ,
     width: 200,
+   
   }));
+
+  
 
   const handleRowClick = (params) => {
     // Get the selected candidate data from the row
@@ -85,19 +109,20 @@ const LandingPage = ({ userRole }) => {
   };
   return (
     <>
-      <Header />
- 
+      
+      <ToolBar></ToolBar>
          
           
   
       <CssBaseline />
       <Container fixed >
-          
+        
+       
         {candidatesData.length > 0 ? (
           <div className="data-grid-container">
             
             <DataGrid
-              slots={{ toolbar: GridToolbar }}
+              slots={{ toolbar: CustomToolbar }}
               getRowClassName={getRowClassName}
               rows={candidatesData}
               columns={columns}

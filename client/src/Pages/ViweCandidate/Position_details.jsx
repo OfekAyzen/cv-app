@@ -27,7 +27,7 @@ const VISIBLE_FIELDS = ['first_name', 'last_name', 'location', 'gender', 'positi
 
 ];
 
-const LandingPage = ({ userRole }) => {
+const  PositionDeatails= ({ userRole }) => {
   const [candidatesData, setCandidatesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -147,4 +147,4 @@ const LandingPage = ({ userRole }) => {
   );
 };
 
-export default LandingPage;
+export default PositionDeatails;

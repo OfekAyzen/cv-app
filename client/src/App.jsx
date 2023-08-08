@@ -1,30 +1,42 @@
-
-
 import React, { useState } from 'react';
-import axios from 'axios';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from './Pages/Login/LoginPage';
 import LandingPage from './Pages/ViweCandidate/LandingPage';
-import Login from './Pages/Login/Login';
-import '../src/styles/App.css';
+import SignUp from './Components/SignUp/SignUp';
+import HomePage from './Components/Users/HomePage';
+import Apply from './Components/Users/Apply';
+import UploadApplication from './Components/Users/UploadApplication';
+import Position from './Pages/ViweCandidate/Position';
 function App() {
   const [userRole, setUserRole] = useState(null);
 
   const handleLogin = (role) => {
-    console.log("user role:", role)
+    console.log("user role:", role);
     setUserRole(role);
   };
 
+  const getInitialPath = () => {
+    if (userRole === "manager") {
+      return "/ViewCandidate";
+    }if (userRole === "candidate") {
+      return "/HomePage";
+    } else {
+      return "/Login";
+    }
+  };
+
   return (
-    <div >
-     
-       <BrowserRouter>
-        
+    <div>
+      <BrowserRouter>
         <Routes>
-         
-          <Route exact path="/" element={ userRole ? <Navigate to="/ViewCandidate" /> : <Navigate to="/Login" />}></Route>
-          <Route path="/ViewCandidate" index element={<LandingPage userRole={userRole}/>}/>
-          <Route path="/Login" element={<Login onLogIn={handleLogin} />} />
+          <Route exact path="/" element={<Navigate to={getInitialPath()} />} />
+          <Route path="/ViewCandidate" element={<LandingPage userRole={userRole} />} />
+          <Route path="/Login" element={<LoginPage onLogIn={handleLogin} />} />
+          <Route path="/SignUp" element={<SignUp></SignUp>} />
+          <Route path="/HomePage" element={<HomePage userRole={userRole}></HomePage>} />
+          <Route exact path="/apply/:jobId" component={Apply} />
+          <Route exact path="/upload/:jobId" component={UploadApplication} />
+          <Route exact path="/Position" element={<Position></Position>} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -32,8 +44,6 @@ function App() {
 }
 
 export default App;
-
-
 
 
 
