@@ -25,12 +25,19 @@ from Jobs import Jobs
 from Application import Application
 import re
 from flask_mail import Mail, Message
+import json
+from flask import Flask, request, jsonify
+from datetime import datetime, timedelta, timezone
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
+                               unset_jwt_cookies, jwt_required, JWTManager
 
 app = Flask(__name__)
  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 db.init_app(app)
+app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
+jwt = JWTManager(app)
 
 SECRET_FILE_PATH = Path(".flask_secret")
 try:
@@ -51,6 +58,88 @@ app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/bac
 
 ALLOWED_EXTENSIONS = {'pdf','word'}
   
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
+    
+@app.route('/token', methods=["POST"])
+def create_token():
+    data = request.json
+    username = data.get("username", None)
+    password = data.get("password", None)
+    
+    # Replace this with your database query to validate user credentials
+
+    # set the candidate_id, username, and password in the session
+    candidate_id = get_candidate_id_from_database(username, password)
+    user_id=get_user_id_from_database(username,password)
+    role = check_login(username, password)
+    
+    if role == 'manager':
+        
+        session['loggedin'] = True
+        session['role'] = 'manager'
+        print("Session keys:", session.keys())
+        session['user_id']=user_id
+        print('user id ',user_id)
+        #response = jsonify({'role': role, 'user_id': user_id})
+        access_token = create_access_token(identity=username)
+        response = {"access_token": access_token,'role': role, 'user_id': user_id}
+        return response,200
+       # response.set_cookie('login_cookie', 'user_logged_in')
+      
+    elif role == 'candidate':
+        session['loggedin'] = True
+        session['role'] = 'candidate'
+        session['candidate_id'] = candidate_id
+        session['username'] = username
+        session['password'] = password
+        #response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
+
+        # Set the login cookie in the response
+     #   response.set_cookie('login_cookie', 'user_logged_in')
+        access_token = create_access_token(identity=username)
+        response = {"access_token": access_token,'candidate_id': candidate_id, 'username': username, 'role': role}
+        return response,200
+        #return response, 200
+        # Redirect to the home page with candidate data
+        #return redirect(url_for('home', candidate_id=candidate_id, username=username))
+    else:
+        return jsonify({'message': 'Incorrect password or username...'}), 401
+   
+   
+
+@app.route("/lgout", methods=["POST"])
+def lgout():
+
+    session.clear()
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
+
+@app.route('/profile')
+@jwt_required()
+def my_profile():
+    response_body = {
+        "name": "Nagato",
+        "about" :"Hello! I'm a full stack developer that loves python and javascript"
+    }
+
+    return response_body
 
         
 @app.route('/')
@@ -225,6 +314,7 @@ def allowed_file(filename):
 
 
 @app.route('/upload', methods=['POST'])
+@jwt_required()
 def upload():
     if 'loggedin' not in session or session['role'] != 'candidate':
         print("not loggedin")
@@ -266,6 +356,7 @@ def upload():
 
 #adding job application after candidate is loggedin
 @app.route('/add_candidate', methods=['POST'])
+@jwt_required()
 def add_candidate():
     if 'loggedin' not in session or session['role'] != 'candidate':
         print("not loggedin")
@@ -338,43 +429,43 @@ def add_candidate():
 
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.json
-    username = data['username']
-    password = data['password']
+# @app.route('/login', methods=['POST'])
+# def login():
+#     data = request.json
+#     username = data['username']
+#     password = data['password']
     
 
-    # set the candidate_id, username, and password in the session
-    candidate_id = get_candidate_id_from_database(username, password)
-    user_id=get_user_id_from_database(username,password)
-    role = check_login(username, password)
+#     # set the candidate_id, username, and password in the session
+#     candidate_id = get_candidate_id_from_database(username, password)
+#     user_id=get_user_id_from_database(username,password)
+#     role = check_login(username, password)
     
-    if role == 'manager':
+#     if role == 'manager':
         
-        session['loggedin'] = True
-        session['role'] = 'manager'
-        session['user_id']=user_id
-        print('user id ',user_id)
-        response = jsonify({'role': role, 'user_id': user_id})
-        response.set_cookie('login_cookie', 'user_logged_in')
-        return response ,200
-    elif role == 'candidate':
-        session['loggedin'] = True
-        session['role'] = 'candidate'
-        session['candidate_id'] = candidate_id
-        session['username'] = username
-        session['password'] = password
-        response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
+#         session['loggedin'] = True
+#         session['role'] = 'manager'
+#         session['user_id']=user_id
+#         print('user id ',user_id)
+#         response = jsonify({'role': role, 'user_id': user_id})
+#         response.set_cookie('login_cookie', 'user_logged_in')
+#         return response ,200
+#     elif role == 'candidate':
+#         session['loggedin'] = True
+#         session['role'] = 'candidate'
+#         session['candidate_id'] = candidate_id
+#         session['username'] = username
+#         session['password'] = password
+#         response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
 
-        # Set the login cookie in the response
-        response.set_cookie('login_cookie', 'user_logged_in')
+#         # Set the login cookie in the response
+#         response.set_cookie('login_cookie', 'user_logged_in')
 
-        return response, 200
-        # Redirect to the home page with candidate data
-        #return redirect(url_for('home', candidate_id=candidate_id, username=username))
-    else:
-        return jsonify({'message': 'Incorrect password or username...'}), 401
+#         return response, 200
+#         # Redirect to the home page with candidate data
+#         #return redirect(url_for('home', candidate_id=candidate_id, username=username))
+#     else:
+#         return jsonify({'message': 'Incorrect password or username...'}), 401
 
 def get_candidate_id_from_database(username, password):
     try:
@@ -421,6 +512,7 @@ def check_login(username, password):
 
 
 @app.route('/delete_candidate/<int:candidate_id>', methods=['DELETE'])
+@jwt_required()
 def delete_candidate(candidate_id):
     # Check if the user is logged in and is a manager
     if 'loggedin' in session and session['loggedin'] and 'role' in session and session['role'] == 'manager':
@@ -441,11 +533,11 @@ def delete_candidate(candidate_id):
         return jsonify({'message': 'You are not authorized to perform this action.'})
     
 
-@app.route('/logout', methods=['POST'])
-def logout():
-    # Clear the session data
-    session.clear()
-    return jsonify({'message': 'Logged out successfully'})
+# @app.route('/logout', methods=['POST'])
+# def logout():
+#     # Clear the session data
+#     session.clear()
+#     return jsonify({'message': 'Logged out successfully'})
 
 # #filter by education, work experience, skills, gender and location.
 # @app.route('/filter_candidates', methods=['POST'])
@@ -505,6 +597,7 @@ def logout():
 
 #edit candidate for manager 
 @app.route('/edit_candidate/<int:candidate_id>', methods=['POST'])
+@jwt_required()
 def edit_candidate(candidate_id):
 
     if 'loggedin' not in session or session['role'] != 'manager':
@@ -542,14 +635,61 @@ def edit_candidate(candidate_id):
         return jsonify({'message': 'Error occurred during candidate update.'}), 500
 
 
+# @app.route('/view_all_candidates', methods=['GET'])
+# @jwt_required()
+# def view_all_candidates():
+#     role = session.get('role', None)
+#     if role is None:
+#         print("Role not available in session")
+#     else:
+#         print("Role:", role)
+#     try:
+#         # Check if the user is logged in as a manager
+#         print("her___________")
+#         print("role =",session['role'])
+#         if 'loggedin' not in session or session['role'] != 'manager':
+#             print("Not logged in as a manager")
+#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+#         # Get all the candidates from the database
+#         all_candidates = Candidate.query.all()
+
+#         # Create a list to store candidate details
+#         candidate_list = []
+
+#         # Loop through each candidate and add their details to the list
+#         for candidate in all_candidates:
+#             candidate_details = {
+#                 'candidate_id': candidate.candidate_id,
+#                 'first_name': candidate.first_name,
+#                 'last_name': candidate.last_name,
+#                 'email': candidate.email,
+#                 'location' : candidate.location,
+#                 'phone_number' : candidate.phone_number,
+#                 'gender' : candidate.gender,
+#                 'education' : candidate.education,
+#                 'work_experience' : candidate.work_experience,
+#                 'skills' : candidate.skills,
+#                 'position' : candidate.position,
+#                 'certifications' : candidate.certifications
+
+#             }
+#             candidate_list.append(candidate_details)
+
+#         return jsonify({'candidates': candidate_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching candidates.'})
+
+
 @app.route('/view_all_candidates', methods=['GET'])
+@jwt_required()
 def view_all_candidates():
+    
     try:
         # Check if the user is logged in as a manager
-        if 'loggedin' not in session or session['role'] != 'manager':
-            print("Not logged in as a manager")
-            return jsonify({'message': 'You are not logged in as a manager.'}), 401
-
+       
         # Get all the candidates from the database
         all_candidates = Candidate.query.all()
 
@@ -563,15 +703,14 @@ def view_all_candidates():
                 'first_name': candidate.first_name,
                 'last_name': candidate.last_name,
                 'email': candidate.email,
-                'location' : candidate.location,
-                'phone_number' : candidate.phone_number,
-                'gender' : candidate.gender,
-                'education' : candidate.education,
-                'work_experience' : candidate.work_experience,
-                'skills' : candidate.skills,
-                'position' : candidate.position,
-                'certifications' : candidate.certifications
-
+                'location': candidate.location,
+                'phone_number': candidate.phone_number,
+                'gender': candidate.gender,
+                'education': candidate.education,
+                'work_experience': candidate.work_experience,
+                'skills': candidate.skills,
+                'position': candidate.position,
+                'certifications': candidate.certifications
             }
             candidate_list.append(candidate_details)
 
@@ -579,12 +718,12 @@ def view_all_candidates():
 
     except Exception as e:
         print("Error:", e)
-        return jsonify({'message': 'Error occurred while fetching candidates.'})
-
+        return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
 
 
 #adding job application after candidate is loggedin
 @app.route('/add_job', methods=['POST'])
+@jwt_required()
 def add_job():
     if 'loggedin' not in session or session['role'] != 'manager':
         print("not loggedin")
@@ -621,6 +760,7 @@ def add_job():
 
 #edit job posting  
 @app.route('/delete_job/<int:job_id>', methods=['DELETE'])
+@jwt_required()
 def delete_job(job_id):
         # Check if the user is logged in and is a manager
     if 'loggedin' in session and session['loggedin'] and 'role' in session and session['role'] == 'manager':
@@ -642,6 +782,7 @@ def delete_job(job_id):
         return jsonify({'message': 'You are not authorized to perform this action.'})
     
 @app.route('/edit_job/<int:job_id>', methods=['POST'])
+@jwt_required()
 def edit_job(job_id):
 
     if 'loggedin' not in session or session['role'] != 'manager':
@@ -671,6 +812,7 @@ def edit_job(job_id):
         return jsonify({'message': 'Error occurred during possition update.'}), 500
 
 @app.route('/view_jobs', methods=['GET'])
+@jwt_required()
 def view_jobs():
     try:
         # Get all the jobs from the database
@@ -696,6 +838,7 @@ def view_jobs():
         return jsonify({'message': 'Error occurred while fetching jobs.'})
 
 @app.route('/apply/<int:job_id>', methods=['POST'])
+@jwt_required()
 def apply(job_id):
     if 'loggedin' not in session or session['role'] != 'candidate':
         print("not logged in")
@@ -744,8 +887,9 @@ def apply(job_id):
         print("error:", e)
         return jsonify({'message': 'Error occurred during application submission.'}), 500
     
-
+#view apllyed jobs 
 @app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
+@jwt_required()
 def view_applyed(candidate_id):
     print("View applied positions")
     
@@ -797,6 +941,7 @@ def view_applyed(candidate_id):
         return jsonify({'message': 'Error occurred while fetching applications.'})
 
 @app.route('/view_all_applications', methods=['GET'])
+@jwt_required()
 def view_all_applications():
     try:
         # Check if the user is logged in as a manager
@@ -833,6 +978,7 @@ def view_all_applications():
 
 #download cv file for manager
 @app.route('/download/<int:candidate_id>', methods=['GET'])
+
 def download(candidate_id):
    
     # Retrieve the CV record from the database based on candidate_id

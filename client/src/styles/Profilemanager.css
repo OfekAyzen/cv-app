@@ -1,0 +1,176 @@
+/* LandingPage.css */
+
+.candidate-table {
+    width: 100%;
+    /**border-collapse: collapse;*/
+    
+    margin-top: 20px;
+    
+  }
+  
+  .candidate-table th,
+  .candidate-table td {
+    border: 1px solid #e0dddd;
+    padding: 10px;
+    text-align: left;
+    
+  }
+  
+  .candidate-table th {
+    background-color: #ffffff;
+    font-weight: bold;
+    
+  }
+  
+  .candidate-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+    
+  }
+  
+  .candidate-table tbody tr:hover {
+    background-color: #f5f5f5;
+    
+  }
+
+
+  /* styles.css or your custom CSS file */
+.data-grid-container .rounded-row {
+    /* Adjust the value as needed for the desired roundedness */
+    height: '100%';
+    width: '100%';
+    overflow: 'hidden';
+    border-radius: 15px; /* Adjust the radius to control the amount of rounding */
+    background-color: #f8f6f6; /* Optional: Set a background color for the rounded rows */
+    margin: 5px;
+    border-bottom: 1px !important;
+    
+}
+.candidate-details {
+    position: fixed;
+    top: 0%; /* Adjust the top position as needed to position the pop-up vertically */
+    bottom: 0%;
+    right: 1px; /* Adjust the right position as needed to position the pop-up horizontally */
+    width: 300px; /* Set a desired width for the pop-up */
+    height: '100%';
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    /*text-align: center;*/
+    padding: 10px;
+    z-index: 9999; /* Ensure the pop-up is on top of other elements */
+  }
+.h2-candidate-details{
+    color: rgb(129, 37, 64);
+    text-align: center;
+}
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+.inner-card{
+    padding: 20px;
+    width: '80%';
+   
+    
+}
+
+.download-button{
+    margin: 0;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: rgb(174, 43, 91);
+}
+/* LandingPage.css or your custom CSS file */
+
+
+/**
+.rounded-row {
+    border-radius: 15px;
+    background-color: #cbc8c8; 
+    margin: 5px;
+ 
+  }*/
+
+
+.data-grid-container{
+    margin-top: 5%;
+    height: 800px;
+    
+}
+
+.div-bar{
+    background-color: black;
+    
+}
+.img{
+  height: 80px;;
+}
+
+.css-128fb87-MuiDataGrid-toolbarContainer{
+  gap: 56px !important;
+  padding: 81px 8px 25px !important;
+  background-color: #e2e1e6 !important;
+}
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root {
+
+  color: #ad2069 !important;
+}
+.css-128fb87-MuiDataGrid-toolbarContainer {
+  
+  background-color: white !important;
+  
+  border-radius: 15px ! important;
+}
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root {
+
+  height: 50px !important;
+  width: 120px !important;
+  /* border-left: ridge; */
+  border: outset !important;
+}
+.css-5wly58-MuiDataGrid-root .MuiDataGrid-row {
+
+  background-color: white !important;
+}
+.css-rtrcn9-MuiTablePagination-root {
+ 
+  display: none !important;
+}
+.Box-userprofile{
+  background-color: rgb(34, 33, 33) !important;
+  width: 'auto';
+  height: 432px;
+}
+.h3-user{
+  
+  color: #ad2069;
+  font-size: 50px;
+  padding-top: 98px;
+  padding-left: 50px;
+  margin: auto;
+  
+}
+.h4-user{
+  color: white;
+  font-size: 40px;
+ 
+  padding-left: 50px;
+}
+.img-user{
+ 
+  margin-right:auto;
+  float: right;    
+ margin: 0 0 0 15px;
+
+ height: 432px;
+}

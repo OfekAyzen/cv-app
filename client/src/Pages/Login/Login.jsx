@@ -1,48 +1,100 @@
-import { useState, useEffect, useContext } from 'react'
-import { useUserUpdate } from '../../UserContext.jsx'
+// import React, { useState } from 'react';
+// import axios from 'axios';
+
+// const LoginPage = ({ onLogIn }) => {
+//   const [username, setUsername] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [loginError, setLoginError] = useState('');
+
+
+
+
+  
+
+//   const handleLogin = async (event) => {
+//     event.preventDefault();
+
+//     try {
+//       const response = await axios.post('http://localhost:5000/login',{
+//         username: username,
+//         password: password,
+//       }
+//       ,{withCredentials: true}
+      
+//       );
+
+//       if (response.status === 200) {
+        
+//         // Login successful
+//         onLogIn(response.data.role); // Notify parent component that user is logged in with role
+//       } else {
+//         // Login failed
+//         setLoginError('Incorrect username or password');
+//       }
+//     } catch (error) {
+//       // Error occurred
+//       console.log(error);
+//       setLoginError('Error logging in');
+//     }
+//   };
+
+//   return (
+//     <div >
+//       <form onSubmit={handleLogin}>
+//         <label htmlFor="username">Username:</label>
+//         <input
+//           type="text"
+//           id="username"
+//           value={username}
+//           onChange={(e) => setUsername(e.target.value)}
+//         />
+//         <label htmlFor="password">Password:</label>
+//         <input
+//           type="password"
+//           id="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//         />
+//         <p>{loginError}</p>
+//         <button type="submit">Login</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LoginPage;
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Header from "../../Components/Header";
+import "../../styles/LoginPage.css";
+import { useState ,useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../../styles/Login.css';
-import ApiContext from '../../ApiContext.jsx';
-import TopNav from "../TopNav/TopNav.jsx";
 import axios from 'axios';
 
+const defaultTheme = createTheme();
 
-
-// import background from '../../background/background.jpg';
-// import tech19 from '../../background/tech19.png';
-
-const Login = ({onLogIn, isLoggedIn}) => {
-  
+export default function Login(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-
-
-
-  const [file, setFile] = useState(null);
-  const [message, setMessage] = useState('');
-  const [candidateId, setCandidateId] = useState(null);
-
-
-  const handleLoginSuccess = (candidateId) => {
-    setCandidateId(candidateId);
-  };
-
-  const userUpdatedFunction = useUserUpdate();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isLoggedIn){
-      userUpdatedFunction(null);
-      onLogIn(undefined);
-      localStorage.setItem('logged_user', null);
-    }
-  }, []);
 
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    //console.log(await getUsers())
     if (username === '') {
       console.log('Login Failed');
       setLoginError('Please enter a username');
@@ -53,75 +105,121 @@ const Login = ({onLogIn, isLoggedIn}) => {
       setLoginError('Please enter a password');
       return;
     }
+
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('http://localhost:5000/token', {
         username: username,
-        password: password
-      },{withCredentials: true});
+        password: password,
+      });
 
       if (response.status === 200) {
         // Login successful
-        onLogIn(response.data.role); // Notify parent component that user is logged in with role
-        //const userId = response.data.user.id;
-        //const roll = response.data.user.role;
-       // handleLoginSuccess(userId); // Call handleLoginSuccess with candidateId
-        //onLogIn(response.data.user);
-        alert("Login successful");
-        console.log(response)
-       // const user = response.data.user;
-        navigate("/ViewCandidate");
-        userUpdatedFunction(user);
-        onLogIn(user);
+        console.log("login 200:",props.role)
+        props.onLogIn(response.data.role);
+        props.setToken(response.data.access_token)
+        console.log(" response.data.role :",response.data.role)
+        // // Check user role and navigate accordingly
+        // if (response.data.role === "candidate") {
+        //   navigate('/HomePage');
+        // } else if (response.data.role === "manager") {
+        //   navigate('/ViewCandidate');
+        // }
       } else {
         // Login failed
         setLoginError('Incorrect username or password');
       }
     } catch (error) {
-      // Error occurred
-      console.log(error);
+      if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+        }
+     
       setLoginError('Error logging in');
     }
   };
 
-  const handleSubmitRegister = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/Register");
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <>
-      {<TopNav/>}
-      <main>
-        <h1>Welcome back</h1>
-        <h2>Welcome back! please enter your details.</h2>
-        <div className="login-container">
-          <form className="login-form" onSubmit={handleLogin}>
-            <label className="login-label-user" htmlFor="username">Username:</label>
-            <input
-                className="login-input-user"
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+    <ThemeProvider theme={defaultTheme}>
+      <Header />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Welcome back !
+          </Typography>
+          <Typography component="h1" variant="h6">
+            Welcome back! Please enter your details.
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              value={username}
+              autoFocus
+              onChange={(e) => setUsername(e.target.value)}
             />
-            <label className="login-label-pass" htmlFor="password">Password:</label>
-            <input
-                className="login-input-pass"
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <p className='login-error'>{loginError}</p>
-            <button className="submit-button-login" type="button" onClick={handleLogin}>Login</button>
-            {/*<button className="submit-button-register" type="button" onClick={handleSubmitRegister} >Register</button>*/}
-          </form>
-        </div>
-        {/*<img className="background" src={background} alt="Image 1" />*/}
-        {/*<img className="logo" src={tech19} alt="Image 2" />*/}
-      </main>
-    </>
+            
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleLogin}
+            >
+              Login
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/SignUp" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
-};
-
-export default Login
+}
