@@ -9,7 +9,7 @@
 
 
 
-  
+
 
 //   const handleLogin = async (event) => {
 //     event.preventDefault();
@@ -20,11 +20,11 @@
 //         password: password,
 //       }
 //       ,{withCredentials: true}
-      
+
 //       );
 
 //       if (response.status === 200) {
-        
+
 //         // Login successful
 //         onLogIn(response.data.role); // Notify parent component that user is logged in with role
 //       } else {
@@ -79,7 +79,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from "../../Components/Header";
 import "../../styles/LoginPage.css";
-import { useState ,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
@@ -89,6 +89,7 @@ export default function Login(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+
   const navigate = useNavigate();
 
 
@@ -114,16 +115,19 @@ export default function Login(props) {
 
       if (response.status === 200) {
         // Login successful
-        console.log("login 200:",props.role)
+
         props.onLogIn(response.data.role);
         props.setToken(response.data.access_token)
-        console.log(" response.data.role :",response.data.role)
-        // // Check user role and navigate accordingly
-        // if (response.data.role === "candidate") {
-        //   navigate('/HomePage');
-        // } else if (response.data.role === "manager") {
-        //   navigate('/ViewCandidate');
-        // }
+
+
+        // Check user role and store user id
+        if (response.data.role == "candidate") {
+          console.log("candidate id at login : ", response.data.candidate_id);
+          props.setCandidateId(response.data.candidate_id);
+        } else if (response.data.role == "manager") {
+          console.log("manager id at login : ", response.data.user_id);
+          props.setUserId(response.data.user_id);
+        }
       } else {
         // Login failed
         setLoginError('Incorrect username or password');
@@ -133,8 +137,8 @@ export default function Login(props) {
         console.log(error.response)
         console.log(error.response.status)
         console.log(error.response.headers)
-        }
-     
+      }
+
       setLoginError('Error logging in');
     }
   };
@@ -195,7 +199,7 @@ export default function Login(props) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            
+
             <Button
               type="submit"
               fullWidth

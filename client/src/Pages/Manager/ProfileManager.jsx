@@ -102,7 +102,7 @@ function ProfileManager(props) {
 
   return (
     <div className="Profile">
-      
+      {console.log("manager profile user _ id :", props.userId)}
       <ToolBars userRole={props.userRole}></ToolBars>
 
 

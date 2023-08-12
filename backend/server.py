@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
 #import magic
+from validate_email import validate_email
+import phonenumbers
 import urllib.request
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func
@@ -48,7 +50,7 @@ except FileNotFoundError:
     with SECRET_FILE_PATH.open("w") as secret_file:
         app.secret_key = secrets.token_hex(32)
         secret_file.write(app.secret_key) 
-app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 CORS(app,supports_credentials=True, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST","DELETE"]}})
 
@@ -61,6 +63,9 @@ ALLOWED_EXTENSIONS = {'pdf','word'}
 
 @app.after_request
 def refresh_expiring_jwts(response):
+
+    
+    print("jwt sesson :" , session)
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
@@ -74,7 +79,9 @@ def refresh_expiring_jwts(response):
         return response
     except (RuntimeError, KeyError):
         # Case where there is not a valid JWT. Just return the original respone
+        
         return response
+    
     
 @app.route('/token', methods=["POST"])
 def create_token():
@@ -97,7 +104,10 @@ def create_token():
         session['user_id']=user_id
         print('user id ',user_id)
         #response = jsonify({'role': role, 'user_id': user_id})
-        access_token = create_access_token(identity=username)
+        print(" seesion at login ",session)
+        
+        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id})
+
         response = {"access_token": access_token,'role': role, 'user_id': user_id}
         return response,200
        # response.set_cookie('login_cookie', 'user_logged_in')
@@ -108,11 +118,14 @@ def create_token():
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
+        print("    seesion at login ",session)
+        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id})
+
         #response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
 
         # Set the login cookie in the response
      #   response.set_cookie('login_cookie', 'user_logged_in')
-        access_token = create_access_token(identity=username)
+        #access_token = create_access_token(identity=username)
         response = {"access_token": access_token,'candidate_id': candidate_id, 'username': username, 'role': role}
         return response,200
         #return response, 200
@@ -313,60 +326,97 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# @app.route('/upload', methods=['POST'])
+# @jwt_required()
+# def upload():
+#     if 'loggedin' not in session or session['role'] != 'candidate':
+#         print("not loggedin")
+#         return jsonify({'message': 'You are not logged in as a candidate.'}), 401
+#     print("UPLOAD")
+#     print(session)
+#     # Extract candidate_id from the session
+    
+#     candidate_id = session.get('candidate_id')
+#     if not candidate_id:
+#         return jsonify({'message': 'Candidate ID not found in the session.'}), 401
+
+#     file = request.files['inputFile']
+    
+#     filename = secure_filename(file.filename)
+
+#     if file and allowed_file(file.filename):
+#         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+#         # Create a new CV entry in the database
+#         new_cv = CV(
+#             cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
+#             candidate_id=candidate_id,
+#             file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
+#             upload_date=datetime.utcnow(),
+#             status='Pending'
+#         )
+#         db.session.add(new_cv)
+#         db.session.commit()
+#         flash('File successfully uploaded ' + file.filename + ' to the database!')
+#         return redirect('/')
+#     else:
+#         flash('Invalid Upload, only word, pdf files are allowed') 
+#         return redirect('/')
+    
+
+
 @app.route('/upload', methods=['POST'])
 @jwt_required()
 def upload():
-    if 'loggedin' not in session or session['role'] != 'candidate':
-        print("not loggedin")
-        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-    print("UPLOAD")
-    print(session)
-    # Extract candidate_id from the session
-    
-    candidate_id = session.get('candidate_id')
-    if not candidate_id:
-        return jsonify({'message': 'Candidate ID not found in the session.'}), 401
+    try:
+        # Get the candidate_id from the JWT token
+        username_data = get_jwt_identity()
+        candidate_id = username_data['candidate_id']
 
-    file = request.files['inputFile']
-    
-    filename = secure_filename(file.filename)
+        file = request.files['inputFile']
+        filename = secure_filename(file.filename)
 
-    if file and allowed_file(file.filename):
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if file and allowed_file(file.filename):
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        # Create a new CV entry in the database
-        new_cv = CV(
-            cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
-            candidate_id=candidate_id,
-            file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
-            upload_date=datetime.utcnow(),
-            status='Pending'
-        )
-        db.session.add(new_cv)
-        db.session.commit()
-        flash('File successfully uploaded ' + file.filename + ' to the database!')
-        return redirect('/')
+            # Create a new CV entry in the database
+            new_cv = CV(
+                cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
+                candidate_id=candidate_id,
+                file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
+                upload_date=datetime.utcnow(),
+                status='Pending'
+            )
+            db.session.add(new_cv)
+            db.session.commit()
+            flash('File successfully uploaded ' + file.filename + ' to the database!')
+            return redirect('/')
+        else:
+            flash('Invalid Upload, only word, pdf files are allowed')
+            return redirect('/')
+
+    except Exception as e:
+        db.session.rollback()
+        print("error:", e)
+        return jsonify({'message': 'Error occurred during file upload: ' + str(e)}), 500
+
+#fomat phone number
+def format_israeli_phone_number(phone_number_str):
+    # Remove all non-digit characters from the phone number
+    digits = ''.join(filter(str.isdigit, phone_number_str))
+
+    # Check if the phone number has at least 9 digits
+    if len(digits) >= 9:
+        # Format the phone number as "XXX-XXX-XXXX"
+        formatted_phone = f"{digits[:3]}-{digits[3:6]}-{digits[6:]}"
+        return formatted_phone
     else:
-        flash('Invalid Upload, only word, pdf files are allowed') 
-        return redirect('/')
-    
+        return None
 
-
-
-
-#adding job application after candidate is loggedin
+#add new application for candidate
 @app.route('/add_candidate', methods=['POST'])
 @jwt_required()
 def add_candidate():
-    if 'loggedin' not in session or session['role'] != 'candidate':
-        print("not loggedin")
-        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-
-    candidate_id = session['candidate_id']
-    print("candidate id :",candidate_id)
-    #username = session['username']
-    #password = session['password']
-    
     data = request.json
     first_name = data['first_name']
     last_name = data['last_name']
@@ -380,12 +430,32 @@ def add_candidate():
     position = data['position']
     certifications = data['certifications']
     
+    # Check for required fields
+    if not (first_name and last_name and location and email and phone_number and gender and education and work_experience and skills and position and certifications):
+        return jsonify({'message': 'All fields are required.'}), 400
+    
+    # Check if email is valid
+    if not validate_email(email):
+        return jsonify({'message': 'Invalid email address.'}), 400
+    
+    # Check if phone number is valid
+   
+    formatted_phone = format_israeli_phone_number(phone_number)
+    if formatted_phone:
+            print("Formatted Israeli phone number:", formatted_phone)
+    else:
+        print("Invalid phone number")
+    
     try:
-        # Check if the candidate_id already exists in the database
-        existing_candidate = Candidate.query.get(candidate_id)
-
+        username_data = get_jwt_identity()
+        username = username_data['username']
+        existing_candidate = Candidate.query.filter_by(username=username).first()
+        if not existing_candidate:
+            return jsonify({'message': 'Candidate not found.'}), 404
+       
         if existing_candidate:
             # Update the existing candidate's information
+            candidate_id = existing_candidate.candidate_id
             existing_candidate.first_name = first_name
             existing_candidate.last_name = last_name
             existing_candidate.location = location
@@ -419,53 +489,14 @@ def add_candidate():
             
             db.session.add(new_candidate)
 
+        
         db.session.commit()
 
         return jsonify({'message': 'Job application added successfully!'})
     except Exception as e:
         db.session.rollback()
-        print("eror : ",e)
-        return jsonify({'message': 'Error occurred during job application.'})
-
-
-
-# @app.route('/login', methods=['POST'])
-# def login():
-#     data = request.json
-#     username = data['username']
-#     password = data['password']
-    
-
-#     # set the candidate_id, username, and password in the session
-#     candidate_id = get_candidate_id_from_database(username, password)
-#     user_id=get_user_id_from_database(username,password)
-#     role = check_login(username, password)
-    
-#     if role == 'manager':
-        
-#         session['loggedin'] = True
-#         session['role'] = 'manager'
-#         session['user_id']=user_id
-#         print('user id ',user_id)
-#         response = jsonify({'role': role, 'user_id': user_id})
-#         response.set_cookie('login_cookie', 'user_logged_in')
-#         return response ,200
-#     elif role == 'candidate':
-#         session['loggedin'] = True
-#         session['role'] = 'candidate'
-#         session['candidate_id'] = candidate_id
-#         session['username'] = username
-#         session['password'] = password
-#         response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
-
-#         # Set the login cookie in the response
-#         response.set_cookie('login_cookie', 'user_logged_in')
-
-#         return response, 200
-#         # Redirect to the home page with candidate data
-#         #return redirect(url_for('home', candidate_id=candidate_id, username=username))
-#     else:
-#         return jsonify({'message': 'Incorrect password or username...'}), 401
+        print("error:", e)
+        return jsonify({'message': 'Error occurred during job application.'}), 500
 
 def get_candidate_id_from_database(username, password):
     try:
@@ -635,53 +666,6 @@ def edit_candidate(candidate_id):
         return jsonify({'message': 'Error occurred during candidate update.'}), 500
 
 
-# @app.route('/view_all_candidates', methods=['GET'])
-# @jwt_required()
-# def view_all_candidates():
-#     role = session.get('role', None)
-#     if role is None:
-#         print("Role not available in session")
-#     else:
-#         print("Role:", role)
-#     try:
-#         # Check if the user is logged in as a manager
-#         print("her___________")
-#         print("role =",session['role'])
-#         if 'loggedin' not in session or session['role'] != 'manager':
-#             print("Not logged in as a manager")
-#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
-
-#         # Get all the candidates from the database
-#         all_candidates = Candidate.query.all()
-
-#         # Create a list to store candidate details
-#         candidate_list = []
-
-#         # Loop through each candidate and add their details to the list
-#         for candidate in all_candidates:
-#             candidate_details = {
-#                 'candidate_id': candidate.candidate_id,
-#                 'first_name': candidate.first_name,
-#                 'last_name': candidate.last_name,
-#                 'email': candidate.email,
-#                 'location' : candidate.location,
-#                 'phone_number' : candidate.phone_number,
-#                 'gender' : candidate.gender,
-#                 'education' : candidate.education,
-#                 'work_experience' : candidate.work_experience,
-#                 'skills' : candidate.skills,
-#                 'position' : candidate.position,
-#                 'certifications' : candidate.certifications
-
-#             }
-#             candidate_list.append(candidate_details)
-
-#         return jsonify({'candidates': candidate_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching candidates.'})
-
 
 @app.route('/view_all_candidates', methods=['GET'])
 @jwt_required()
@@ -814,6 +798,7 @@ def edit_job(job_id):
 @app.route('/view_jobs', methods=['GET'])
 @jwt_required()
 def view_jobs():
+    print("session at the view ",session)
     try:
         # Get all the jobs from the database
         all_jobs = Jobs.query.all()
