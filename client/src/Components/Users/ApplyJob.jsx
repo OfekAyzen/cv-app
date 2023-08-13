@@ -131,6 +131,7 @@ export default function ApplyJob(props) {
                 props.onApplicationSubmit(applicationData);
                 console.log(response.data);
                 setFlashMessage('Job application added successfully!');
+                props.setOpen(false);
                 // Handle success, if needed
             } else {
                 console.log('Error saving application');
@@ -155,7 +156,7 @@ export default function ApplyJob(props) {
 
             <Header></Header>
             {console.log("props apply :", props)}
-            <h1>Join our team! {props.candidate_id}</h1>
+            <h1 style={{textAlign:'center'}}>Join our team!</h1>
             {console.log("candidate id :", props.candidate_id)}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -313,17 +314,16 @@ export default function ApplyJob(props) {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Button onClick={handleClose} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                            Apply---
-                        </Button>
-                        <Button onClick={handleSaveApp} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                            Save
-                        </Button>
-                    
                         <UploadCV  
                                              candidate_id={props.candidate_id}  token={props.token} 
                                              userRole={props.userRole} setToken={props.setToken}
                                                job_id={props.job_id}> </UploadCV>
+                        
+                        <Button onClick={handleSaveApp} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            Apply & Save
+                        </Button>
+                    
+                       
                          {/* Display flash message */}
                         {flashMessage && (
                             <Typography variant="body1" color="error" align="center">

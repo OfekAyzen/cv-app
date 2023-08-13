@@ -370,8 +370,9 @@ def allowed_file(filename):
 def upload():
     try:
         # Get the candidate_id from the JWT token
-        username_data = get_jwt_identity()
-        candidate_id = username_data['candidate_id']
+        #username_data = get_jwt_identity()
+        #candidate_id = username_data['candidate_id']
+        candidate_id = get_jwt_identity()['candidate_id']
 
         file = request.files['inputFile']
         filename = secure_filename(file.filename)
@@ -390,15 +391,17 @@ def upload():
             db.session.add(new_cv)
             db.session.commit()
             flash('File successfully uploaded ' + file.filename + ' to the database!')
-            return redirect('/')
+            #return redirect('/')
+            return jsonify({'message': 'File successfully uploaded.'}), 200
         else:
             flash('Invalid Upload, only word, pdf files are allowed')
-            return redirect('/')
+            #return redirect('/')
+            return jsonify({'message': 'Invalid Upload, only word, pdf files are allowed'}), 400
 
     except Exception as e:
         db.session.rollback()
         print("error:", e)
-        return jsonify({'message': 'Error occurred during file upload: ' + str(e)}), 500
+        return jsonify({'message': 'Error occurred during file upload: '}), 500
 
 #fomat phone number
 def format_israeli_phone_number(phone_number_str):

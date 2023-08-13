@@ -22,7 +22,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
+import logo from '../images/jobs.jpg';
 // const VISIBLE_FIELDS = ['job_title', 'job_description', 'qualifications', 'apply'];
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //     return <Slide direction="up" ref={ref} {...props} />;
@@ -197,17 +197,17 @@ const ViewJobs = (props) => {
                                             // 16:9
                                             pt: '70.25%',
                                         }}
-                                        image="https://source.unsplash.com/random?wallpapers"
+                                        image={logo}
                                     />
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <Typography gutterBottom variant="h4" component="h2">
-                                            {job.job_title} {job.job_id}
+                                        <Typography gutterBottom variant="h4" component="h2" >
+                                            {job.job_title} 
                                         </Typography>
-                                        <Typography variant="h6" component="h4">
-                                            Description: {job.job_description}
+                                        <Typography variant="h6" component="h4" >
+                                            <h6> Description: {job.job_description}</h6>
                                         </Typography>
                                         <Typography  variant="h6" component="h4">
-                                            Qualification: {job.qualifications}
+                                           <h6>Qualification: {job.qualifications}</h6> 
                                         </Typography>
                                     </CardContent>
                                     <CardActions>

@@ -26,3 +26,12 @@
 
     margin: 1% !important;
 }
+.css-1vw6mcs-MuiTypography-root {
+    
+    TEXT-ALIGN: center;
+}
+.css-1t6e9jv-MuiCardActions-root {/*apply button */
+    width: 136px !important;
+
+    margin-left: 30%;
+}
