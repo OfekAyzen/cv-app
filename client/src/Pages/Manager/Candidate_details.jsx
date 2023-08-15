@@ -14,8 +14,6 @@ const Candidate_details = (props) => {
   const handleDownload = () => {
     // Code to generate and download the file
 
- 
-    //
     axios({
       method: 'GET',
       url: 'http://localhost:5000/download/' + props.selectedCandidate.candidate_id,
@@ -46,14 +44,15 @@ const Candidate_details = (props) => {
   return (
     <>
    
-          <h2 className='h2-candidate-details'>Candidate Details</h2>
+          <h2 className='h2-candidate-details'>Candidate Details and cv</h2>
           
-          <h4>{`${props.selectedCandidate.first_name} ${props.selectedCandidate.last_name}`}</h4>
+          <h3>{`${props.selectedCandidate.first_name} ${props.selectedCandidate.last_name}`}</h3>
+         
+          <Card className='inner-card'>
           <p>Name: {`${props.selectedCandidate.first_name} ${props.selectedCandidate.last_name}`}</p>
           <p>Phone:{props.selectedCandidate.phone_number}</p>
           <p>Position: {props.selectedCandidate.position}</p>
           <p>Gender:{props.selectedCandidate.gender}</p>
-          <Card className='inner-card'>
             <p>Location: {props.selectedCandidate.location}</p>
             
             <p>Email: {props.selectedCandidate.email}</p>

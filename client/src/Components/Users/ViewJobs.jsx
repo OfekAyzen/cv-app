@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Header from '../Header';
 import '../../styles/User.css';
-import ApplyJob from './ApplyJob';
+
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -23,6 +23,8 @@ import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../images/jobs.jpg';
+import JobApplication from './JobApplication';
+import UserCard from './UserCard';
 // const VISIBLE_FIELDS = ['job_title', 'job_description', 'qualifications', 'apply'];
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //     return <Slide direction="up" ref={ref} {...props} />;
@@ -43,49 +45,49 @@ function Copyright() {
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
     '& .MuiDialogActions-root': {
-      padding: theme.spacing(1),
+        padding: theme.spacing(1),
     },
-  }));
+}));
 
-  function BootstrapDialogTitle(props) {
+function BootstrapDialogTitle(props) {
     const { children, onClose, ...other } = props;
-  
+
     return (
-      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-        {children}
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
     );
-  }
-  
-  BootstrapDialogTitle.propTypes = {
+}
+
+BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
-  };
+};
 
 
 const ViewJobs = (props) => {
     const [open, setOpen] = React.useState(false);
-
+    const [selectedJobId ,setSelectedJobId]=useState('');
     const [error, setError] = useState(null);
     const [jobsData, setJobsData] = useState('');
-
+    const [job_title,setTitle]=useState('');
     useEffect(() => {
         const fetchJobsData = async () => {
             axios({
@@ -97,21 +99,21 @@ const ViewJobs = (props) => {
             })
                 .then((response) => {
 
-                    console.log("RESPONSE ", response.data)
+                    
                     const res = response.data
                     // setJobsData(response.data)
                     res.access_token && props.setToken(res.access_token)
-                    
-                    
+
+
                     const initialData = response.data.map((job) => ({
                         job_id: job.job_id,
                         job_title: job.job_title,
                         job_description: job.job_description,
                         qualifications: job.qualifications,
                     }));
-                   
+
                     setJobsData(initialData);
-                    
+
                 }).catch((error) => {
 
                     if (error.response) {
@@ -133,26 +135,38 @@ const ViewJobs = (props) => {
         return <div>{error}</div>;
     }
 
-  
-    const handleButtonClick = () => {
-        console.log("clicked");
+    const handleButtonClick = (job_id) => {
+        
+        setSelectedJobId(job_id);
         setOpen(true);
-      };
-    const handleClose=()=>{
+    };
+    const handleClose = () => {
         setOpen(false);
     }
+
+
+
+
     return (
         <>
-           
+
             <CssBaseline />
-            {console.log("view jobs id :",props._id)}
+            {/**user card status */}
+            <Box>
+            <UserCard  onApplicationSubmit={props.onApplicationSubmit}  status={status } candidate_id={props.candidate_id} 
+            token={props.token} 
+            userRole={props.userRole} setToken={props.setToken}
+            username={props.username}
+            ></UserCard>
+            </Box>
+           
             <Box
-                    sx={{
-                        bgcolor: 'background.paper',
-                        pt: 8,
-                        pb: 6,
-                    }}
-                >
+                sx={{
+                    bgcolor: 'background.paper',
+                    pt: 8,
+                    pb: 6,
+                }}
+            >
                 <Container maxWidth="sm">
                     <Typography
                         component="h1"
@@ -166,6 +180,7 @@ const ViewJobs = (props) => {
                     <Typography variant="h5" align="center" color="text.secondary" paragraph>
                         We are hiring!
                     </Typography>
+                    
                     <Stack
                         sx={{ pt: 4 }}
                         direction="row"
@@ -175,21 +190,21 @@ const ViewJobs = (props) => {
                         {/*<Button variant="contained">Apply</Button>*/}
 
                     </Stack>
-                    </Container>
-                </Box>
+                </Container>
+            </Box>
 
             {jobsData.length > 0 ? (
-          
+
                 <Container className='container-user'  >
                     {/* End hero unit */}
-                    <Grid container spacing={1} sx={{alignContent:'center'}}>
-                        {console.log("jobsData type:", typeof jobsData)}
-                        
-                    {jobsData.map((job) => (
-                            <Grid item key={job.job_id}  sm={6} md={4}>
-                                {console.log("jobsData id:",job.job_id)}
+                    <Grid container spacing={1} sx={{ alignContent: 'center' }}>
+                      
+
+                        {jobsData.map((job) => (
+                            <Grid item key={job.job_id} sm={6} md={4}>
+                               
                                 <Card
-                                    sx={{ height: '100%',width:'80%', display: 'flex', flexDirection: 'column' }}
+                                    sx={{ height: '100%', width: '80%', display: 'flex', flexDirection: 'column' }}
                                 >
                                     <CardMedia
                                         component="div"
@@ -204,42 +219,53 @@ const ViewJobs = (props) => {
                                             {job.job_title} 
                                         </Typography>
                                         <Typography variant="h6" component="h4" >
-                                            <h6> Description: {job.job_description}</h6>
+                                             Description: {job.job_description}
                                         </Typography>
-                                        <Typography  variant="h6" component="h4">
-                                           <h6>Qualification: {job.qualifications}</h6> 
+                                        <Typography variant="h6" component="h4">
+                                            Qualification: {job.qualifications}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button variant="outlined" onClick={handleButtonClick}  sx={{color: 'rgb(224, 104, 154)',borderBlockColor:' rgb(224, 104, 154)'}}>Apply</Button>
                                         
+                                    <Button variant="outlined" onClick={() => handleButtonClick(job.job_id)} sx={{ color: 'rgb(224, 104, 154)', borderBlockColor: ' rgb(224, 104, 154)' }}>Apply</Button>
+
                                         <BootstrapDialog
-                                                onClose={handleClose}
-                                                aria-labelledby="customized-dialog-title"
+                                            onClose={handleClose}
+                                            aria-labelledby="customized-dialog-title"
+                                            open={open}
+                                        >
+                                         
+                                            <JobApplication //apply to specific job
+                                            setTitle={setTitle}
+                                            setStatus={props.setStatus}
+                                                onApplicationSubmit={props.onApplicationSubmit}
+                                                candidate_id={props.candidate_id}
+                                                token={props.token}
+                                                userRole={props.userRole}
+                                                setToken={props.setToken}
                                                 open={open}
-                                            >
-                                                {console.log("view props : ",props)}
-                                            <ApplyJob onApplicationSubmit={props.onApplicationSubmit} 
-                                             candidate_id={props.candidate_id}  token={props.token} 
-                                             userRole={props.userRole} setToken={props.setToken}
-                                              open={open} setOpen={setOpen} job_id={job.job_id}></ApplyJob>
+                                                setOpen={setOpen}
+                                                job_id={selectedJobId} 
+                                                username={props.username}
+                                                // Pass the selected job_id
+                                            />
                                         </BootstrapDialog>
-                                        
-                                            
+
+
                                     </CardActions>
                                 </Card>
                             </Grid>
                         ))}
                     </Grid>
                 </Container>
-                       
-                  
-            
+
+
+
 
             ) : (
                 <p>No job data available.</p>
             )}
-          
+
 
             {/* Footer */}
             <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
@@ -252,21 +278,21 @@ const ViewJobs = (props) => {
                     color="text.secondary"
                     component="p"
                 >
-                    
-Contact Us
-Address:
 
-Zvi Burnstein, Yeruham
+                    Contact Us
+                    Address:
 
-Israel
+                    Zvi Burnstein, Yeruham
 
-Email:
+                    Israel
 
-inbar.cohen@tech-19.com
+                    Email:
 
-Phone:
+                    inbar.cohen@tech-19.com
 
-054 - 7886068
+                    Phone:
+
+                    054 - 7886068
                 </Typography>
                 <Copyright ></Copyright>
             </Box>

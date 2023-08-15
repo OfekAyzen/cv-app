@@ -1,5 +1,7 @@
 
 import axios from "axios";
+import Button from '@mui/material/Button';
+
 
 function Logout(props) {
 
@@ -19,11 +21,13 @@ function Logout(props) {
     })}
 
     return(
-        <header className="App-header">
+        <header className="App-header"  style={{
+          backgroundColor:'black'
+        }}>
             
-            <button onClick={logMeOut}> 
+            <Button  variant="outlined" onClick={logMeOut}> 
                 Logout
-            </button>
+            </Button>
         </header>
     )
 }

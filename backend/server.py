@@ -65,7 +65,7 @@ ALLOWED_EXTENSIONS = {'pdf','word'}
 def refresh_expiring_jwts(response):
 
     
-    print("jwt sesson :" , session)
+   
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
@@ -96,17 +96,15 @@ def create_token():
     user_id=get_user_id_from_database(username,password)
     role = check_login(username, password)
     
-    if role == 'manager':
-        
+    if role == 'manager':  
         session['loggedin'] = True
         session['role'] = 'manager'
-        print("Session keys:", session.keys())
         session['user_id']=user_id
-        print('user id ',user_id)
+       
         #response = jsonify({'role': role, 'user_id': user_id})
-        print(" seesion at login ",session)
+       
         
-        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id})
+        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id,'role':role})
 
         response = {"access_token": access_token,'role': role, 'user_id': user_id}
         return response,200
@@ -118,8 +116,8 @@ def create_token():
         session['candidate_id'] = candidate_id
         session['username'] = username
         session['password'] = password
-        print("    seesion at login ",session)
-        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id})
+        
+        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id,'role':role})
 
         #response = jsonify({'candidate_id': candidate_id, 'username': username, 'role': role})
 
@@ -326,45 +324,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# @app.route('/upload', methods=['POST'])
-# @jwt_required()
-# def upload():
-#     if 'loggedin' not in session or session['role'] != 'candidate':
-#         print("not loggedin")
-#         return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-#     print("UPLOAD")
-#     print(session)
-#     # Extract candidate_id from the session
-    
-#     candidate_id = session.get('candidate_id')
-#     if not candidate_id:
-#         return jsonify({'message': 'Candidate ID not found in the session.'}), 401
-
-#     file = request.files['inputFile']
-    
-#     filename = secure_filename(file.filename)
-
-#     if file and allowed_file(file.filename):
-#         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-#         # Create a new CV entry in the database
-#         new_cv = CV(
-#             cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
-#             candidate_id=candidate_id,
-#             file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
-#             upload_date=datetime.utcnow(),
-#             status='Pending'
-#         )
-#         db.session.add(new_cv)
-#         db.session.commit()
-#         flash('File successfully uploaded ' + file.filename + ' to the database!')
-#         return redirect('/')
-#     else:
-#         flash('Invalid Upload, only word, pdf files are allowed') 
-#         return redirect('/')
-    
-
-
+#candidate upload cv 
 @app.route('/upload', methods=['POST'])
 @jwt_required()
 def upload():
@@ -566,12 +526,6 @@ def delete_candidate(candidate_id):
     else:
         return jsonify({'message': 'You are not authorized to perform this action.'})
     
-
-# @app.route('/logout', methods=['POST'])
-# def logout():
-#     # Clear the session data
-#     session.clear()
-#     return jsonify({'message': 'Logged out successfully'})
 
 # #filter by education, work experience, skills, gender and location.
 # @app.route('/filter_candidates', methods=['POST'])
@@ -825,22 +779,21 @@ def view_jobs():
         print("Error:", e)
         return jsonify({'message': 'Error occurred while fetching jobs.'})
 
+
+
 @app.route('/apply/<int:job_id>', methods=['POST'])
 @jwt_required()
 def apply(job_id):
-    if 'loggedin' not in session or session['role'] != 'candidate':
-        print("not logged in")
-        return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-
-    candidate_id = session.get('candidate_id')
-    if not candidate_id:
-        return jsonify({'message': 'Candidate ID not found in the session.'}), 401
-
     try:
         # Check if the job_id exists in the Jobs table
         job = Jobs.query.get(job_id)
         if not job:
             return jsonify({'message': 'Job not found in the database.'}), 404
+
+        # Get the candidate_id from the JWT token
+        candidate_id = get_jwt_identity()['candidate_id']
+        if not candidate_id:
+            return jsonify({'message': 'Candidate ID not found in the JWT token.'}), 401
 
         # Check if the candidate already applied for the job
         existing_application = Application.query.filter_by(job_id=job_id, candidate_id=candidate_id).first()
@@ -874,16 +827,22 @@ def apply(job_id):
         db.session.rollback()
         print("error:", e)
         return jsonify({'message': 'Error occurred during application submission.'}), 500
-    
-#view apllyed jobs 
+
+
+
+
 @app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
 @jwt_required()
 def view_applyed(candidate_id):
     print("View applied positions")
     
     try:
-        # Check if the candidate_id is found in the session
-        if 'loggedin' not in session or session['role'] != 'candidate':
+        # Get the current user's identity (username) from the JWT token
+        current_user = get_jwt_identity()
+       
+        # Check if the user's role is 'candidate'
+        if current_user['role'] != 'candidate':
+
             print("Not logged in as a candidate")
             return jsonify({'message': 'You are not logged in as a candidate.'}), 401
 
@@ -927,6 +886,7 @@ def view_applyed(candidate_id):
     except Exception as e:
         print("Error:", e)
         return jsonify({'message': 'Error occurred while fetching applications.'})
+
 
 @app.route('/view_all_applications', methods=['GET'])
 @jwt_required()

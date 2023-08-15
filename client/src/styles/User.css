@@ -35,3 +35,15 @@
 
     margin-left: 30%;
 }
+.UserCard{
+   
+    text-align: center;
+}
+.user-card{
+
+    margin-top: 2%;
+}
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+    background-color: #fff;
+    color: rgb(139 0 57 / 87%) !important;
+}

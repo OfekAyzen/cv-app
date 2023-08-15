@@ -4,11 +4,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from '../Header';
 import logo2 from '../images/tapet2.jpg';
 import ViewJobs from './ViewJobs';
-
+import { Link } from 'react-router-dom';
+import UserCard from './UserCard';
+import { useState, useEffect } from 'react';
 
 const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
+  const [status,setStatus]=useState('');
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       
@@ -20,13 +24,21 @@ export default function ProfileUser(props) {
       </Box>
       {console.log("propfile id ",props.candidate_id)}
       {console.log("propfile user : ",props)}
+      {console.log("username profile : ",props.username)}
       {
-        props.userRole==='candidate' ? (<ViewJobs  onApplicationSubmit={props.onApplicationSubmit} 
+        props.userRole==='candidate' ? (
+        <>
+        
+       
+        <ViewJobs setStatus={setStatus} onApplicationSubmit={props.onApplicationSubmit} 
           candidate_id={props.candidate_id} 
           token={props.token} 
-          userRole={props.userRole} setToken={props.setToken}  ></ViewJobs>):
+          userRole={props.userRole} setToken={props.setToken} 
+          username={props.username} ></ViewJobs>
+          
+          </>):
         (
-          <h2>please loddein </h2>
+          <Link href="/Login">Please login </Link>
         )
       }
       

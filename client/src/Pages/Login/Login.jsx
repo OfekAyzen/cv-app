@@ -112,14 +112,14 @@ export default function Login(props) {
         username: username,
         password: password,
       });
-
+     
       if (response.status === 200) {
         // Login successful
 
         props.onLogIn(response.data.role);
         props.setToken(response.data.access_token)
-
-
+        props.setUserName(response.data.username);
+        console.log("200 response : ",response);
         // Check user role and store user id
         if (response.data.role == "candidate") {
           console.log("candidate id at login : ", response.data.candidate_id);

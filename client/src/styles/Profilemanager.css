@@ -46,19 +46,20 @@
     
 }
 .candidate-details {
-    position: fixed;
-    top: 0%; /* Adjust the top position as needed to position the pop-up vertically */
-    bottom: 0%;
-    right: 1px; /* Adjust the right position as needed to position the pop-up horizontally */
-    width: 300px; /* Set a desired width for the pop-up */
-    height: '100%';
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    /*text-align: center;*/
-    padding: 10px;
-    z-index: 9999; /* Ensure the pop-up is on top of other elements */
-  }
+  position: fixed;
+  top: 0%;
+  bottom: 0%;
+  right: 1px;
+  width: 35%;
+  height: '100%';
+  background-color: #f5f5f5;
+  box-shadow: -20px 16px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  /* text-align: center; */
+  padding: 48px;
+  z-index: 9999;
+  display: fixed;
+}
 .h2-candidate-details{
     color: rgb(129, 37, 64);
     text-align: center;
@@ -173,4 +174,48 @@
  margin: 0 0 0 15px;
 
  height: 432px;
+}
+
+
+.FilterCard{
+  background-color: #b99baa !important;
+  margin-top: 15%;
+  height: 92px !important;
+  text-align: center;
+    /* display: flex;
+    justify-content: center !important;
+    align-items: center !important; */
+}
+
+
+.sorting-options{
+  background-color: #b99baa;
+}
+.profile-div{
+  background-color: #ebe6e9;
+    /* margin-top: 15%; */
+    /* height: 227px !important; */
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-content: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.profile-card{
+  background-color: #ffffff;
+    width: 90%;
+    margin-top: 10%;
+    height: 120px;
+}
+.candidates-list{
+  background-color: #ffffff;
+    height: auto;
+    width: 90%;
+    margin-top: 10px;
+}
+.tr-candidate{
+  background-color: #ffffff;
 }
