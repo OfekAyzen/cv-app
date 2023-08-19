@@ -88,7 +88,8 @@
 
 //
 import React, { useState,useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter , Route, Routes, Navigate, Outlet, Link } from 'react-router-dom';
+
 import Login from '../src/Pages/Login/Login';
 
 import Logout from '../src/Pages/Login/Logout'
@@ -97,6 +98,13 @@ import ProfileManager from "./Pages/Manager/ProfileManager";
 import ProfileUser from './Components/Users/ProfileUser';
 
 import JobApplication from './Components/Users/JobApplication';
+import Position from './Pages/Manager/Position';
+import NotFound from './NotFound';
+import SignUp from '../src/Components/SignUp/SignUp';
+
+
+
+
 
 function App() {
   const { token, removeToken, setToken } = useToken();
@@ -115,15 +123,15 @@ function App() {
   useEffect(() => {
     console.log("user roles:", userRole);
     setUserRole(userRole);
-    
+    setUserName(username);
     // Check userRole and set userId based on role
     if (userRole === "candidate") {
       // Set userId for candidate
-      console.log("user id candidate :", candidateId);
+     
       setCandidateId(candidateId); // Replace with actual candidate ID
     } else if (userRole === "manager") {
       // Set userId for manager
-      console.log("user id manager :", userId);
+   
       setUserId(userId); // Replace with actual manager ID
     }
   }, [userRole]);
@@ -132,8 +140,9 @@ function App() {
   
  
   const handleLogin = (role) => {
-    console.log("user role:", role);
+ 
     setUserRole(role);
+    setUserName(username);
     if (userRole === "candidate") {
       // Set userId for candidate
       console.log("user id candidate :", candidateId);
@@ -144,39 +153,68 @@ function App() {
       setUserId(userId); // Replace with actual manager ID
     }
     //setUserId(userId);
-    setUserName(username);
+    
   };
 
   
   return (
+    <>
     <BrowserRouter>
-    {console.log("username : ",username, " id ",candidateId , " ; ", userId)}
-      <div className="App">
-        <Logout token={removeToken} />
-        
-        {!token && token !== "" && token !== undefined ? (
-          <Login setUserName={setUserName} setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />
+    <Logout token={removeToken} />
+    
+    <div className="App">
+      <Routes>
+        {!token && token !== '' && token !== undefined ? (
+          <Route path="/Login" element={<Login setUserName={setUserName} setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
         ) : (
-          <Routes>
-            <Route path="/" element={<Login setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
-            {userRole === "manager" ? (
-              <Route path="/Profile" element={<ProfileManager username={username} userId={userId} token={token} userRole={userRole} setToken={setToken} />} />
-            ) : (
-              <Route path="*" element={<Login setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
-            )}
+          <>
+            <Route path="/" element={<Navigate to="/Login" replace />} />
+            <Route path="/Profile" element={<ProfileManager username={username} userId={userId} token={token} userRole={userRole} setToken={setToken} />} />
             {/* Other routes */}
-            <Route path="/UserProfile" element={<ProfileUser username={username}  onApplicationSubmit={handleJobApplication}
-            candidate_id={candidateId}  token={token} userRole={userRole} setToken={setToken}
-             />} />
-            <Route path="/Apply" element={<JobApplication  onApplicationSubmit={handleJobApplication}
-             candidate_id={candidateId}  token={token} userRole={userRole} setToken={setToken} />} />
+            <Route path="/UserProfile" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
+            <Route path="/Apply" element={<JobApplication onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
+            <Route path="/Position" element={<Position token={token} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
             
-          </Routes>
+          </>
         )}
-      </div>
-    </BrowserRouter>
+        <Route path="/SignUp" element={<SignUp></SignUp>} />
+        
+      </Routes>
+    </div>
+  </BrowserRouter>
+  
+  </>
+
   );
 }
 
 export default App;
 
+
+
+// <BrowserRouter>
+// {console.log("username : ",username, " id ",candidateId , " ; ", userId)}
+//   <div className="App">
+//     <Logout token={removeToken} />
+    
+//     {!token && token !== "" && token !== undefined ? (
+//       <Login setUserName={setUserName} setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />
+//     ) : (
+//       <Routes>
+//         <Route path="/" element={<Login setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
+//         {userRole === "manager" ? (
+//           <Route path="/Profile" element={<ProfileManager username={username} userId={userId} token={token} userRole={userRole} setToken={setToken} />} />
+//         ) : (
+//           <Route path="*" element={<Login setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
+//         )}
+//         {/* Other routes */}
+//         <Route path="/UserProfile" element={<ProfileUser username={username}  onApplicationSubmit={handleJobApplication}
+//         candidate_id={candidateId}  token={token} userRole={userRole} setToken={setToken}
+//          />} />
+//         <Route path="/Apply" element={<JobApplication  onApplicationSubmit={handleJobApplication}
+//          candidate_id={candidateId}  token={token} userRole={userRole} setToken={setToken} />} />
+//         <Route path="/Position" element={<Position setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
+//       </Routes>
+//     )}
+//   </div>
+// </BrowserRouter>

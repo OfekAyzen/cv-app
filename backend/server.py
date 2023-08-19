@@ -100,13 +100,13 @@ def create_token():
         session['loggedin'] = True
         session['role'] = 'manager'
         session['user_id']=user_id
-       
+        session['username'] = username
         #response = jsonify({'role': role, 'user_id': user_id})
-       
+        print("username : ",username , " role : ",role ,"id : ",user_id)
         
-        access_token = create_access_token(identity={'username': username, 'candidate_id': candidate_id,'role':role})
+        access_token = create_access_token(identity={'username': username, 'candidate_id': user_id,'role':role})
 
-        response = {"access_token": access_token,'role': role, 'user_id': user_id}
+        response = {"access_token": access_token,'role': role,'username': username, 'user_id': user_id}
         return response,200
        # response.set_cookie('login_cookie', 'user_logged_in')
       
@@ -624,35 +624,244 @@ def edit_candidate(candidate_id):
 
 
 
+# @app.route('/view_all_candidates', methods=['GET'])
+# @jwt_required()
+# def view_all_candidates():
+    
+#     try:
+#         # Check if the user is logged in as a manager
+       
+#         # Get all the candidates from the database
+#         all_candidates = Candidate.query.all()
+
+#         # Create a list to store candidate details
+#         candidate_list = []
+
+#         # Loop through each candidate and add their details to the list
+#         for candidate in all_candidates:
+#             candidate_details = {
+#                 'candidate_id': candidate.candidate_id,
+#                 'first_name': candidate.first_name,
+#                 'last_name': candidate.last_name,
+#                 'email': candidate.email,
+#                 'location': candidate.location,
+#                 'phone_number': candidate.phone_number,
+#                 'gender': candidate.gender,
+#                 'education': candidate.education,
+#                 'work_experience': candidate.work_experience,
+#                 'skills': candidate.skills,
+#                 'position': candidate.position,
+#                 'certifications': candidate.certifications
+#             }
+#             candidate_list.append(candidate_details)
+
+#         return jsonify({'candidates': candidate_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
+# @app.route('/view_all_candidates', methods=['GET'])
+# @jwt_required()
+# def view_all_candidates():
+#     try:
+#         # Get the current user's identity (username) from the JWT token
+#         current_user = get_jwt_identity()
+
+#         # Check if the user's role is 'manager'
+#         if current_user['role'] != 'manager':
+#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+#         # Get all the candidates from the database
+#         all_candidates = Candidate.query.all()
+
+#         # Create a list to store candidate details
+#         candidate_list = []
+
+#         # Loop through each candidate and add its details to the list
+#         existing_application = Application.query.filter_by(candidate_id=candidate.candidate_id).first()
+#         for candidate in all_candidates:
+#             candidate_details = {
+#                 'candidate_id': candidate.candidate_id,
+#                 'first_name': candidate.first_name,
+#                 'last_name': candidate.last_name,
+#                 'gender': candidate.gender,
+#                 'education': candidate.education,
+#                 'work_experience': candidate.work_experience,
+#                 'skills': candidate.skills,
+#                 'location': candidate.location,
+#                 'email':candidate.email,
+#                 'phone_number':candidate.phone_number,
+#                 'position':candidate.position,
+#                 'certifications':candidate.certifications,
+#                 'applied': True if existing_application else False,  # Set applied status
+#                 'status': existing_application.status if existing_application else None,  # Set status if applied
+#             }
+
+#             # Check if the candidate has already applied
+           
+#             candidate_list.append(candidate_details)
+
+#         return jsonify({'candidates': candidate_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
+# @app.route('/view_all_candidates', methods=['GET'])
+# @jwt_required()
+# def view_all_candidates():
+#     try:
+#         # Get the current user's identity (username) from the JWT token
+#         current_user = get_jwt_identity()
+
+#         # Check if the user's role is 'manager'
+#         if current_user['role'] != 'manager':
+#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+#         # Get all the candidates from the database
+#         all_candidates = Candidate.query.all()
+
+#         # Create a list to store candidate details
+#         candidate_list = []
+
+#         # Loop through each candidate and add its details to the list
+#         for candidate in all_candidates:
+#             # Check if the candidate has already applied
+#             existing_application = Application.query.filter_by(candidate_id=candidate.candidate_id).first()
+            
+#             candidate_details = {
+#                 'candidate_id': candidate.candidate_id,
+#                 'first_name': candidate.first_name,
+#                 'last_name': candidate.last_name,
+#                 'gender': candidate.gender,
+#                 'education': candidate.education,
+#                 'work_experience': candidate.work_experience,
+#                 'skills': candidate.skills,
+#                 'location': candidate.location,
+#                 'email': candidate.email,
+#                 'phone_number': candidate.phone_number,
+#                 'position': candidate.position,
+#                 'certifications': candidate.certifications,
+#                 'applied': True if existing_application else False,  # Set applied status
+#                 'status': existing_application.status if existing_application else None,  # Set status if applied
+#             }
+            
+#             candidate_list.append(candidate_details)
+
+#         return jsonify({'candidates': candidate_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
+# @app.route('/view_all_candidates', methods=['GET'])
+# @jwt_required()
+# def view_all_candidates():
+#     try:
+#         # Get the current user's identity (username) from the JWT token
+#         current_user = get_jwt_identity()
+
+#         # Check if the user's role is 'manager'
+#         if current_user['role'] != 'manager':
+#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+#         # Get all the candidates from the database
+#         all_candidates = Candidate.query.all()
+
+#         # Create a list to store candidate details
+#         candidate_list = []
+
+#         # Loop through each candidate and add its details to the list
+#         for candidate in all_candidates:
+#             # Fetch the applied job applications for the candidate
+#             applied_jobs = Application.query.filter_by(candidate_id=candidate.candidate_id).all()
+
+#             # Create a list to store applied job details
+#             applied_jobs_list = []
+#             for application in applied_jobs:
+#                 applied_job_details = {
+#                     'job_id': application.job_id,
+#                     'status': application.status,
+#                     'application':application.application_id,
+#                 }
+#                 applied_jobs_list.append(applied_job_details)
+            
+#             candidate_details = {
+#                 'candidate_id': candidate.candidate_id,
+#                 'first_name': candidate.first_name,
+#                 'last_name': candidate.last_name,
+#                 'gender': candidate.gender,
+#                 'education': candidate.education,
+#                 'work_experience': candidate.work_experience,
+#                 'skills': candidate.skills,
+#                 'location': candidate.location,
+#                 'email': candidate.email,
+#                 'phone_number': candidate.phone_number,
+#                 'position': candidate.position,
+#                 'certifications': candidate.certifications,
+#                 'applied': True if applied_jobs else False,  # Set applied status
+#                 'appliedJobs': applied_jobs_list,  # Include list of applied job applications
+#             }
+            
+#             candidate_list.append(candidate_details)
+
+#         return jsonify({'candidates': candidate_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
 @app.route('/view_all_candidates', methods=['GET'])
 @jwt_required()
 def view_all_candidates():
-    
     try:
-        # Check if the user is logged in as a manager
-       
+        # Get the current user's identity (username) from the JWT token
+        current_user = get_jwt_identity()
+
+        # Check if the user's role is 'manager'
+        if current_user['role'] != 'manager':
+            return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
         # Get all the candidates from the database
         all_candidates = Candidate.query.all()
 
         # Create a list to store candidate details
         candidate_list = []
 
-        # Loop through each candidate and add their details to the list
+        # Loop through each candidate and add its details to the list
         for candidate in all_candidates:
+            # Fetch the applied job applications for the candidate
+            applied_jobs = Application.query.filter_by(candidate_id=candidate.candidate_id).all()
+
+            # Create a list to store applied job details
+            applied_jobs_list = []
+            for application in applied_jobs:
+                # Fetch job details using job_id
+                job = Jobs.query.filter_by(job_id=application.job_id).first()
+                if job:
+                    applied_job_details = {
+                        'job_id': application.job_id,
+                        'job_title': job.job_title,  # Include job title
+                        'status': application.status,
+                        'application': application.application_id,
+                        'application_date':application.application_date,
+                    }
+                    applied_jobs_list.append(applied_job_details)
+
             candidate_details = {
                 'candidate_id': candidate.candidate_id,
                 'first_name': candidate.first_name,
                 'last_name': candidate.last_name,
-                'email': candidate.email,
-                'location': candidate.location,
-                'phone_number': candidate.phone_number,
                 'gender': candidate.gender,
                 'education': candidate.education,
                 'work_experience': candidate.work_experience,
                 'skills': candidate.skills,
+                'location': candidate.location,
+                'email': candidate.email,
+                'phone_number': candidate.phone_number,
                 'position': candidate.position,
-                'certifications': candidate.certifications
+                'certifications': candidate.certifications,
+                'applied': True if applied_jobs else False,  # Set applied status
+                'appliedJobs': applied_jobs_list,  # Include list of applied job applications
             }
+
             candidate_list.append(candidate_details)
 
         return jsonify({'candidates': candidate_list})
@@ -660,6 +869,9 @@ def view_all_candidates():
     except Exception as e:
         print("Error:", e)
         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
+
+
+
 
 
 #adding job application after candidate is loggedin
@@ -785,6 +997,7 @@ def view_jobs():
 @jwt_required()
 def apply(job_id):
     try:
+      
         # Check if the job_id exists in the Jobs table
         job = Jobs.query.get(job_id)
         if not job:
@@ -805,18 +1018,20 @@ def apply(job_id):
         cv_id = cv_entry.cv_id
 
         if existing_application:
-            # If the candidate already applied, update the application
+        # If the candidate already applied, update the application
             existing_application.cv_id = cv_id
+            existing_application.status = 'Pending'  # Update the status
         else:
             # If the candidate is applying for the first time, create a new application
             new_application = Application(
-                application_id=generate_application_id(),
-                job_id=job_id,
-                candidate_id=candidate_id,
-                cv_id=cv_id,
-                application_date=datetime.utcnow(),
-                status='Pending'
-            )
+            application_id=generate_application_id(),
+            job_id=job_id,
+            candidate_id=candidate_id,
+            cv_id=cv_id,
+            application_date=datetime.utcnow(),
+            status='Pending'
+        )
+   
             db.session.add(new_application)
 
         db.session.commit()
@@ -827,10 +1042,87 @@ def apply(job_id):
         db.session.rollback()
         print("error:", e)
         return jsonify({'message': 'Error occurred during application submission.'}), 500
+#manager can see the applied status of each job that candidate are applican to it
+@app.route('/candidate_applied_status', methods=['GET'])
+@jwt_required()
+def candidate_applied_status():
+    try:
+        # Get the candidate_id from the JWT token
+        candidate_id = get_jwt_identity()['candidate_id']
+        if not candidate_id:
+            return jsonify({'message': 'Candidate ID not found in the JWT token.'}), 401
+
+        # Query the database for the applied status of the candidate's applications
+        applied_status = {}
+        applications = Application.query.filter_by(candidate_id=candidate_id).all()
+        for application in applications:
+            applied_status[application.job_id] = {
+                'status': application.status,
+                'job_title': application.job.title
+            }
+
+        return jsonify({'applied_status': applied_status})
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'message': 'Error occurred while fetching applied status.'}), 500
 
 
+# @app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
+# @jwt_required()
+# def view_applyed(candidate_id):
+#     print("View applied positions")
+    
+#     try:
+#         # Get the current user's identity (username) from the JWT token
+#         current_user = get_jwt_identity()
+       
+#         # Check if the user's role is 'candidate'
+#         if current_user['role'] != 'candidate':
 
+#             print("Not logged in as a candidate")
+#             return jsonify({'message': 'You are not logged in as a candidate.'}), 401
 
+#         # Check if the candidate_id exists in the database
+#         candidate = Candidate.query.filter_by(candidate_id=candidate_id).first()
+#         if not candidate:
+#             print("Candidate not found")
+#             return jsonify({'message': 'Candidate not found.'}), 404
+        
+#         candidate_applications = Application.query.filter_by(candidate_id=candidate_id).all()
+#         application_list = []
+
+#         # Loop application 
+#         for application in candidate_applications:
+#             application_details = {
+#                 'job_id': application.job_id,
+#                 'status': application.status,
+#                 'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
+#             }
+#             application_list.append(application_details)
+
+#         # Get all the jobs corresponding to the applications
+#         job_ids = [app.job_id for app in candidate_applications]
+#         all_jobs = Jobs.query.filter(Jobs.job_id.in_(job_ids)).all()
+
+#         # Create a list to store job details
+#         jobs_list = []
+
+#         # Loop through each job and add its details to the list
+#         for job in all_jobs:
+#             job_details = {
+#                 'job_id': job.job_id,
+#                 'job_title': job.job_title,
+#                 'job_description': job.job_description,
+#                 'qualifications': job.qualifications
+#             }
+#             jobs_list.append(job_details)
+
+#         return jsonify({'applications': application_list, 'jobs': jobs_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching applications.'})
 @app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
 @jwt_required()
 def view_applyed(candidate_id):
@@ -838,14 +1130,9 @@ def view_applyed(candidate_id):
     
     try:
         # Get the current user's identity (username) from the JWT token
-        current_user = get_jwt_identity()
        
-        # Check if the user's role is 'candidate'
-        if current_user['role'] != 'candidate':
-
-            print("Not logged in as a candidate")
-            return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-
+       
+       
         # Check if the candidate_id exists in the database
         candidate = Candidate.query.filter_by(candidate_id=candidate_id).first()
         if not candidate:
@@ -855,10 +1142,11 @@ def view_applyed(candidate_id):
         candidate_applications = Application.query.filter_by(candidate_id=candidate_id).all()
         application_list = []
 
-        # Loop application 
+        # Loop through each application and add its details to the list
         for application in candidate_applications:
             application_details = {
                 'job_id': application.job_id,
+                'application_id': application.application_id,
                 'status': application.status,
                 'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
             }
@@ -887,14 +1175,98 @@ def view_applyed(candidate_id):
         print("Error:", e)
         return jsonify({'message': 'Error occurred while fetching applications.'})
 
+# @app.route('/update_status', methods=['POST'])
+# @jwt_required()
+# def update_status():
+#     try:
+#         data = request.get_json()
+#         application_id = data.get('application_id')
+#         new_status = data.get('status')
+
+#         if application_id is None or new_status is None:
+#             return jsonify({'message': 'Invalid data.'}), 400
+
+#         application = Application.query.get(application_id)
+#         if not application:
+#             return jsonify({'message': 'Application not found.'}), 404
+
+#         application.status = new_status
+#         db.session.commit()
+
+#         return jsonify({'message': 'Status updated successfully!'})
+
+#     except Exception as e:
+#         db.session.rollback()
+#         print("Error:", e)
+#         return jsonify({'message': 'Error updating status.'}), 500
+@app.route('/update_status', methods=['POST'])
+@jwt_required()
+def update_status():
+    try:
+        data = request.get_json()
+        job_id = data.get('job_id')  # Change the field name to 'job_id'
+        new_status = data.get('status')
+
+        print("Received job_id:", job_id)  # Update the log message for clarity
+
+        if job_id is None or new_status is None:
+            return jsonify({'message': 'Invalid data.'}), 400
+
+        job_application = Application.query.filter_by(job_id=job_id).first()
+        if not job_application:
+            return jsonify({'message': 'Job application not found.'}), 404
+
+        job_application.status = new_status
+        db.session.commit()
+
+        return jsonify({'message': 'Status updated successfully!'})
+
+    except Exception as e:
+        db.session.rollback()
+        print("Error:", e)
+        return jsonify({'message': 'Error updating status.'}), 500
+# @app.route('/view_all_applications', methods=['GET'])
+# @jwt_required()
+# def view_all_applications():
+#     try:
+#         # Check if the user is logged in as a manager
+#         if 'loggedin' not in session or session['role'] != 'manager':
+#             print("Not logged in as a manager")
+#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+#         # Get all the applications from the database
+#         all_applications = Application.query.all()
+
+#         # Create a list to store application details
+#         application_list = []
+
+#         # Loop through each application and add its details to the list
+#         for application in all_applications:
+#             application_details = {
+#                 'application_id': application.application_id,
+#                 'job_id': application.job_id,
+#                 'candidate_id': application.candidate_id,
+#                 'cv_id': application.cv_id,
+#                 'status': application.status,
+#                 'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
+#             }
+#             application_list.append(application_details)
+
+#         return jsonify({'applications': application_list})
+
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'message': 'Error occurred while fetching applications.'})
 
 @app.route('/view_all_applications', methods=['GET'])
 @jwt_required()
 def view_all_applications():
     try:
-        # Check if the user is logged in as a manager
-        if 'loggedin' not in session or session['role'] != 'manager':
-            print("Not logged in as a manager")
+        # Get the current user's identity (username) from the JWT token
+        current_user = get_jwt_identity()
+
+        # Check if the user's role is 'manager'
+        if current_user['role'] != 'manager':
             return jsonify({'message': 'You are not logged in as a manager.'}), 401
 
         # Get all the applications from the database
@@ -919,9 +1291,7 @@ def view_all_applications():
 
     except Exception as e:
         print("Error:", e)
-        return jsonify({'message': 'Error occurred while fetching applications.'})
-
-
+        return jsonify({'message': 'Error occurred while fetching applications.'}), 500
 
 
 #download cv file for manager

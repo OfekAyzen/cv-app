@@ -37,7 +37,7 @@ class Candidate(db.Model):
     work_experience = db.Column(db.String(100))
     skills = db.Column(db.String(200))
     position = db.Column(db.String(100))
-    certifications = db.Column(db.String(200))
+    certifications = db.Column(db.String(1000))
     username = db.Column(db.String(40))
     password = db.Column(db.String(40))
     role = db.Column(db.String(20))

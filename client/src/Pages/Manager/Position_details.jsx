@@ -16,7 +16,7 @@ import {
   GridToolbarExport,
 
 } from '@mui/x-data-grid';
-import Candidate_details from './Candidate_details';
+import Candidate_details from './DownloadCV';
 
 const VISIBLE_FIELDS = ['job_title','job_description','qualifications'
 

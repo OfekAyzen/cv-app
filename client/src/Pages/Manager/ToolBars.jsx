@@ -44,6 +44,7 @@
 // };
 // export default Toolbar;
 import * as React from 'react';
+import axios from "axios";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -61,11 +62,15 @@ import logo from '../../Components/images/logo_tech19.png';
 import "../../styles/ToolBar.css";
 const pages = ['Candidate', 'Position'];
 import { Outlet, Link } from "react-router-dom";
-const settings = [ 'Logout'];
+import { useNavigate } from 'react-router-dom';
 
-function ToolBars({userRole}) {
+
+const settings = [ 'Logout' ,'Jobs'];
+
+function ToolBars(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -78,8 +83,12 @@ function ToolBars({userRole}) {
     setAnchorElNav(null);
   };
 
+  //logout 
   const handleCloseUserMenu = () => {
+
+    
     setAnchorElUser(null);
+    
   };
 
   return (
@@ -137,7 +146,7 @@ function ToolBars({userRole}) {
             <MenuItem>
                 <ul>
                     <li>
-                    <Link state={userRole} underline="hover" to="/Position">Position</Link>
+                    <Link token={props.token} underline="hover" to="/Position">Position</Link>
                     </li>
                    
                 </ul>

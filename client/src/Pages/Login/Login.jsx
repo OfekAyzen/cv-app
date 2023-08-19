@@ -70,7 +70,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -82,7 +82,8 @@ import "../../styles/LoginPage.css";
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
-
+import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink
+import {  Link } from '@mui/material';
 const defaultTheme = createTheme();
 
 export default function Login(props) {
@@ -118,15 +119,18 @@ export default function Login(props) {
 
         props.onLogIn(response.data.role);
         props.setToken(response.data.access_token)
+        console.log("user name at login : ",response.data.username)
         props.setUserName(response.data.username);
         console.log("200 response : ",response);
         // Check user role and store user id
         if (response.data.role == "candidate") {
           console.log("candidate id at login : ", response.data.candidate_id);
           props.setCandidateId(response.data.candidate_id);
+          navigate("/UserProfile");
         } else if (response.data.role == "manager") {
-          console.log("manager id at login : ", response.data.user_id);
+          console.log("manager id at login : ", response.data.user_id)
           props.setUserId(response.data.user_id);
+          navigate("/Profile" );
         }
       } else {
         // Login failed
@@ -216,10 +220,10 @@ export default function Login(props) {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/SignUp" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+      <Link component={RouterLink} to="/SignUp" variant="body2">
+        {"Don't have an account? Sign Up"}
+      </Link>
+    </Grid>
             </Grid>
           </Box>
         </Box>

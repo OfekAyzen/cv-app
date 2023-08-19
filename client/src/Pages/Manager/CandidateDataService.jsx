@@ -3,6 +3,27 @@ import axios from "axios";
 const API_URL = "http://localhost:5000";
 
 class CandidateDataService {
+
+  getAllPositions(token){
+   
+       
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      return axios.get(`${API_URL}/view_jobs`, { headers });
+  }
+
+
+
+  getCandidateAppliedStatus(token) {
+       
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        return axios.get(`${API_URL}/candidate_applied_status`, { headers });
+  }
+
+
   getAllCandidates(token) {
     return axios.get(`${API_URL}/view_all_candidates`, {
       headers: {
@@ -10,6 +31,24 @@ class CandidateDataService {
       },
     });
   }
+  updatePosition(positionId, positionName, jobDescription, qualifications, token) {
+    console.log("the job id in edit :",positionId);
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const data = {
+      job_title: positionName,
+      job_description: jobDescription,
+      qualifications: qualifications,
+    };
+
+    return axios.post(`${API_URL}/edit_job/${positionId}`, data, { headers });
+  }
+  
+
+
+
 }
 
 export default new CandidateDataService();

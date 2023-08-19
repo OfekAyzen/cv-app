@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import axios from 'axios';
 import "../../styles/Profilemanager.css";
-const Candidate_details = (props) => {
+const DownloadCV = (props) => {
  
   const handleDownload = () => {
     // Code to generate and download the file
@@ -54,28 +54,6 @@ const Candidate_details = (props) => {
   );
 };
 
-export default Candidate_details;
-
-
-{/* <h2 className='h2-candidate-details'>Candidate Details and cv</h2>
-          
-<h3>{`${props.selectedCandidate.first_name} ${props.selectedCandidate.last_name}`}</h3>
-
-<Card className='inner-card'>
-<p>Name: {`${props.selectedCandidate.first_name} ${props.selectedCandidate.last_name}`}</p>
-<p>Phone:{props.selectedCandidate.phone_number}</p>
-<p>Position: {props.selectedCandidate.position}</p>
-<p>Gender:{props.selectedCandidate.gender}</p>
-  <p>Location: {props.selectedCandidate.location}</p>
-  
-  <p>Email: {props.selectedCandidate.email}</p>
-  
-  
-  <p>Education:{props.selectedCandidate.education}</p>
-  <p>Experience:{props.selectedCandidate.experience}</p>
-  <p>Skills:{props.selectedCandidate.skills}</p>
-  <p>Department:{props.selectedCandidate.department}</p>
-  <p>Certification:{props.selectedCandidate.certification}</p>
-{/* Add more candidate data as needed */}
+export default DownloadCV;
 
 

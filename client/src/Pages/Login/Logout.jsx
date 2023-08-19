@@ -1,17 +1,19 @@
 
 import axios from "axios";
 import Button from '@mui/material/Button';
-
+import { useNavigate } from 'react-router-dom'
 
 function Logout(props) {
-
+  const navigate = useNavigate();
+  
   function logMeOut() {
     axios({
       method: "POST",
       url:"http://localhost:5000/lgout",
     })
     .then((response) => {
-       props.token()
+       props.token();
+       navigate("/Login");
     }).catch((error) => {
       if (error.response) {
         console.log(error.response)
