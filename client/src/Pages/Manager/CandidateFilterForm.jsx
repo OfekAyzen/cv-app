@@ -31,13 +31,36 @@ function CandidateFilterForm({ onFilter }) {
     };
     onFilter(filters);
   };
+  const handleFilterChange = (field, value) => {
+    onFilter((prevFilters) => ({
+      ...prevFilters,
+      [field]: value,
+    }));
+  };
 
+  const clearFilters = () => {
+    onFilter({
+      education: "",
+      workExperience: "",
+      skills: "",
+      gender: "",
+      location: "",
+    });
+  };
   return (
     <Card className="FilterCard">
+      
+        <Button  onClick={clearFilters} sx={{display:"flex" ,
+        marginLeft:'20px',
+        marginTop:'20px',
+        color:"Grey"
+
+        
+        }}>
+              Clear Filters
+            </Button>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Filter Candidates
-        </Typography>
+        
         <Grid container spacing={2}>
           <Grid item xs={4} sm={2}>
             <FormControl fullWidth variant="outlined">
@@ -112,6 +135,7 @@ function CandidateFilterForm({ onFilter }) {
             <Button variant="contained" color="primary" onClick={handleFilter}>
               Apply Filters
             </Button>
+          
           </Grid>
         </Grid>
       </CardContent>

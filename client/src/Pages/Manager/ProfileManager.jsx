@@ -18,6 +18,7 @@ import Position from "../Manager/Position";
 import Header from "../../Components/Header";
 import CandidateStatus from './CandidateStatus';
 import DownloadCV from "./DownloadCV";
+
 import {
 
 
@@ -42,12 +43,13 @@ function ProfileManager(props) {
     skills: "",
     gender: "",
     location: "",
+    // application_date : new Date().toISOString().split("T")[0],
   });
   const [sortOrder, setSortOrder] = useState("asc");
   const [loading, setLoading] = useState(true);
   const [sortByField, setSortByField] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; //ten applicants per page 
+  const itemsPerPage = 9; //ten applicants per page 
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [newCandidateStatus, setNewCandidateStatus] = useState("");
   const [statusChangeMessage, setStatusChangeMessage] = useState("");
@@ -86,9 +88,14 @@ function ProfileManager(props) {
 
   const handleSortByChange = (field) => {
     setSortByField(field);
+    if (field === "dateApply") {
+      setSortByField("application_date"); // Update sortByField to the correct field name
+    }
   };
 
   const handleViewCandidate = (candidate, jobId) => {
+    console.log("Selected Job ID:", jobId);
+    console.log("Applied Jobs:", candidate.appliedJobs);
     setSelectedCandidate(candidate);
     setSelectedJobId(jobId);
     setSelectedCandidateStatus(
@@ -108,6 +115,8 @@ function ProfileManager(props) {
   };
   const [selectedCandidateStatus, setSelectedCandidateStatus] = useState("");
 
+
+  //filter the candidates that applyes by  education, workExperience, skills, gender, location
   const filteredCandidates = candidatesData.filter((candidate) => {
     const { education, workExperience, skills, gender, location } = filters;
 
@@ -149,14 +158,34 @@ function ProfileManager(props) {
         key *
         (a.location || "").toLowerCase().localeCompare((b.location || "").toLowerCase())
       );
-    } else if (sortByField === "dateApply") { // Add this block for sorting by application date
-      const dateA = a.appliedJobs.find(job => job.job_id === selectedJobId)?.application_date || '';
-      const dateB = b.appliedJobs.find(job => job.job_id === selectedJobId)?.application_date || '';
-      return key * (dateA.localeCompare(dateB));
+    } else if (sortByField === "application_date") {
+      const dateA = new Date(a.application_date).getTime(); // Convert to Unix timestamp
+      const dateB = new Date(b.application_date).getTime(); // Convert to Unix timestamp
+      return key * (dateB - dateA);
     }
+  
   
     return 0;
   });
+
+  //handle fate format 
+  function formatDate(date) {
+    const options = {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
+  
+  function formatDate(date) {
+    const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
+
+  //
+ 
   // Calculate the indexes of the items to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -165,6 +194,7 @@ function ProfileManager(props) {
   const totalPages = Math.ceil(sortedCandidates.length / itemsPerPage);
 
 
+  //download csv for the manager 
   const csvData = sortedCandidates.map((candidate) => ({
     First_Name: candidate.first_name,
     Last_Name: candidate.last_name,
@@ -213,7 +243,7 @@ function ProfileManager(props) {
     <div className="profile-div">
     <ToolBars token={props.token} userRole={props.userRole}/>
       <Box className="Box-profile">
-        
+        <Typography sx={{textAlign:'start' ,fontSize:'30px'}}>Applicants</Typography>
         <div className="filter-order" style={{ borderRadius: "20px" }}>
           <CandidateFilterForm onFilter={handleFilter} />
           <div className="orderby"> 
@@ -233,7 +263,7 @@ function ProfileManager(props) {
                 <MenuItem value="skills">Skills</MenuItem>
                 <MenuItem value="gender">Gender</MenuItem>
                 <MenuItem value="location">Location</MenuItem>
-                <MenuItem value="dateApply">Date</MenuItem>
+                <MenuItem value="application_date">Date</MenuItem>
               </Select>
             </FormControl>
             </div>
@@ -264,15 +294,19 @@ function ProfileManager(props) {
               {currentCandidates.map((candidate) => (
                 <React.Fragment key={candidate.id}>
                   {candidate.appliedJobs.map((appliedJob) => (
-                        <TableRow className="tr-candidate" key={appliedJob.job_id}  sx={{
-                          '&:hover': {
-                            borderColor: 'pink', // Change this to the desired hover border color
-                            borderWidth: '2px', // Add a border width to make the border more noticeable
-                            borderRadius: '8px', // Add border radius to the TableRow
-                          },
-                        }}
+                        <TableRow className="trCandidate" key={appliedJob.job_id} 
+                       
                         >
-                            <TableCell>{appliedJob.application_date}</TableCell>
+                            {/* <TableCell>{appliedJob.application_date}</TableCell> */}
+                            <TableCell>
+                            {/* Format the application_date */}
+                            {new Intl.DateTimeFormat("en-US", {
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }).format(new Date(appliedJob.application_date))}
+                          </TableCell>
                             <TableCell>{candidate.first_name} {candidate.last_name}</TableCell>
                             <TableCell>{candidate.location}</TableCell>
                             <TableCell>{candidate.gender}</TableCell>
@@ -359,7 +393,13 @@ function ProfileManager(props) {
             {
               selectedCandidate ? (<>
           <Card className="candidate-card-profile" style={{ height: '100%' }}>
-            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '100%', padding: '16px' }}>
+            <CardContent style={{ display: 'flex', flexDirection: 'column'
+              , alignItems: 'flex-start', 
+              height: '100%', padding: '16px' , 
+            alignContent:'flex-start',
+      
+      
+              }}>
               <Typography variant="h4"  sx={{paddingTop:'15px',fontSize: '40px'}} >
                 {selectedCandidate.first_name} {selectedCandidate.last_name} cv
               </Typography>
