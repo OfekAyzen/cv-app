@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Header from '../Header';
 import '../../styles/User.css';
-
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -88,58 +88,123 @@ const ViewJobs = (props) => {
     const [error, setError] = useState(null);
     const [jobsData, setJobsData] = useState('');
     const [job_title,setTitle]=useState('');
-    useEffect(() => {
-        const fetchJobsData = async () => {
-            axios({
-                method: "GET",
-                url: "http://localhost:5000/view_jobs",
-                headers: {
-                    Authorization: 'Bearer ' + props.token
-                }
-            })
-                .then((response) => {
+    const navigate=useNavigate();
+    
+
+
+
+    // useEffect(() => {
+    //     const fetchJobsData = async () => {
+    //         axios({
+    //             method: "GET",
+    //             url: "http://localhost:5000/view_jobs",
+    //             headers: {
+    //                 Authorization: 'Bearer ' + props.token
+    //             }
+    //         })
+    //             .then((response) => {
 
                     
-                    const res = response.data
-                    // setJobsData(response.data)
-                    res.access_token && props.setToken(res.access_token)
+    //                 const res = response.data
+    //                 // setJobsData(response.data)
+    //                 res.access_token && props.setToken(res.access_token)
 
 
-                    const initialData = response.data.map((job) => ({
-                        job_id: job.job_id,
-                        job_title: job.job_title,
-                        job_description: job.job_description,
-                        qualifications: job.qualifications,
-                    }));
+    //                 const initialData = response.data.map((job) => ({
+    //                     job_id: job.job_id,
+    //                     job_title: job.job_title,
+    //                     job_description: job.job_description,
+    //                     qualifications: job.qualifications,
+    //                 }));
 
-                    setJobsData(initialData);
+    //                 setJobsData(initialData);
 
-                }).catch((error) => {
+    //             }).catch((error) => {
 
-                    if (error.response) {
-                        console.log(error.response)
-                        console.log(error.response.status)
-                        console.log(error.response.headers)
-                    }
-                })
+    //                 if (error.response) {
+    //                     console.log(error.response)
+    //                     console.log(error.response.status)
+    //                     console.log(error.response.headers)
+    //                 }
+    //             })
+    //     };
+
+    //     fetchJobsData();
+    // }, []);
+
+
+    useEffect(() => {
+        const fetchJobsData = async () => {
+          axios({
+            method: "GET",
+            url: "http://localhost:5000/view_jobs",
+            headers: {
+              Authorization: 'Bearer ' + props.token
+            }
+          })
+            .then((response) => {
+              const res = response.data;
+    
+              res.access_token && props.setToken(res.access_token);
+    
+              const initialData = response.data.map((job) => ({
+                job_id: job.job_id,
+                job_title: job.job_title,
+                job_description: job.job_description,
+                qualifications: job.qualifications,
+              }));
+    
+              setJobsData(initialData);
+            }).catch((error) => {
+              if (error.response) {
+                console.log(error.response);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              }
+            });
         };
-
+    
         fetchJobsData();
-    }, []);
-
-
-
+      }, []);
 
 
     if (error) {
         return <div>{error}</div>;
     }
 
+    // const handleButtonClick = (job_id) => {
+    //     if (props.token) {
+    //         console.log("handle button clicked if logddein");
+    //         console.log("props.token ",props.token);
+    //         // User is already logged in, open the job application dialog
+    //         setSelectedJobId(job_id);
+    //         setOpen(true);
+    //       } else {
+    //         // User is not logged in, save the job ID and navigate to login
+    //         sessionStorage.setItem('pendingJobId', job_id);
+    //         navigate('/Login');
+    //       }
+       
+    // };
+
     const handleButtonClick = (job_id) => {
-        
-        setSelectedJobId(job_id);
-        setOpen(true);
-    };
+        if (props.token) {
+          setSelectedJobId(job_id);
+          setOpen(true);
+        } else {
+          const candidateIdFromLocalStorage = localStorage.getItem('candidate_id');
+          if (candidateIdFromLocalStorage) {
+            // Candidate ID is available in local storage, use it
+            setSelectedJobId(job_id);
+            setOpen(true);
+          } else {
+            // User is not logged in, save the job ID and navigate to login
+            sessionStorage.setItem('pendingJobId', job_id);
+            navigate('/Login');
+          }
+        }
+      };
+
     const handleClose = () => {
         setOpen(false);
     }
@@ -151,52 +216,24 @@ const ViewJobs = (props) => {
         <>
 
             <CssBaseline />
-            {/**user card status */}
-            <Box>
-            <UserCard  onApplicationSubmit={props.onApplicationSubmit}  status={status } candidate_id={props.candidate_id} 
-            token={props.token} 
-            userRole={props.userRole} setToken={props.setToken}
-            username={props.username}
-            ></UserCard>
-            </Box>
-           
-            <Box
-                sx={{
-                    bgcolor: 'background.paper',
-                    pt: 8,
-                    pb: 6,
-                }}
-            >
-                <Container maxWidth="sm">
-                    <Typography
-                        component="h1"
-                        variant="h2"
-                        align="center"
-                        color="text.primary"
-                        gutterBottom
-                    >
-                        Join hour team {props.userId}
-                    </Typography>
-                    <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                        We are hiring!
-                    </Typography>
-                    
-                    <Stack
-                        sx={{ pt: 4 }}
-                        direction="row"
-                        spacing={2}
-                        justifyContent="center"
-                    >
-                        {/*<Button variant="contained">Apply</Button>*/}
-
-                    </Stack>
-                </Container>
-            </Box>
-
             {jobsData.length > 0 ? (
 
                 <Container className='container-user'  >
                     {/* End hero unit */}
+                    <Typography
+                        component="h1"
+                        variant="h2"
+                        align="center"
+                        color="white"
+                        gutterBottom
+                        sx={{paddingTop:'60px', fontSize:'70px'}}
+                    >
+                        Join hour team {props.userId}
+                    </Typography>
+                    <Typography variant="h5" align="center" color="white" paragraph sx={{ fontSize:'40px',color:'yellow',paddingBottom:'25px'}}   >
+                        We are hiring!
+                    </Typography>
+
                     <Grid container spacing={1} sx={{ alignContent: 'center' }}>
                       
 
@@ -206,50 +243,51 @@ const ViewJobs = (props) => {
                                 <Card
                                     sx={{ height: '100%', width: '80%', display: 'flex', flexDirection: 'column' }}
                                 >
-                                    <CardMedia
-                                        component="div"
-                                        sx={{
-                                            // 16:9
-                                            pt: '70.25%',
-                                        }}
-                                        image={logo}
-                                    />
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <Typography gutterBottom variant="h4" component="h2" >
-                                            {job.job_title} 
-                                        </Typography>
-                                        <Typography variant="h6" component="h4" >
-                                             Description: {job.job_description}
-                                        </Typography>
-                                        <Typography variant="h6" component="h4">
-                                            Qualification: {job.qualifications}
-                                        </Typography>
+                                    <Typography gutterBottom variant="h4" component="h2">
+                                        {job.job_title}
+                                    </Typography>
+                                    <Typography variant="h6" component="h4">
+                                        <Typography variant="h6" component="span" fontWeight="bold">
+                                        Description:
+                                        </Typography>{" "}
+                                        {job.job_description}
+                                    </Typography>
+                                    <Typography variant="h6" component="h4">
+                                        <Typography variant="h6" component="span" fontWeight="bold">
+                                        Qualification:
+                                        </Typography>{" "}
+                                        {job.qualifications}
+                                    </Typography>
                                     </CardContent>
-                                    <CardActions>
-                                        
-                                    <Button variant="outlined" onClick={() => handleButtonClick(job.job_id)} sx={{ color: 'rgb(224, 104, 154)', borderBlockColor: ' rgb(224, 104, 154)' }}>Apply</Button>
+                                    <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                                            
+                                        <Button variant="outlined" 
+                                        onClick={() => handleButtonClick(job.job_id)} 
+                                        sx={{ color: 'rgb(224, 104, 154)', borderBlockColor: ' rgb(224, 104, 154)' }}
+                                        >Apply</Button>
 
-                                        <BootstrapDialog
-                                            onClose={handleClose}
-                                            aria-labelledby="customized-dialog-title"
-                                            open={open}
-                                        >
-                                         
-                                            <JobApplication //apply to specific job
-                                            setTitle={setTitle}
-                                            setStatus={props.setStatus}
-                                                onApplicationSubmit={props.onApplicationSubmit}
-                                                candidate_id={props.candidate_id}
-                                                token={props.token}
-                                                userRole={props.userRole}
-                                                setToken={props.setToken}
+                                            <BootstrapDialog
+                                                onClose={handleClose}
+                                                aria-labelledby="customized-dialog-title"
                                                 open={open}
-                                                setOpen={setOpen}
-                                                job_id={selectedJobId} 
-                                                username={props.username}
-                                                // Pass the selected job_id
-                                            />
-                                        </BootstrapDialog>
+                                            >
+                                            {console.log("canduaite id : ",props.candidate_id)}
+                                                <JobApplication //apply to specific job
+                                                setTitle={setTitle}
+                                                setStatus={props.setStatus}
+                                                    onApplicationSubmit={props.onApplicationSubmit}
+                                                    candidate_id={props.candidate_id}
+                                                    token={props.token}
+                                                    userRole={props.userRole}
+                                                    setToken={props.setToken}
+                                                    open={open}
+                                                    setOpen={setOpen}
+                                                    job_id={selectedJobId} 
+                                                    username={props.username}
+                                                    // Pass the selected job_id
+                                                />
+                                            </BootstrapDialog>
 
 
                                     </CardActions>

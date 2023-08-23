@@ -14,9 +14,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { Snackbar } from '@mui/material';
 import Header from '../Header';
-
+import logo from '../images/logo_tech19.png';
 
 
 function Copyright(props) {
@@ -41,7 +41,8 @@ export default function SignUp() {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSignUp = async (event) => {
@@ -62,8 +63,9 @@ export default function SignUp() {
   
       if (response.status === 200 || response.status === 201) {
         console.log('user added');
-  
-    
+        setSnackbarMessage('User added successfully!');
+        setSnackbarOpen(true);
+
   
         // Redirect to HomePage and pass user role and username as query parameters
       
@@ -71,16 +73,25 @@ export default function SignUp() {
         //navigate('/HomePage', { state: { role: response.data.role, username: username } });
         // navigate("/Login");
       } else {
+        const errorMessage = response.data.message || 'An error occurred. Please try again.';
+        setSnackbarMessage(errorMessage);
+        setSnackbarOpen(true);
         console.log('ERROR');
       }
     } catch (error) {
+      const errorMessage = error.response?.data?.message || 'An error occurred. Please try again later.';
+      setSnackbarMessage(errorMessage);
+      setSnackbarOpen(true);
       console.log(error);
     }
   };
   
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Header />
+      
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 ,backgroundColor:'black'}}>
+                    <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
+            </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -175,12 +186,12 @@ export default function SignUp() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -198,6 +209,15 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
+            {/* Snackbar to display messages */}
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={5000}
+              onClose={() => setSnackbarOpen(false)}
+              message={snackbarMessage}
+              // Customize the style of the snackbar as needed
+              // Example: style={{ backgroundColor: 'red' }}
+          />
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />

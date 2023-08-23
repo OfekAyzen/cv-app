@@ -1,4 +1,5 @@
 
+
 import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
@@ -6,22 +7,28 @@ import Dialog from '@mui/material/Dialog';
 
 import { useState, useEffect } from 'react';
 
+import logo from "../images/logo_tech19.png";
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import UserCard from './UserCard';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
+import { useParams } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-
+import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UploadCV from './UploadCV';
 import ApplyJob from './ApplyJob';
-
+import {
+    InputLabel,
+    Select,
+    Snackbar,
+    MenuItem
+  } from '@mui/material';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -56,7 +63,6 @@ export default function JobApplication(props) {
     const [last_name, setLastName] = useState('');
     const [flashMessage, setFlashMessage] = useState('');
     const [location, setLocation] = useState('');
-
     const [phone_number, setPhoneNumber] = useState('');
     const [gender, setGender] = useState('');
     const [education, setEducation] = useState('');
@@ -66,33 +72,51 @@ export default function JobApplication(props) {
     const [position, setPosition] = useState('');
     const [certifications, setCertifications] = useState('');
     const [data, setData] = useState('');
-
+    const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+    const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+    const { job_id } = useParams();
+    
+    console.log("selected job id:", job_id);
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(false); 
+    const applyJobJobId = job_id || props.job_id;
+    const educationOptions = [
+        "All",
+        "High School",
+        "Bachelor's Degree",
+        "Master's Degree"
+      ];
+    
+    const workExperienceOptions = [
+        "All",
+        "Less than 1 year",
+        "1-3 years",
+        "3-5 years"
+      ];
+    
+    const genderOptions = ["All", "Female", "Male", "Other"];
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-
-
-
+    
         const candidateData = {
-            // job_id: props.job_id,
-            // candidate_id: props.userId ,
-            first_name: data.get('firstName'),
-            last_name: data.get('lastName'),
-            gender: data.get('gender'),
-            location: data.get('location'),
-            phone_number: data.get('phoneNumber'),
-            email: data.get('email'),
-            position: data.get('position'),
-            education: data.get('education'),
-            work_experience: data.get('workExperience'),
-            skills: data.get('skills'),
-            certifications: data.get('certifications'),
+          first_name: data.get('firstName'),
+          last_name: data.get('lastName'),
+          gender: data.get('gender'),
+          location: data.get('location'),
+          phone_number: data.get('phoneNumber'),
+          email: data.get('email'),
+          position: data.get('position'),
+          education: data.get('education'),
+          work_experience: data.get('workExperience'),
+          skills: data.get('skills'),
+          certifications: data.get('certifications'),
         };
-
+    
         setData(candidateData);
-
-    };
+      };
 
     const handleClose = (event) => {
         props.setOpen(false);
@@ -120,7 +144,7 @@ export default function JobApplication(props) {
 
     const handleSaveApp = async (event) => {
         event.preventDefault();
-
+       
         const applicationData = {
             first_name: first_name,
             last_name: last_name,
@@ -146,15 +170,17 @@ export default function JobApplication(props) {
 
             if (response.status === 200) {
                 props.onApplicationSubmit(applicationData);
-                
+                setSuccessSnackbarOpen(true);
                 console.log(response.data);
                 setFlashMessage('Job application added successfully!');
-
+                navigate('/UserProfile');
                 props.setOpen(false);
+                
 
             } else {
                 console.log('Error saving application');
                 setFlashMessage('Error saving application.');
+                setErrorSnackbarOpen(true);
                 // Handle error, if needed
             }
         } catch (error) {
@@ -172,13 +198,17 @@ export default function JobApplication(props) {
     }
     const handleApplyJob = () => {
         // Call the handleSaveApp function when the Apply button is clicked in the applyjob component 
+       
         handleSaveApp();
     };
 
+  
     return (
-        <div>
-            
-            <Header></Header>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+            {console.log("canduaite id job app : ",props.candidate_id)}
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1,backgroundColor:'black' }}>
+                <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
+            </Typography>
 
             <h1 style={{ textAlign: 'center' }}>Join our team!</h1>
            
@@ -191,6 +221,9 @@ export default function JobApplication(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                      
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          
                     }}
                 >
 
@@ -226,18 +259,7 @@ export default function JobApplication(props) {
                                         onChange={(e) => setLastName(e.target.value)}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="gender"
-                                        label="Gender"
-                                        name="gender"
-                                        autoComplete="gender"
-                                        value={gender}
-                                        onChange={(e) => setGender(e.target.value)}
-                                    />
-                                </Grid>
+                               
                                 <Grid item xs={12}>
                                     <TextField
                                         required
@@ -289,30 +311,8 @@ export default function JobApplication(props) {
                             </Grid>
                             {/* Right Side */}
                             <Grid item xs={12}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="education"
-                                        label="Education"
-                                        name="education"
-                                        autoComplete="education"
-                                        value={education}
-                                        onChange={(e) => setEducation(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="workExperience"
-                                        label="Work Experience"
-                                        name="workExperience"
-                                        autoComplete="work-experience"
-                                        value={work_experience}
-                                        onChange={(e) => setWorkExperience(e.target.value)}
-                                    />
-                                </Grid>
+                                
+                             
                                 <Grid item xs={12}>
                                     <TextField
                                         required
@@ -337,17 +337,68 @@ export default function JobApplication(props) {
                                         onChange={(e) => setCertifications(e.target.value)}
                                     />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <InputLabel>Education</InputLabel>
+                                    <Select
+                                    fullWidth
+                                    id="education"
+                                    label="Education"
+                                    name="education"
+                                    value={education}
+                                    onChange={(e) => setEducation(e.target.value)}
+                                    >
+                                    {educationOptions.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                        {option}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputLabel>Work Experience</InputLabel>
+                                    <Select
+                                    fullWidth
+                                    id="workExperience"
+                                    label="Work Experience"
+                                    name="workExperience"
+                                    value={work_experience}
+                                    onChange={(e) => setWorkExperience(e.target.value)}
+                                    >
+                                    {workExperienceOptions.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                        {option}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputLabel>Gender</InputLabel>
+                                    <Select
+                                    fullWidth
+                                    id="gender"
+                                    label="Gender"
+                                    name="gender"
+                                    value={gender}
+                                    onChange={(e) => setGender(e.target.value)}
+                                    >
+                                    {genderOptions.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                        {option}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
+                                </Grid>
                             </Grid>
                         </Grid>
                         <UploadCV
                             candidate_id={props.candidate_id} token={props.token}
                             userRole={props.userRole} setToken={props.setToken}
-                            job_id={props.job_id}> </UploadCV>
+                            job_id={job_id}> </UploadCV>
 
                         {/*<Button onClick={handleSaveApp} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                             Apply & Save
                 </Button>*/}
-
+                        {console.log("job ids  : ",job_id ,"selected job id : ", props.job_id)}
                         <ApplyJob 
                         setTitle={props.setTitle}
                         setStatus={props.setStatus}
@@ -355,18 +406,32 @@ export default function JobApplication(props) {
                             token={props.token}
                             userRole={props.userRole}
                             setToken={props.setToken}
-                            job_id={props.job_id}
+                            job_id={applyJobJobId}
+                            // job_id_log={props.job_id}
                             handleApplyJob={handleSaveApp} // Pass the handleSaveApp function
-                            setOpen={props.setOpen}
+                            setOpen={setOpen}
                             candidateData={data}
                             onApplicationSubmit={props.onApplicationSubmit}
                         ></ApplyJob>
-                        {/* Display flash message */}
-                        {flashMessage && (
-                            <Typography variant="body1" color="error" align="center">
-                                {flashMessage}
-                            </Typography>
-                        )}
+                         {/* Success Snackbar */}
+                            <Snackbar
+                                open={successSnackbarOpen}
+                                autoHideDuration={5000}
+                                onClose={() => setSuccessSnackbarOpen(false)}
+                                message="Application submitted successfully!"
+                                // Snackbar with a green color
+                                style={{ backgroundColor: '#4caf50' }}
+                            ></Snackbar>
+
+                            {/* Error Snackbar */}
+                            <Snackbar
+                                open={errorSnackbarOpen}
+                                autoHideDuration={5000}
+                                onClose={() => setErrorSnackbarOpen(false)}
+                                message="Error submitting application. Please try again."
+                                // Snackbar with a red color
+                                style={{ backgroundColor: '#f44336' }}
+                            ></Snackbar>
 
                     </Box>
                 </Box>

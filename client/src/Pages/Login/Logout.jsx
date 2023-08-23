@@ -2,6 +2,7 @@
 import axios from "axios";
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom'
+import { colors} from '@mui/material';
 
 function Logout(props) {
   const navigate = useNavigate();
@@ -24,10 +25,15 @@ function Logout(props) {
 
     return(
         <header className="App-header"  style={{
-          backgroundColor:'black'
+          backgroundColor:'black',
+          display: 'flex',
+    
+    justifyContent: 'flex-end',
         }}>
             
-            <Button  variant="outlined" onClick={logMeOut}> 
+            <Button 
+             sx={{ p: 0, ml: 2, '&:hover': { cursor: 'pointer', color: colors.purple[500] },color:'white' }}
+ onClick={logMeOut}> 
                 Logout
             </Button>
         </header>

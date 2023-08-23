@@ -192,7 +192,11 @@
 }
 .profile-div{
   background-color:rgba(224, 224, 224, 1);
-   
+  height: 1020px;
+  width: 100%;
+  display: block;
+  padding: 0px 0px 0px 0px;
+  margin: 0%;
 
 }
 .profile-card{
@@ -259,7 +263,9 @@
     padding-bottom: 2%;
 }
 .css-46bh2p-MuiCardContent-root:last-child {
-  padding-bottom: 47px;
+  
+  padding-bottom: 36px;
+  padding-top: 90px;
   justify-content: center;
   text-align: center;
   display: flex;
@@ -345,4 +351,20 @@
   max-height: calc(100% - 64px);
 
 
+}
+
+
+
+.css-ahj2mt-MuiTypography-root {
+  margin: 3px;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 2;
+  letter-spacing: 0.00998em;
+
+}
+.toolbar{
+  display: flex;
+  
 }

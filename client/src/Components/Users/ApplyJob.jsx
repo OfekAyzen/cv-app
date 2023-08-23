@@ -13,6 +13,7 @@ export default function ApplyJob(props) {
 
     try {
       console.log("at try ");
+      {console.log("job id at apply   : ",props.job_id)}
       const response = await axios.post( //apply for cv_id status candidate_id job_id and application_id
         `http://localhost:5000/apply/${props.job_id}`,
         {},  // Empty data object

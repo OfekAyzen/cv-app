@@ -2,9 +2,27 @@
 
     background-color: #000000 !important;
     color: #fff;
+   
+    
 }
 .css-1uzrjc8-MuiSvgIcon-root {
 
     display: none !important;
   
+}
+.css-r6ewbb-MuiToolbar-root {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: baseline;
+    min-height: 56px;
+    justify-content: flex-end !important;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }

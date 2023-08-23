@@ -46,8 +46,20 @@ class CandidateDataService {
     return axios.post(`${API_URL}/edit_job/${positionId}`, data, { headers });
   }
   
+  deleteJob(positionId, token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return axios.delete(`${API_URL}/delete_job/${positionId}`, { headers });
+  }
 
+  addJob(data, token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
 
+    return axios.post(`${API_URL}/add_job`, data, { headers });
+  }
 
 }
 

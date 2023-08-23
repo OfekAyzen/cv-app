@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select ,Grid } from '@mui/material';
 
 function StatusChangeForm(props) {
   const [newStatus, setNewStatus] = useState('');
@@ -37,7 +37,8 @@ function StatusChangeForm(props) {
   };
 
   return (
-    <div>
+    <Grid container alignItems="center" spacing={1}>
+    <Grid item>
       <FormControl variant="outlined">
         <InputLabel>Status</InputLabel>
         <Select
@@ -45,7 +46,7 @@ function StatusChangeForm(props) {
           onChange={(e) => setNewStatus(e.target.value)}
           label="Status"
         >
-            <MenuItem value="Accepted" selected={newStatus === 'Accepted'}>
+          <MenuItem value="Accepted" selected={newStatus === 'Accepted'}>
             Accepted
           </MenuItem>
           <MenuItem value="Pending" selected={newStatus === 'Pending'}>
@@ -71,10 +72,13 @@ function StatusChangeForm(props) {
               
         </Select>
       </FormControl>
-      <Button variant="contained" color="primary" onClick={handleStatusChange}>
-        Save
-      </Button>
-    </div>
+      </Grid>
+      <Grid item>
+        <Button variant="contained" color="primary" onClick={handleStatusChange}>
+          Save
+        </Button>
+      </Grid>
+    </Grid>
   );
 }
 

@@ -878,71 +878,95 @@ def view_all_candidates():
 @app.route('/add_job', methods=['POST'])
 @jwt_required()
 def add_job():
-    if 'loggedin' not in session or session['role'] != 'manager':
-        print("not loggedin")
-        return jsonify({'message': 'You are not logged in as a manager.'}), 401
+    current_user_role = get_jwt_identity().get('role')
 
-    
-    
+    if current_user_role != 'manager':
+        return jsonify({'message': 'You are not authorized to perform this action.'}), 401
+
     data = request.json
     job_title = data['job_title']
     job_description = data['job_description']
     qualifications = data['qualifications']
-    job_id = generate_job_id()
-    
+    job_id = generate_job_id()  # Make sure to implement this function
     
     try:
-        
         new_job = Jobs(
-            job_title = job_title,
-            job_description  = job_description ,
-            qualifications = qualifications,
-            job_id = job_id
-                
+            job_title=job_title,
+            job_description=job_description,
+            qualifications=qualifications,
+            job_id=job_id
         )
-        print("new_jobs : ",new_job)
         db.session.add(new_job)
-
         db.session.commit()
 
-        return jsonify({'message': 'New job added successfully!'})
+        return jsonify({'message': 'New job added successfully!'}), 201
     except Exception as e:
         db.session.rollback()
-        print("eror : ",e)
-        return jsonify({'message': 'Error occurred during added new job.'})
+        print("error:", e)
+        return jsonify({'message': 'Error occurred during adding new job.'}), 500
+# @app.route('/add_job', methods=['POST'])
+# @jwt_required()
+# def add_job():
+#     if 'loggedin' not in session or session['role'] != 'manager':
+#         print("not loggedin")
+#         return jsonify({'message': 'You are not logged in as a manager.'}), 401
+
+    
+    
+#     data = request.json
+#     job_title = data['job_title']
+#     job_description = data['job_description']
+#     qualifications = data['qualifications']
+#     job_id = generate_job_id()
+    
+    
+#     try:
+        
+#         new_job = Jobs(
+#             job_title = job_title,
+#             job_description  = job_description ,
+#             qualifications = qualifications,
+#             job_id = job_id
+                
+#         )
+#         print("new_jobs : ",new_job)
+#         db.session.add(new_job)
+
+#         db.session.commit()
+
+#         return jsonify({'message': 'New job added successfully!'})
+#     except Exception as e:
+#         db.session.rollback()
+#         print("eror : ",e)
+#         return jsonify({'message': 'Error occurred during added new job.'})
 
 #edit job posting  
 @app.route('/delete_job/<int:job_id>', methods=['DELETE'])
 @jwt_required()
 def delete_job(job_id):
-        # Check if the user is logged in and is a manager
-    if 'loggedin' in session and session['loggedin'] and 'role' in session and session['role'] == 'manager':
-        
-        print("manager delete job")
-        try:
-            job =Jobs.query.get(job_id)
-            if job:
-                # Delete the candidate from the db
-                db.session.delete(job)
-                db.session.commit()
-                return jsonify({'message': 'Job deleted successfully'})
-            else:
-                return jsonify({'message': 'Job not found'})
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({'message': 'Error occurred while deleting possition.'})
-    else:
-        return jsonify({'message': 'You are not authorized to perform this action.'})
-    
-@app.route('/edit_job/<int:job_id>', methods=['POST'])
-@jwt_required()
-def edit_job(job_id):
+    current_user_role = get_jwt_identity().get('role')
 
-    if 'loggedin' not in session or session['role'] != 'manager':
-        print("not loggedin")
-        return jsonify({'message': 'You are not logged in as a manager.'}), 401
-    
-    
+    if current_user_role != 'manager':
+        return jsonify({'message': 'You are not authorized to perform this action.'}), 401
+
+    try:
+        job = Jobs.query.get(job_id)
+        if job:
+            db.session.delete(job)
+            db.session.commit()
+            return jsonify({'message': 'Job deleted successfully'}), 200
+        else:
+            return jsonify({'message': 'Job not found'}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred while deleting position.'}), 500
+
+@app.route('/edit_job/<int:job_id>', methods=['POST'])
+@jwt_required()  # Requires a valid JWT to access this route
+def edit_job(job_id):
+    # Your authentication logic here
+    # ...
+
     data = request.json
 
     try:
@@ -950,24 +974,23 @@ def edit_job(job_id):
         job = Jobs.query.get(job_id)
 
         if not job:
-            return jsonify({'message': 'Possition is not found.'}), 404
+            return jsonify({'message': 'Position is not found.'}), 404
 
-        # Update the candidate's information with the new data
+        # Update the job's information with the new data
         job.job_title = data.get('job_title', job.job_title)
         job.job_description = data.get('job_description', job.job_description)
         job.qualifications = data.get('qualifications', job.qualifications)
-        
+
         db.session.commit()
 
-        return jsonify({'message': 'Possition updated successfully.'}), 200
+        return jsonify({'message': 'Position updated successfully.'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Error occurred during possition update.'}), 500
-
+        return jsonify({'message': 'Error occurred during position update.'}), 500
 @app.route('/view_jobs', methods=['GET'])
-@jwt_required()
+
 def view_jobs():
-    print("session at the view ",session)
+   
     try:
         # Get all the jobs from the database
         all_jobs = Jobs.query.all()
