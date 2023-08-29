@@ -10,9 +10,9 @@ class Application(db.Model):
     cv_id = db.Column(db.Integer, db.ForeignKey('cv.cv_id'), nullable=False)
     application_date =db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(100), default='Pending')
-    
+    notes= db.Column(db.String(255),default='None')
 
-    def __init__(self,application_id, job_id, candidate_id, cv_id,application_date, status='Pending'):
+    def __init__(self,application_id, job_id, candidate_id, cv_id,application_date, status='Pending',notes='None'):
        
         self.application_id=application_id
         self.job_id = job_id
@@ -20,4 +20,7 @@ class Application(db.Model):
         self.cv_id = cv_id
         self.application_date=application_date
         self.status = status
-        
+        self.notes=notes
+
+    def formatted_application_date(self):
+        return self.application_date.strftime('%d/%m/%y')

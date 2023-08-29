@@ -61,6 +61,20 @@ class CandidateDataService {
     return axios.post(`${API_URL}/add_job`, data, { headers });
   }
 
+
+  addNote(applicationId, note, token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    const data = {
+      application_id: applicationId,
+      note: note,
+    };
+
+    return axios.post(`${API_URL}/add_note`, data, { headers });
+  }
 }
 
 export default new CandidateDataService();

@@ -50,7 +50,7 @@ except FileNotFoundError:
     with SECRET_FILE_PATH.open("w") as secret_file:
         app.secret_key = secrets.token_hex(32)
         secret_file.write(app.secret_key) 
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=90)
 
 CORS(app,supports_credentials=True, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST","DELETE"]}})
 
@@ -64,12 +64,11 @@ ALLOWED_EXTENSIONS = {'pdf','word'}
 @app.after_request
 def refresh_expiring_jwts(response):
 
-    
-   
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=90))
+       # response.headers['Access-Control-Allow-Credentials'] = 'true'
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(identity=get_jwt_identity())
             data = response.get_json()
@@ -163,8 +162,10 @@ def index():
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'tech19yeruham@gmail.com'  # Replace with your Gmail email address
-app.config['MAIL_PASSWORD'] = 'Tech1919@'  # Replace with your Gmail password
+app.config['MAIL_PASSWORD'] = 'Tech19191@'  # Replace with your Gmail password
+
 
 mail = Mail(app)
 
@@ -176,38 +177,82 @@ def generate_random_password(length=12):
 
 @app.route('/forgot_password', methods=['POST'])
 def forgot_password():
-    data = request.json
-    username = data['username']
+    # data = request.json
+    # username = data['username']
 
-    # Check if the candidate exists in the database
-    candidate = Candidate.query.filter_by(username=username).first()
-    if not candidate:
-        return jsonify({'message': 'Candidate not found.'}), 404
+    # # Check if the candidate exists in the database
+    # candidate = Candidate.query.filter_by(username=username).first()
+    # if not candidate:
+    #     return jsonify({'message': 'Candidate not found.'}), 404
 
-    # Generate a new password
-    new_password = generate_random_password()
+    # # Generate a new password
+    # new_password = generate_random_password()
 
-    # Update the candidate's password in the database
-    candidate.password = generate_password_hash(new_password)
-    db.session.commit()
+    # # Update the candidate's password in the database
+    # candidate.password = generate_password_hash(new_password)
+    # db.session.commit()
 
-    # Send an email to the candidate with the new password
-    try:
-        # Create a Flask-Mail Message object
-        msg = Message(
-            subject='Password Reset',  # Subject of the email
-            recipients=[candidate.email],  # List of email recipients
-            sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
-            body=f'Your new password is: {new_password}'  # Body of the email
-        )
+    # # Send an email to the candidate with the new password
+    # try:
+    #     # Create a Flask-Mail Message object
+    #     msg = Message(
+    #         subject='Password Reset',  # Subject of the email
+    #         recipients=[candidate.email],  # List of email recipients
+    #         sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
+    #         body=f'Your new password is: {new_password}'  # Body of the email
+    #     )
 
-        # Send the email using the Mail object
-        mail.send(msg)
+    #     # Send the email using the Mail object
+    #     mail.send(msg)
 
-        return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
-    except Exception as e:
-        print("Error sending email:", e)
-        return jsonify({'message': 'Error sending email. Please try again later.'}), 500
+    #     return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
+    # except Exception as e:
+    #     print("Error sending email:", e)
+    #     return jsonify({'message': 'Error sending email. Please try again later.'}), 500
+    msg = Message(subject='Hello from the other side!', sender='tech19yeruham@gmail.com', recipients=['christina0147@gmail.com'])
+    msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
+    mail.send(msg)
+    return "Message sent!"
+# # Function to generate a random password
+# def generate_random_password(length=12):
+#     password_characters = string.ascii_letters + string.digits + string.punctuation
+#     password = ''.join(secrets.choice(password_characters) for i in range(length))
+#     return password
+
+# @app.route('/forgot_password', methods=['POST'])
+# def forgot_password():
+#     data = request.json
+#     username = data['username']
+
+#     # Check if the candidate exists in the database
+#     candidate = Candidate.query.filter_by(username=username).first()
+#     if not candidate:
+#         return jsonify({'message': 'Candidate not found.'}), 404
+
+#     # Generate a new password
+#     new_password = generate_random_password()
+
+#     # Update the candidate's password in the database
+#     candidate.password = generate_password_hash(new_password)
+#     db.session.commit()
+
+#     # Send an email to the candidate with the new password
+#     try:
+#         # Create a Flask-Mail Message object
+#         msg = Message(
+#             subject='Password Reset',  # Subject of the email
+#             recipients=[candidate.email],  # List of email recipients
+#             sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
+#             body=f'Your new password is: {new_password}'  # Body of the email
+#         )
+
+#         # Send the email using the Mail object
+#         mail.send(msg)
+
+#         return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
+#     except Exception as e:
+#         print("Error sending email:", e)
+#         return jsonify({'message': 'Error sending email. Please try again later.'}), 500
 
 
 @app.route('/signup', methods=['POST'])
@@ -325,43 +370,87 @@ def allowed_file(filename):
 
 
 #candidate upload cv 
+# @app.route('/upload', methods=['POST'])
+# @jwt_required()
+# def upload():
+#     try:
+#         # Get the candidate_id from the JWT token
+#         #username_data = get_jwt_identity()
+#         #candidate_id = username_data['candidate_id']
+#         candidate_id = get_jwt_identity()['candidate_id']
+
+#         file = request.files['inputFile']
+#         filename = secure_filename(file.filename)
+
+#         if file and allowed_file(file.filename):
+#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+#             # Create a new CV entry in the database
+#             new_cv = CV(
+#                 cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
+#                 candidate_id=candidate_id,
+#                 file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
+#                 upload_date=datetime.utcnow(),
+#                 status='Pending'
+#             )
+#             db.session.add(new_cv)
+#             db.session.commit()
+#             flash('File successfully uploaded ' + file.filename + ' to the database!')
+#             #return redirect('/')
+#             return jsonify({'message': 'File successfully uploaded.'}), 200
+#         else:
+#             flash('Invalid Upload, only word, pdf files are allowed')
+#             #return redirect('/')
+#             return jsonify({'message': 'Invalid Upload, only word, pdf files are allowed'}), 400
+
+#     except Exception as e:
+#         db.session.rollback()
+#         print("error:", e)
+#         return jsonify({'message': 'Error occurred during file upload: '}), 500
 @app.route('/upload', methods=['POST'])
 @jwt_required()
 def upload():
     try:
-        # Get the candidate_id from the JWT token
-        #username_data = get_jwt_identity()
-        #candidate_id = username_data['candidate_id']
         candidate_id = get_jwt_identity()['candidate_id']
 
         file = request.files['inputFile']
         filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
         if file and allowed_file(file.filename):
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # Check if the file already exists
+            if os.path.exists(file_path):
+                # If the file exists, delete the existing file
+                os.remove(file_path)
 
-            # Create a new CV entry in the database
-            new_cv = CV(
-                cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
-                candidate_id=candidate_id,
-                file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
-                upload_date=datetime.utcnow(),
-                status='Pending'
-            )
-            db.session.add(new_cv)
+            file.save(file_path)
+
+            # Create or update the CV entry in the database
+            existing_cv = CV.query.filter_by(candidate_id=candidate_id).first()
+            if existing_cv:
+                existing_cv.file_path = file_path
+                existing_cv.upload_date = datetime.utcnow()
+                existing_cv.status = 'Pending'
+            else:
+                new_cv = CV(
+                    cv_id=generate_cv_id(),
+                    candidate_id=candidate_id,
+                    file_path=file_path,
+                    upload_date=datetime.utcnow(),
+                    status='Pending'
+                )
+                db.session.add(new_cv)
+
             db.session.commit()
-            flash('File successfully uploaded ' + file.filename + ' to the database!')
-            #return redirect('/')
+            
             return jsonify({'message': 'File successfully uploaded.'}), 200
         else:
-            flash('Invalid Upload, only word, pdf files are allowed')
-            #return redirect('/')
-            return jsonify({'message': 'Invalid Upload, only word, pdf files are allowed'}), 400
+            return jsonify({'message': 'Invalid Upload, only word and pdf files are allowed'}), 400
 
     except Exception as e:
         db.session.rollback()
         print("error:", e)
-        return jsonify({'message': 'Error occurred during file upload: '}), 500
+        return jsonify({'message': 'Error occurred during file upload.'}), 500
 
 #fomat phone number
 def format_israeli_phone_number(phone_number_str):
@@ -376,93 +465,78 @@ def format_israeli_phone_number(phone_number_str):
     else:
         return None
 
-#add new application for candidate
 @app.route('/add_candidate', methods=['POST'])
 @jwt_required()
 def add_candidate():
-    data = request.json
-    first_name = data['first_name']
-    last_name = data['last_name']
-    location = data['location']
-    email = data['email']
-    phone_number = data['phone_number']
-    gender = data['gender']
-    education = data['education']
-    work_experience = data['work_experience']
-    skills = data['skills']
-    position = data['position']
-    certifications = data['certifications']
-    
-    # Check for required fields
-    if not (first_name and last_name and location and email and phone_number and gender and education and work_experience and skills and position and certifications):
-        return jsonify({'message': 'All fields are required.'}), 400
-    
-    # Check if email is valid
-    if not validate_email(email):
-        return jsonify({'message': 'Invalid email address.'}), 400
-    
-    # Check if phone number is valid
-   
-    formatted_phone = format_israeli_phone_number(phone_number)
-    if formatted_phone:
-            print("Formatted Israeli phone number:", formatted_phone)
-    else:
-        print("Invalid phone number")
-    
     try:
+        data = request.json
+        app.logger.info("Received data: %s", data)  # Add this line for logging
+
+        required_fields = [
+            'first_name', 'last_name', 'location', 'email', 'phone_number',
+            'gender', 'education', 'work_experience', 'skills', 'position', 'certifications'
+        ]
+
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'message': f'Missing {field} field.'}), 400
+
+        first_name = data['first_name']
+        last_name = data['last_name']
+        location = data['location']
+        email = data['email']
+        phone_number = data['phone_number']
+        gender = data['gender']
+        education = data['education']
+        work_experience = data['work_experience']
+        skills = data['skills']
+        position = data['position']
+        certifications = data['certifications']
+
+        # Check if email is valid
+        if not validate_email(email):
+            return jsonify({'message': 'Invalid email address.'}), 400
+
+        # Check if phone number is valid
+        formatted_phone = format_israeli_phone_number(phone_number)
+        if not formatted_phone:
+            return jsonify({'message': 'Invalid phone number.'}), 400
+
         username_data = get_jwt_identity()
         username = username_data['username']
         existing_candidate = Candidate.query.filter_by(username=username).first()
         if not existing_candidate:
             return jsonify({'message': 'Candidate not found.'}), 404
-       
-        if existing_candidate:
-            # Update the existing candidate's information
-            candidate_id = existing_candidate.candidate_id
-            existing_candidate.first_name = first_name
-            existing_candidate.last_name = last_name
-            existing_candidate.location = location
-            existing_candidate.email = email
-            existing_candidate.phone_number = phone_number
-            existing_candidate.gender = gender
-            existing_candidate.education = education
-            existing_candidate.work_experience = work_experience
-            existing_candidate.skills = skills
-            existing_candidate.position = position
-            existing_candidate.certifications = certifications
-            
-            
-        else:
-            # Insert a new candidate with the provided candidate_id
-            new_candidate = Candidate(
-                candidate_id=candidate_id,
-                first_name=first_name,
-                last_name=last_name,
-                location=location,
-                email=email,
-                phone_number=phone_number,
-                gender=gender,
-                education=education,
-                work_experience=work_experience,
-                skills=skills,
-                position=position,
-                certifications=certifications
-                
-            )
-            
-            db.session.add(new_candidate)
 
-        
+        # Update the existing candidate's information
+        existing_candidate.first_name = first_name
+        existing_candidate.last_name = last_name
+        existing_candidate.location = location
+        existing_candidate.email = email
+        existing_candidate.phone_number = phone_number
+        existing_candidate.gender = gender
+        existing_candidate.education = education
+        existing_candidate.work_experience = work_experience
+        existing_candidate.skills = skills
+        existing_candidate.position = position
+        existing_candidate.certifications = certifications
+
         db.session.commit()
 
         return jsonify({'message': 'Job application added successfully!'})
+
     except Exception as e:
         db.session.rollback()
-        print("error:", e)
+        app.logger.error("Error: %s", e)
+        print("Error:", e)
         return jsonify({'message': 'Error occurred during job application.'}), 500
 
 def get_candidate_id_from_database(username, password):
     try:
+
+        data = request.json
+        app.logger.info("Received data: %s", data)  # Add this line for logging
+
         # find the candidate with  username
         candidate = Candidate.query.filter_by(username=username).one()
 
@@ -527,61 +601,6 @@ def delete_candidate(candidate_id):
         return jsonify({'message': 'You are not authorized to perform this action.'})
     
 
-# #filter by education, work experience, skills, gender and location.
-# @app.route('/filter_candidates', methods=['POST'])
-# def filter_candidates():
-#     if 'loggedin' not in session or session['role'] != 'manager':
-#         print("not loggedin")
-#         return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-
-#     data = request.get_json()
-#     filters = {}
-    
-#     # Extract the filters from the request body
-#     education = data.get('education')
-#     gender = data.get('gender')
-#     work_experience = data.get('work_experience')
-#     location=data.get('location')
-#     skills=data.get('skills')
-    
-#     # Add filters to the 'filters' dictionary if they are provided
-#     if education:
-#         filters['education'] = education
-#     if gender:
-#         filters['gender'] = gender
-#     if work_experience:
-#         filters['work_experience'] = work_experience
-#     if location:
-#         filters['location']=location
-#     if skills:
-#         filters['skills']=skills
-#     try:
-#         # Query the database using the filters provided
-#         candidates = Candidate.query.filter_by(**filters).all()
-
-#         # Create a list of dictionaries to hold the filtered candidates' information
-#         filtered_candidates = []
-#         for candidate in candidates:
-#             filtered_candidates.append({
-#                 'candidate_id': candidate.candidate_id,
-#                 'first_name': candidate.first_name,
-#                 'last_name': candidate.last_name,
-#                 'location': candidate.location,
-#                 'email': candidate.email,
-#                 'phone_number': candidate.phone_number,
-#                 'gender': candidate.gender,
-#                 'education': candidate.education,
-#                 'work_experience': candidate.work_experience,
-#                 'skills': candidate.skills,
-#                 'position': candidate.position,
-#                 'certifications': candidate.certifications
-#             })
-
-#         return jsonify({'candidates': filtered_candidates})
-#     except Exception as e:
-#         return jsonify({'message': 'Error occurred during filtering candidates.'})
-
-
 
 #edit candidate for manager 
 @app.route('/edit_candidate/<int:candidate_id>', methods=['POST'])
@@ -624,190 +643,6 @@ def edit_candidate(candidate_id):
 
 
 
-# @app.route('/view_all_candidates', methods=['GET'])
-# @jwt_required()
-# def view_all_candidates():
-    
-#     try:
-#         # Check if the user is logged in as a manager
-       
-#         # Get all the candidates from the database
-#         all_candidates = Candidate.query.all()
-
-#         # Create a list to store candidate details
-#         candidate_list = []
-
-#         # Loop through each candidate and add their details to the list
-#         for candidate in all_candidates:
-#             candidate_details = {
-#                 'candidate_id': candidate.candidate_id,
-#                 'first_name': candidate.first_name,
-#                 'last_name': candidate.last_name,
-#                 'email': candidate.email,
-#                 'location': candidate.location,
-#                 'phone_number': candidate.phone_number,
-#                 'gender': candidate.gender,
-#                 'education': candidate.education,
-#                 'work_experience': candidate.work_experience,
-#                 'skills': candidate.skills,
-#                 'position': candidate.position,
-#                 'certifications': candidate.certifications
-#             }
-#             candidate_list.append(candidate_details)
-
-#         return jsonify({'candidates': candidate_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
-# @app.route('/view_all_candidates', methods=['GET'])
-# @jwt_required()
-# def view_all_candidates():
-#     try:
-#         # Get the current user's identity (username) from the JWT token
-#         current_user = get_jwt_identity()
-
-#         # Check if the user's role is 'manager'
-#         if current_user['role'] != 'manager':
-#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
-
-#         # Get all the candidates from the database
-#         all_candidates = Candidate.query.all()
-
-#         # Create a list to store candidate details
-#         candidate_list = []
-
-#         # Loop through each candidate and add its details to the list
-#         existing_application = Application.query.filter_by(candidate_id=candidate.candidate_id).first()
-#         for candidate in all_candidates:
-#             candidate_details = {
-#                 'candidate_id': candidate.candidate_id,
-#                 'first_name': candidate.first_name,
-#                 'last_name': candidate.last_name,
-#                 'gender': candidate.gender,
-#                 'education': candidate.education,
-#                 'work_experience': candidate.work_experience,
-#                 'skills': candidate.skills,
-#                 'location': candidate.location,
-#                 'email':candidate.email,
-#                 'phone_number':candidate.phone_number,
-#                 'position':candidate.position,
-#                 'certifications':candidate.certifications,
-#                 'applied': True if existing_application else False,  # Set applied status
-#                 'status': existing_application.status if existing_application else None,  # Set status if applied
-#             }
-
-#             # Check if the candidate has already applied
-           
-#             candidate_list.append(candidate_details)
-
-#         return jsonify({'candidates': candidate_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
-# @app.route('/view_all_candidates', methods=['GET'])
-# @jwt_required()
-# def view_all_candidates():
-#     try:
-#         # Get the current user's identity (username) from the JWT token
-#         current_user = get_jwt_identity()
-
-#         # Check if the user's role is 'manager'
-#         if current_user['role'] != 'manager':
-#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
-
-#         # Get all the candidates from the database
-#         all_candidates = Candidate.query.all()
-
-#         # Create a list to store candidate details
-#         candidate_list = []
-
-#         # Loop through each candidate and add its details to the list
-#         for candidate in all_candidates:
-#             # Check if the candidate has already applied
-#             existing_application = Application.query.filter_by(candidate_id=candidate.candidate_id).first()
-            
-#             candidate_details = {
-#                 'candidate_id': candidate.candidate_id,
-#                 'first_name': candidate.first_name,
-#                 'last_name': candidate.last_name,
-#                 'gender': candidate.gender,
-#                 'education': candidate.education,
-#                 'work_experience': candidate.work_experience,
-#                 'skills': candidate.skills,
-#                 'location': candidate.location,
-#                 'email': candidate.email,
-#                 'phone_number': candidate.phone_number,
-#                 'position': candidate.position,
-#                 'certifications': candidate.certifications,
-#                 'applied': True if existing_application else False,  # Set applied status
-#                 'status': existing_application.status if existing_application else None,  # Set status if applied
-#             }
-            
-#             candidate_list.append(candidate_details)
-
-#         return jsonify({'candidates': candidate_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
-# @app.route('/view_all_candidates', methods=['GET'])
-# @jwt_required()
-# def view_all_candidates():
-#     try:
-#         # Get the current user's identity (username) from the JWT token
-#         current_user = get_jwt_identity()
-
-#         # Check if the user's role is 'manager'
-#         if current_user['role'] != 'manager':
-#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
-
-#         # Get all the candidates from the database
-#         all_candidates = Candidate.query.all()
-
-#         # Create a list to store candidate details
-#         candidate_list = []
-
-#         # Loop through each candidate and add its details to the list
-#         for candidate in all_candidates:
-#             # Fetch the applied job applications for the candidate
-#             applied_jobs = Application.query.filter_by(candidate_id=candidate.candidate_id).all()
-
-#             # Create a list to store applied job details
-#             applied_jobs_list = []
-#             for application in applied_jobs:
-#                 applied_job_details = {
-#                     'job_id': application.job_id,
-#                     'status': application.status,
-#                     'application':application.application_id,
-#                 }
-#                 applied_jobs_list.append(applied_job_details)
-            
-#             candidate_details = {
-#                 'candidate_id': candidate.candidate_id,
-#                 'first_name': candidate.first_name,
-#                 'last_name': candidate.last_name,
-#                 'gender': candidate.gender,
-#                 'education': candidate.education,
-#                 'work_experience': candidate.work_experience,
-#                 'skills': candidate.skills,
-#                 'location': candidate.location,
-#                 'email': candidate.email,
-#                 'phone_number': candidate.phone_number,
-#                 'position': candidate.position,
-#                 'certifications': candidate.certifications,
-#                 'applied': True if applied_jobs else False,  # Set applied status
-#                 'appliedJobs': applied_jobs_list,  # Include list of applied job applications
-#             }
-            
-#             candidate_list.append(candidate_details)
-
-#         return jsonify({'candidates': candidate_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching candidates.'}), 500
 @app.route('/view_all_candidates', methods=['GET'])
 @jwt_required()
 def view_all_candidates():
@@ -829,7 +664,7 @@ def view_all_candidates():
         for candidate in all_candidates:
             # Fetch the applied job applications for the candidate
             applied_jobs = Application.query.filter_by(candidate_id=candidate.candidate_id).all()
-
+            print("applied job ",applied_jobs)
             # Create a list to store applied job details
             applied_jobs_list = []
             for application in applied_jobs:
@@ -842,6 +677,7 @@ def view_all_candidates():
                         'status': application.status,
                         'application': application.application_id,
                         'application_date':application.application_date,
+                        'notes':application.notes,
                     }
                     applied_jobs_list.append(applied_job_details)
 
@@ -860,6 +696,7 @@ def view_all_candidates():
                 'certifications': candidate.certifications,
                 'applied': True if applied_jobs else False,  # Set applied status
                 'appliedJobs': applied_jobs_list,  # Include list of applied job applications
+                
             }
 
             candidate_list.append(candidate_details)
@@ -904,42 +741,62 @@ def add_job():
         db.session.rollback()
         print("error:", e)
         return jsonify({'message': 'Error occurred during adding new job.'}), 500
-# @app.route('/add_job', methods=['POST'])
-# @jwt_required()
-# def add_job():
-#     if 'loggedin' not in session or session['role'] != 'manager':
-#         print("not loggedin")
-#         return jsonify({'message': 'You are not logged in as a manager.'}), 401
-
     
-    
-#     data = request.json
-#     job_title = data['job_title']
-#     job_description = data['job_description']
-#     qualifications = data['qualifications']
-#     job_id = generate_job_id()
-    
-    
-#     try:
-        
-#         new_job = Jobs(
-#             job_title = job_title,
-#             job_description  = job_description ,
-#             qualifications = qualifications,
-#             job_id = job_id
-                
-#         )
-#         print("new_jobs : ",new_job)
-#         db.session.add(new_job)
+@app.route('/show_notes/<int:job_id>', methods=['GET'])
+@jwt_required()  # Requires JWT authentication
+def show_notes(job_id):
+    try:
+        current_user = get_jwt_identity()
 
-#         db.session.commit()
+        # Find the application by application_id
+        application = Application.query.filter_by(job_id=job_id).first()
 
-#         return jsonify({'message': 'New job added successfully!'})
-#     except Exception as e:
-#         db.session.rollback()
-#         print("eror : ",e)
-#         return jsonify({'message': 'Error occurred during added new job.'})
+        if not application:
+            return jsonify({'message': 'Application not found.'}), 404
 
+        # Check if the user's role is 'manager'
+        if current_user['role'] != 'manager':
+            return jsonify({'message': 'You are not authorized to view notes.'}), 403
+
+        # Get the notes associated with the application
+        notes = application.notes
+
+        return jsonify({'notes': notes}), 200
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'message': 'An error occurred.'}), 500
+#add note for the apply
+@app.route('/add_note', methods=['POST'])
+@jwt_required()  # Requires JWT authentication
+def add_note():
+    try:
+        current_user = get_jwt_identity()
+
+        job_id = request.json.get('job_id')  # Correct field name
+        note_text = request.json.get('note')
+
+        if not job_id or not note_text:
+            return jsonify({'message': 'Both job_id and note are required.'}), 400
+
+        job_application = Application.query.filter_by(job_id=job_id).first()
+
+        if not job_application:
+            return jsonify({'message': 'Job application not found.'}), 404
+
+        if current_user['role'] != 'manager':
+            return jsonify({'message': 'You are not authorized to add notes.'}), 403
+
+        # Update the notes attribute of the job application
+        job_application.notes = note_text
+        db.session.commit()
+
+        return jsonify({'message': 'Note added successfully.'}), 200
+
+    except Exception as e:
+        print("Error:", e)
+        db.session.rollback()
+        return jsonify({'message': 'An error occurred.'}), 500
 #edit job posting  
 @app.route('/delete_job/<int:job_id>', methods=['DELETE'])
 @jwt_required()
@@ -960,6 +817,28 @@ def delete_job(job_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'Error occurred while deleting position.'}), 500
+
+
+#delete job application for manager 
+@app.route('/delete_application/<int:application_id>', methods=['DELETE'])
+@jwt_required()
+def delete_application(application_id):
+    current_user_role = get_jwt_identity().get('role')
+
+    if current_user_role != 'manager':
+        return jsonify({'message': 'You are not authorized to perform this action.'}), 401
+
+    try:
+        application = Application.query.get(application_id)
+        if application:
+            db.session.delete(application)
+            db.session.commit()
+            return jsonify({'message': 'Application deleted successfully'}), 200
+        else:
+            return jsonify({'message': 'Application not found'}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred while deleting application.'}), 500
 
 @app.route('/edit_job/<int:job_id>', methods=['POST'])
 @jwt_required()  # Requires a valid JWT to access this route
@@ -1016,11 +895,59 @@ def view_jobs():
 
 
 
+# @app.route('/apply/<int:job_id>', methods=['POST'])
+# @jwt_required()
+# def apply(job_id):
+#     try:
+      
+#         # Check if the job_id exists in the Jobs table
+#         job = Jobs.query.get(job_id)
+#         if not job:
+#             return jsonify({'message': 'Job not found in the database.'}), 404
+
+#         # Get the candidate_id from the JWT token
+#         candidate_id = get_jwt_identity()['candidate_id']
+#         if not candidate_id:
+#             return jsonify({'message': 'Candidate ID not found in the JWT token.'}), 401
+
+#         # Check if the candidate already applied for the job
+#         existing_application = Application.query.filter_by(job_id=job_id, candidate_id=candidate_id).first()
+
+#         cv_entry = CV.query.filter_by(candidate_id=candidate_id).first()
+#         if not cv_entry:
+#             return jsonify({'message': 'CV not found for the candidate.'}), 404
+
+#         cv_id = cv_entry.cv_id
+
+#         if existing_application:
+#         # If the candidate already applied, update the application
+#             existing_application.cv_id = cv_id
+#             existing_application.status = 'Pending'  # Update the status
+#         else:
+#             # If the candidate is applying for the first time, create a new application
+#             new_application = Application(
+#             application_id=generate_application_id(),
+#             job_id=job_id,
+#             candidate_id=candidate_id,
+#             cv_id=cv_id,
+#             application_date=datetime.utcnow(),
+#             status='Pending'
+#         )
+   
+#             db.session.add(new_application)
+
+#         db.session.commit()
+
+#         return jsonify({'message': 'Application submitted successfully!'})
+
+#     except Exception as e:
+#         db.session.rollback()
+#         print("error:", e)
+#         return jsonify({'message': 'Error occurred during application submission.'}), 500
 @app.route('/apply/<int:job_id>', methods=['POST'])
 @jwt_required()
 def apply(job_id):
     try:
-      
         # Check if the job_id exists in the Jobs table
         job = Jobs.query.get(job_id)
         if not job:
@@ -1034,6 +961,7 @@ def apply(job_id):
         # Check if the candidate already applied for the job
         existing_application = Application.query.filter_by(job_id=job_id, candidate_id=candidate_id).first()
 
+        # Get the candidate's CV ID
         cv_entry = CV.query.filter_by(candidate_id=candidate_id).first()
         if not cv_entry:
             return jsonify({'message': 'CV not found for the candidate.'}), 404
@@ -1041,20 +969,20 @@ def apply(job_id):
         cv_id = cv_entry.cv_id
 
         if existing_application:
-        # If the candidate already applied, update the application
+            # If the candidate already applied, update the application
             existing_application.cv_id = cv_id
             existing_application.status = 'Pending'  # Update the status
         else:
             # If the candidate is applying for the first time, create a new application
             new_application = Application(
-            application_id=generate_application_id(),
-            job_id=job_id,
-            candidate_id=candidate_id,
-            cv_id=cv_id,
-            application_date=datetime.utcnow(),
-            status='Pending'
-        )
-   
+                application_id=generate_application_id(),
+                job_id=job_id,
+                candidate_id=candidate_id,
+                cv_id=cv_id,
+                application_date=datetime.utcnow(),
+                status='Pending'
+            )
+
             db.session.add(new_application)
 
         db.session.commit()
@@ -1091,61 +1019,6 @@ def candidate_applied_status():
         return jsonify({'message': 'Error occurred while fetching applied status.'}), 500
 
 
-# @app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
-# @jwt_required()
-# def view_applyed(candidate_id):
-#     print("View applied positions")
-    
-#     try:
-#         # Get the current user's identity (username) from the JWT token
-#         current_user = get_jwt_identity()
-       
-#         # Check if the user's role is 'candidate'
-#         if current_user['role'] != 'candidate':
-
-#             print("Not logged in as a candidate")
-#             return jsonify({'message': 'You are not logged in as a candidate.'}), 401
-
-#         # Check if the candidate_id exists in the database
-#         candidate = Candidate.query.filter_by(candidate_id=candidate_id).first()
-#         if not candidate:
-#             print("Candidate not found")
-#             return jsonify({'message': 'Candidate not found.'}), 404
-        
-#         candidate_applications = Application.query.filter_by(candidate_id=candidate_id).all()
-#         application_list = []
-
-#         # Loop application 
-#         for application in candidate_applications:
-#             application_details = {
-#                 'job_id': application.job_id,
-#                 'status': application.status,
-#                 'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
-#             }
-#             application_list.append(application_details)
-
-#         # Get all the jobs corresponding to the applications
-#         job_ids = [app.job_id for app in candidate_applications]
-#         all_jobs = Jobs.query.filter(Jobs.job_id.in_(job_ids)).all()
-
-#         # Create a list to store job details
-#         jobs_list = []
-
-#         # Loop through each job and add its details to the list
-#         for job in all_jobs:
-#             job_details = {
-#                 'job_id': job.job_id,
-#                 'job_title': job.job_title,
-#                 'job_description': job.job_description,
-#                 'qualifications': job.qualifications
-#             }
-#             jobs_list.append(job_details)
-
-#         return jsonify({'applications': application_list, 'jobs': jobs_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching applications.'})
 @app.route('/view_applyed/<int:candidate_id>', methods=['GET'])
 @jwt_required()
 def view_applyed(candidate_id):
@@ -1198,30 +1071,7 @@ def view_applyed(candidate_id):
         print("Error:", e)
         return jsonify({'message': 'Error occurred while fetching applications.'})
 
-# @app.route('/update_status', methods=['POST'])
-# @jwt_required()
-# def update_status():
-#     try:
-#         data = request.get_json()
-#         application_id = data.get('application_id')
-#         new_status = data.get('status')
 
-#         if application_id is None or new_status is None:
-#             return jsonify({'message': 'Invalid data.'}), 400
-
-#         application = Application.query.get(application_id)
-#         if not application:
-#             return jsonify({'message': 'Application not found.'}), 404
-
-#         application.status = new_status
-#         db.session.commit()
-
-#         return jsonify({'message': 'Status updated successfully!'})
-
-#     except Exception as e:
-#         db.session.rollback()
-#         print("Error:", e)
-#         return jsonify({'message': 'Error updating status.'}), 500
 @app.route('/update_status', methods=['POST'])
 @jwt_required()
 def update_status():
@@ -1248,38 +1098,7 @@ def update_status():
         db.session.rollback()
         print("Error:", e)
         return jsonify({'message': 'Error updating status.'}), 500
-# @app.route('/view_all_applications', methods=['GET'])
-# @jwt_required()
-# def view_all_applications():
-#     try:
-#         # Check if the user is logged in as a manager
-#         if 'loggedin' not in session or session['role'] != 'manager':
-#             print("Not logged in as a manager")
-#             return jsonify({'message': 'You are not logged in as a manager.'}), 401
 
-#         # Get all the applications from the database
-#         all_applications = Application.query.all()
-
-#         # Create a list to store application details
-#         application_list = []
-
-#         # Loop through each application and add its details to the list
-#         for application in all_applications:
-#             application_details = {
-#                 'application_id': application.application_id,
-#                 'job_id': application.job_id,
-#                 'candidate_id': application.candidate_id,
-#                 'cv_id': application.cv_id,
-#                 'status': application.status,
-#                 'application_date': application.application_date.strftime('%Y-%m-%d %H:%M:%S')
-#             }
-#             application_list.append(application_details)
-
-#         return jsonify({'applications': application_list})
-
-#     except Exception as e:
-#         print("Error:", e)
-#         return jsonify({'message': 'Error occurred while fetching applications.'})
 
 @app.route('/view_all_applications', methods=['GET'])
 @jwt_required()

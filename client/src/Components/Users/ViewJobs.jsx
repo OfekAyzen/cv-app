@@ -24,6 +24,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../images/jobs.jpg';
 import JobApplication from './JobApplication';
+
 import UserCard from './UserCard';
 // const VISIBLE_FIELDS = ['job_title', 'job_description', 'qualifications', 'apply'];
 // const Transition = React.forwardRef(function Transition(props, ref) {
@@ -89,7 +90,8 @@ const ViewJobs = (props) => {
     const [jobsData, setJobsData] = useState('');
     const [job_title,setTitle]=useState('');
     const navigate=useNavigate();
-    
+   
+
 
 
 

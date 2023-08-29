@@ -101,6 +101,7 @@ import JobApplication from './Components/Users/JobApplication';
 import Position from './Pages/Manager/Position';
 import NotFound from './NotFound';
 import SignUp from '../src/Components/SignUp/SignUp';
+import ForgotPassword from './Components/Users/ForgotPassword';
 
 
 
@@ -182,7 +183,7 @@ function App() {
           <Route path="/Logout" element={<Logout  token={removeToken}/>} />
           <Route path="/Login" element={<Login setUserName={setUserName} setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
           <Route path="/UserProfile" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
-        
+            <Route path="/forgot_password" element={<ForgotPassword/>} />
         </Routes>
     </div>
 
