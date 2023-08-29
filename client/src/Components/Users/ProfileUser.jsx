@@ -13,8 +13,7 @@ const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
   const [status,setStatus]=useState('');
-  const navigate = useNavigate();
-  
+
   return (
     <ThemeProvider theme={defaultTheme}>
       
@@ -54,45 +53,7 @@ export default function ProfileUser(props) {
             </Grid>
         </Grid>
           
-          <Grid container>
-            {/* Left side: About Us */}
-            <Grid item xs={12} sm={6}>
-              <Card sx={{ textAlign: 'left', backgroundColor: 'black', padding: '20px', height: '100%' , borderRadius: 0, border: 'none' }}>
-              <Typography variant="h1" sx={{textAlign:'center' ,color:'white',marginTop:'40px'}} gutterBottom>
-                <bold>About Us</bold>
-                </Typography>
-                  <hr/>
-              </Card>
-            </Grid>
-            {/* Right side: Second Card */}
-            <Grid item xs={12} sm={6}>
-              <Card sx={{ textAlign: 'left', backgroundColor: 'grey', padding: '20px',height: '100%' , borderRadius: 0, border: 'none', }}>
-                  
-            <Typography sx={{paddingLeft:'15px',fontSize: '20px'}}>
-            Tech19 provides comprehensive engineering solutions to drones, robotics, and security industries. We have a team of experts in HW, Software, and 3D Tech that provides customized solutions in varied business models.
-            </Typography>
-            <Typography sx={{paddingLeft:'15px',fontSize: '20px'}}>
-            Our commitment is to Quality (ISO 9001 Certified), customer focus, partnership & collaboration.
-            </Typography>
-            <Typography sx={{paddingLeft:'15px',fontSize: '20px'}}>
-              
-                Tech19 provides comprehensive engineering solutions to drones, robotics, and security industries. We have a team of experts in HW, Software, and 3D Tech that provides customized solutions in varied business models.
-
-            Our commitment is to Quality (ISO 9001 Certified),   </Typography>
-            <Typography sx={{paddingLeft:'15px',fontSize: '20px'}}>
-            customer focus, partnership & collaboration.
-
- 
-
-                Tech19 is part of Group 19 which promotes quality career opportunities for women in Israel's periphery. Group19 holds five companies with more than 150 employees in Mizpe Ramon, Sderot, Ofakim & Zfat that provides accounting, digital marketing,
-         
-            </Typography>
-            <Typography sx={{paddingLeft:'15px',fontSize: '20px'}}>
-            website development, and back-office solutions. 
-            </Typography>
-              </Card>
-            </Grid>
-          </Grid>
+          
           
           <ViewJobs setStatus={setStatus} onApplicationSubmit={props.onApplicationSubmit} 
             candidate_id={props.candidate_id} 
@@ -105,3 +66,6 @@ export default function ProfileUser(props) {
     </ThemeProvider>
   );
 }
+
+
+
