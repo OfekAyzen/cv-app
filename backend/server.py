@@ -209,50 +209,6 @@ def forgot_password():
     except Exception as e:
         print("Error sending email:", e)
         return jsonify({'message': 'Error sending email. Please try again later.'}), 500
-    # msg = Message(subject='Hello from the other side!', sender='tech19yeruham@gmail.com', recipients=['christina0147@gmail.com'])
-    # msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
-    # mail.send(msg)
-    # return "Message sent!"
-# # Function to generate a random password
-# def generate_random_password(length=12):
-#     password_characters = string.ascii_letters + string.digits + string.punctuation
-#     password = ''.join(secrets.choice(password_characters) for i in range(length))
-#     return password
-
-# @app.route('/forgot_password', methods=['POST'])
-# def forgot_password():
-#     data = request.json
-#     username = data['username']
-
-#     # Check if the candidate exists in the database
-#     candidate = Candidate.query.filter_by(username=username).first()
-#     if not candidate:
-#         return jsonify({'message': 'Candidate not found.'}), 404
-
-#     # Generate a new password
-#     new_password = generate_random_password()
-
-#     # Update the candidate's password in the database
-#     candidate.password = generate_password_hash(new_password)
-#     db.session.commit()
-
-#     # Send an email to the candidate with the new password
-#     try:
-#         # Create a Flask-Mail Message object
-#         msg = Message(
-#             subject='Password Reset',  # Subject of the email
-#             recipients=[candidate.email],  # List of email recipients
-#             sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
-#             body=f'Your new password is: {new_password}'  # Body of the email
-#         )
-
-#         # Send the email using the Mail object
-#         mail.send(msg)
-
-#         return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
-#     except Exception as e:
-#         print("Error sending email:", e)
-#         return jsonify({'message': 'Error sending email. Please try again later.'}), 500
 
 
 @app.route('/signup', methods=['POST'])
@@ -369,44 +325,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-#candidate upload cv 
-# @app.route('/upload', methods=['POST'])
-# @jwt_required()
-# def upload():
-#     try:
-#         # Get the candidate_id from the JWT token
-#         #username_data = get_jwt_identity()
-#         #candidate_id = username_data['candidate_id']
-#         candidate_id = get_jwt_identity()['candidate_id']
 
-#         file = request.files['inputFile']
-#         filename = secure_filename(file.filename)
-
-#         if file and allowed_file(file.filename):
-#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-#             # Create a new CV entry in the database
-#             new_cv = CV(
-#                 cv_id=generate_cv_id(),  # Replace with your logic to generate cv_id
-#                 candidate_id=candidate_id,
-#                 file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename),
-#                 upload_date=datetime.utcnow(),
-#                 status='Pending'
-#             )
-#             db.session.add(new_cv)
-#             db.session.commit()
-#             flash('File successfully uploaded ' + file.filename + ' to the database!')
-#             #return redirect('/')
-#             return jsonify({'message': 'File successfully uploaded.'}), 200
-#         else:
-#             flash('Invalid Upload, only word, pdf files are allowed')
-#             #return redirect('/')
-#             return jsonify({'message': 'Invalid Upload, only word, pdf files are allowed'}), 400
-
-#     except Exception as e:
-#         db.session.rollback()
-#         print("error:", e)
-#         return jsonify({'message': 'Error occurred during file upload: '}), 500
 @app.route('/upload', methods=['POST'])
 @jwt_required()
 def upload():
@@ -895,55 +814,6 @@ def view_jobs():
 
 
 
-# @app.route('/apply/<int:job_id>', methods=['POST'])
-# @jwt_required()
-# def apply(job_id):
-#     try:
-      
-#         # Check if the job_id exists in the Jobs table
-#         job = Jobs.query.get(job_id)
-#         if not job:
-#             return jsonify({'message': 'Job not found in the database.'}), 404
-
-#         # Get the candidate_id from the JWT token
-#         candidate_id = get_jwt_identity()['candidate_id']
-#         if not candidate_id:
-#             return jsonify({'message': 'Candidate ID not found in the JWT token.'}), 401
-
-#         # Check if the candidate already applied for the job
-#         existing_application = Application.query.filter_by(job_id=job_id, candidate_id=candidate_id).first()
-
-#         cv_entry = CV.query.filter_by(candidate_id=candidate_id).first()
-#         if not cv_entry:
-#             return jsonify({'message': 'CV not found for the candidate.'}), 404
-
-#         cv_id = cv_entry.cv_id
-
-#         if existing_application:
-#         # If the candidate already applied, update the application
-#             existing_application.cv_id = cv_id
-#             existing_application.status = 'Pending'  # Update the status
-#         else:
-#             # If the candidate is applying for the first time, create a new application
-#             new_application = Application(
-#             application_id=generate_application_id(),
-#             job_id=job_id,
-#             candidate_id=candidate_id,
-#             cv_id=cv_id,
-#             application_date=datetime.utcnow(),
-#             status='Pending'
-#         )
-   
-#             db.session.add(new_application)
-
-#         db.session.commit()
-
-#         return jsonify({'message': 'Application submitted successfully!'})
-
-#     except Exception as e:
-#         db.session.rollback()
-#         print("error:", e)
-#         return jsonify({'message': 'Error occurred during application submission.'}), 500
 @app.route('/apply/<int:job_id>', methods=['POST'])
 @jwt_required()
 def apply(job_id):

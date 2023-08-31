@@ -90,9 +90,9 @@
 import React, { useState,useEffect } from 'react';
 import { BrowserRouter , Route, Routes, Navigate, Outlet, Link } from 'react-router-dom';
 
-import Login from '../src/Pages/Login/Login';
+import Login from './Pages/Log/Login';
 
-import Logout from '../src/Pages/Login/Logout'
+import Logout from './Pages/Log/Logout'
 import useToken from './useToken';
 import ProfileManager from "./Pages/Manager/ProfileManager";
 import ProfileUser from './Components/Users/ProfileUser';

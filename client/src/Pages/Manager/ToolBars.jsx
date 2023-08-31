@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Logout from '../Login/Logout';
+import Logout from '../Log/Logout';
 import logo from '../../Components/images/logo_tech19.png'; 
 import {  useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';

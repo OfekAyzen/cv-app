@@ -56,7 +56,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, AppBar, Box, FormControlLabel, Checkbox, FormGroup, Grid, colors,Dialog } from '@mui/material';
 import logo from '../Components/images/logo_tech19.png';
-import Logout from '../Pages/Login/Logout';
+import Logout from '../Pages/Log/Logout';
 import Button from '@mui/material/Button';
 import {  useNavigate } from "react-router-dom"; 
 import Toolbar from '@mui/material/Toolbar';
