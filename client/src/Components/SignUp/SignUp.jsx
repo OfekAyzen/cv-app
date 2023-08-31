@@ -100,6 +100,7 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            textAlign: 'center', // Add this line to center-align the form content
           }}
         >
           <Typography component="h1" variant="h4">
@@ -109,8 +110,16 @@ export default function SignUp() {
             Join our website
           </Typography>
           <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+          <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'stretch',
+                gap: '1px',
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                {/* Left side: First Name, Last Name, Password */}
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -121,9 +130,9 @@ export default function SignUp() {
                   autoFocus
                   value={first_name}
                   onChange={(e) => setFirstName(e.target.value)}
+                  sx={{width:'70%'}}
+                  
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -133,21 +142,8 @@ export default function SignUp() {
                   autoComplete="family-name"
                   value={last_name}
                   onChange={(e) => setLastName(e.target.value)}
+                  sx={{width:'70%'}}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -158,22 +154,11 @@ export default function SignUp() {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  sx={{width:'70%'}}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="username"
-                  label="Username"
-                  type="username"
-                  id="username"
-                  autoComplete="new-username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
+              </div>
+              <div style={{ flex: 1, borderLeft: '2px solid #ad2069', paddingLeft: '1px' }}>
+                {/* Right side: Phone Number, Email, Username */}
                 <TextField
                   required
                   fullWidth
@@ -184,25 +169,45 @@ export default function SignUp() {
                   autoComplete="new-phone_number"
                   value={phone_number}
                   onChange={(e) => setPhoneNumber(e.target.value)}
+                  sx={{width:'70%'}}
                 />
-              </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{width:'70%'}}
                 />
-              </Grid> */}
-            </Grid>
+                <TextField
+                  required
+                  fullWidth
+                  name="username"
+                  label="Username"
+                  type="username"
+                  id="username"
+                  autoComplete="new-username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  sx={{width:'70%'}}
+                />
+              </div>
+            </div>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 4, mb: 2, width: '15%', color: 'white',backgroundColor: '#ad2069' ,'&:hover': {
+                backgroundColor: '#b4269a', 
+              },}} 
               onClick={handleSignUp}
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/Login" variant="body2">
                   Already have an account? Sign in

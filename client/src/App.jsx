@@ -174,7 +174,7 @@ function App() {
               <Route path="/" element={<Navigate to="/Login" replace />} />
               <Route path="/Profile" element={<ProfileManager username={username} userId={userId} token={token} userRole={userRole} setToken={setToken} />} />
               {/* Other routes */}
-              <Route path="/UserProfile" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
+              <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
               <Route path="/Apply/:job_id" element={<JobApplication  onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
               <Route path="/Position" element={<Position token={token} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
             </>
@@ -182,8 +182,9 @@ function App() {
           <Route path="/SignUp" element={<SignUp></SignUp>} />
           <Route path="/Logout" element={<Logout  token={removeToken}/>} />
           <Route path="/Login" element={<Login setUserName={setUserName} setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
-          <Route path="/UserProfile" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
+          <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
             <Route path="/forgot_password" element={<ForgotPassword/>} />
+            
         </Routes>
     </div>
 

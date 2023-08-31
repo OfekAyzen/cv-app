@@ -20,6 +20,7 @@ import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UploadCV from './UploadCV';
 import ApplyJob from './ApplyJob';
@@ -119,25 +120,25 @@ export default function JobApplication(props) {
             return; // Stop submission if any field is missing
         }
 
-            // Check if any field is empty
-    const fieldsToCheck = [
-        first_name,
-        last_name,
-        location,
-        email,
-        phone_number,
-        gender,
-        education,
-        work_experience,
-        skills,
-        position, // Include 'position' in the fields to check
-        certifications,
-    ];
+        // Check if any field is empty
+        const fieldsToCheck = [
+            first_name,
+            last_name,
+            location,
+            email,
+            phone_number,
+            gender,
+            education,
+            work_experience,
+            skills,
+            position, // Include 'position' in the fields to check
+            certifications,
+        ];
 
-    if (fieldsToCheck.some(field => field === '')) {
-        setFlashMessage('Please fill out all fields.');
-        return;
-    }
+        if (fieldsToCheck.some(field => field === '')) {
+            setFlashMessage('Please fill out all fields.');
+            return;
+        }
         const data = new FormData(event.currentTarget);
 
         const candidateData = {
@@ -198,7 +199,7 @@ export default function JobApplication(props) {
             certifications: certifications
         };
         localStorage.setItem('savedApplication', JSON.stringify(applicationData));
-        console.log("applicationData:", applicationData); 
+        console.log("applicationData:", applicationData);
         try {
             const response = await axios.post('http://localhost:5000/add_candidate', applicationData, {
                 headers: {
@@ -212,7 +213,7 @@ export default function JobApplication(props) {
                 setSuccessSnackbarOpen(true);
                 console.log(response.data);
                 setFlashMessage(response.data.message);
-                navigate('/UserProfile');
+                navigate('/HomePage');
                 props.setOpen(false);
 
 
@@ -247,6 +248,7 @@ export default function JobApplication(props) {
         }
     };
     const handleUploadCV = (event) => {
+        console.log("File selected:", event.target.files[0]);
         props.setOpen(false);
 
 
@@ -260,12 +262,12 @@ export default function JobApplication(props) {
 
     return (
         <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-            {console.log("canduaite id job app : ", props.candidate_id)}
+
             <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
                 <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
             </Typography>
 
-            <h1 style={{ textAlign: 'center' }}>Join our team!</h1>
+
 
 
             <Container component="main" maxWidth="xs">
@@ -281,181 +283,207 @@ export default function JobApplication(props) {
 
                     }}
                 >
-
+                    <h1 style={{ textAlign: 'center' }}>Join our team!</h1>
                     <Typography component="h1" variant="h4">
                         Job Application
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                {/* Left Side */}
-                                <Grid item xs={12}>
-                                    <TextField
-                                        autoComplete="given-name"
-                                        name="firstName"
-                                        required
-                                        fullWidth
-                                        id="firstName"
-                                        label="First Name"
-                                        autoFocus
-                                        value={first_name}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                    />
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'stretch',
+                                gap: '120px', // Increased gap
+                                padding: '0 30px', // Added padding
+                            }}
+                        >
+                            <div style={{ flex: 1 }} >
+
+                                <Grid item xs={12}  sx={{width:'300px'}}>
+                                    {/* Left Side */}
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            autoComplete="given-name"
+                                            name="firstName"
+                                            required
+                                            fullWidth
+                                            id="firstName"
+                                            label="First Name"
+                                            autoFocus
+                                            value={first_name}
+                                            onChange={(e) => setFirstName(e.target.value)
+                                            
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} >
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="lastName"
+                                            label="Last Name"
+                                            name="lastName"
+                                            autoComplete="family-name"
+                                            value={last_name}
+                                            onChange={(e) => setLastName(e.target.value)}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="location"
+                                            label="Location"
+                                            name="location"
+                                            autoComplete="location"
+                                            value={location}
+                                            onChange={(e) => setLocation(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="phoneNumber"
+                                            label="Phone Number"
+                                            name="phoneNumber"
+                                            autoComplete="phone-number"
+                                            value={phone_number}
+                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            name="email"
+                                            autoComplete="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="position"
+                                            label="Position"
+                                            name="position"
+                                            autoComplete="position"
+                                            value={position}
+                                            onChange={(e) => setPosition(e.target.value)}
+                                        />
+                                    </Grid>
+                                    
                                 </Grid>
-                                <Grid item xs={12} >
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="lastName"
-                                        label="Last Name"
-                                        name="lastName"
-                                        autoComplete="family-name"
-                                        value={last_name}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                    />
+                                
+                            </div>
+                            <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ad2069' }} />
+                            <div style={{ flex: 1, paddingLeft: '1px' }}>
+                                {/* Right Side */}
+                                <Grid item xs={12}  sx={{width:'300px'}}>
+
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="skills"
+                                            label="Skills"
+                                            name="skills"
+                                            autoComplete="skills"
+                                            value={skills}
+                                            onChange={(e) => setSkills(e.target.value)}
+                                           
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="certifications"
+                                            label="Certifications"
+                                            name="certifications"
+                                            autoComplete="certifications"
+                                            value={certifications}
+                                            onChange={(e) => setCertifications(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <InputLabel>Education</InputLabel>
+                                        <Select
+                                            fullWidth
+                                            id="education"
+                                            label="Education"
+                                            name="education"
+                                            value={education}
+                                            onChange={(e) => setEducation(e.target.value)}
+                                        >
+                                            {educationOptions.map((option) => (
+                                                <MenuItem key={option} value={option}>
+                                                    {option}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <InputLabel>Work Experience</InputLabel>
+                                        <Select
+                                            fullWidth
+                                            id="workExperience"
+                                            label="Work Experience"
+                                            name="workExperience"
+                                            value={work_experience}
+                                            onChange={(e) => setWorkExperience(e.target.value)}
+                                        >
+                                            {workExperienceOptions.map((option) => (
+                                                <MenuItem key={option} value={option}>
+                                                    {option}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <InputLabel>Gender</InputLabel>
+                                        <Select
+                                            fullWidth
+                                            id="gender"
+                                            label="Gender"
+                                            name="gender"
+                                            value={gender}
+                                            onChange={(e) => setGender(e.target.value)}
+                                        >
+                                            {genderOptions.map((option) => (
+                                                <MenuItem key={option} value={option}>
+                                                    {option}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                        
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <div style={{ flex: 1 }}>
+                                          
+                                        <UploadCV
+                                        candidate_id={props.candidate_id} token={props.token}
+                                        userRole={props.userRole} setToken={props.setToken}
+                                        job_id={job_id}> </UploadCV>
+                                        </div>
+                                      
+
+                                        </Grid>
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="location"
-                                        label="Location"
-                                        name="location"
-                                        autoComplete="location"
-                                        value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="phoneNumber"
-                                        label="Phone Number"
-                                        name="phoneNumber"
-                                        autoComplete="phone-number"
-                                        value={phone_number}
-                                        onChange={(e) => setPhoneNumber(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="position"
-                                        label="Position"
-                                        name="position"
-                                        autoComplete="position"
-                                        value={position}
-                                        onChange={(e) => setPosition(e.target.value)}
-                                    />
-                                </Grid>
-                            </Grid>
-                            {/* Right Side */}
-                            <Grid item xs={12}>
+                            </div>
+                        </div>
+                       
 
-
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="skills"
-                                        label="Skills"
-                                        name="skills"
-                                        autoComplete="skills"
-                                        value={skills}
-                                        onChange={(e) => setSkills(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="certifications"
-                                        label="Certifications"
-                                        name="certifications"
-                                        autoComplete="certifications"
-                                        value={certifications}
-                                        onChange={(e) => setCertifications(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputLabel>Education</InputLabel>
-                                    <Select
-                                        fullWidth
-                                        id="education"
-                                        label="Education"
-                                        name="education"
-                                        value={education}
-                                        onChange={(e) => setEducation(e.target.value)}
-                                    >
-                                        {educationOptions.map((option) => (
-                                            <MenuItem key={option} value={option}>
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputLabel>Work Experience</InputLabel>
-                                    <Select
-                                        fullWidth
-                                        id="workExperience"
-                                        label="Work Experience"
-                                        name="workExperience"
-                                        value={work_experience}
-                                        onChange={(e) => setWorkExperience(e.target.value)}
-                                    >
-                                        {workExperienceOptions.map((option) => (
-                                            <MenuItem key={option} value={option}>
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputLabel>Gender</InputLabel>
-                                    <Select
-                                        fullWidth
-                                        id="gender"
-                                        label="Gender"
-                                        name="gender"
-                                        value={gender}
-                                        onChange={(e) => setGender(e.target.value)}
-                                    >
-                                        {genderOptions.map((option) => (
-                                            <MenuItem key={option} value={option}>
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <UploadCV
-                            candidate_id={props.candidate_id} token={props.token}
-                            userRole={props.userRole} setToken={props.setToken}
-                            job_id={job_id}> </UploadCV>
-
-                        {/*<Button onClick={handleSaveApp} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                            Apply & Save
-                </Button>*/}
-
-                        {console.log("job ids  : ", job_id, "selected job id : ", props.job_id)}
-                        <ApplyJob
+                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                            {/* Center the ApplyJob component */}
+                            <ApplyJob
                             setTitle={props.setTitle}
                             setStatus={props.setStatus}
                             candidate_id={props.candidate_id}
@@ -463,12 +491,12 @@ export default function JobApplication(props) {
                             userRole={props.userRole}
                             setToken={props.setToken}
                             job_id={applyJobJobId}
-                            // job_id_log={props.job_id}
-                            handleApplyJob={handleSaveApp} // Pass the handleSaveApp function
+                            handleApplyJob={handleSaveApp}
                             setOpen={setOpen}
                             candidateData={data}
                             onApplicationSubmit={props.onApplicationSubmit}
-                        ></ApplyJob>
+                            ></ApplyJob>
+                        </div>
                         {/* Success Snackbar */}
                         <Snackbar
                             open={successSnackbarOpen}

@@ -1,5 +1,9 @@
 /* LandingPage.css */
-
+body {
+  
+  margin: 0px !important;
+  
+}
 .candidate-table {
     width: 100%;
     /**border-collapse: collapse;*/
@@ -309,7 +313,7 @@
 
 .orderby{
   background-color: #ffffff;
-  padding-left: 1.5%;
+  padding-left: 0.9%;
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
 
@@ -414,4 +418,9 @@
   letter-spacing: 0.00938em;
   color: rgba(0, 0, 0, 0.6);
   display: flex;
+}
+
+.css-164r41r {
+  margin-top: 8px;
+  width: 40%;
 }

@@ -164,7 +164,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'tech19yeruham@gmail.com'  # Replace with your Gmail email address
-app.config['MAIL_PASSWORD'] = 'Tech19191@'  # Replace with your Gmail password
+app.config['MAIL_PASSWORD'] = 'wjmkebrmobgmhwgl'  # Replace with your Gmail password
 
 
 mail = Mail(app)
@@ -177,42 +177,42 @@ def generate_random_password(length=12):
 
 @app.route('/forgot_password', methods=['POST'])
 def forgot_password():
-    # data = request.json
-    # username = data['username']
+    data = request.json
+    username = data['username']
 
-    # # Check if the candidate exists in the database
-    # candidate = Candidate.query.filter_by(username=username).first()
-    # if not candidate:
-    #     return jsonify({'message': 'Candidate not found.'}), 404
+    # Check if the candidate exists in the database
+    candidate = Candidate.query.filter_by(username=username).first()
+    if not candidate:
+        return jsonify({'message': 'Candidate not found.'}), 404
 
-    # # Generate a new password
-    # new_password = generate_random_password()
+    # Generate a new password
+    new_password = generate_random_password()
 
-    # # Update the candidate's password in the database
-    # candidate.password = generate_password_hash(new_password)
-    # db.session.commit()
+    # Update the candidate's password in the database
+    candidate.password = generate_password_hash(new_password)
+    db.session.commit()
 
-    # # Send an email to the candidate with the new password
-    # try:
-    #     # Create a Flask-Mail Message object
-    #     msg = Message(
-    #         subject='Password Reset',  # Subject of the email
-    #         recipients=[candidate.email],  # List of email recipients
-    #         sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
-    #         body=f'Your new password is: {new_password}'  # Body of the email
-    #     )
+    # Send an email to the candidate with the new password
+    try:
+        # Create a Flask-Mail Message object
+        msg = Message(
+            subject='Password Reset',  # Subject of the email
+            recipients=[candidate.email],  # List of email recipients
+            sender=app.config['MAIL_USERNAME'],  # Sender's email address (your Gmail email)
+            body=f'Your new password to connect tech 19 account is: {new_password}'  # Body of the email
+        )
 
-    #     # Send the email using the Mail object
-    #     mail.send(msg)
+        # Send the email using the Mail object
+        mail.send(msg)
 
-    #     return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
-    # except Exception as e:
-    #     print("Error sending email:", e)
-    #     return jsonify({'message': 'Error sending email. Please try again later.'}), 500
-    msg = Message(subject='Hello from the other side!', sender='tech19yeruham@gmail.com', recipients=['christina0147@gmail.com'])
-    msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
-    mail.send(msg)
-    return "Message sent!"
+        return jsonify({'message': 'Password reset successful. Check your email for the new password.'})
+    except Exception as e:
+        print("Error sending email:", e)
+        return jsonify({'message': 'Error sending email. Please try again later.'}), 500
+    # msg = Message(subject='Hello from the other side!', sender='tech19yeruham@gmail.com', recipients=['christina0147@gmail.com'])
+    # msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
+    # mail.send(msg)
+    # return "Message sent!"
 # # Function to generate a random password
 # def generate_random_password(length=12):
 #     password_characters = string.ascii_letters + string.digits + string.punctuation

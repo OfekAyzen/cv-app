@@ -9,6 +9,7 @@ import UserCard from './UserCard';
 import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography,Card ,Grid} from '@mui/material';
+import logo from "../images/logo_tech19.png";
 const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
@@ -16,13 +17,13 @@ export default function ProfileUser(props) {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      
-      
+       
+    
       {console.log("propfile id ",props.candidate_id)}
       {console.log("propfile user : ",props)}
       {console.log("username profile : ",props.username)}
         {/* Show the header only if the user is logged in */}
-        {props.token && (
+        {props.token? (
         <Header
           token={props.token}
           onApplicationSubmit={props.onApplicationSubmit}
@@ -32,7 +33,13 @@ export default function ProfileUser(props) {
           setToken={props.setToken}
           username={props.username}
         />
+      ):(
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
+        <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
+    </Typography>
       )}
+        
+      
         <Grid container alignItems="center" sx={{backgroundColor:'#1e1c1c',width:'100%' }}>
         {/* Left side: Advanced Engineering Solutions */}
             <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>

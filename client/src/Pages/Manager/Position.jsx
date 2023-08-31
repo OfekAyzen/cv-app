@@ -9,6 +9,7 @@ import CandidateDataService from './CandidateDataService';
 import { Box,Alert } from '@mui/material';
 import "../../styles/Profilemanager.css";
 import AddJobForm from './AddJobForm';
+import CircularProgress from '@mui/material/CircularProgress';
 import ToolBars from './ToolBars';
 function Position(props) {
   const [positions, setPositions] = useState([]);
@@ -18,11 +19,13 @@ function Position(props) {
   const [editedJobDescription, setEditedJobDescription] = useState('');
   const [editedQualifications, setEditedQualifications] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    fetchPositions();
+    setIsLoading(true); // Start loading
+    fetchPositions().then(() => {
+      setIsLoading(false); // Stop loading
+    });
   }, []);
-
   const fetchPositions = async () => {
     try {
       const response = await CandidateDataService.getAllPositions(props.token);
@@ -89,14 +92,36 @@ function Position(props) {
   return (
     <div className="profile-div">
       <ToolBars/>
-      <Typography sx={{display:'flex', textAlign: 'start', 
-      fontSize: '35px',paddingLeft:'6%',paddingTop:'2%',
-      fontFamily:'Roboto","Helvetica","Arial",sans-serif;',fontWeight:'bold' }}>Manage Job list</Typography>
+      <Typography sx={{
+    display: 'flex',
+    textAlign: 'start',
+    fontSize: '35px',
+    paddingLeft: '6%',
+    paddingTop: '3%',
+    paddingBottom: '3%',
+    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+    fontWeight: 'bold',
+
+   
+  }}>Manage Job list</Typography>
       <Box className="Box-profile">
         <div className='candidates-list'>
-        
-          <AddJobForm token={props.token} onJobAdded={handleJobAdded} /> {/* AddJobForm component */}
-          <TableContainer>
+         {/* AddJobForm component */}
+         {isLoading ? (
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '9vh',
+            backgroundColor:'#e0e0e0'
+          }}
+        >
+          <CircularProgress sx={{ color: '#b4269a' }} />
+        </div>     ) : (
+          <>
+            <AddJobForm token={props.token} onJobAdded={handleJobAdded} />
+            <TableContainer>
           <Table>
               <TableHead>
                 <TableRow>
@@ -154,8 +179,9 @@ function Position(props) {
                       {selectedPosition === position ? (
                         <Button
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           onClick={handleSaveChanges}
+                          sx={{backgroundColor:'#ad2069'}}
                           multiline // Enable multiline input
                       rows={3} // Adjust the number of rows as needed
                       fullWidth // Expand to fit the container width
@@ -186,6 +212,10 @@ function Position(props) {
               </TableBody>
             </Table>
           </TableContainer>
+          </>
+        )}
+         
+          
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={3000}

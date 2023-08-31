@@ -11,6 +11,7 @@
 @media (min-width: 1200px) {
     .css-1oqqzyl-MuiContainer-root {
         max-width: 100% !important;
+
         
     }
 }
@@ -110,5 +111,23 @@
 .css-1fdypfd-MuiGrid-root {
     padding-bottom: 73px;
 }
+/**contents center */
 
+.css-nzinn5-MuiContainer-root {
+    width: 100%;
+    margin-left: auto;
+    box-sizing: border-box;
+    margin-right: auto;
+    display: contents !important; 
+   
+    padding-right: 16px;
+  
+}
 
+.css-1hp6gz7-MuiPaper-root-MuiDialog-paper {
+   
+    max-width: 900px !important;
+
+  
+
+}

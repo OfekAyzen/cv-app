@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import "../../styles/Profilemanager.css";
 
+//candidate filter 
 function CandidateFilterForm({ onFilter }) {
   const [education, setEducation] = useState("");
   const [workExperience, setWorkExperience] = useState("");
@@ -49,18 +50,19 @@ function CandidateFilterForm({ onFilter }) {
   };
   return (
     <Card className="FilterCard">
-      
-        <Button  onClick={clearFilters} sx={{display:"flex" ,
-        marginLeft:'20px',
-        marginTop:'20px',
-        color:"Grey"
 
-        
-        }}>
-              Clear Filters
-            </Button>
+      <Button onClick={clearFilters} sx={{
+        display: "flex",
+        marginLeft: '20px',
+        marginTop: '20px',
+        color: "Grey"
+
+
+      }}>
+        Clear Filters
+      </Button>
       <CardContent>
-        
+
         <Grid container spacing={2}>
           <Grid item xs={4} sm={2}>
             <FormControl fullWidth variant="outlined">
@@ -96,15 +98,7 @@ function CandidateFilterForm({ onFilter }) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4} sm={2}>
-            <TextField
-              fullWidth
-              label="Skills"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              variant="outlined"
-            />
-          </Grid>
+
           <Grid item xs={4} sm={2}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Gender</InputLabel>
@@ -131,11 +125,20 @@ function CandidateFilterForm({ onFilter }) {
               variant="outlined"
             />
           </Grid>
+          <Grid item xs={4} sm={2}>
+            <TextField
+              fullWidth
+              label="Skills"
+              value={skills}
+              onChange={(e) => setSkills(e.target.value)}
+              variant="outlined"
+            />
+          </Grid>
           <Grid item xs={2}>
             <Button variant="contained" color="primary" onClick={handleFilter}>
               Apply Filters
             </Button>
-          
+
           </Grid>
         </Grid>
       </CardContent>
