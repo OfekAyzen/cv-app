@@ -124,6 +124,7 @@
 .css-1knaqv7-MuiButtonBase-root-MuiButton-root {
 
   color: #ad2069 !important;
+
 }
 .css-128fb87-MuiDataGrid-toolbarContainer {
   
@@ -315,6 +316,7 @@
   margin: 1% !important;
 
   background-color: #ad2069 !important;
+  width: 158px;
   
 }
 /* user profile at manager **/
@@ -369,7 +371,7 @@
   
 }
 .tr-candidate:hover {
-  box-shadow: 0px 10px 10px lightpink;
+  box-shadow: 10px 10px 10px rgb(201, 128, 139);
   cursor: pointer;
 }
 .tr-candidate {
@@ -399,4 +401,17 @@
   align-items: flex-start;
   align-content: center;
   justify-content: flex-start;
+}
+.csv-export-button{
+  color: #ad2069;
+}
+.css-qfso29-MuiTypography-root-MuiDialogContentText-root {
+  margin: 0;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  color: rgba(0, 0, 0, 0.6);
+  display: flex;
 }

@@ -360,7 +360,7 @@ function NoteForm(props) {
 
   return (
     <div>
-      <Typography variant="h6" sx={{display:'flex',textAlign:'start'}}>Existing Notes: {notes}</Typography>
+      <Typography  sx={{display:'flex',textAlign:'start' ,fontSize:'18px' ,color:" #469e62"}}>Existing Notes: {notes}</Typography>
       
         
       
@@ -374,7 +374,9 @@ function NoteForm(props) {
           />
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary" size="small" sx={{backgroundColor: "#ad2069"}} onClick={handleAddNote}>
+          <Button variant="contained" color="primary" size="small" sx={{backgroundColor: "#ad2069",'&:hover': {
+                backgroundColor: "#ff98b5", // Light pink color
+              },}} onClick={handleAddNote}>
             Add Note
           </Button>
         </Grid>

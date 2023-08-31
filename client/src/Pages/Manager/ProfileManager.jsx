@@ -100,8 +100,8 @@ function ProfileManager(props) {
   };
 
   const handleViewCandidate = (candidate, jobId) => {
-    console.log("Selected Job ID:", jobId);
-    console.log("Applied Jobs:", candidate.appliedJobs);
+   
+   
     setSelectedCandidate(candidate);
     setSelectedJobId(jobId);
     setSelectedCandidateStatus(
@@ -121,7 +121,45 @@ function ProfileManager(props) {
   };
   const [selectedCandidateStatus, setSelectedCandidateStatus] = useState("");
 
-
+  //handle delete job application 
+  // const handleDeleteApplication = (candidate, jobId) => {
+  //   if (window.confirm("Are you sure you want to delete this application?")) {
+  //     console.log("jobId ",jobId);
+  //     const applicationIdToDelete = jobId;
+  //     console.log(" applicationIdToDelete ?",applicationIdToDelete);
+  //     if (applicationIdToDelete) {
+  //       console.log(" if (applicationIdToDelete) {");
+  //       CandidateDataService.deleteApplication(applicationIdToDelete, props.token)
+  //         .then(response => {
+  //           // Update the state or handle success, if needed
+  //           console.log("Application deleted successfully:", response.message);
+  //           // Refresh the data after deleting
+  //           fetchCandidatesData();
+  //         })
+  //         .catch(error => {
+  //           // Handle error, if needed
+  //           console.error("Error deleting application:", error);
+  //         });
+  //     }
+  //   }
+  // };
+  const handleDeleteApplication = (candidateId, applicationId) => {
+    if (window.confirm("Are you sure you want to delete this application?")) {
+      if (applicationId) {
+        CandidateDataService.deleteApplication(applicationId, props.token)
+          .then((response) => {
+            // Update the state or handle success, if needed
+            console.log("Application deleted successfully:", response.message);
+            // Refresh the data after deleting
+            fetchCandidatesData();
+          })
+          .catch((error) => {
+            // Handle error, if needed
+            console.error("Error deleting application:", error);
+          });
+      }
+    }
+  };
   //filter the candidates that applyes by  education, workExperience, skills, gender, location
   const filteredCandidates = candidatesData.filter((candidate) => {
     const { education, workExperience, skills, gender, location } = filters;
@@ -138,22 +176,9 @@ function ProfileManager(props) {
   });
 
 
-
   function parseApplicationDate(dateString) {
-    if (!dateString) {
-      console.log("dateString) {")
-      return 0; // Return a default value if dateString is undefined
-    }
-
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const parts = dateString.split(", ")[1].split(" ");
-    const monthIndex = months.indexOf(parts[1]);
-    const year = parseInt(parts[2]);
-    const month = monthIndex + 1;
-    const day = parseInt(parts[0]);
-    return new Date(Date.UTC(year, month, day)).getTime();
+    return new Date(dateString).getTime();
   }
-
   const sortedCandidates = filteredCandidates.slice().sort((a, b) => {
     const key = sortOrder === "asc" ? 1 : -1;
     if (sortByField === "application_date") {
@@ -162,7 +187,7 @@ function ProfileManager(props) {
       console.log("date a", dateA);
       const dateB = parseApplicationDate(b.appliedJobs.find(job => job.job_id === selectedJobId)?.application_date);
       console.log('date B:', dateB);
-      console.log('appliedJobs for candidate b:', b.appliedJobs);
+      
       return key * (dateB - dateA); // Sort by descending order of application date
     }
 
@@ -204,9 +229,41 @@ function ProfileManager(props) {
   // Calculate the indexes of the items to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCandidates = sortedCandidates.slice(indexOfFirstItem, indexOfLastItem);
+  // const currentCandidates = sortedCandidates.slice(indexOfFirstItem, indexOfLastItem);
+  // const currentCandidates = sortedCandidates
+  // .filter(candidate => candidate.appliedJobs.length > 0) // Filter candidates with applied jobs
+  // .sort((a, b) => {
+  //   // Find the latest application date for each candidate
+  //   console.log("a:",a , "   b;",b);
 
+  //   const dateA = Math.max(
+  //     ...a.appliedJobs.map(job => new Date(job.application_date).getTime())
+  //   );
+  //   console.log("date a:",dateA);
+  //   const dateB = Math.max(
+  //     ...b.appliedJobs.map(job => new Date(job.application_date).getTime())
+  //   );
+  //   console.log("date b:",dateB);
+
+  //   // Sort in descending order based on the latest application date
+  //   console.log("a  -  B:",dateB - dateA);
+  //   return dateB - dateA;
+  // })
+  // .slice(indexOfFirstItem, indexOfLastItem);
+const candidatesWithLatestDates = sortedCandidates.map(candidate => {
+  const allApplicationDates = candidate.appliedJobs.map(job => new Date(job.application_date).getTime());
+  const latestDate = Math.max(...allApplicationDates);
+  return { candidate, latestDate };
+});
+
+const currentCandidates = candidatesWithLatestDates
+  .filter(candidateData => candidateData.candidate.appliedJobs.length > 0)
+  .sort((a, b) => b.latestDate - a.latestDate)
+  .map(candidateData => candidateData.candidate)
+  .slice(indexOfFirstItem, indexOfLastItem);
+  
   const totalPages = Math.ceil(sortedCandidates.length / itemsPerPage);
+
 
 
   //download csv for the manager 
@@ -254,21 +311,24 @@ function ProfileManager(props) {
   };
 
   const handleNoteAddSuccess = (message, color, note) => {
-    console.log(" handleNoteAddSuccess");
+   
     // Handle success logic here
     console.log(message, color, note);
   };
 
   const handleNoteAddError = (message, color) => {
-    console.log(" handleNoteAddError ");
+  
     // Handle error logic here
     console.error(message, color);
   };
   return (
     <div className="profile-div">
       <ToolBars token={props.token} userRole={props.userRole} />
+      <Typography sx={{display:'flex', textAlign: 'start', 
+      fontSize: '35px',paddingLeft:'6%',paddingTop:'2%',
+      fontFamily:'Roboto","Helvetica","Arial",sans-serif;',fontWeight:'bold' }}>Applicants</Typography>
       <Box className="Box-profile">
-        <Typography sx={{ textAlign: 'start', fontSize: '30px' }}>Applicants</Typography>
+       
         <div className="filter-order" style={{ borderRadius: "20px" }}>
           <CandidateFilterForm onFilter={handleFilter} />
           <div className="orderby">
@@ -284,7 +344,7 @@ function ProfileManager(props) {
                   <em>None</em>
                 </MenuItem>
                 <MenuItem value="education">Education</MenuItem>
-                <MenuItem value="workExperience">Work Experience</MenuItem>
+                {/* <MenuItem value="workExperience">Work Experience</MenuItem> */}
                 <MenuItem value="skills">Skills</MenuItem>
                 <MenuItem value="gender">Gender</MenuItem>
                 <MenuItem value="location">Location</MenuItem>
@@ -313,18 +373,24 @@ function ProfileManager(props) {
                   <TableCell>Status</TableCell>
 
                   <TableCell>Action</TableCell>
+                  <TableCell> </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {currentCandidates.map((candidate) => (
+                 
                   <React.Fragment key={candidate.id}>
+                     
                     {candidate.appliedJobs.map((appliedJob) => (
+                      
                       <TableRow className="trCandidate" key={appliedJob.job_id}
 
                       >
+                        {console.log("appliedJob : ",appliedJob)}
                         {/* <TableCell>{appliedJob.application_date}</TableCell> */}
                         <TableCell>
                           {new Date(appliedJob.application_date).toLocaleDateString("en-GB")}
+                         
                         </TableCell>
                         <TableCell>{candidate.first_name} {candidate.last_name}</TableCell>
                         <TableCell>{candidate.location}</TableCell>
@@ -341,10 +407,26 @@ function ProfileManager(props) {
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => handleViewCandidate(candidate, appliedJob.job_id)} // Pass the job ID
+                            onClick={() => handleViewCandidate(candidate , appliedJob.job_id)} // Pass the job ID
                           >
                             View Candidate
                           </Button>
+                         
+                        </TableCell>
+                      
+                        <TableCell>
+                       
+                          
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={() =>
+                                handleDeleteApplication(candidate.id, appliedJob.application  )
+                              }
+                            >
+                              Delete
+                            </Button>
+                          
                         </TableCell>
                       </TableRow>
                     ))}
@@ -358,28 +440,41 @@ function ProfileManager(props) {
         <div className="pagination">
           <Button
             disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
+            onClick={() => setCurrentPage(currentPage - 1)
+            }
+            sx={{color:'#ad2069'}}
           >
             Previous
           </Button>
-          <span>Page {currentPage}</span>
+          <span sx={{color:'gray',fontSize:'16px'}}>PAGE {currentPage}</span>
           <Button
             disabled={indexOfLastItem >= sortedCandidates.length}
             onClick={() => setCurrentPage(currentPage + 1)}
+            sx={{color:'#ad2069'}}
           >
             Next
           </Button>
           {/* {renderPaginationButtons()} */}
         </div>
-        <Button className="csv-export-button"> {/**download csv of all the candidate */}
+        <Button
+          className="csv-export-button"
+          // Set the color style here
+        >
           <CSVLink
             data={csvData}
             filename={"candidates.csv"}
-            className="btn btn-primary"
+            
+            sx={{ color: "#ad2069" }} 
           >
             Download CSV
           </CSVLink>
         </Button>
+
+
+
+
+
+
       </Box>
 
       <Dialog
@@ -512,3 +607,6 @@ function ProfileManager(props) {
 }
 
 export default ProfileManager;
+
+
+

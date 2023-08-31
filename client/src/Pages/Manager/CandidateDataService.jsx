@@ -13,6 +13,7 @@ class CandidateDataService {
       return axios.get(`${API_URL}/view_jobs`, { headers });
   }
 
+ 
 
 
   getCandidateAppliedStatus(token) {
@@ -46,11 +47,12 @@ class CandidateDataService {
     return axios.post(`${API_URL}/edit_job/${positionId}`, data, { headers });
   }
   
-  deleteJob(positionId, token) {
+  deleteApplication(applicationId, token) {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return axios.delete(`${API_URL}/delete_job/${positionId}`, { headers });
+
+    return axios.delete(`${API_URL}/delete_application/${applicationId}`, { headers });
   }
 
   addJob(data, token) {

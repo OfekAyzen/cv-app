@@ -74,7 +74,9 @@ function StatusChangeForm(props) {
       </FormControl>
       </Grid>
       <Grid item>
-        <Button variant="contained" color="primary" onClick={handleStatusChange}>
+        <Button variant="contained" color="primary" size="small" sx={{backgroundColor: "#ad2069",'&:hover': {
+                backgroundColor: "#ff98b5", // Light pink color
+              },}} onClick={handleStatusChange}>
           Save
         </Button>
       </Grid>

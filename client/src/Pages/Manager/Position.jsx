@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { Button, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -89,7 +89,9 @@ function Position(props) {
   return (
     <div className="profile-div">
       <ToolBars/>
-      
+      <Typography sx={{display:'flex', textAlign: 'start', 
+      fontSize: '35px',paddingLeft:'6%',paddingTop:'2%',
+      fontFamily:'Roboto","Helvetica","Arial",sans-serif;',fontWeight:'bold' }}>Manage Job list</Typography>
       <Box className="Box-profile">
         <div className='candidates-list'>
         
