@@ -33,7 +33,7 @@ function Logout(props) {
             
             <Button 
              sx={{ p: 0, ml: 2, '&:hover': { cursor: 'pointer', color: colors.purple[500] },color:'white' }}
- onClick={logMeOut}> 
+                  onClick={logMeOut}> 
                 Logout
             </Button>
         </header>
