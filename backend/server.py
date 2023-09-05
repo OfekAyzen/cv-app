@@ -52,8 +52,9 @@ except FileNotFoundError:
         secret_file.write(app.secret_key) 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=90)
 
-CORS(app,supports_credentials=True, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST","DELETE"]}})
+#CORS(app,supports_credentials=True, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST","DELETE"]}})
 
+CORS(app,supports_credentials=True, resources={r"/*": {"origins": "https://814fb2fc646eae.lhr.life", "methods": ["GET", "POST","DELETE"]}})
 
 
 app.config['UPLOAD_FOLDER'] = '/Users/User/CVManagment-App/CV-Management-App/backend/uploads'  # Adjust this path to upload cv for candidates
