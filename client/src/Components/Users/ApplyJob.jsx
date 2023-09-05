@@ -1,73 +1,5 @@
 
 
-// import React, { useState } from 'react';
-// import Typography from '@mui/material/Typography';
-// import Button from '@mui/material/Button';
-// import axios from 'axios';
-
-// export default function ApplyJob(props) {
-//   const [flashMessage, setFlashMessage] = useState('');
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     console.log("job id is: ", props.job_id);
-
-//     try {
-//       console.log("at try ");
-//       {console.log("job id at apply   : ",props.job_id)}
-//       const response = await axios.post(
-//         `http://localhost:5000/apply/${props.job_id}`,
-//         {},
-//         {
-//           headers: {
-//             Authorization: 'Bearer ' + props.token,
-//             'Content-Type': 'application/json',
-//           },
-//         }
-//       );
-  
-//       if (response.status === 200) {
-//         console.log("Response apply:", response.data);
-       
-//         props.setOpen(false);
-//       } else {
-//         setFlashMessage(response.data.message);
-//             setErrorSnackbarOpen(true);
-//       }
-//     } catch (error) {
-//       if (error.response) {
-//         setFlashMessage(error.response.data.message); // Set the error message from the server
-//         setErrorSnackbarOpen(true); // Open the error snackbar
-//     } else {
-//         setFlashMessage('Error applying for the job.');
-//         setErrorSnackbarOpen(true);
-//     }
-//     }
-//   };
-
-//   const handleApply = async (event) => {
-//     handleSubmit(event);
-
-//     if (typeof props.handleApplyJob === 'function') {
-//       props.handleApplyJob(event);
-//     }
-
-//     props.setOpen(false);
-//   };
-
-//   return (
-//     <div>
-//       <Button onClick={handleApply} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-//         Apply and Save
-//       </Button>
-//       {flashMessage && (
-//         <Typography variant="body1" color="error" align="center">
-//           {flashMessage}
-//         </Typography>
-//       )}
-//     </div>
-//   );
-// }
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -78,11 +10,11 @@ export default function ApplyJob(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("job id is: ", props.job_id);
+  
 
     try {
-      console.log("at try ");
-      {console.log("job id at apply   : ",props.job_id)}
+  
+    
       const response = await axios.post(
         `http://localhost:5000/apply/${props.job_id}`,
         {},
@@ -95,7 +27,7 @@ export default function ApplyJob(props) {
       );
   
       if (response.status === 200) {
-        console.log("Response apply:", response.data);
+       
        
         props.setOpen(false);
       } else {

@@ -46,7 +46,7 @@ const DownloadCV = (props) => {
 
   return (
     <>
-        {console.log("candidate id at details : ",props.candidate_id)}
+      
           <div className='button-cv'>
           <Button onClick={handleDownload}  sx={{ backgroundColor: ' rgb(174, 43, 91)' }} className='download-button' variant="contained">Download cv</Button>
           </div>

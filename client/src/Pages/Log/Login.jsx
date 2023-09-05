@@ -59,13 +59,13 @@ export default function Login(props) {
 
         props.onLogIn(response.data.role);
         props.setToken(response.data.access_token)
-        console.log("user name at login : ", response.data.username)
+       
         props.setUserName(response.data.username);
-        console.log("200 response : ", response);
+       
 
         const pendingJobId = sessionStorage.getItem('pendingJobId');
         if (pendingJobId) {
-          console.log(" if (pendingJobId) { at login", " pendingJobId :", pendingJobId);
+         
 
           localStorage.setItem('candidate_id', response.data.candidate_id);//
           navigate(`/Apply/${pendingJobId}`);
@@ -74,7 +74,7 @@ export default function Login(props) {
           // No pending job ID, navigate to the appropriate page based on user role
           if (response.data.role === 'candidate') {
             localStorage.setItem('candidate_id', response.data.candidate_id);//
-            console.log(" candidate local  :", response.data.candidate_id);
+           
             props.setCandidateId(response.data.candidate_id);
             navigate('/HomePage');
           } else if (response.data.role === 'manager') {

@@ -19,9 +19,7 @@ export default function ProfileUser(props) {
     <ThemeProvider theme={defaultTheme}>
        
     
-      {console.log("propfile id ",props.candidate_id)}
-      {console.log("propfile user : ",props)}
-      {console.log("username profile : ",props.username)}
+      
         {/* Show the header only if the user is logged in */}
         {props.token? (
         <Header

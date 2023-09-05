@@ -58,11 +58,10 @@ export default function SignUp() {
         phone_number: phone_number,
       }, { withCredentials: true });
   
-      console.log('Response status:', response.status);
-      console.log('Response data:', response.data);
+     
   
       if (response.status === 200 || response.status === 201) {
-        console.log('user added');
+      
         setSnackbarMessage('User added successfully!');
         setSnackbarOpen(true);
 

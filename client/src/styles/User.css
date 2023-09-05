@@ -132,5 +132,6 @@
 
 }
 .css-1fdypfd-MuiGrid-root>.MuiGrid-item {
-    padding-top: 60px;
+    padding-top: 60px !important;
 }
+

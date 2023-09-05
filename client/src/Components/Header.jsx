@@ -1,58 +1,4 @@
 
-
-
-
-// import React from 'react';
-// import { Tabs, Tab, AppBar, Box, FormControlLabel, Checkbox, FormGroup, Grid, colors } from '@mui/material';
-// import logo from '../Components/images/logo_tech19.png';
-// import Logout from '../Pages/Login/Logout';
-// import Button from '@mui/material/Button';
-// import {  useNavigate } from "react-router-dom"; 
-// import Toolbar from '@mui/material/Toolbar';
-// import Typography from '@mui/material/Typography';
-// import IconButton from '@mui/material/IconButton';
-// import '../styles/ToolBar.css';
-// import PersonIcon from '@mui/icons-material/Person';
-
-// const Header = (props) => {
-
-
-
-//     const navigate = useNavigate(); // Initialize useNavigate
-
-
-//     const handleLogout=()=>{
-//       navigate('/Login');
-//     } ;  
-//     return(
-//         <>
-//             <Box sx={{ flexGrow: 1 }}>
-//                 <AppBar position="static">
-//                     <Toolbar>
-//                     <IconButton
-//                         size="large"
-//                         edge="start"
-//                         color="inherit"
-//                         aria-label="menu"
-//                         sx={{ mr: 2 }}
-//                     >
-                    
-//                     </IconButton>
-//                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-//                     <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
-//                     </Typography>
-                    
-                    
-//                     <Button color="inherit" onClick={handleLogout } ><Logout token={props.token}></Logout></Button>
-//                     <PersonIcon ></PersonIcon>
-//                     </Toolbar>
-//                 </AppBar>
-//             </Box>
-//         </>
-//     )
-// };
-
-// export default Header;
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, AppBar, Box, FormControlLabel, Checkbox, FormGroup, Grid, colors,Dialog } from '@mui/material';
 import logo from '../Components/images/logo_tech19.png';
@@ -130,7 +76,7 @@ const Header = (props) => {
           }}
       >
         {/* Pass the required props to the UserCard component */}
-        {console.log("canduaite id  header: ",props.candidate_id)}
+        
         <UserCard
           candidate_id={props.candidate_id}
           token={props.token}

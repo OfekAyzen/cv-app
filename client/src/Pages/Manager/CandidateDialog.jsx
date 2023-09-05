@@ -69,7 +69,7 @@ const CandidateDialog = ({
                             }}
                         >
                             <Typography variant="h4" sx={{ paddingTop: "15px", fontSize: "40px" }}>
-                                {selectedCandidate.first_name} fgbfhg {selectedCandidate.last_name} cv
+                                {selectedCandidate.first_name}  {selectedCandidate.last_name} cv
                             </Typography>
                             <Typography sx={{ paddingTop: "35px", fontSize: "18px" }}>
                                 <MailOutlineIcon fontSize="small" /> Email: {selectedCandidate.email}

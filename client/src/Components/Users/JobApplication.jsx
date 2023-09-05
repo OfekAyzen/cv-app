@@ -77,7 +77,7 @@ export default function JobApplication(props) {
     const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
     const { job_id } = useParams();
     const [formSubmitted, setFormSubmitted] = useState(false);
-    console.log("selected job id:", job_id);
+
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const applyJobJobId = job_id || props.job_id;
@@ -199,7 +199,7 @@ export default function JobApplication(props) {
             certifications: certifications
         };
         localStorage.setItem('savedApplication', JSON.stringify(applicationData));
-        console.log("applicationData:", applicationData);
+     
         try {
             const response = await axios.post('http://localhost:5000/add_candidate', applicationData, {
                 headers: {
@@ -211,7 +211,7 @@ export default function JobApplication(props) {
             if (response.status === 200) {
                 props.onApplicationSubmit(applicationData);
                 setSuccessSnackbarOpen(true);
-                console.log(response.data);
+              
                 setFlashMessage(response.data.message);
                 navigate('/HomePage');
                 props.setOpen(false);
