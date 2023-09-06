@@ -1,7 +1,11 @@
 
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField  ,Snackbar ,Alert,Typography} from '@mui/material';
-import CandidateDataService from './CandidateDataService';
+
+import { API, graphqlOperation } from 'aws-amplify';
+
+import { createJobs } from '../../graphql/mutations';
+
 
 function AddJobForm(props) {
   const [open, setOpen] = useState(false);
@@ -22,13 +26,11 @@ function AddJobForm(props) {
   };
 
   const handleSubmit = async () => {
-    try {
-      await CandidateDataService.addJob({
-        job_title: jobTitle,
-        job_description: jobDescription,
-        qualifications: qualifications
-      }, props.token);
-      
+    console.log("ADD POSITION", "  jobTitle",jobTitle,"  jobDescription",jobDescription,"  qualifications",qualifications);
+
+    try{
+      await API.graphql(graphqlOperation(createJobs, {input: {job_description: jobDescription,qualifications: qualifications ,job_title: jobTitle }}));
+
       handleClose();
       setSuccessSnackbarOpen(true);
       props.onJobAdded(); // Notify parent component to fetch updated positions

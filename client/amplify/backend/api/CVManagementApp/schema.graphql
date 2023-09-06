@@ -1,0 +1,25 @@
+type Candidate @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  first_name: String!
+  last_name: String!
+  location: String
+  email: AWSEmail
+  phone_number: String!
+  gender: String
+  education: String
+  work_experience: String
+  skills: String
+  position: String
+  certifications: String
+  role: String
+  Jobs: [Jobs] @manyToMany(relationName: "CandidateJobs")
+}
+
+type Jobs @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  job_description: String
+  qualifications: String
+  job_title: String
+  candidates: [Candidate] @manyToMany(relationName: "CandidateJobs")
+}
+ 
