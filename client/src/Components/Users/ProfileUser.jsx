@@ -132,6 +132,7 @@ export default function ProfileUser(props) {
           </li>
         ))}
       </ul> */}
+      {console.log(":props : ",props )}
         <Header
           token={props.token}
           onApplicationSubmit={props.onApplicationSubmit}

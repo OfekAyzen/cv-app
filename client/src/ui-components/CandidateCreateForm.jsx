@@ -35,6 +35,7 @@ export default function CandidateCreateForm(props) {
     position: "",
     certifications: "",
     role: "",
+    cognitoSub: "",
   };
   const [first_name, setFirst_name] = React.useState(initialValues.first_name);
   const [last_name, setLast_name] = React.useState(initialValues.last_name);
@@ -54,6 +55,7 @@ export default function CandidateCreateForm(props) {
     initialValues.certifications
   );
   const [role, setRole] = React.useState(initialValues.role);
+  const [cognitoSub, setCognitoSub] = React.useState(initialValues.cognitoSub);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setFirst_name(initialValues.first_name);
@@ -68,6 +70,7 @@ export default function CandidateCreateForm(props) {
     setPosition(initialValues.position);
     setCertifications(initialValues.certifications);
     setRole(initialValues.role);
+    setCognitoSub(initialValues.cognitoSub);
     setErrors({});
   };
   const validations = {
@@ -83,6 +86,7 @@ export default function CandidateCreateForm(props) {
     position: [],
     certifications: [],
     role: [],
+    cognitoSub: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -122,6 +126,7 @@ export default function CandidateCreateForm(props) {
           position,
           certifications,
           role,
+          cognitoSub,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -188,6 +193,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.first_name ?? value;
@@ -223,6 +229,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.last_name ?? value;
@@ -258,6 +265,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.location ?? value;
@@ -293,6 +301,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -328,6 +337,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.phone_number ?? value;
@@ -363,6 +373,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.gender ?? value;
@@ -398,6 +409,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.education ?? value;
@@ -433,6 +445,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.work_experience ?? value;
@@ -468,6 +481,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.skills ?? value;
@@ -503,6 +517,7 @@ export default function CandidateCreateForm(props) {
               position: value,
               certifications,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.position ?? value;
@@ -538,6 +553,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications: value,
               role,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.certifications ?? value;
@@ -573,6 +589,7 @@ export default function CandidateCreateForm(props) {
               position,
               certifications,
               role: value,
+              cognitoSub,
             };
             const result = onChange(modelFields);
             value = result?.role ?? value;
@@ -586,6 +603,42 @@ export default function CandidateCreateForm(props) {
         errorMessage={errors.role?.errorMessage}
         hasError={errors.role?.hasError}
         {...getOverrideProps(overrides, "role")}
+      ></TextField>
+      <TextField
+        label="Cognito sub"
+        isRequired={false}
+        isReadOnly={false}
+        value={cognitoSub}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              first_name,
+              last_name,
+              location,
+              email,
+              phone_number,
+              gender,
+              education,
+              work_experience,
+              skills,
+              position,
+              certifications,
+              role,
+              cognitoSub: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.cognitoSub ?? value;
+          }
+          if (errors.cognitoSub?.hasError) {
+            runValidationTasks("cognitoSub", value);
+          }
+          setCognitoSub(value);
+        }}
+        onBlur={() => runValidationTasks("cognitoSub", cognitoSub)}
+        errorMessage={errors.cognitoSub?.errorMessage}
+        hasError={errors.cognitoSub?.hasError}
+        {...getOverrideProps(overrides, "cognitoSub")}
       ></TextField>
       <Flex
         justifyContent="space-between"

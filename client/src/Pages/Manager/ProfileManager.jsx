@@ -422,45 +422,33 @@
 
 
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
+
 import CandidateDataService from "./CandidateDataService";
 import CandidateFilterForm from "./CandidateFilterForm";
-// import Card from "@mui/material/Card";
-// import Pagination from '@mui/material/Pagination';
+
 import { CSVLink } from "react-csv";
 import { Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Input, TableContainer, SvgIcon, CardContent } from "@mui/material";
 import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
-// import MailOutlineIcon from '@mui/icons-material/MailOutline';
-// import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
-// import WcOutlinedIcon from '@mui/icons-material/WcOutlined';
-// import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
-// import StatusChangeForm from './StatusChangeForm';
-// import Position from "../Manager/Position";
-// import Header from "../../Components/Header";
-// import CandidateStatus from './CandidateStatus';
-// import DownloadCV from "./DownloadCV";
+
 import Stack from '@mui/material/Stack';
 import PaginationItem from '@mui/material/PaginationItem';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CandidateDialog from "./CandidateDialog";
 import CandidatePagination from "./CandidatePagination";
 import Link from '@mui/material/Link';
-// import {
 
-
-//   Divider,
-//   Dialog,
-//   DialogTitle,
-//   DialogContent,
-//   Slide,
-
-// } from "@mui/material";
-// import HomePage from "../../Components/Users/HomePage";
 import CircularProgress from "@mui/material/CircularProgress"; // Import the CircularProgress component
 import ToolBars from "./ToolBars";
 import NoteForm from "./NoteForm";
 import { useNavigate } from 'react-router-dom';
 import CandidateTable from "./CandidateTable";
+import { API, graphqlOperation } from 'aws-amplify';
+import { listCandidateJobs } from '../../graphql/queries'; // Import your GraphQL query
+
+
+import { getCandidate } from '../../graphql/queries'; // Import the query to get candidate data
+import { getJobs } from '../../graphql/queries'; //
+
 
 const defaultTheme = createTheme();
 function ProfileManager(props) {
@@ -481,37 +469,94 @@ function ProfileManager(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9; //ten applicants per page 
   const [selectedJobId, setSelectedJobId] = useState(null);
-  const [newCandidateStatus, setNewCandidateStatus] = useState("");
-  const [statusChangeMessage, setStatusChangeMessage] = useState("");
-  const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
-  const [updatedStatus, setUpdatedStatus] = useState("");
-  const [updatedCandidateIndex, setUpdatedCandidateIndex] = useState(null);
+  //const [newCandidateStatus, setNewCandidateStatus] = useState("");
+  //const [statusChangeMessage, setStatusChangeMessage] = useState("");
+  //const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
+  //const [updatedStatus, setUpdatedStatus] = useState("");
+  //const [updatedCandidateIndex, setUpdatedCandidateIndex] = useState(null);
   const [sortByField, setSortByField] = useState("application_date"); // Sort initially by application date
   const [sortOrder, setSortOrder] = useState("desc"); // Sort in descending order by default
-  const [noteInput, setNoteInput] = useState(""); // State for note input
-  const [selectedCandidateNotes, setSelectedCandidateNotes] = useState([]); // State for notes array
+  //const [noteInput, setNoteInput] = useState(""); // State for note input
+  // const [selectedCandidateNotes, setSelectedCandidateNotes] = useState([]); // State for notes array
+  // const [appliedJobs, setAppliedJobs] = useState([]);
+  const [combinedData,setCombideData]=useState([]);
+  // const [username, setUsername] = useState('');
+
+
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
+    
+  
+    const fetchCandidatesData = async () => {
+      try {
+        // Use the listCandidateJobs query to fetch candidate jobs
+        const response = await API.graphql(
+          graphqlOperation(listCandidateJobs)
+        );
+  
+        // Extract the items from the response
+        const candidateJobs = response.data.listCandidateJobs.items;
+  
+        // Create an array to hold combined job and candidate data
+        const combinedData = [];
+  
+        // Now, for each candidate job, fetch the full data of the candidate and job
+        await Promise.all(
+          candidateJobs.map(async (candidateJob) => {
+            // Fetch the candidate data
+            const candidateResponse = await API.graphql(
+              graphqlOperation(getCandidate, { id: candidateJob.candidateId })
+            );
+  
+            // Fetch the job data
+            const jobResponse = await API.graphql(
+              graphqlOperation(getJobs, { id: candidateJob.jobsId })
+            );
+  
+            // Combine the candidate and job data into a single object
+            const combinedItem = {
+              candidate: candidateResponse.data.getCandidate,
+              job: jobResponse.data.getJobs,
+              candidateJob: candidateJob, // You can also include the original candidate job data
+            };
+  
+            // Add the combined data to the array
+            combinedData.push(combinedItem);
+          })
+        );
+  
+        // Now you have an array 'combinedData' that holds both job and candidate objects
+        console.log('Combined Data:', combinedData);
+  
+        // Check if combinedData has more than 6 items
+        if (combinedData.length > 6) {
+          // Slice the array to keep only the first 6 items
+          setCombideData(combinedData.slice(0, 6));
+        } else {
+          // Set the combinedData as is
+          setCombideData(combinedData);
+        }
+  
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching candidate jobs:', error);
+        setLoading(false);
+      }
+    };
+  
+    // Fetch applied jobs when the component mounts
     fetchCandidatesData();
-  }, []);
+  }, []); // Empty dependency array to run once on mount
+  
+  // Use a useEffect to log the changes in candidatesData
+  useEffect(() => {
+    console.log('Updated Candidates Data:', candidatesData);
+  }, [candidatesData]);
 
-  const fetchCandidatesData = async () => {
-    try {
-      const response = await CandidateDataService.getAllCandidates(props.token);
-      const dataWithIds = response.data.candidates.map((candidate) => ({
-        ...candidate,
-        id: candidate.candidate_id,
-        //notes:[],
-      }));
-      setCandidatesData(dataWithIds);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching candidates:", error);
-      setLoading(false);
-    }
-  };
-
+  //
   const handleFilter = (newFilters) => {
     setFilters(newFilters);
   };
@@ -530,22 +575,22 @@ function ProfileManager(props) {
 
   const handleViewCandidate = (candidate, jobId) => {
 
-
-    setSelectedCandidate(candidate);
+    console.log("view candidate data : ",candidate ,"job id ", jobId);
+    setSelectedCandidate(candidate.candidate);
     setSelectedJobId(jobId);
-    setSelectedCandidateStatus(
-      candidate.appliedJobs.find((job) => job.job_id === jobId)?.status || ''
-    );
-    setNewCandidateStatus(
-      candidate.appliedJobs.find((job) => job.job_id === jobId)?.status || ''
-    );
-    setUpdatedCandidateIndex(candidatesData.findIndex((c) => c.id === candidate.id));
+    // setSelectedCandidateStatus(
+    //   candidate.appliedJobs.find((job) => job.job_id === jobId)?.status || ''
+    // );
+    // setNewCandidateStatus(
+    //   candidate.appliedJobs.find((job) => job.job_id === jobId)?.status || ''
+    // );
+    // setUpdatedCandidateIndex(candidatesData.findIndex((c) => c.id === candidate.id));
     setOpen(true);
   };
 
   const handleCloseDialog = () => {
     setSelectedCandidate(null);
-    setStatusChangeMessage('');
+    // setStatusChangeMessage('');
     setOpen(false);
   };
   const [selectedCandidateStatus, setSelectedCandidateStatus] = useState("");
@@ -761,12 +806,29 @@ function ProfileManager(props) {
               {loading ? (<CircularProgress style={{ margin: "100px auto", display: "block", color: 'rgb(174, 43, 91)' }} /> // Display loading spinner
               ) : (
                 <Table>
-                  <CandidateTable
-                    candidates={currentCandidates}
-                    selectedJobId={selectedJobId}
-                    handleViewCandidate={handleViewCandidate}
-                    handleDeleteApplication={handleDeleteApplication}
-                  />
+                
+                <TableHead>
+                       <TableRow>
+                         <TableCell>Date Apply</TableCell>
+                         <TableCell>Full Name</TableCell>
+                         <TableCell>Location</TableCell>
+                         <TableCell>Gender</TableCell>
+                         <TableCell>Position</TableCell>
+                         <TableCell>Education</TableCell>
+                         <TableCell>Work Experience</TableCell>
+                         <TableCell>Skills</TableCell>
+
+
+                         <TableCell>Status</TableCell>
+
+                         <TableCell>Action</TableCell>
+                         
+                       </TableRow>
+                     </TableHead>
+              <CandidateTable candidates={combinedData}
+                selectedJobId={selectedJobId}
+                handleViewCandidate={handleViewCandidate}
+                handleDeleteApplication={handleDeleteApplication}> </CandidateTable>
                 </Table>
               )}
 
@@ -803,8 +865,10 @@ function ProfileManager(props) {
 
 
           </Box>
-          {/* 
-            <CandidateDialog
+          {console.log (" dialog :selectedCandidate",selectedCandidate,
+          "selectedJobId",selectedJobId,
+           )}
+            {/* <CandidateDialog
               open={open}
               handleClose={handleCloseDialog}
               selectedCandidate={selectedCandidate}
@@ -816,11 +880,12 @@ function ProfileManager(props) {
               handleNoteAddSuccess={handleNoteAddSuccess}
               handleNoteAddError={handleNoteAddError}
               handleDeleteApplication={handleDeleteApplication}
-              token={props.token}
+             
             /> */}
-
+            <CandidateDialog  open={open} selectedCandidate={selectedCandidate} selectedJobId={selectedJobId} handleClose={handleCloseDialog}
+            ></CandidateDialog>
         </>
-        <CandidateDialog></CandidateDialog>
+        
 
 
         <Typography variant="body2" color="text.secondary" align="center" {...props}>

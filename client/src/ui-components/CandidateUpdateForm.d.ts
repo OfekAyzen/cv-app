@@ -26,6 +26,7 @@ export declare type CandidateUpdateFormInputValues = {
     position?: string;
     certifications?: string;
     role?: string;
+    cognitoSub?: string;
 };
 export declare type CandidateUpdateFormValidationValues = {
     first_name?: ValidationFunction<string>;
@@ -40,6 +41,7 @@ export declare type CandidateUpdateFormValidationValues = {
     position?: ValidationFunction<string>;
     certifications?: ValidationFunction<string>;
     role?: ValidationFunction<string>;
+    cognitoSub?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CandidateUpdateFormOverridesProps = {
@@ -56,6 +58,7 @@ export declare type CandidateUpdateFormOverridesProps = {
     position?: PrimitiveOverrideProps<TextFieldProps>;
     certifications?: PrimitiveOverrideProps<TextFieldProps>;
     role?: PrimitiveOverrideProps<TextFieldProps>;
+    cognitoSub?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CandidateUpdateFormProps = React.PropsWithChildren<{
     overrides?: CandidateUpdateFormOverridesProps | undefined | null;

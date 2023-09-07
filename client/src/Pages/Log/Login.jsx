@@ -645,6 +645,7 @@ export default function Login(props) {
       } else if (isGeneral) {
         // User is in the General group
         console.log("User is in the General group.");
+        navigate('/HomePage');
       } else {
         // User is not in any specified group
         navigate('/HomePage');

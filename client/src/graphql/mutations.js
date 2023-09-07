@@ -25,6 +25,7 @@ export const createCandidate = /* GraphQL */ `
         startedAt
         __typename
       }
+      cognitoSub
       createdAt
       updatedAt
       _version
@@ -58,6 +59,7 @@ export const updateCandidate = /* GraphQL */ `
         startedAt
         __typename
       }
+      cognitoSub
       createdAt
       updatedAt
       _version
@@ -91,6 +93,7 @@ export const deleteCandidate = /* GraphQL */ `
         startedAt
         __typename
       }
+      cognitoSub
       createdAt
       updatedAt
       _version
@@ -195,6 +198,7 @@ export const createCandidateJobs = /* GraphQL */ `
         position
         certifications
         role
+        cognitoSub
         createdAt
         updatedAt
         _version
@@ -246,6 +250,7 @@ export const updateCandidateJobs = /* GraphQL */ `
         position
         certifications
         role
+        cognitoSub
         createdAt
         updatedAt
         _version
@@ -297,6 +302,7 @@ export const deleteCandidateJobs = /* GraphQL */ `
         position
         certifications
         role
+        cognitoSub
         createdAt
         updatedAt
         _version

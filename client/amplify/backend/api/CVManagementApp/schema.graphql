@@ -13,6 +13,7 @@ type Candidate @model @auth(rules: [{allow: public}]) {
   certifications: String
   role: String
   Jobs: [Jobs] @manyToMany(relationName: "CandidateJobs")
+  cognitoSub: String
 }
 
 type Jobs @model @auth(rules: [{allow: public}]) {

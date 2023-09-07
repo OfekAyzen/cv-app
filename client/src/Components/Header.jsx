@@ -76,11 +76,9 @@ const Header = (props) => {
           }}
       >
         {/* Pass the required props to the UserCard component */}
-        
+       
         <UserCard
-          candidate_id={props.candidate_id}
-          token={props.token}
-          username={props.username}
+          
         />
       </Dialog>
     </>

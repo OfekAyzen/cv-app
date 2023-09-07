@@ -110,6 +110,13 @@ export const schema = {
                         ]
                     }
                 },
+                "cognitoSub": {
+                    "name": "cognitoSub",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -343,5 +350,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c0fed67c203919615daa18df1f9885c3"
+    "version": "9947e1dd764455253f524f11dabc0781"
 };
