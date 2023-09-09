@@ -263,7 +263,7 @@ body {
   background-color: rgb(255, 255, 255);
     width: 90% !important;
     height: 30 px !important;
-    margin-top: 10%;
+    /* margin-top: 2px; */
     background-color: #ffffff;
     padding-bottom: 2%;
 }
@@ -423,4 +423,9 @@ body {
 .css-164r41r {
   margin-top: 8px;
   width: 40%;
+}
+.css-rqglhn-MuiTable-root {
+  display: table;
+  width: 100%;
+  margin-top: 120px;
 }

@@ -455,32 +455,26 @@ function ProfileManager(props) {
   const [candidatesData, setCandidatesData] = useState([]);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [open, setOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    education: "",
-    workExperience: "",
-    skills: "",
-    gender: "",
-    location: "",
-    // application_date : new Date().toISOString().split("T")[0],
-  });
-  // const [sortOrder, setSortOrder] = useState("asc");
+  // const [filters, setFilters] = useState({
+  //   education: "",
+  //   workExperience: "",
+  //   skills: "",
+  //   gender: "",
+  //   location: "",
+  
+  // });
+ 
   const [loading, setLoading] = useState(true);
-  // const [sortByField, setSortByField] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9; //ten applicants per page 
   const [selectedJobId, setSelectedJobId] = useState(null);
-  //const [newCandidateStatus, setNewCandidateStatus] = useState("");
-  //const [statusChangeMessage, setStatusChangeMessage] = useState("");
-  //const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
-  //const [updatedStatus, setUpdatedStatus] = useState("");
-  //const [updatedCandidateIndex, setUpdatedCandidateIndex] = useState(null);
+  
   const [sortByField, setSortByField] = useState("application_date"); // Sort initially by application date
   const [sortOrder, setSortOrder] = useState("desc"); // Sort in descending order by default
-  //const [noteInput, setNoteInput] = useState(""); // State for note input
-  // const [selectedCandidateNotes, setSelectedCandidateNotes] = useState([]); // State for notes array
-  // const [appliedJobs, setAppliedJobs] = useState([]);
+
   const [combinedData,setCombideData]=useState([]);
-  // const [username, setUsername] = useState('');
+
 
 
   const navigate = useNavigate();
@@ -566,12 +560,20 @@ function ProfileManager(props) {
   };
 
   const handleSortByChange = (field) => {
-    setSortByField(field);
-    if (field === "dateApply") {
-      setSortByField("application_date");
-      setSortOrder("desc"); // Always sort by descending order for date
+    // Update the sortField state based on the selected option
+    if (field === "none") {
+      // If "None" is selected, reset sorting
+      setSortByField(null);
+      setSortOrder("desc"); // You can set the default order here
+    } else {
+      setSortByField(field);
+      setSortOrder("asc"); // You can set the default order here
     }
   };
+
+  
+  
+  
 
   const handleViewCandidate = (candidate, jobId) => {
 
@@ -613,101 +615,63 @@ function ProfileManager(props) {
       }
     }
   };
-  //filter the candidates that applyes by  education, workExperience, skills, gender, location
-  const filteredCandidates = candidatesData.filter((candidate) => {
-    const { education, workExperience, skills, gender, location } = filters;
+  // //filter the candidates that applyes by  education, workExperience, skills, gender, location
+  // const filteredCandidates = candidatesData.filter((candidate) => {
+  //   const { education, workExperience, skills, gender, location } = filters;
 
-    return (
-      (education === "" || candidate.education === education) &&
-      (workExperience === "" || candidate.work_experience === workExperience) &&
-      (skills === "" ||
-        candidate.skills?.toLowerCase().includes(skills.toLowerCase())) &&
-      (gender === "" || candidate.gender.toLowerCase() === gender.toLowerCase()) &&
-      (location === "" ||
-        candidate.location?.toLowerCase().includes(location.toLowerCase()))
-    );
-  });
+  //   return (
+  //     (education === "" || candidate.education === education) &&
+  //     (workExperience === "" || candidate.work_experience === workExperience) &&
+  //     (skills === "" ||
+  //       candidate.skills?.toLowerCase().includes(skills.toLowerCase())) &&
+  //     (gender === "" || candidate.gender.toLowerCase() === gender.toLowerCase()) &&
+  //     (location === "" ||
+  //       candidate.location?.toLowerCase().includes(location.toLowerCase()))
+  //   );
+  // });
 
 
   function parseApplicationDate(dateString) {
     return new Date(dateString).getTime();
   }
-  const sortedCandidates = filteredCandidates.slice().sort((a, b) => {
-    const key = sortOrder === "asc" ? 1 : -1;
-    if (sortByField === "application_date") {
-
-      const dateA = parseApplicationDate(a.appliedJobs.find(job => job.job_id === selectedJobId)?.application_date);
-
-      const dateB = parseApplicationDate(b.appliedJobs.find(job => job.job_id === selectedJobId)?.application_date);
-
-
-      return key * (dateB - dateA); // Sort by descending order of application date
-    }
 
 
 
-    else if (sortByField === "education") {
-      return (
-        key *
-        (a.education || "").toLowerCase().localeCompare(
-          (b.education || "").toLowerCase()
-        )
-      );
-    } else if (sortByField === "workExperience") {
-      return key * ((a.work_experience || 0) - (b.work_experience || 0));
-    } else if (sortByField === "skills") {
-      return (
-        key *
-        (a.skills || "").toLowerCase().localeCompare((b.skills || "").toLowerCase())
-      );
-    } else if (sortByField === "gender") {
-      return (
-        key *
-        (a.gender || "").toLowerCase().localeCompare((b.gender || "").toLowerCase())
-      );
-    } else if (sortByField === "location") {
-      return (
-        key *
-        (a.location || "").toLowerCase().localeCompare((b.location || "").toLowerCase())
-      );
-    }
+  
 
-
-    return 0;
-  });
 
 
 
 
   // Calculate the indexes of the items to display on the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const candidatesWithLatestDates = sortedCandidates.map(candidate => {
-    const allApplicationDates = candidate.appliedJobs.map(job => new Date(job.application_date).getTime());
-    const latestDate = Math.max(...allApplicationDates);
-    return { candidate, latestDate };
-  });
+  // const candidatesWithLatestDates = sortedCandidates.map(candidate => {
+  //   const allApplicationDates = candidate.appliedJobs.map(job => new Date(job.application_date).getTime());
+  //   const latestDate = Math.max(...allApplicationDates);
+  //   return { candidate, latestDate };
+  // });
 
-  const currentCandidates = candidatesWithLatestDates
-    .filter(candidateData => candidateData.candidate.appliedJobs.length > 0)
-    .sort((a, b) => b.latestDate - a.latestDate)
-    .map(candidateData => candidateData.candidate)
-    .slice(indexOfFirstItem, indexOfLastItem);
+  // const currentCandidates = candidatesWithLatestDates
+  //   .filter(candidateData => candidateData.candidate.appliedJobs.length > 0)
+  //   .sort((a, b) => b.latestDate - a.latestDate)
+  //   .map(candidateData => candidateData.candidate)
+  //   .slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(sortedCandidates.length / itemsPerPage);
+  // const totalPages = Math.ceil(sortedCandidates.length / itemsPerPage);
 
 
 
   //download csv for the manager 
-  const csvData = sortedCandidates.map((candidate) => ({
-    First_Name: candidate.first_name,
-    Last_Name: candidate.last_name,
-    Gender: candidate.gender,
-    Education: candidate.education,
-    Work_Experience: candidate.work_experience,
-    Skills: candidate.skills,
-    Location: candidate.location,
+  const csvData = combinedData.map((candidate) => ({
+    First_Name: candidate.candidate.first_name,
+    Last_Name: candidate.candidate.last_name,
+    Gender: candidate.candidate.gender,
+    Education: candidate.candidate.education,
+    Work_Experience: candidate.candidate.work_experience,
+    Skills: candidate.candidate.skills,
+    Location: candidate.candidate.location,
   }));
 
   const handleStatusChangeSuccess = (message, color, newStatus) => {
@@ -777,54 +741,14 @@ function ProfileManager(props) {
           </Typography>
           <Box className="Box-profile">
 
-            <div className="filter-order" style={{ borderRadius: "20px" }}>
-              <CandidateFilterForm onFilter={handleFilter} />
-              <div className="orderby">
-
-                <FormControl variant="outlined">
-                  <InputLabel>Sort By:</InputLabel>
-                  <Select
-                    value={sortByField}
-                    onChange={(e) => handleSortByChange(e.target.value)}
-                    label="Sort By:"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value="education">Education</MenuItem>
-                    {/* <MenuItem value="workExperience">Work Experience</MenuItem> */}
-                    <MenuItem value="skills">Skills</MenuItem>
-                    <MenuItem value="gender">Gender</MenuItem>
-                    <MenuItem value="location">Location</MenuItem>
-                    <MenuItem value="application_date">Date</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-            </div>
+           
 
             <div className="candidates-list">
               {loading ? (<CircularProgress style={{ margin: "100px auto", display: "block", color: 'rgb(174, 43, 91)' }} /> // Display loading spinner
               ) : (
                 <Table>
                 
-                <TableHead>
-                       <TableRow>
-                         <TableCell>Date Apply</TableCell>
-                         <TableCell>Full Name</TableCell>
-                         <TableCell>Location</TableCell>
-                         <TableCell>Gender</TableCell>
-                         <TableCell>Position</TableCell>
-                         <TableCell>Education</TableCell>
-                         <TableCell>Work Experience</TableCell>
-                         <TableCell>Skills</TableCell>
-
-
-                         <TableCell>Status</TableCell>
-
-                         <TableCell>Action</TableCell>
-                         
-                       </TableRow>
-                     </TableHead>
+                
               <CandidateTable candidates={combinedData}
                 selectedJobId={selectedJobId}
                 handleViewCandidate={handleViewCandidate}
@@ -838,10 +762,10 @@ function ProfileManager(props) {
 
               </Stack>
               <CandidatePagination
-                totalPages={totalPages}
+                // totalPages={totalPages}
                 currentPage={currentPage}
                 onPageChange={(event, value) => setCurrentPage(value)}
-                sortedCandidates={sortedCandidates} // Pass the sortedCandidates array
+                
               />
             </div>
             <Button
@@ -883,6 +807,7 @@ function ProfileManager(props) {
              
             /> */}
             <CandidateDialog  open={open} selectedCandidate={selectedCandidate} selectedJobId={selectedJobId} handleClose={handleCloseDialog}
+            
             ></CandidateDialog>
         </>
         
