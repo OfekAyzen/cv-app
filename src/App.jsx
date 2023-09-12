@@ -169,44 +169,44 @@ function App() {
   };
 
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    setUserRole(userRole);
-    setUserName(username);
+  //   setUserRole(userRole);
+  //   setUserName(username);
     
-    // Check userRole and set userId based on role
-    if (userRole === "candidate") {
-      // Set userId for candidate
+  //   // Check userRole and set userId based on role
+  //   if (userRole === "candidate") {
+  //     // Set userId for candidate
      
-      setCandidateId(candidateId); // Replace with actual candidate ID
-    } else if (userRole === "manager") {
-      // Set userId for manager
+  //     setCandidateId(candidateId); // Replace with actual candidate ID
+  //   } else if (userRole === "manager") {
+  //     // Set userId for manager
    
-      setUserId(userId); // Replace with actual manager ID
-    }
-  }, [userRole]);
+  //     setUserId(userId); // Replace with actual manager ID
+  //   }
+  // }, [userRole]);
 
 
   
  
-  const handleLogin = (role,candidateId) => {
+  // const handleLogin = (role,candidateId) => {
  
-    setUserRole(role);
-    setUserName(username);
+  //   setUserRole(role);
+  //   setUserName(username);
    
-    if (userRole === "candidate") {
-      // Set userId for candidate
+  //   if (userRole === "candidate") {
+  //     // Set userId for candidate
       
-       localStorage.setItem('candidateId', candidateId);
-      setCandidateId(candidateId); // Replace with actual candidate ID
-    } else if (userRole === "manager") {
-      // Set userId for manager
+  //      localStorage.setItem('candidateId', candidateId);
+  //     setCandidateId(candidateId); // Replace with actual candidate ID
+  //   } else if (userRole === "manager") {
+  //     // Set userId for manager
    
-      setUserId(userId); // Replace with actual manager ID
-    }
-    //setUserId(userId);
+  //     setUserId(userId); // Replace with actual manager ID
+  //   }
+  //   //setUserId(userId);
     
-  };
+  // };
 
   
   return (
@@ -216,18 +216,18 @@ function App() {
        
         <Routes>
         
-            <Route path="/Login" element={<Login setUserName={setUserName} setToken={setToken} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
+            <Route path="/Login" element={<Login />} />
       
               <Route path="/" element={<Navigate to="/Login" replace />} />
-              <Route path="/Profile" element={<ProfileManager username={username} userId={userId} token={token} userRole={userRole} setToken={setToken} />} />
+              <Route path="/Profile" element={<ProfileManager  />} />
               {/* Other routes */}
               <Route path="/HomePage" element={<ProfileUser />} />
-              <Route path="/Apply/:job_id" element={<JobApplication  onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} />
-              <Route path="/Position" element={<Position token={token} onLogIn={handleLogin} setUserId={setUserId} setCandidateId={setCandidateId} />} />
+              <Route path="/Apply/:job_id"  />
+              <Route path="/Position" element={<Position  />} />
         
-              <Route path="/confirm-signup" element={<ConfirmSignUp/>} />
-          <Route path="/SignUp" element={<SignUp></SignUp>} />
-          <Route path="/Logout" element={<Logout />} />
+              <Route path="/confirm-signup/:username" element={<ConfirmSignUp/>} />
+              <Route path="/SignUp" element={<SignUp></SignUp>} />
+              <Route path="/Logout" element={<Logout />} />
             {/* <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} /> */}
             <Route path="/forgot_password" element={<ForgotPassword/>} />
             <Route path="*" element={<Navigate to="/Login" replace />} />

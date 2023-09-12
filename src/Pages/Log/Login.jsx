@@ -638,6 +638,7 @@ export default function Login(props) {
       //   // User is in both Admin and General groups
       //   console.log("User is in both Admin and General groups.");
       // } 
+      const selectedJobId = localStorage.getItem('selectedJobId');
        if (isAdmin) {
         // User is in the Admin group
         console.log("User is in the Admin group.");
@@ -645,12 +646,21 @@ export default function Login(props) {
       } else if (isGeneral) {
         // User is in the General group
         console.log("User is in the General group.");
-        navigate('/HomePage');
+        if (selectedJobId) {
+          // Redirect the user to the specific job page
+          navigate(`/Apply/${selectedJobId}`);
+        } else {
+          // Redirect the user to a default page
+          navigate('/HomePage'); // Use the actual default route
+        }
+       
       } else {
         // User is not in any specified group
         navigate('/HomePage');
         console.log("User is not in any specified group.");
       }
+      
+     
       // // Check if the user is confirmed
       // if (user.challengeName === 'CUSTOM_CHALLENGE') {
       //   console.log("user confiramtion");

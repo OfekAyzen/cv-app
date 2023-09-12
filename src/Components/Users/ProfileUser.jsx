@@ -87,14 +87,27 @@ import logo from "../images/logo_tech19.png";
 import { API, graphqlOperation } from 'aws-amplify';
 import { createJobs, updateJobs, deleteJobs } from '../../graphql/mutations';
 import { listJobs } from '../../graphql/queries';
+import { Auth } from 'aws-amplify';
 const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
   const [status,setStatus]=useState('');
 
   const Jobs = {job_title: "My fdh", job_description: "Hello world!",qualifications:"slkdfh dsfkjsdfkj saflsdjkf" };
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [jobs, setJobs] = useState([]);
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        await Auth.currentAuthenticatedUser();
+        setIsAuthenticated(true); // User is authenticated
+      } catch (error) {
+        setIsAuthenticated(false); // User is not authenticated
+      }
+    };
+  
+    checkAuthentication();
+  }, []);
 
   useEffect(() => {
     fetchJobs();
@@ -119,7 +132,7 @@ export default function ProfileUser(props) {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-       
+       {console.log("profile user ")}
      {/* <AddJob></AddJob> */}
       {/* <button in onClick={addJob}>add jobs</button>
       <h1>List of Jobs</h1>
@@ -132,8 +145,9 @@ export default function ProfileUser(props) {
           </li>
         ))}
       </ul> */}
-      {console.log(":props : ",props )}
-        <Header
+      {isAuthenticated ? (
+        <>
+          <Header
           token={props.token}
           onApplicationSubmit={props.onApplicationSubmit}
           status={status}
@@ -143,6 +157,14 @@ export default function ProfileUser(props) {
           username={props.username}
         />
      
+         
+        </>
+      ) : (
+        // If the user is not authenticated, you can show a message or component here
+        <p>Error getting username: The user is not authenticated</p>
+      )}
+      {console.log(":props : ",props )}
+        
         {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
         <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
     </Typography> */}

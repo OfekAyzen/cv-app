@@ -264,7 +264,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -292,11 +292,9 @@ export default function SignUp() {
             family_name: last_name,
           },
         });
-        setSnackbarMessage('User added successfully!');
+        setSnackbarMessage('User added successfully!' );
         setSnackbarOpen(true);
-        // navigate(`/confirm-signup?username=${username}`);
-        console.log("username = ",username);
-        navigate(`/confirm-signup?username=${username}`); 
+        navigate(`/confirm-signup/${username}`); 
       } else {
         console.log('Invalid phone number format');
         setSnackbarMessage('Invalid phone number format');

@@ -475,7 +475,7 @@ function ProfileManager(props) {
   const [statusChangeMessage, setStatusChangeMessage] = useState("");
   const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
   const [combinedData,setCombideData]=useState([]);
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 
   const navigate = useNavigate();
@@ -555,27 +555,19 @@ function ProfileManager(props) {
 
   
   
-  
-
   const handleViewCandidate = (candidate, jobId) => {
-
-    console.log("view candidate data : ",candidate ,"job id ", jobId);
+    console.log("view candidate data:", candidate, "job id", jobId);
     setSelectedCandidate(candidate.candidate);
     setSelectedJobId(jobId);
-    // setSelectedCandidateStatus(
-    //   candidate.appliedJobs.find((job) => job.job_id === jobId)?.status || ''
-    // );
-    // setNewCandidateStatus(
-    //   candidate.appliedJobs.find((job) => job.job_id === jobId)?.status || ''
-    // );
-    // setUpdatedCandidateIndex(candidatesData.findIndex((c) => c.id === candidate.id));
-    setOpen(true);
+    // Set isDialogOpen to true to open the dialog
+    setIsDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
     setSelectedCandidate(null);
     // setStatusChangeMessage('');
-    setOpen(false);
+    // Set isDialogOpen to false to close the dialog
+    setIsDialogOpen(false);
   };
   const [selectedCandidateStatus, setSelectedCandidateStatus] = useState("");
 
@@ -607,30 +599,6 @@ function ProfileManager(props) {
 
   
 
-
-
-
-
-  // Calculate the indexes of the items to display on the current page
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  // const candidatesWithLatestDates = sortedCandidates.map(candidate => {
-  //   const allApplicationDates = candidate.appliedJobs.map(job => new Date(job.application_date).getTime());
-  //   const latestDate = Math.max(...allApplicationDates);
-  //   return { candidate, latestDate };
-  // });
-
-  // const currentCandidates = candidatesWithLatestDates
-  //   .filter(candidateData => candidateData.candidate.appliedJobs.length > 0)
-  //   .sort((a, b) => b.latestDate - a.latestDate)
-  //   .map(candidateData => candidateData.candidate)
-  //   .slice(indexOfFirstItem, indexOfLastItem);
-
-  // const totalPages = Math.ceil(sortedCandidates.length / itemsPerPage);
-
-
-
   //download csv for the manager 
   const csvData = combinedData.map((candidate) => ({
     First_Name: candidate.candidate.first_name,
@@ -653,38 +621,7 @@ function ProfileManager(props) {
     // Implement your logic for error here, such as displaying an error message
     console.error(message);
   };
-  // const handleStatusChangeSuccess = (message, color, newStatus) => {
-  //   setStatusChangeMessage(message);
-  //   setStatusChangeMessageColor(color);
 
-  //   // Update the status of the selected candidate in the main list
-  //   setCandidatesData((prevCandidatesData) =>
-  //     prevCandidatesData.map((candidate) =>
-  //       candidate.id === selectedCandidate.id
-  //         ? {
-  //           ...candidate,
-  //           appliedJobs: candidate.appliedJobs.map((job) =>
-  //             job.job_id === selectedJobId ? { ...job, status: newStatus } : job
-  //           ),
-  //           // notes: candidate.id === selectedCandidate.id ? selectedCandidateNotes : candidate.notes,
-  //         }
-  //         : candidate
-  //     )
-  //   );
-
-  //   // Update the status of the selected candidate in the dialog
-  //   setSelectedCandidate((prevSelectedCandidate) => ({
-  //     ...prevSelectedCandidate,
-  //     appliedJobs: prevSelectedCandidate.appliedJobs.map((job) =>
-  //       job.job_id === selectedJobId ? { ...job, status: newStatus } : job
-  //     ),
-  //   }));
-  // };
-
-  // const handleStatusChangeError = (message, color) => {
-  //   setStatusChangeMessage(message);
-  //   setStatusChangeMessageColor(color);
-  // };
 
   const handleNoteAddSuccess = (message, color, note) => {
 
@@ -748,13 +685,12 @@ function ProfileManager(props) {
                 <Table>
                 
                 
-              <CandidateTable 
-              candidates={combinedData}
+              <CandidateTable candidates={combinedData}
                 selectedJobId={selectedJobId}
                 handleViewCandidate={handleViewCandidate}
                 handleDeleteApplication={handleDeleteApplication}> 
                 handleStatusChange={handleStatusChange} 
-                
+                open={isDialogOpen}
                 </CandidateTable>
                 </Table>
               )}
@@ -795,8 +731,8 @@ function ProfileManager(props) {
           {console.log (" dialog :selectedCandidate",selectedCandidate,
           "selectedJobId",selectedJobId,
            )}
-           
-            <CandidateDialog  open={open} 
+           {console.log("dialog: selectedCandidate", selectedCandidate, "selectedJobId", selectedJobId)}
+            <CandidateDialog open={isDialogOpen}
             selectedCandidate={selectedCandidate}
              selectedJobId={selectedJobId} 
              handleClose={handleCloseDialog}
