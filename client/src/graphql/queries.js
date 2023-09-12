@@ -23,6 +23,8 @@ export const getCandidate = /* GraphQL */ `
         __typename
       }
       cognitoSub
+      note
+      status
       createdAt
       updatedAt
       _version
@@ -54,6 +56,8 @@ export const listCandidates = /* GraphQL */ `
         certifications
         role
         cognitoSub
+        note
+        status
         createdAt
         updatedAt
         _version
@@ -95,6 +99,8 @@ export const syncCandidates = /* GraphQL */ `
         certifications
         role
         cognitoSub
+        note
+        status
         createdAt
         updatedAt
         _version
@@ -206,6 +212,8 @@ export const getCandidateJobs = /* GraphQL */ `
         certifications
         role
         cognitoSub
+        note
+        status
         createdAt
         updatedAt
         _version

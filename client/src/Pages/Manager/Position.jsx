@@ -242,7 +242,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import Header from '../../Components/Header';
-import CandidateDataService from './CandidateDataService';
+// import CandidateDataService from './CandidateDataService';
 import { Box,Alert } from '@mui/material';
 import "../../styles/Profilemanager.css";
 import AddJobForm from './AddJobForm';

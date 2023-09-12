@@ -61,8 +61,8 @@
 //   const itemsPerPage = 9; //ten applicants per page 
 //   const [selectedJobId, setSelectedJobId] = useState(null);
 //   const [newCandidateStatus, setNewCandidateStatus] = useState("");
-//   const [statusChangeMessage, setStatusChangeMessage] = useState("");
-//   const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
+  // const [statusChangeMessage, setStatusChangeMessage] = useState("");
+  // const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
 //   const [updatedStatus, setUpdatedStatus] = useState("");
 //   const [updatedCandidateIndex, setUpdatedCandidateIndex] = useState(null);
 //   const [sortByField, setSortByField] = useState("application_date"); // Sort initially by application date
@@ -423,8 +423,8 @@
 
 import React, { useState, useEffect } from "react";
 
-import CandidateDataService from "./CandidateDataService";
-import CandidateFilterForm from "./CandidateFilterForm";
+// import CandidateDataService from "./CandidateDataService";
+// import CandidateFilterForm from "./CandidateFilterForm";
 
 import { CSVLink } from "react-csv";
 import { Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Input, TableContainer, SvgIcon, CardContent } from "@mui/material";
@@ -439,7 +439,7 @@ import Link from '@mui/material/Link';
 
 import CircularProgress from "@mui/material/CircularProgress"; // Import the CircularProgress component
 import ToolBars from "./ToolBars";
-import NoteForm from "./NoteForm";
+// import NoteForm from "./NoteForm";
 import { useNavigate } from 'react-router-dom';
 import CandidateTable from "./CandidateTable";
 import { API, graphqlOperation } from 'aws-amplify';
@@ -472,7 +472,8 @@ function ProfileManager(props) {
   
   const [sortByField, setSortByField] = useState("application_date"); // Sort initially by application date
   const [sortOrder, setSortOrder] = useState("desc"); // Sort in descending order by default
-
+  const [statusChangeMessage, setStatusChangeMessage] = useState("");
+  const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
   const [combinedData,setCombideData]=useState([]);
 
 
@@ -550,26 +551,7 @@ function ProfileManager(props) {
     console.log('Updated Candidates Data:', candidatesData);
   }, [candidatesData]);
 
-  //
-  const handleFilter = (newFilters) => {
-    setFilters(newFilters);
-  };
-
-  const handleSortOrderChange = () => {
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-  };
-
-  const handleSortByChange = (field) => {
-    // Update the sortField state based on the selected option
-    if (field === "none") {
-      // If "None" is selected, reset sorting
-      setSortByField(null);
-      setSortOrder("desc"); // You can set the default order here
-    } else {
-      setSortByField(field);
-      setSortOrder("asc"); // You can set the default order here
-    }
-  };
+  
 
   
   
@@ -615,21 +597,7 @@ function ProfileManager(props) {
       }
     }
   };
-  // //filter the candidates that applyes by  education, workExperience, skills, gender, location
-  // const filteredCandidates = candidatesData.filter((candidate) => {
-  //   const { education, workExperience, skills, gender, location } = filters;
-
-  //   return (
-  //     (education === "" || candidate.education === education) &&
-  //     (workExperience === "" || candidate.work_experience === workExperience) &&
-  //     (skills === "" ||
-  //       candidate.skills?.toLowerCase().includes(skills.toLowerCase())) &&
-  //     (gender === "" || candidate.gender.toLowerCase() === gender.toLowerCase()) &&
-  //     (location === "" ||
-  //       candidate.location?.toLowerCase().includes(location.toLowerCase()))
-  //   );
-  // });
-
+  
 
   function parseApplicationDate(dateString) {
     return new Date(dateString).getTime();
@@ -674,38 +642,49 @@ function ProfileManager(props) {
     Location: candidate.candidate.location,
   }));
 
+
   const handleStatusChangeSuccess = (message, color, newStatus) => {
-    setStatusChangeMessage(message);
-    setStatusChangeMessageColor(color);
-
-    // Update the status of the selected candidate in the main list
-    setCandidatesData((prevCandidatesData) =>
-      prevCandidatesData.map((candidate) =>
-        candidate.id === selectedCandidate.id
-          ? {
-            ...candidate,
-            appliedJobs: candidate.appliedJobs.map((job) =>
-              job.job_id === selectedJobId ? { ...job, status: newStatus } : job
-            ),
-            // notes: candidate.id === selectedCandidate.id ? selectedCandidateNotes : candidate.notes,
-          }
-          : candidate
-      )
-    );
-
-    // Update the status of the selected candidate in the dialog
-    setSelectedCandidate((prevSelectedCandidate) => ({
-      ...prevSelectedCandidate,
-      appliedJobs: prevSelectedCandidate.appliedJobs.map((job) =>
-        job.job_id === selectedJobId ? { ...job, status: newStatus } : job
-      ),
-    }));
+    // Implement your logic for success here, such as displaying a success message
+    console.log(message);
+    console.log(`New status: ${newStatus}`);
   };
-
+  
   const handleStatusChangeError = (message, color) => {
-    setStatusChangeMessage(message);
-    setStatusChangeMessageColor(color);
+    // Implement your logic for error here, such as displaying an error message
+    console.error(message);
   };
+  // const handleStatusChangeSuccess = (message, color, newStatus) => {
+  //   setStatusChangeMessage(message);
+  //   setStatusChangeMessageColor(color);
+
+  //   // Update the status of the selected candidate in the main list
+  //   setCandidatesData((prevCandidatesData) =>
+  //     prevCandidatesData.map((candidate) =>
+  //       candidate.id === selectedCandidate.id
+  //         ? {
+  //           ...candidate,
+  //           appliedJobs: candidate.appliedJobs.map((job) =>
+  //             job.job_id === selectedJobId ? { ...job, status: newStatus } : job
+  //           ),
+  //           // notes: candidate.id === selectedCandidate.id ? selectedCandidateNotes : candidate.notes,
+  //         }
+  //         : candidate
+  //     )
+  //   );
+
+  //   // Update the status of the selected candidate in the dialog
+  //   setSelectedCandidate((prevSelectedCandidate) => ({
+  //     ...prevSelectedCandidate,
+  //     appliedJobs: prevSelectedCandidate.appliedJobs.map((job) =>
+  //       job.job_id === selectedJobId ? { ...job, status: newStatus } : job
+  //     ),
+  //   }));
+  // };
+
+  // const handleStatusChangeError = (message, color) => {
+  //   setStatusChangeMessage(message);
+  //   setStatusChangeMessageColor(color);
+  // };
 
   const handleNoteAddSuccess = (message, color, note) => {
 
@@ -718,6 +697,26 @@ function ProfileManager(props) {
     // Handle error logic here
     console.error(message, color);
   };
+
+  const handleStatusChange = (candidate, newStatus) => {
+    // You can implement the logic to update the status here
+    // Make an API call or update the state as needed
+    // candidate contains the candidate data, and newStatus contains the new status value
+
+    console.log("Changing status for candidate ID", candidate.candidate.id, "to", newStatus);
+
+    // Update the status in the state or make an API call here
+
+    // Example API call:
+    // CandidateDataService.updateStatus(candidate.candidate.id, newStatus, props.token)
+    //   .then((response) => {
+    //     // Handle success
+    //   })
+    //   .catch((error) => {
+    //     // Handle error
+    //   });
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className="profile-div">
@@ -749,10 +748,14 @@ function ProfileManager(props) {
                 <Table>
                 
                 
-              <CandidateTable candidates={combinedData}
+              <CandidateTable 
+              candidates={combinedData}
                 selectedJobId={selectedJobId}
                 handleViewCandidate={handleViewCandidate}
-                handleDeleteApplication={handleDeleteApplication}> </CandidateTable>
+                handleDeleteApplication={handleDeleteApplication}> 
+                handleStatusChange={handleStatusChange} 
+                
+                </CandidateTable>
                 </Table>
               )}
 
@@ -792,22 +795,21 @@ function ProfileManager(props) {
           {console.log (" dialog :selectedCandidate",selectedCandidate,
           "selectedJobId",selectedJobId,
            )}
-            {/* <CandidateDialog
-              open={open}
-              handleClose={handleCloseDialog}
-              selectedCandidate={selectedCandidate}
-              selectedJobId={selectedJobId}
-              statusChangeMessage={statusChangeMessage}
-              statusChangeMessageColor={statusChangeMessageColor}
-              handleStatusChangeSuccess={handleStatusChangeSuccess}
-              handleStatusChangeError={handleStatusChangeError}
-              handleNoteAddSuccess={handleNoteAddSuccess}
-              handleNoteAddError={handleNoteAddError}
-              handleDeleteApplication={handleDeleteApplication}
-             
-            /> */}
-            <CandidateDialog  open={open} selectedCandidate={selectedCandidate} selectedJobId={selectedJobId} handleClose={handleCloseDialog}
-            
+           
+            <CandidateDialog  open={open} 
+            selectedCandidate={selectedCandidate}
+             selectedJobId={selectedJobId} 
+             handleClose={handleCloseDialog}
+             statusChangeMessage={statusChangeMessage}
+  statusChangeMessageColor={statusChangeMessageColor}
+  handleStatusChangeSuccess={handleStatusChangeSuccess}
+  handleStatusChangeError={handleStatusChangeError}
+
+
+
+  handleNoteAddSuccess={handleNoteAddSuccess}
+  handleNoteAddError={handleNoteAddError}
+  handleDeleteApplication={handleDeleteApplication}
             ></CandidateDialog>
         </>
         

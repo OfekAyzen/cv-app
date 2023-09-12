@@ -36,6 +36,8 @@ export default function CandidateCreateForm(props) {
     certifications: "",
     role: "",
     cognitoSub: "",
+    note: "",
+    status: "",
   };
   const [first_name, setFirst_name] = React.useState(initialValues.first_name);
   const [last_name, setLast_name] = React.useState(initialValues.last_name);
@@ -56,6 +58,8 @@ export default function CandidateCreateForm(props) {
   );
   const [role, setRole] = React.useState(initialValues.role);
   const [cognitoSub, setCognitoSub] = React.useState(initialValues.cognitoSub);
+  const [note, setNote] = React.useState(initialValues.note);
+  const [status, setStatus] = React.useState(initialValues.status);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setFirst_name(initialValues.first_name);
@@ -71,6 +75,8 @@ export default function CandidateCreateForm(props) {
     setCertifications(initialValues.certifications);
     setRole(initialValues.role);
     setCognitoSub(initialValues.cognitoSub);
+    setNote(initialValues.note);
+    setStatus(initialValues.status);
     setErrors({});
   };
   const validations = {
@@ -87,6 +93,8 @@ export default function CandidateCreateForm(props) {
     certifications: [],
     role: [],
     cognitoSub: [],
+    note: [],
+    status: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -127,6 +135,8 @@ export default function CandidateCreateForm(props) {
           certifications,
           role,
           cognitoSub,
+          note,
+          status,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -194,6 +204,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.first_name ?? value;
@@ -230,6 +242,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.last_name ?? value;
@@ -266,6 +280,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.location ?? value;
@@ -302,6 +318,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -338,6 +356,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.phone_number ?? value;
@@ -374,6 +394,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.gender ?? value;
@@ -410,6 +432,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.education ?? value;
@@ -446,6 +470,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.work_experience ?? value;
@@ -482,6 +508,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.skills ?? value;
@@ -518,6 +546,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.position ?? value;
@@ -554,6 +584,8 @@ export default function CandidateCreateForm(props) {
               certifications: value,
               role,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.certifications ?? value;
@@ -590,6 +622,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role: value,
               cognitoSub,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.role ?? value;
@@ -626,6 +660,8 @@ export default function CandidateCreateForm(props) {
               certifications,
               role,
               cognitoSub: value,
+              note,
+              status,
             };
             const result = onChange(modelFields);
             value = result?.cognitoSub ?? value;
@@ -639,6 +675,82 @@ export default function CandidateCreateForm(props) {
         errorMessage={errors.cognitoSub?.errorMessage}
         hasError={errors.cognitoSub?.hasError}
         {...getOverrideProps(overrides, "cognitoSub")}
+      ></TextField>
+      <TextField
+        label="Note"
+        isRequired={false}
+        isReadOnly={false}
+        value={note}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              first_name,
+              last_name,
+              location,
+              email,
+              phone_number,
+              gender,
+              education,
+              work_experience,
+              skills,
+              position,
+              certifications,
+              role,
+              cognitoSub,
+              note: value,
+              status,
+            };
+            const result = onChange(modelFields);
+            value = result?.note ?? value;
+          }
+          if (errors.note?.hasError) {
+            runValidationTasks("note", value);
+          }
+          setNote(value);
+        }}
+        onBlur={() => runValidationTasks("note", note)}
+        errorMessage={errors.note?.errorMessage}
+        hasError={errors.note?.hasError}
+        {...getOverrideProps(overrides, "note")}
+      ></TextField>
+      <TextField
+        label="Status"
+        isRequired={false}
+        isReadOnly={false}
+        value={status}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              first_name,
+              last_name,
+              location,
+              email,
+              phone_number,
+              gender,
+              education,
+              work_experience,
+              skills,
+              position,
+              certifications,
+              role,
+              cognitoSub,
+              note,
+              status: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.status ?? value;
+          }
+          if (errors.status?.hasError) {
+            runValidationTasks("status", value);
+          }
+          setStatus(value);
+        }}
+        onBlur={() => runValidationTasks("status", status)}
+        errorMessage={errors.status?.errorMessage}
+        hasError={errors.status?.hasError}
+        {...getOverrideProps(overrides, "status")}
       ></TextField>
       <Flex
         justifyContent="space-between"
