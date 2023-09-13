@@ -431,10 +431,10 @@ import { Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, I
 import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
 
 import Stack from '@mui/material/Stack';
-import PaginationItem from '@mui/material/PaginationItem';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CandidateDialog from "./CandidateDialog";
-import CandidatePagination from "./CandidatePagination";
+// import CandidatePagination from "./CandidatePagination";
 import Link from '@mui/material/Link';
 
 import CircularProgress from "@mui/material/CircularProgress"; // Import the CircularProgress component
@@ -480,11 +480,7 @@ function ProfileManager(props) {
 
   const navigate = useNavigate();
 
-  
-
   useEffect(() => {
-    
-  
     const fetchCandidatesData = async () => {
       try {
         // Use the listCandidateJobs query to fetch candidate jobs
@@ -495,12 +491,17 @@ function ProfileManager(props) {
         // Extract the items from the response
         const candidateJobs = response.data.listCandidateJobs.items;
   
+        // Filter out candidate jobs with _deleted: true
+        const activeCandidateJobs = candidateJobs.filter(
+          (candidateJob) => !candidateJob._deleted
+        );
+  
         // Create an array to hold combined job and candidate data
         const combinedData = [];
   
-        // Now, for each candidate job, fetch the full data of the candidate and job
+        // Now, for each active candidate job, fetch the full data of the candidate and job
         await Promise.all(
-          candidateJobs.map(async (candidateJob) => {
+          activeCandidateJobs.map(async (candidateJob) => {
             // Fetch the candidate data
             const candidateResponse = await API.graphql(
               graphqlOperation(getCandidate, { id: candidateJob.candidateId })
@@ -526,15 +527,7 @@ function ProfileManager(props) {
         // Now you have an array 'combinedData' that holds both job and candidate objects
         console.log('Combined Data:', combinedData);
   
-        // Check if combinedData has more than 6 items
-        if (combinedData.length > 6) {
-          // Slice the array to keep only the first 6 items
-          setCombideData(combinedData.slice(0, 6));
-        } else {
-          // Set the combinedData as is
-          setCombideData(combinedData);
-        }
-  
+        setCombideData(combinedData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching candidate jobs:', error);
@@ -545,6 +538,75 @@ function ProfileManager(props) {
     // Fetch applied jobs when the component mounts
     fetchCandidatesData();
   }, []); // Empty dependency array to run once on mount
+  
+
+  // useEffect(() => {
+    
+  
+  //   const fetchCandidatesData = async () => {
+  //     try {
+  //       // Use the listCandidateJobs query to fetch candidate jobs
+  //       const response = await API.graphql(
+  //         graphqlOperation(listCandidateJobs)
+  //       );
+  
+  //       // Extract the items from the response
+  //       const candidateJobs = response.data.listCandidateJobs.items;
+  
+  //       // Create an array to hold combined job and candidate data
+  //       const combinedData = [];
+  
+  //       // Now, for each candidate job, fetch the full data of the candidate and job
+  //       await Promise.all(
+  //         candidateJobs.map(async (candidateJob) => {
+  //           // Fetch the candidate data
+  //           const candidateResponse = await API.graphql(
+  //             graphqlOperation(getCandidate, { id: candidateJob.candidateId })
+  //           );
+  
+  //           // Fetch the job data
+  //           const jobResponse = await API.graphql(
+  //             graphqlOperation(getJobs, { id: candidateJob.jobsId })
+  //           );
+  
+  //           // Combine the candidate and job data into a single object
+  //           const combinedItem = {
+  //             candidate: candidateResponse.data.getCandidate,
+  //             job: jobResponse.data.getJobs,
+  //             candidateJob: candidateJob, // You can also include the original candidate job data
+  //           };
+  
+  //           // Add the combined data to the array
+  //           combinedData.push(combinedItem);
+  //         })
+  //       );
+  
+  //       // Now you have an array 'combinedData' that holds both job and candidate objects
+  //       console.log('Combined Data:', combinedData);
+  
+  //       // Check if combinedData has more than 6 items
+  //       // if (combinedData.length > 6) {
+  //       //   // Slice the array to keep only the first 6 items
+  //       //   setCombideData(combinedData.slice(0, 6));
+  //       // } else {
+  //       //   // Set the combinedData as is
+  //       //   setCombideData(combinedData);
+  //       // }
+  //       if(combinedData.candidateJob._delete===true          ){
+  //         console.log("deleted candidate ");
+          
+  //       }
+  //       setCombideData(combinedData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error('Error fetching candidate jobs:', error);
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   // Fetch applied jobs when the component mounts
+  //   fetchCandidatesData();
+  // }, []); // Empty dependency array to run once on mount
   
   // Use a useEffect to log the changes in candidatesData
   useEffect(() => {
@@ -591,9 +653,9 @@ function ProfileManager(props) {
   };
   
 
-  function parseApplicationDate(dateString) {
-    return new Date(dateString).getTime();
-  }
+  // function parseApplicationDate(dateString) {
+  //   return new Date(dateString).getTime();
+  // }
 
 
 
@@ -696,7 +758,7 @@ function ProfileManager(props) {
               )}
 
             </div>
-            <div className="pagination">
+            {/* <div className="pagination">
               <Stack direction="row" spacing={2} alignItems="center">
 
               </Stack>
@@ -706,7 +768,7 @@ function ProfileManager(props) {
                 onPageChange={(event, value) => setCurrentPage(value)}
                 
               />
-            </div>
+            </div> */}
             <Button
               className="csv-export-button"
               sx={{ color: '#ad2069' }}

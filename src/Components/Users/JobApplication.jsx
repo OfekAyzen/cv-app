@@ -138,7 +138,7 @@ export default function JobApplication(props) {
                 // console.log("props job_id : ", props.job_id);
                 // navigate('/HomePage'); 
                 handleapplyjob(candidateId); // Call the function to create CandidateJobs
-                
+                props.onClose();
             } else {
                 // Handle candidate creation failure
                 setErrorSnackbarOpen(true);
@@ -232,11 +232,11 @@ export default function JobApplication(props) {
 
             const response = await API.graphql(graphqlOperation(createCandidateJobs, candidateJobsData));
             console.log("GraphQL Response:", response);
+           
             if (response.data.createCandidateJobs) {
                 // Application was successfully created
                 setSuccessSnackbarOpen(true);
-                // handleClose(false);
-                 setOpen(false);
+                props.onClose();
                 navigate('/HomePage'); 
             } else {
                 // Handle application creation failure
@@ -249,11 +249,11 @@ export default function JobApplication(props) {
         }
     };
 
-    const handleClose = (event) => {
-        setOpen(false);
+    // const handleClose = (event) => {
+    //     setOpen(false);
 
 
-    }
+    // }
 
     const handleUploadCV = (event) => {
         console.log("File selected:", event.target.files[0]);

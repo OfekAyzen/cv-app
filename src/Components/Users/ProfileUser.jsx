@@ -88,6 +88,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createJobs, updateJobs, deleteJobs } from '../../graphql/mutations';
 import { listJobs } from '../../graphql/queries';
 import { Auth } from 'aws-amplify';
+
 const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
@@ -161,7 +162,9 @@ export default function ProfileUser(props) {
         </>
       ) : (
         // If the user is not authenticated, you can show a message or component here
-        <p>Error getting username: The user is not authenticated</p>
+        <div className='div-bar' position="static" >
+        <img src={logo} alt='Logo' />
+    </div>
       )}
       {console.log(":props : ",props )}
         

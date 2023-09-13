@@ -150,6 +150,7 @@ import NotFound from './NotFound';
 import SignUp from '../src/Components/SignUp/SignUp';
 import ForgotPassword from './Components/Users/ForgotPassword';
 import ConfirmSignUp from './Pages/Log/ConfirmSignUp';
+import ConfirmForgotPassword from './Pages/Log/ConfirmForgotPassword';
 
 
 
@@ -224,13 +225,15 @@ function App() {
               <Route path="/HomePage" element={<ProfileUser />} />
               <Route path="/Apply/:job_id"  />
               <Route path="/Position" element={<Position  />} />
-        
+             
               <Route path="/confirm-signup/:username" element={<ConfirmSignUp/>} />
+              <Route path="/confirm_forgot_password/:username" element={<ConfirmForgotPassword/>} />
               <Route path="/SignUp" element={<SignUp></SignUp>} />
               <Route path="/Logout" element={<Logout />} />
             {/* <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} /> */}
             <Route path="/forgot_password" element={<ForgotPassword/>} />
             <Route path="*" element={<Navigate to="/Login" replace />} />
+
         </Routes>
     </div>
 

@@ -9,6 +9,13 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import logo from '../../../src/Components/images/logo_tech19.png';
+import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
+
+import MuiAlert from '@mui/material/Alert';
+
+import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink
+import { Link } from '@mui/material';
 import "../../styles/LoginPage.css";
 const defaultTheme = createTheme();
 // const styles = {
@@ -49,44 +56,76 @@ const defaultTheme = createTheme();
 //       marginTop: '1rem',
 //     },
 //   };
-const ConfirmSignUp = () =>  {
+
+
+const ConfirmSignUp = () => {
+  // const [confirmationCode, setConfirmationCode] = useState('');
+  // const navigate = useNavigate();
+  // const { username } = useParams();
+  // const handleConfirmation = async () => {
+
+  //   console.log(username);
+
+  //   try {
+  //     await Auth.confirmSignUp(username, confirmationCode);
+  //     console.log('User confirmed successfully');
+  //     // Redirect the user to the login page or another appropriate page
+  //     navigate('/Login'); // You can customize the route
+  //   } catch (error) {
+  //     console.log('Error confirming user', error);
+  //     // Handle confirmation error (e.g., display an error message)
+  //   }
+  // };
+
+
+
   const [confirmationCode, setConfirmationCode] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
   const { username } = useParams();
-  const handleConfirmation = async () => {
 
-    console.log(username);
-    
+  const handleConfirmation = async () => {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
       console.log('User confirmed successfully');
+
+      // Open the Snackbar to show a success message
+      setOpenSnackbar(true);
+
       // Redirect the user to the login page or another appropriate page
-      navigate('/Login'); // You can customize the route
+      navigate('/Login');
     } catch (error) {
       console.log('Error confirming user', error);
       // Handle confirmation error (e.g., display an error message)
     }
   };
 
-  
- 
-
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
 
   return (
     <ThemeProvider theme={defaultTheme}>
-    <div className='div-bar' position="static" >
-    <img src={logo} />
-  </div>
-      <Container component="main" maxWidth="xs">
+      <div className='div-bar' position="static" >
+        <img src={logo} />
+      </div>
+      <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignContent: 'center', textAlign: 'center', marginTop: '50px' }}>
         <CssBaseline />
+
+        <div style={{ display: 'flex', textAlign: 'center', justifyContent: 'center' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+        </div>
         <div>
+
           <Typography component="h1" variant="h4">
             Confirm Sign Up
           </Typography>
-            <div>
+          <div>
 
-          <TextField
+            <TextField
               variant="outlined"
               margin="normal"
               required
@@ -98,26 +137,38 @@ const ConfirmSignUp = () =>  {
               autoFocus
               value={confirmationCode}
               onChange={(e) => setConfirmationCode(e.target.value)}
-              />
+            />
             <Button
-            //   type="submit"
-            onClick={handleConfirmation}
-            fullWidth
-            variant="contained"
-            sx={{
+              //   type="submit"
+              onClick={handleConfirmation}
+              fullWidth
+              variant="contained"
+              sx={{
                 mt: 3,
                 mb: 2,
                 backgroundColor: '#ad2069',
                 color: 'white',
                 '&:hover': {
-                    backgroundColor: '#b4269a',
+                  backgroundColor: '#b4269a',
                 },
-            }}
+              }}
             >
               Confirm
             </Button>
-                </div>
+            {/* Snackbar for success message */}
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+              <MuiAlert elevation={6} variant="filled" severity="success" onClose={handleCloseSnackbar}>
+                Confirmation successful!
+              </MuiAlert>
+            </Snackbar>
+          </div>
+          <Grid item xs={6}> {/* Change the xs value */}
+            <Link component={RouterLink} to="/forgot_password" variant="body2">
+              Forgot password?
+            </Link>
+          </Grid>
         </div>
+
       </Container>
     </ThemeProvider>
   );

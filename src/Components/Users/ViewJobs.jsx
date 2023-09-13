@@ -265,7 +265,7 @@ const ViewJobs = (props) => {
   };
   const handleButtonClick = async (job_id) => {
     setSelectedJobId(job_id);
-    console.log("selected job id to apply : ",job_id);
+    console.log("handleButtonClick : ",job_id);
     try {
       // Check if the user is authenticated using Amplify Auth
       const user = await Auth.currentAuthenticatedUser();
@@ -277,7 +277,7 @@ const ViewJobs = (props) => {
       localStorage.setItem('selectedJobId', job_id);
   
       // Redirect the user to the login page
-      navigate('/login'); // Change '/login' to the actual path of your login page
+      navigate('/Login'); // Change '/login' to the actual path of your login page
     }
   };
 
@@ -421,6 +421,7 @@ BootstrapDialogTitle.propTypes = {
 
                                                 <JobApplication //apply to specific job
                                                 job_id={selectedJobId}
+                                                onClose={handleClose}
                                                 // Pass the selected job_id
                                                 />
                                             </BootstrapDialog>

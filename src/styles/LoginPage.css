@@ -19,3 +19,9 @@
     margin-left: 133px !important;
 
 }
+.custom-text-field .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #ad2069 !important;
+}
+.custom-text-field .Mui-focused {
+  color: #161516 !important; /* Change the border color to #ad2069 */
+}
