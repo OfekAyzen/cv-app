@@ -134,6 +134,7 @@ const ConfirmSignUp = () => {
               label="Confirmation Code"
               name="confirmationCode"
               autoComplete="confirmationCode"
+              className="custom-text-field"
               autoFocus
               value={confirmationCode}
               onChange={(e) => setConfirmationCode(e.target.value)}

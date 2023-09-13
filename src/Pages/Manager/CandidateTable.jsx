@@ -1,302 +1,5 @@
 
 
-
-//   import React,  { useState, useEffect } from "react";
-//   import {
-//     TableRow,
-//     TableCell,
-//     Button,
-//     TableBody,
-//     TableHead,
-//     FormControl,
-//     InputLabel,
-//     Select,
-//     MenuItem,
-//     Box,
-//   } from "@mui/material";
-//   import CandidateFilterForm from "./CandidateFilterForm"; // Import the CandidateFilterForm component
-//   import "../../styles/Profilemanager.css";
-//   import { API, graphqlOperation } from "aws-amplify";
-//   import { deleteCandidateJobs } from "../../graphql/mutations";
-//   import Snackbar from "@mui/material/Snackbar";
-//   import TablePagination from "@mui/material/TablePagination";
-// import MuiAlert from "@mui/material/Alert";
-//   const CandidateRow = ({ candidate, 
-//     appliedJob, selectedJobId, handleViewCandidate, 
-//     handleDeleteApplication,onDeleteCandidate, }) => {
-//     const [isRowClicked, setIsRowClicked] = useState(false);
-
-//     const handleRowClick = () => {
-//       setIsRowClicked(!isRowClicked);
-//     };
-
-//     const handleDelete = async () => {
-//       try {
-//         console.log("Candidate job DATA delete:", candidate);
-
-//         const input = {
-//           id: candidate.candidateJob.id,
-//           _version: 1,
-//         };
-
-//         // Perform the delete operation
-//         const response = await API.graphql(
-//           graphqlOperation(deleteCandidateJobs, { input })
-//         );
-
-//         console.log("Candidate job deleted:", response);
-
-//         // Check if the delete operation was successful
-//         if (response.data && response.data.deleteCandidateJobs) {
-//           // Notify the parent component (CandidateTable) of the successful deletion
-//           onDeleteCandidate(candidate.candidateJob.id);
-//         } else {
-//           // Handle the case where the delete operation did not succeed
-//           handleNotification("Error deleting candidate job", "error");
-//         }
-//       } catch (error) {
-//         console.error("Error deleting candidate job:", error);
-//         handleNotification("Error deleting candidate job", "error");
-//       }
-//     };
-
-//     const handleNotification = (message, type) => {
-//       // Implement your notification logic here
-//       // You can use state to control the visibility of the notification
-//       // and display the message to the user
-//     };
-
-//     return (
-//       <TableRow
-//       key={candidate.candidate.id}
-//       sx={{
-//         borderRadius: "10px",
-//         transition: "box-shadow 0.3s",
-//         boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
-//         '&:hover': {
-//           boxShadow: "0px 0px 5px 3px #ad2069",
-//           cursor: "pointer",
-//         },
-//       }}
-//       onClick={() => handleViewCandidate(candidate, candidate.job.id)}
-//     >
-//         {console.log("candidate name  : ",candidate.candidate.first_name)}
-//         <TableCell>{candidate.candidate.createdAt}</TableCell>
-//         <TableCell>{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
-//         <TableCell>{candidate.candidate.location}</TableCell>
-//         <TableCell>{candidate.candidate.gender}</TableCell>
-//         <TableCell>{candidate.job.job_title}</TableCell>
-//         <TableCell>{candidate.candidate.education}</TableCell>
-//         <TableCell>{candidate.candidate.work_experience}</TableCell>
-//         <TableCell>{candidate.candidate.skills}</TableCell>
-//         <TableCell>{candidate.candidate.status}</TableCell>
-//         <TableCell> </TableCell>
-//         <TableCell> </TableCell>
-//         <TableCell> </TableCell>
-//         <TableCell> </TableCell>
-//         <TableCell> </TableCell>
-//         {/* <TableCell>
-//           <Button variant="contained" color="primary" onClick={() => handleViewCandidate(candidate, appliedJob.job_id)}>
-//             View Candidate
-//           </Button>
-//         </TableCell> */}
-//         <TableCell>
-//         <Button variant="contained" color="secondary" onClick={handleDelete}>
-//           Delete
-//         </Button>
-//       </TableCell>
-//     </TableRow>
-//     );
-//   };
-
-//   const CandidateTable = ({
-//     candidates,
-//     selectedJobId,
-//     handleViewCandidate,
-//     handleDeleteApplication,
-//   }) => {
-//     const [sortByField, setSortByField] = useState(""); // State to hold the sorting field
-//     const [sortOrder, setSortOrder] = useState("asc"); // State to hold the sorting order (asc or desc)
-//     const [filters, setFilters] = useState({
-//       education: "",
-//       workExperience: "",
-//       skills: "",
-//       gender: "",
-//       location: "",
-//     });
-
-//     const [notification, setNotification] = useState(null);
-
-//     // Create a function to sort candidates based on the selected sorting criteria
-//     const sortCandidates = (candidates) => {
-//       return candidates.slice().sort((a, b) => {
-//         let comparison = 0;
-
-//         if (sortByField === "education") {
-//           comparison = a.candidate.education.localeCompare(b.candidate.education);
-//         } else if (sortByField === "skills") {
-//           comparison = a.candidate.skills.localeCompare(b.candidate.skills);
-//         } else if (sortByField === "gender") {
-//           comparison = a.candidate.gender.localeCompare(b.candidate.gender);
-//         } else if (sortByField === "location") {
-//           comparison = a.candidate.location.localeCompare(b.candidate.location);
-//         } else if (sortByField === "application_date") {
-//           const dateA = new Date(a.candidate.createdAt).getTime();
-//           const dateB = new Date(b.candidate.createdAt).getTime();
-//           comparison = dateA - dateB;
-//         }
-
-//         // Apply sortOrder (ascending or descending)
-//         return sortOrder === "asc" ? comparison : -comparison;
-//       });
-//     };
-
-//     const filteredCandidates = candidates.filter((candidate) => {
-//       const {
-//         education,
-//         workExperience,
-//         skills,
-//         gender,
-//         location,
-//       } = filters;
-
-//       return (
-//         (education === "" || candidate.candidate.education === education) &&
-//         (workExperience === "" ||
-//           candidate.candidate.work_experience === workExperience) &&
-//         (skills === "" ||
-//           candidate.candidate.skills
-//             .toLowerCase()
-//             .includes(skills.toLowerCase())) &&
-//         (gender === "" ||
-//           candidate.candidate.gender.toLowerCase() === gender.toLowerCase()) &&
-//         (location === "" ||
-//           candidate.candidate.location
-//             .toLowerCase()
-//             .includes(location.toLowerCase()))
-//       );
-//     });
-
-//     const sortedCandidates = sortCandidates(filteredCandidates);
-
-//     const handleSortByChange = (field) => {
-//       if (field === sortByField) {
-//         // Toggle the sorting order if the same field is selected
-//         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-//       } else {
-//         // Set the new sorting field and default to ascending order
-//         setSortByField(field);
-//         setSortOrder("asc");
-//       }
-//     };
-
-//     const handleFilter = (newFilters) => {
-//       setFilters(newFilters);
-//     };
-//     const handleDeleteCandidate = (deletedCandidateId) => {
-//       // Update the table data by filtering out the deleted candidate
-//       const updatedCandidates = candidates.filter(
-//         (candidate) => candidate.candidateJob.id !== deletedCandidateId
-//       );
-
-//       // Display a success notification
-//       handleNotification("Candidate job deleted successfully", "success");
-//       // You can update your state here if needed (e.g., setCandidates(updatedCandidates))
-//     };
-
-//     const handleNotification = (message, type) => {
-//       // Set the notification state
-//       setNotification({ message, type });
-
-//       // Clear the notification after a certain duration (e.g., 5 seconds)
-//       const timer = setTimeout(() => {
-//         setNotification(null);
-//       }, 5000);
-
-//       return () => clearTimeout(timer);
-//     };
-//     return (
-//       <><div>
-//         {console.log("candidates at table :",candidates)}
-//        <Snackbar
-//         open={notification !== null}
-//         autoHideDuration={5000}
-//         onClose={() => setNotification(null)}
-//       >
-//         <MuiAlert
-//           elevation={6}
-//           variant="filled"
-//           severity={notification?.type === "success" ? "success" : "error"}
-//           onClose={() => setNotification(null)}
-//         >
-//           {notification?.message}
-//         </MuiAlert>
-//       </Snackbar>
-//         <CandidateFilterForm onFilter={handleFilter} /> {/* Include the filter component */}
-
-//           <div
-//             className="filter-order"
-//             style={{ borderRadius: "20px" }}
-//           >
-//             <div className="orderby">
-//               <FormControl variant="outlined">
-//                 <InputLabel>Sort By:</InputLabel>
-//                 <Select
-//                   value={sortByField}
-//                   onChange={(e) => handleSortByChange(e.target.value)}
-//                   label="Sort By:"
-//                 >
-//                   <MenuItem value="">
-//                     <em>None</em>
-//                   </MenuItem>
-//                   <MenuItem value="education">Education</MenuItem>
-//                   <MenuItem value="skills">Skills</MenuItem>
-//                   <MenuItem value="gender">Gender</MenuItem>
-//                   <MenuItem value="location">Location</MenuItem>
-//                   <MenuItem value="application_date">Date</MenuItem>
-//                 </Select>
-//               </FormControl>
-//             </div>
-//           </div>
-//           <TableHead>
-//             <TableRow>
-//               <TableCell>Date Apply</TableCell>
-//               <TableCell>Full Name</TableCell>
-//               <TableCell>Location</TableCell>
-//               <TableCell>Gender</TableCell>
-//               <TableCell>Position</TableCell>
-//               <TableCell>Education</TableCell>
-//               <TableCell>Work Experience</TableCell>
-//               <TableCell>Skills</TableCell>
-//               <TableCell>Status</TableCell>
-//               <TableCell></TableCell>
-//               <TableCell></TableCell>
-//               <TableCell></TableCell>
-//               <TableCell></TableCell>
-//               <TableCell></TableCell>
-//               <TableCell>Action</TableCell>
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//           {sortedCandidates.map((candidate) => (
-//         <CandidateRow
-//           key={candidate.candidate.id}
-//           candidate={candidate}
-//           selectedJobId={selectedJobId}
-//           handleViewCandidate={handleViewCandidate}
-//           onDeleteCandidate={handleDeleteCandidate}
-//         />
-//       ))}
-//           </TableBody>
-//         </div>
-//       </>
-//     );
-//             }
-//     export default CandidateTable;
-
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   TableRow,
@@ -308,7 +11,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Table,
   Box,
+  Container,
 } from "@mui/material";
 import CandidateFilterForm from "./CandidateFilterForm"; // Import the CandidateFilterForm component
 import "../../styles/Profilemanager.css";
@@ -364,13 +69,14 @@ const CandidateRow = ({ candidate,
   };
 
   return (
+
     <TableRow
       key={candidate.candidate.id}
       sx={{
         borderRadius: "10px",
         transition: "box-shadow 0.3s",
         boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
-        '&:hover': {
+        "&:hover": {
           boxShadow: "0px 0px 5px 3px #ad2069",
           cursor: "pointer",
         },
@@ -387,16 +93,8 @@ const CandidateRow = ({ candidate,
       <TableCell>{candidate.candidate.work_experience}</TableCell>
       <TableCell>{candidate.candidate.skills}</TableCell>
       <TableCell>{candidate.candidate.status}</TableCell>
-      <TableCell> </TableCell>
-      <TableCell> </TableCell>
-      <TableCell> </TableCell>
-      <TableCell> </TableCell>
-      <TableCell> </TableCell>
-      {/* <TableCell>
-        <Button variant="contained" color="primary" onClick={() => handleViewCandidate(candidate, appliedJob.job_id)}>
-          View Candidate
-        </Button>
-      </TableCell> */}
+
+
       <TableCell>
         <Button variant="contained" color="secondary" onClick={handleDelete}>
           Delete
@@ -412,7 +110,7 @@ const CandidateTable = ({
   handleViewCandidate,
   handleDeleteApplication,
 }) => {
-  const [sortByField, setSortByField] = useState(""); // State to hold the sorting field
+  const [sortByField, setSortByField] = useState("application_date"); // State to hold the sorting field
   const [sortOrder, setSortOrder] = useState("asc"); // State to hold the sorting order (asc or desc)
   const [filters, setFilters] = useState({
     education: "",
@@ -445,7 +143,7 @@ const CandidateTable = ({
       }
 
       // Apply sortOrder (ascending or descending)
-      return sortOrder === "asc" ? comparison : -comparison;
+      return sortOrder === "dsc" ? comparison : -comparison;
     });
   };
 
@@ -476,9 +174,7 @@ const CandidateTable = ({
   });
 
   const sortedCandidates = sortCandidates(filteredCandidates);
-  // const startIndex = page * rowsPerPage;
-  // const endIndex = startIndex + rowsPerPage;
-  // const displayedCandidates = sortedCandidates.slice(startIndex, endIndex); // Use displayedCandidates here
+
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const displayedCandidates = sortedCandidates.slice(startIndex, endIndex);
@@ -542,7 +238,85 @@ const CandidateTable = ({
     return () => clearTimeout(timer);
   };
   return (
-    <><div>
+
+    // <div className="full-height">
+    //   {console.log("candidates at table :", candidates)}
+    //   <Snackbar
+    //     open={notification !== null}
+    //     autoHideDuration={5000}
+    //     onClose={() => setNotification(null)}
+    //   >
+    //     <MuiAlert
+    //       elevation={6}
+    //       variant="filled"
+    //       severity={notification?.type === "success" ? "success" : "error"}
+    //       onClose={() => setNotification(null)}
+    //     >
+    //       {notification?.message}
+    //     </MuiAlert>
+    //   </Snackbar>
+    //   <CandidateFilterForm onFilter={handleFilter} /> {/* Include the filter component */}
+    //   <div className="filter-order">
+    //     <div className="orderby">
+    //       <FormControl variant="outlined" className="custom-select">
+    //         <InputLabel>Sort By:</InputLabel>
+    //         <Select
+    //           value={sortByField}
+    //           onChange={(e) => handleSortByChange(e.target.value)}
+    //           label="Sort By:"
+
+    //         >
+    //           <MenuItem  value="">
+    //             <em>None</em>
+    //           </MenuItem>
+    //           <MenuItem value="education">Education</MenuItem>
+    //           <MenuItem value="skills">Skills</MenuItem>
+    //           <MenuItem value="gender">Gender</MenuItem>
+    //           <MenuItem value="location">Location</MenuItem>
+    //           <MenuItem value="application_date">Date</MenuItem>
+    //         </Select>
+    //       </FormControl>
+    //     </div>
+    //   </div>
+    //   <Table sx={{ minWidth: 1024 }}>
+    //     <TableHead>
+    //       <TableRow>
+    //         <TableCell>Date Apply</TableCell>
+    //         <TableCell>Full Name</TableCell>
+    //         <TableCell>Location</TableCell>
+    //         <TableCell>Gender</TableCell>
+    //         <TableCell>Position</TableCell>
+    //         <TableCell>Education</TableCell>
+    //         <TableCell>Work Experience</TableCell>
+    //         <TableCell>Skills</TableCell>
+    //         <TableCell>Status</TableCell>
+    //         <TableCell>Actions</TableCell>
+    //       </TableRow>
+    //     </TableHead>
+    //     <TableBody>
+    //       {displayedCandidates.map((candidate) => (
+    //         <CandidateRow
+    //           key={candidate.candidate.id}
+    //           candidate={candidate}
+    //           selectedJobId={selectedJobId}
+    //           handleViewCandidate={handleViewCandidate}
+    //           onDeleteCandidate={handleDeleteCandidate}
+    //         />
+    //       ))}
+    //     </TableBody>
+    //   </Table>
+    //   <TablePagination
+    //     component="div"
+    //     count={sortedCandidates.length} // Use sortedCandidates.length
+    //     page={page}
+    //     onPageChange={handleChangePage} // Ensure handleChangePage is called
+    //     rowsPerPage={rowsPerPage}
+    //     onRowsPerPageChange={handleChangeRowsPerPage} // Ensure handleChangeRowsPerPage is called
+    //     labelRowsPerPage="Rows per page:"
+    //     rowsPerPageOptions={[10, 25, 50]}
+    //   />
+    // </div>
+    <div >
       {console.log("candidates at table :", candidates)}
       <Snackbar
         open={notification !== null}
@@ -558,74 +332,82 @@ const CandidateTable = ({
           {notification?.message}
         </MuiAlert>
       </Snackbar>
-      <CandidateFilterForm onFilter={handleFilter} /> {/* Include the filter component */}
-
-      <div
-        className="filter-order"
-        style={{ borderRadius: "20px" }}
+      
+      
+      <Container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: 'white',
+          
+         
+          
+        }}
       >
-        <div className="orderby">
-          <FormControl variant="outlined">
-            <InputLabel>Sort By:</InputLabel>
-            <Select
-              value={sortByField}
-              onChange={(e) => handleSortByChange(e.target.value)}
-              label="Sort By:"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="education">Education</MenuItem>
-              <MenuItem value="skills">Skills</MenuItem>
-              <MenuItem value="gender">Gender</MenuItem>
-              <MenuItem value="location">Location</MenuItem>
-              <MenuItem value="application_date">Date</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+        <CandidateFilterForm onFilter={handleFilter} /> {/* Include the filter component */}
+      
+      <div className="orderby">
+        <FormControl variant="outlined" className="custom-select">
+          <InputLabel>Sort By:</InputLabel>
+          <Select
+            value={sortByField}
+            onChange={(e) => handleSortByChange(e.target.value)}
+            label="Sort By:"
+
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="education">Education</MenuItem>
+            <MenuItem value="skills">Skills</MenuItem>
+            <MenuItem value="gender">Gender</MenuItem>
+            <MenuItem value="location">Location</MenuItem>
+            <MenuItem value="application_date">Date</MenuItem>
+          </Select>
+        </FormControl>
       </div>
-      <TableHead>
-        <TableRow>
-          <TableCell>Date Apply</TableCell>
-          <TableCell>Full Name</TableCell>
-          <TableCell>Location</TableCell>
-          <TableCell>Gender</TableCell>
-          <TableCell>Position</TableCell>
-          <TableCell>Education</TableCell>
-          <TableCell>Work Experience</TableCell>
-          <TableCell>Skills</TableCell>
-          <TableCell>Status</TableCell>
-          <TableCell></TableCell>
-          <TableCell></TableCell>
-          <TableCell></TableCell>
-          <TableCell></TableCell>
-          <TableCell></TableCell>
-          <TableCell>Action</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {displayedCandidates.map((candidate) => (
-          <CandidateRow
-            key={candidate.candidate.id}
-            candidate={candidate}
-            selectedJobId={selectedJobId}
-            handleViewCandidate={handleViewCandidate}
-            onDeleteCandidate={handleDeleteCandidate}
-          />
-        ))}
-      </TableBody>
-      <TablePagination
-        component="div"
-        count={sortedCandidates.length} // Use sortedCandidates.length
-        page={page}
-        onPageChange={handleChangePage} // Ensure handleChangePage is called
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage} // Ensure handleChangeRowsPerPage is called
-        labelRowsPerPage="Rows per page:"
-        rowsPerPageOptions={[10, 25, 50]}
-      />
+        {/* <Table sx={{ minWidth: 1024 ,backgroundColor:'white'}}> */}
+        <Table sx={{ backgroundColor: 'white' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date Apply</TableCell>
+              <TableCell>Full Name</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Position</TableCell>
+              <TableCell>Education</TableCell>
+              <TableCell>Work Experience</TableCell>
+              <TableCell>Skills</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedCandidates.map((candidate) => (
+              <CandidateRow
+                key={candidate.candidate.id}
+                candidate={candidate}
+                selectedJobId={selectedJobId}
+                handleViewCandidate={handleViewCandidate}
+                onDeleteCandidate={handleDeleteCandidate}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedCandidates.length} // Use sortedCandidates.length
+          page={page}
+          onPageChange={handleChangePage} // Ensure handleChangePage is called
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage} // Ensure handleChangeRowsPerPage is called
+          labelRowsPerPage="Rows per page:"
+          rowsPerPageOptions={[10, 25, 50]}
+        />
+      </Container>
     </div>
-    </>
   );
 }
 export default CandidateTable;

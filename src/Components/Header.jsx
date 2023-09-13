@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Tabs, Tab, AppBar, Box, FormControlLabel, Checkbox, FormGroup, Grid, colors,Dialog } from '@mui/material';
+import { Tabs, Tab,Link, AppBar, Box, FormControlLabel, Checkbox, FormGroup, Grid, colors,Dialog } from '@mui/material';
 import logo from '../Components/images/logo_tech19.png';
 import Logout from '../Pages/Log/Logout';
 import Button from '@mui/material/Button';
@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import '../styles/ToolBar.css';
 import PersonIcon from '@mui/icons-material/Person';
 import UserCard from './Users/UserCard';
-
+import { Link as RouterLink } from 'react-router-dom';
 const Header = (props) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isUserCardOpen, setUserCardOpen] = useState(false); // State for UserCard dialog
@@ -49,8 +49,10 @@ const Header = (props) => {
             </Typography>
             
             
+            <Link component={RouterLink} sx={{color:'purple'} }  variant="body2">
+                  <Logout ></Logout>
+                </Link>
             
-            <Button sx={{color:'purple'} } onClick={handleLogout } ><Logout token={props.token}></Logout></Button>
             <PersonIcon
               onClick={handleUserCardClick} // Open the UserCard dialog
              

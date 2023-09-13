@@ -198,21 +198,26 @@ import JobApplicationStatus from './JobApplicationStatus';
 import "../../styles/User.css";
 import { Auth } from 'aws-amplify';
 import { listCandidateJobs } from '../../graphql/queries'; // Import your GraphQL query
-
+import { Link as RouterLink } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify'; // Import API and graphqlOperation
 import { getCandidateJobs } from '../../graphql/queries'; // Import your GraphQL query
 
 export default function UserCard(props) {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState(''); 
-  
+  const [username, setUsername] = useState('');
+  const [userFullName, setUserFullName] = useState('');
+  const [userStatus, setUserStatus] = useState('');
+
   useEffect(() => {
     const getUsername = async () => {
       try {
         const user = await Auth.currentAuthenticatedUser();
-        const username = user.attributes['cognito:username'];
+        const username = user.username; // Use the username property to get the Cognito username
         setUsername(username);
+        const givenName = user.attributes.given_name;
+        const familyName = user.attributes.family_name;
+        setUserFullName(`${givenName} ${familyName}`);
       } catch (error) {
         console.error('Error getting username:', error);
       }
@@ -222,19 +227,18 @@ export default function UserCard(props) {
 
     const fetchAppliedJobs = async () => {
       try {
-        // Use the listCandidateJobs query to fetch jobs for the specific candidate
         const response = await API.graphql(
-          graphqlOperation(listCandidateJobs, {
-            filter: {
-              candidateId: { eq: props.candidateId },
-            },
+          graphqlOperation(getCandidateJobs, {
+            id: props.candidateId,
           })
         );
 
-        if (response.data.listCandidateJobs.items.length > 0) {
-          // If there are items in the list, set them in the state
-          console.log("response.data.listCandidateJobs.items  = ",response.data.listCandidateJobs.items);
-          setAppliedJobs(response.data.listCandidateJobs.items);
+        if (response.data.getCandidateJobs) {
+          const candidate = response.data.getCandidateJobs.candidate;
+          setUserStatus(candidate.status);
+
+          const jobs = response.data.getCandidateJobs.jobs;
+          setAppliedJobs(jobs);
         } else {
           console.log('No applied jobs found for the candidate');
         }
@@ -245,7 +249,6 @@ export default function UserCard(props) {
       }
     };
 
-    // Fetch applied jobs when the component mounts
     fetchAppliedJobs();
   }, [props.candidateId]);
 
@@ -311,10 +314,13 @@ export default function UserCard(props) {
               onBack={handleBackToProfile}
             />
           )} */}
-          <Typography sx={{ paddingTop: '30px', fontSize: '20px' }} variant="h4">
+          {/* <Typography sx={{ paddingTop: '30px', fontSize: '20px' }} variant="h4">
             Welcome 
           </Typography>
-         
+          */}
+          <Typography sx={{ paddingTop: '30px', fontSize: '20px' }} variant="h4">
+          Welcome, {userFullName} 
+        </Typography>
             <Box className="user-card">
               <Typography sx={{ paddingTop: '30px', fontSize: '30px' }} variant="h5">
                 You have applied for the following positions:

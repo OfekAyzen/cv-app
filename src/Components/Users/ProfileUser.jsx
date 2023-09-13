@@ -82,7 +82,7 @@ import { Link } from 'react-router-dom';
 import UserCard from './UserCard';
 import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography,Card ,Grid} from '@mui/material';
+import { Typography,Card ,Grid,Button,Toolbar} from '@mui/material';
 import logo from "../images/logo_tech19.png";
 import { API, graphqlOperation } from 'aws-amplify';
 import { createJobs, updateJobs, deleteJobs } from '../../graphql/mutations';
@@ -97,6 +97,8 @@ export default function ProfileUser(props) {
   const Jobs = {job_title: "My fdh", job_description: "Hello world!",qualifications:"slkdfh dsfkjsdfkj saflsdjkf" };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [jobs, setJobs] = useState([]);
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -118,34 +120,19 @@ export default function ProfileUser(props) {
     try {
       const response = await API.graphql(graphqlOperation(listJobs));
       const jobList = response.data.listJobs.items;
-
-      console.log(jobList);
       setJobs(jobList);
     } catch (error) {
       console.error('Error fetching jobs:', error);
     }
   }
 
-  // const addJob = async ()=>{
-  //   console.log("add jobs ");
-  //   await API.graphql(graphqlOperation(createJobs, {input: Jobs}));
-  // };
+const  handleLogin=()=>{
 
+  navigate('/Login');
+}
   return (
     <ThemeProvider theme={defaultTheme}>
-       {console.log("profile user ")}
-     {/* <AddJob></AddJob> */}
-      {/* <button in onClick={addJob}>add jobs</button>
-      <h1>List of Jobs</h1>
-      <ul>
-        {jobs.map((job) => (
-          <li key={job.id}>
-            <h2>{job.job_title}</h2>
-            <p>{job.job_description}</p>
-            <p>{job.qualifications}</p>
-          </li>
-        ))}
-      </ul> */}
+      
       {isAuthenticated ? (
         <>
           <Header
@@ -162,11 +149,27 @@ export default function ProfileUser(props) {
         </>
       ) : (
         // If the user is not authenticated, you can show a message or component here
-        <div className='div-bar' position="static" >
-        <img src={logo} alt='Logo' />
-    </div>
+        <>
+        <Toolbar sx={{ justifyContent: 'space-between',backgroundColor:'black' }}>
+            <div sx={{ display: 'flex', alignItems: 'center' }}>
+              
+             
+           
+              <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px',backgroundColor:'black' }} />
+            </div>
+
+            <div>
+              <Button onClick={handleLogin}color="inherit" sx={{color:'white'}}>
+                Login
+              </Button>
+             
+             
+            </div>
+          </Toolbar>
+        
+        </>
       )}
-      {console.log(":props : ",props )}
+     
         
         {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
         <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
@@ -195,13 +198,7 @@ export default function ProfileUser(props) {
         </Grid>
           
           
-{/*           
-          <ViewJobs setStatus={setStatus} onApplicationSubmit={props.onApplicationSubmit} 
-            candidate_id={props.candidate_id} 
-            token={props.token} 
-            userRole={props.userRole} setToken={props.setToken} 
-            username={props.username} ></ViewJobs>
-             */}
+
           
       <ViewJobs></ViewJobs>
     </ThemeProvider>

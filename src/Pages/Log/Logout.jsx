@@ -46,7 +46,7 @@ import axios from "axios";
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom'
 import { colors} from '@mui/material';
-
+import { Auth } from 'aws-amplify';
 function Logout() {
   const navigate = useNavigate();
   

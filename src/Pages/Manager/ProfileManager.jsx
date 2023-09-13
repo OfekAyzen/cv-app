@@ -61,8 +61,8 @@
 //   const itemsPerPage = 9; //ten applicants per page 
 //   const [selectedJobId, setSelectedJobId] = useState(null);
 //   const [newCandidateStatus, setNewCandidateStatus] = useState("");
-  // const [statusChangeMessage, setStatusChangeMessage] = useState("");
-  // const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
+// const [statusChangeMessage, setStatusChangeMessage] = useState("");
+// const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
 //   const [updatedStatus, setUpdatedStatus] = useState("");
 //   const [updatedCandidateIndex, setUpdatedCandidateIndex] = useState(null);
 //   const [sortByField, setSortByField] = useState("application_date"); // Sort initially by application date
@@ -427,7 +427,7 @@ import React, { useState, useEffect } from "react";
 // import CandidateFilterForm from "./CandidateFilterForm";
 
 import { CSVLink } from "react-csv";
-import { Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Input, TableContainer, SvgIcon, CardContent } from "@mui/material";
+import { Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Input, TableContainer, SvgIcon, CardContent ,Container,Grid,Paper} from "@mui/material";
 import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
 
 import Stack from '@mui/material/Stack';
@@ -461,20 +461,20 @@ function ProfileManager(props) {
   //   skills: "",
   //   gender: "",
   //   location: "",
-  
+
   // });
- 
+
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9; //ten applicants per page 
   const [selectedJobId, setSelectedJobId] = useState(null);
-  
+
   const [sortByField, setSortByField] = useState("application_date"); // Sort initially by application date
   const [sortOrder, setSortOrder] = useState("desc"); // Sort in descending order by default
   const [statusChangeMessage, setStatusChangeMessage] = useState("");
   const [statusChangeMessageColor, setStatusChangeMessageColor] = useState("black");
-  const [combinedData,setCombideData]=useState([]);
+  const [combinedData, setCombideData] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 
@@ -487,18 +487,18 @@ function ProfileManager(props) {
         const response = await API.graphql(
           graphqlOperation(listCandidateJobs)
         );
-  
+
         // Extract the items from the response
         const candidateJobs = response.data.listCandidateJobs.items;
-  
+
         // Filter out candidate jobs with _deleted: true
         const activeCandidateJobs = candidateJobs.filter(
           (candidateJob) => !candidateJob._deleted
         );
-  
+
         // Create an array to hold combined job and candidate data
         const combinedData = [];
-  
+
         // Now, for each active candidate job, fetch the full data of the candidate and job
         await Promise.all(
           activeCandidateJobs.map(async (candidateJob) => {
@@ -506,27 +506,27 @@ function ProfileManager(props) {
             const candidateResponse = await API.graphql(
               graphqlOperation(getCandidate, { id: candidateJob.candidateId })
             );
-  
+
             // Fetch the job data
             const jobResponse = await API.graphql(
               graphqlOperation(getJobs, { id: candidateJob.jobsId })
             );
-  
+
             // Combine the candidate and job data into a single object
             const combinedItem = {
               candidate: candidateResponse.data.getCandidate,
               job: jobResponse.data.getJobs,
               candidateJob: candidateJob, // You can also include the original candidate job data
             };
-  
+
             // Add the combined data to the array
             combinedData.push(combinedItem);
           })
         );
-  
+
         // Now you have an array 'combinedData' that holds both job and candidate objects
         console.log('Combined Data:', combinedData);
-  
+
         setCombideData(combinedData);
         setLoading(false);
       } catch (error) {
@@ -534,28 +534,28 @@ function ProfileManager(props) {
         setLoading(false);
       }
     };
-  
+
     // Fetch applied jobs when the component mounts
     fetchCandidatesData();
   }, []); // Empty dependency array to run once on mount
-  
+
 
   // useEffect(() => {
-    
-  
+
+
   //   const fetchCandidatesData = async () => {
   //     try {
   //       // Use the listCandidateJobs query to fetch candidate jobs
   //       const response = await API.graphql(
   //         graphqlOperation(listCandidateJobs)
   //       );
-  
+
   //       // Extract the items from the response
   //       const candidateJobs = response.data.listCandidateJobs.items;
-  
+
   //       // Create an array to hold combined job and candidate data
   //       const combinedData = [];
-  
+
   //       // Now, for each candidate job, fetch the full data of the candidate and job
   //       await Promise.all(
   //         candidateJobs.map(async (candidateJob) => {
@@ -563,27 +563,27 @@ function ProfileManager(props) {
   //           const candidateResponse = await API.graphql(
   //             graphqlOperation(getCandidate, { id: candidateJob.candidateId })
   //           );
-  
+
   //           // Fetch the job data
   //           const jobResponse = await API.graphql(
   //             graphqlOperation(getJobs, { id: candidateJob.jobsId })
   //           );
-  
+
   //           // Combine the candidate and job data into a single object
   //           const combinedItem = {
   //             candidate: candidateResponse.data.getCandidate,
   //             job: jobResponse.data.getJobs,
   //             candidateJob: candidateJob, // You can also include the original candidate job data
   //           };
-  
+
   //           // Add the combined data to the array
   //           combinedData.push(combinedItem);
   //         })
   //       );
-  
+
   //       // Now you have an array 'combinedData' that holds both job and candidate objects
   //       console.log('Combined Data:', combinedData);
-  
+
   //       // Check if combinedData has more than 6 items
   //       // if (combinedData.length > 6) {
   //       //   // Slice the array to keep only the first 6 items
@@ -594,7 +594,7 @@ function ProfileManager(props) {
   //       // }
   //       if(combinedData.candidateJob._delete===true          ){
   //         console.log("deleted candidate ");
-          
+
   //       }
   //       setCombideData(combinedData);
   //       setLoading(false);
@@ -603,20 +603,20 @@ function ProfileManager(props) {
   //       setLoading(false);
   //     }
   //   };
-  
+
   //   // Fetch applied jobs when the component mounts
   //   fetchCandidatesData();
   // }, []); // Empty dependency array to run once on mount
-  
+
   // Use a useEffect to log the changes in candidatesData
   useEffect(() => {
     console.log('Updated Candidates Data:', candidatesData);
   }, [candidatesData]);
 
-  
 
-  
-  
+
+
+
   const handleViewCandidate = (candidate, jobId) => {
     console.log("view candidate data:", candidate, "job id", jobId);
     setSelectedCandidate(candidate.candidate);
@@ -651,7 +651,7 @@ function ProfileManager(props) {
       }
     }
   };
-  
+
 
   // function parseApplicationDate(dateString) {
   //   return new Date(dateString).getTime();
@@ -659,7 +659,7 @@ function ProfileManager(props) {
 
 
 
-  
+
 
   //download csv for the manager 
   const csvData = combinedData.map((candidate) => ({
@@ -678,7 +678,7 @@ function ProfileManager(props) {
     console.log(message);
     console.log(`New status: ${newStatus}`);
   };
-  
+
   const handleStatusChangeError = (message, color) => {
     // Implement your logic for error here, such as displaying an error message
     console.error(message);
@@ -716,115 +716,185 @@ function ProfileManager(props) {
     //   });
   };
 
+  // return (
+  //   <ThemeProvider theme={defaultTheme}>
+  //     <div className="profile-div">
+
+  //       <>
+  //         <ToolBars />
+  //         <Typography
+  //           sx={{
+  //             display: 'flex',
+  //             textAlign: 'start',
+  //             fontSize: '35px',
+  //             paddingLeft: '6%',
+  //             paddingTop: '2%',
+  //             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+  //             fontWeight: 'bold',
+
+
+  //           }}
+  //         >
+  //           Applicants
+  //         </Typography>
+  //         <Box className="Box-profile">
+
+
+
+  //           <div className="candidates-list">
+  //             {loading ? (<CircularProgress style={{ margin: "100px auto", display: "block", color: 'rgb(174, 43, 91)' }} /> // Display loading spinner
+  //             ) : (
+  //               <Table>
+
+
+  //                 <CandidateTable candidates={combinedData}
+  //                   selectedJobId={selectedJobId}
+  //                   handleViewCandidate={handleViewCandidate}
+  //                   handleDeleteApplication={handleDeleteApplication}>
+  //                   handleStatusChange={handleStatusChange}
+  //                   open={isDialogOpen}
+  //                 </CandidateTable>
+  //               </Table>
+  //             )}
+
+  //           </div>
+
+  //           <Button
+  //             className="csv-export-button"
+  //             sx={{ color: '#ad2069' }}
+  //           // Set the color style here
+  //           >
+  //             <CSVLink
+  //               data={csvData}
+  //               filename={"candidates.csv"}
+
+  //               sx={{ color: "#ad2069" }}
+  //             >
+  //               Download CSV
+  //             </CSVLink>
+  //           </Button>
+
+
+
+
+
+
+  //         </Box>
+  //         {console.log(" dialog :selectedCandidate", selectedCandidate,
+  //           "selectedJobId", selectedJobId,
+  //         )}
+  //         {console.log("dialog: selectedCandidate", selectedCandidate, "selectedJobId", selectedJobId)}
+        //   <CandidateDialog open={isDialogOpen}
+        //     selectedCandidate={selectedCandidate}
+        //     selectedJobId={selectedJobId}
+        //     handleClose={handleCloseDialog}
+        //     statusChangeMessage={statusChangeMessage}
+        //     statusChangeMessageColor={statusChangeMessageColor}
+        //     handleStatusChangeSuccess={handleStatusChangeSuccess}
+        //     handleStatusChangeError={handleStatusChangeError}
+
+
+
+        //     handleNoteAddSuccess={handleNoteAddSuccess}
+        //     handleNoteAddError={handleNoteAddError}
+        //     handleDeleteApplication={handleDeleteApplication}
+        //   ></CandidateDialog>
+        // </>
+
+
+
+  //       <Typography sx={{ backgroundColor: 'rgb(224 224 224)' }} variant="body2" color="text.secondary" align="center" {...props}>
+  //         {'Copyright © '}
+  //         <Link color="inherit" href="">
+  //           Tech 19
+  //         </Link>{' '}
+  //         {new Date().getFullYear()}
+  //         {'.'}
+  //       </Typography>
+
+  //     </div>
+  //   </ThemeProvider>
+  // );
   return (
     <ThemeProvider theme={defaultTheme}>
-      <div className="profile-div">
-
-        <>
-          <ToolBars  />
-          <Typography
-            sx={{
-              display: 'flex',
-              textAlign: 'start',
-              fontSize: '35px',
-              paddingLeft: '6%',
-              paddingTop: '2%',
-              fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-              fontWeight: 'bold',
-
-
-            }}
-          >
+    <Container style={{ backgroundColor: "rgb(224, 224, 224)" }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <ToolBars />
+          <Typography variant="h4" style={{ paddingTop: "16px", fontWeight: "bold" }}>
             Applicants
           </Typography>
-          <Box className="Box-profile">
-
-           
-
-            <div className="candidates-list">
-              {loading ? (<CircularProgress style={{ margin: "100px auto", display: "block", color: 'rgb(174, 43, 91)' }} /> // Display loading spinner
+        </Grid>
+        <Grid fullwidth item xs={12} sm={9} md={10} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Paper elevation={3}>
+            
+              {loading ? (
+                <CircularProgress
+                  style={{
+                    margin: "100px auto",
+                    display: "block",
+                    color: "rgb(174, 43, 91)",
+                  }}
+                />
               ) : (
-                <Table>
-                
-                
-              <CandidateTable candidates={combinedData}
-                selectedJobId={selectedJobId}
-                handleViewCandidate={handleViewCandidate}
-                handleDeleteApplication={handleDeleteApplication}> 
-                handleStatusChange={handleStatusChange} 
-                open={isDialogOpen}
-                </CandidateTable>
-                </Table>
+                <CandidateTable
+                  candidates={combinedData}
+                  selectedJobId={selectedJobId}
+                  handleViewCandidate={handleViewCandidate}
+                  handleDeleteApplication={handleDeleteApplication}
+                  handleStatusChange={handleStatusChange}
+                  open={isDialogOpen}
+                />
               )}
-
-            </div>
-            {/* <div className="pagination">
-              <Stack direction="row" spacing={2} alignItems="center">
-
-              </Stack>
-              <CandidatePagination
-                // totalPages={totalPages}
-                currentPage={currentPage}
-                onPageChange={(event, value) => setCurrentPage(value)}
-                
-              />
-            </div> */}
-            <Button
-              className="csv-export-button"
-              sx={{ color: '#ad2069' }}
-            // Set the color style here
-            >
-              <CSVLink
-                data={csvData}
-                filename={"candidates.csv"}
-
-                sx={{ color: "#ad2069" }}
-              >
-                Download CSV
-              </CSVLink>
-            </Button>
-
-
-
-
-
-
-          </Box>
-          {console.log (" dialog :selectedCandidate",selectedCandidate,
-          "selectedJobId",selectedJobId,
-           )}
-           {console.log("dialog: selectedCandidate", selectedCandidate, "selectedJobId", selectedJobId)}
-            <CandidateDialog open={isDialogOpen}
+           
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            className="csv-export-button"
+            sx={{ color: "#ad2069", marginTop: "16px" }}
+          >
+            <CSVLink data={csvData} filename={"candidates.csv"} sx={{ color: "#ad2069" }}>
+              Download CSV
+            </CSVLink>
+          </Button>
+        </Grid>
+        <CandidateDialog open={isDialogOpen}
             selectedCandidate={selectedCandidate}
-             selectedJobId={selectedJobId} 
-             handleClose={handleCloseDialog}
-             statusChangeMessage={statusChangeMessage}
-  statusChangeMessageColor={statusChangeMessageColor}
-  handleStatusChangeSuccess={handleStatusChangeSuccess}
-  handleStatusChangeError={handleStatusChangeError}
+            selectedJobId={selectedJobId}
+            handleClose={handleCloseDialog}
+            statusChangeMessage={statusChangeMessage}
+            statusChangeMessageColor={statusChangeMessageColor}
+            handleStatusChangeSuccess={handleStatusChangeSuccess}
+            handleStatusChangeError={handleStatusChangeError}
 
 
 
-  handleNoteAddSuccess={handleNoteAddSuccess}
-  handleNoteAddError={handleNoteAddError}
-  handleDeleteApplication={handleDeleteApplication}
-            ></CandidateDialog>
-        </>
-        
-
-
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-          {'Copyright © '}
-          <Link color="inherit" href="">
-            Tech 19
-          </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-
-      </div>
-    </ThemeProvider>
+            handleNoteAddSuccess={handleNoteAddSuccess}
+            handleNoteAddError={handleNoteAddError}
+            handleDeleteApplication={handleDeleteApplication}
+          ></CandidateDialog>
+       
+        <Grid item xs={12}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            style={{ backgroundColor: "rgb(224, 224, 224)", padding: "8px" }}
+          >
+            {'Copyright © '}
+            <Link color="inherit" href="">
+              Tech 19
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Container>
+  </ThemeProvider>
   );
+
 }
 
 export default ProfileManager;

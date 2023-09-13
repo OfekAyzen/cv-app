@@ -12,37 +12,37 @@ export default function ApplyJob(props) {
     event.preventDefault();
   
 
-    try {
+    // try {
   
     
-      const response = await axios.post(
-        `http://localhost:5000/apply/${props.job_id}`,
-        {},
-        {
-          headers: {
-            Authorization: 'Bearer ' + props.token,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+    //   const response = await axios.post(
+    //     `http://localhost:5000/apply/${props.job_id}`,
+    //     {},
+    //     {
+    //       headers: {
+    //         Authorization: 'Bearer ' + props.token,
+    //         'Content-Type': 'application/json',
+    //       },
+    //     }
+    //   );
   
-      if (response.status === 200) {
+    //   if (response.status === 200) {
        
        
-        props.setOpen(false);
-      } else {
-        setFlashMessage(response.data.message);
-        setErrorSnackbarOpen(true);
-      }
-    } catch (error) {
-      if (error.response) {
-        setFlashMessage(error.response.data.message);
-        setErrorSnackbarOpen(true);
-      } else {
-        setFlashMessage('Error applying for the job.');
-        setErrorSnackbarOpen(true);
-      }
-    }
+    //     props.setOpen(false);
+    //   } else {
+    //     setFlashMessage(response.data.message);
+    //     setErrorSnackbarOpen(true);
+    //   }
+    // } catch (error) {
+    //   if (error.response) {
+    //     setFlashMessage(error.response.data.message);
+    //     setErrorSnackbarOpen(true);
+    //   } else {
+    //     setFlashMessage('Error applying for the job.');
+    //     setErrorSnackbarOpen(true);
+    //   }
+    // }
   };
 
   const handleApply = async (event) => {

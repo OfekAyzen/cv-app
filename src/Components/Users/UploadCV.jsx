@@ -18,32 +18,32 @@ const UploadCV = ({ token }) => {
       const formData = new FormData();
       formData.append('inputFile', file);
 
-      try {
-        setLoading(true);
-        const response = await axios.post(
-          'http://localhost:5000/upload',
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
+    //   try {
+    //     setLoading(true);
+    //     const response = await axios.post(
+    //       'http://localhost:5000/upload',
+    //       formData,
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //           'Content-Type': 'multipart/form-data',
+    //         },
+    //       }
+    //     );
 
-        if (response.status === 200) {
-          setUploadStatus('File uploaded successfully.');
-        }
-      } catch (error) {
-        if (error.response) {
-          setUploadStatus(`Error uploading file: ${error.response.data.message}`);
-        } else {
-          setUploadStatus('Error uploading file.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
+    //     if (response.status === 200) {
+    //       setUploadStatus('File uploaded successfully.');
+    //     }
+    //   } catch (error) {
+    //     if (error.response) {
+    //       setUploadStatus(`Error uploading file: ${error.response.data.message}`);
+    //     } else {
+    //       setUploadStatus('Error uploading file.');
+    //     }
+    //   } finally {
+    //     setLoading(false);
+    //   }
+     }
   };
 
   return (
