@@ -151,7 +151,9 @@ import SignUp from '../src/Components/SignUp/SignUp';
 import ForgotPassword from './Components/Users/ForgotPassword';
 import ConfirmSignUp from './Pages/Log/ConfirmSignUp';
 import ConfirmForgotPassword from './Pages/Log/ConfirmForgotPassword';
-
+import {  Storage } from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 
 
@@ -225,7 +227,7 @@ function App() {
               <Route path="/HomePage" element={<ProfileUser />} />
               <Route path="/Apply/:job_id"  />
               <Route path="/Position" element={<Position  />} />
-             
+
               <Route path="/confirm-signup/:username" element={<ConfirmSignUp/>} />
               <Route path="/confirm_forgot_password/:username" element={<ConfirmForgotPassword/>} />
               <Route path="/SignUp" element={<SignUp></SignUp>} />

@@ -1,55 +1,59 @@
 /* LandingPage.css */
 body {
-  
+
   margin: 0px !important;
   padding: 0px !important;
-  
+
 }
+
 .candidate-table {
-    width: 100%;
-    /**border-collapse: collapse;*/
-    
-    margin-top: 20px;
-    
-  }
-  
-  .candidate-table th,
-  .candidate-table td {
-    border: 1px solid #e0dddd;
-    padding: 10px;
-    text-align: left;
-    
-  }
-  
-  .candidate-table th {
-    background-color: #ffffff;
-    font-weight: bold;
-    
-  }
-  
-  .candidate-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-    
-  }
-  
-  .candidate-table tbody tr:hover {
-    background-color: #f5f5f5;
-    
-  }
+  width: 100%;
+  /**border-collapse: collapse;*/
 
+  margin-top: 20px;
 
-  /* styles.css or your custom CSS file */
-.data-grid-container .rounded-row {
-    /* Adjust the value as needed for the desired roundedness */
-    height: '100%';
-    width: '100%';
-    overflow: 'hidden';
-    border-radius: 15px; /* Adjust the radius to control the amount of rounding */
-    background-color: #f8f6f6; /* Optional: Set a background color for the rounded rows */
-    margin: 5px;
-    border-bottom: 1px !important;
-    
 }
+
+.candidate-table th,
+.candidate-table td {
+  border: 1px solid #e0dddd;
+  padding: 10px;
+  text-align: left;
+
+}
+
+.candidate-table th {
+  background-color: #ffffff;
+  font-weight: bold;
+
+}
+
+.candidate-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+
+}
+
+.candidate-table tbody tr:hover {
+  background-color: #f5f5f5;
+
+}
+
+
+/* styles.css or your custom CSS file */
+.data-grid-container .rounded-row {
+  /* Adjust the value as needed for the desired roundedness */
+  height: '100%';
+  width: '100%';
+  overflow: 'hidden';
+  border-radius: 15px;
+  /* Adjust the radius to control the amount of rounding */
+  background-color: #f8f6f6;
+  /* Optional: Set a background color for the rounded rows */
+  margin: 5px;
+  border-bottom: 1px !important;
+
+}
+
 .candidate-details {
   position: fixed;
   top: 0%;
@@ -65,36 +69,39 @@ body {
   z-index: 9999;
   display: fixed;
 }
-.h2-candidate-details{
-    color: rgb(129, 37, 64);
-    text-align: center;
+
+.h2-candidate-details {
+  color: rgb(129, 37, 64);
+  text-align: center;
 }
+
 .close-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-.inner-card{
-    padding: 20px;
-    width: '80%';
-   
-    
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.download-button{
-    
-    
-    
-   
- 
-    color: rgb(174, 43, 91);
+.inner-card {
+  padding: 20px;
+  width: '80%';
+
+
 }
+
+.download-button {
+
+
+
+
+
+  color: rgb(174, 43, 91);
+}
+
 /* LandingPage.css or your custom CSS file */
 
 
@@ -107,36 +114,41 @@ body {
   }*/
 
 
-.data-grid-container{
-    margin-top: 5%;
-    height: 800px;
-    
+.data-grid-container {
+  margin-top: 5%;
+  height: 800px;
+
 }
 
-.div-bar{
-    background-color: black;
-    
-}
-.img{
-  height: 80px;;
+.div-bar {
+  background-color: black;
+
 }
 
-.css-128fb87-MuiDataGrid-toolbarContainer{
+.img {
+  height: 80px;
+  ;
+}
+
+.css-128fb87-MuiDataGrid-toolbarContainer {
   gap: 56px !important;
   padding: 81px 8px 25px !important;
   background-color: #e2e1e6 !important;
 }
+
 .css-1knaqv7-MuiButtonBase-root-MuiButton-root {
 
   color: #ad2069 !important;
 
 }
+
 .css-128fb87-MuiDataGrid-toolbarContainer {
-  
+
   background-color: white !important;
-  
+
   border-radius: 15px ! important;
 }
+
 .css-1knaqv7-MuiButtonBase-root-MuiButton-root {
 
   height: 50px !important;
@@ -144,60 +156,67 @@ body {
   /* border-left: ridge; */
   border: outset !important;
 }
+
 .css-5wly58-MuiDataGrid-root .MuiDataGrid-row {
 
   background-color: white !important;
 }
+
 .css-rtrcn9-MuiTablePagination-root {
- 
+
   display: none !important;
 }
-.Box-userprofile{
+
+.Box-userprofile {
   background-color: rgb(34, 33, 33) !important;
   width: 'auto';
   height: 432px;
 }
-.h3-user{
-  
+
+.h3-user {
+
   color: #ad2069;
   font-size: 50px;
   padding-top: 98px;
   padding-left: 50px;
   margin: auto;
-  
+
 }
-.h4-user{
+
+.h4-user {
   color: white;
   font-size: 40px;
- 
+
   padding-left: 50px;
 }
-.img-user{
- 
-  margin-right:auto;
-  float: right;    
- margin: 0 0 0 15px;
 
- height: 432px;
+.img-user {
+
+  margin-right: auto;
+  float: right;
+  margin: 0 0 0 15px;
+
+  height: 432px;
 }
 
 
-.FilterCard{
+.FilterCard {
   background-color: #ffffff !important;
   margin-top: 15%;
-  height: 92px ;
+  height: 92px;
   text-align: center;
-    /* display: flex;
+  /* display: flex;
     justify-content: center !important;
     align-items: center !important; */
 }
 
 
-.sorting-options{
+.sorting-options {
   background-color: #b99baa;
 }
-.profile-div{
-  background-color:rgba(224, 224, 224, 1);
+
+.profile-div {
+  background-color: rgba(224, 224, 224, 1);
   height: 1050px;
   width: 100%;
   display: block;
@@ -205,33 +224,38 @@ body {
   margin: 0%;
 
 }
-.profile-card{
+
+.profile-card {
   background-color: #fbfbfb;
-    width: 90%;
-    margin-top: 10%;
-    height: 120px;
+  width: 90%;
+  margin-top: 10%;
+  height: 120px;
 }
-.candidates-list{
+
+.candidates-list {
   background-color: #ffffff;
-    height: auto;
-    width: 90%;
-    margin-top: 10px;
-    border-radius: 13px;
-  
+  height: auto;
+  width: 90%;
+  margin-top: 10px;
+  border-radius: 13px;
+
 }
-.tr-candidate{
+
+.tr-candidate {
   background-color: #ffffff;
   border-radius: 2%;
 }
+
 .css-1ex1afd-MuiTableCell-root {
 
   display: table-cell;
   vertical-align: inherit;
   border-bottom: 8px solid rgba(224, 224, 224, 1) !important;
- 
+
 }
+
 .css-1ygcj2i-MuiTableCell-root {
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.5rem;
@@ -239,38 +263,43 @@ body {
   display: table-cell;
   vertical-align: inherit;
   border-bottom: 12px solid rgba(224, 224, 224, 1) !important;
- 
+
 }
+
 .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-  padding-right: 112px; 
+  padding-right: 112px;
   width: 100px !important;
 
 }
-  .FilterCard{
-    background-color: #fefefe;
-  }
+
+.FilterCard {
+  background-color: #fefefe;
+}
+
 .css-bhp9pd-MuiPaper-root-MuiCard-root {
 
-   
-    height: 40% !important;
-    /* margin-top: -110px !important; */
-    margin-block: auto;
-    background-color: #fff;
-    color: rgba(0, 0, 0, 0.87) !important;
-    box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.2), 0px 1px 1px 0px rgba(255, 255, 255, 0.14), 0px 1px 3px 0px rgba(255, 255, 255, 0.12) !important;
-    border-radius: 18px !important;
-  
+
+  height: 40% !important;
+  /* margin-top: -110px !important; */
+  margin-block: auto;
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87) !important;
+  box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.2), 0px 1px 1px 0px rgba(255, 255, 255, 0.14), 0px 1px 3px 0px rgba(255, 255, 255, 0.12) !important;
+  border-radius: 18px !important;
+
 }
-.filter-order{
+
+.filter-order {
   background-color: rgb(255, 255, 255);
-    width: 90% !important;
-    height: 30 px !important;
-    /* margin-top: 2px; */
-    background-color: #ffffff;
-    padding-bottom: 2%;
+  width: 90% !important;
+  height: 30 px !important;
+  /* margin-top: 2px; */
+  background-color: #ffffff;
+  padding-bottom: 2%;
 }
+
 .css-46bh2p-MuiCardContent-root:last-child {
-  
+
   padding-bottom: 36px;
   /* padding-top: 90px; */
   justify-content: center;
@@ -278,24 +307,26 @@ body {
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  align-content: flex-end; 
+  align-content: flex-end;
   flex-direction: row-reverse;
 }
 
 .css-46bh2p-MuiCardContent-root {
   padding: 0px;
-} 
-.Box-profile{
-  background-color: rgba(224, 224, 224, 1);
-    justify-content: flex-start;
-    display: flex;
-    align-items: center;
-    align-content: center;
-    flex-wrap: wrap;
-    flex-direction: column;
 }
-.candidate-card-profile{
- 
+
+.Box-profile {
+  background-color: rgba(224, 224, 224, 1);
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.candidate-card-profile {
+
   margin-left: 125px !important;
 }
 
@@ -310,21 +341,23 @@ body {
   left: unset !important;
   bottom: 0;
   top: 0;
-  
+
 }
 
-.orderby{
+.orderby {
   background-color: #ffffff;
   padding-left: 0.9%;
 }
+
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
 
   margin: 1% !important;
 
   background-color: #ad2069 !important;
   width: 158px;
-  
+
 }
+
 /* user profile at manager **/
 /* .profilePopUp{
   background-color: #ffffff;
@@ -341,12 +374,13 @@ body {
   padding: 280px 24px !important;
   margin-top: -15%;
 }
+
 .css-csmqbv-MuiPaper-root-MuiDialog-paper {
   background-color: #fff;
   color: rgba(0, 0, 0, 0.87);
   -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
- 
+
   position: relative;
   overflow-y: auto;
   display: -webkit-box;
@@ -365,25 +399,31 @@ body {
 
 .css-ahj2mt-MuiTypography-root {
   margin: 3px;
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 2;
   letter-spacing: 0.00998em;
 
 }
-.toolbar{
+
+.toolbar {
   display: flex;
-  
+
 }
+
 .tr-candidate:hover {
   box-shadow: 10px 10px 10px rgb(201, 128, 139);
   cursor: pointer;
 }
+
 .tr-candidate {
-  transition: box-shadow 0.3s; /* Add transition for a smooth effect */
-  border-radius: 10px; /* Add rounded border radius */
+  transition: box-shadow 0.3s;
+  /* Add transition for a smooth effect */
+  border-radius: 10px;
+  /* Add rounded border radius */
 }
+
 .css-7ldjcq-MuiGrid-root {
   box-sizing: border-box;
   display: -webkit-box;
@@ -408,12 +448,14 @@ body {
   align-content: center;
   justify-content: flex-start;
 }
-.csv-export-button{
+
+.csv-export-button {
   color: #ad2069;
 }
+
 .css-qfso29-MuiTypography-root-MuiDialogContentText-root {
   margin: 0;
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.5;
@@ -426,99 +468,131 @@ body {
   margin-top: 8px;
   width: 40%;
 }
+
 .css-rqglhn-MuiTable-root {
   display: table;
   width: 100%;
   margin-top: 120px;
 }
+
 .custom-text-field .Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: #ad2069 !important;
 }
+
 .custom-text-field .Mui-focused {
-  color: #161516 !important; /* Change the border color to #ad2069 */
+  color: #161516 !important;
+  /* Change the border color to #ad2069 */
 }
 
 /*selector order by style*/
 .custom-select .MuiOutlinedInput-notchedOutline {
-  border-color: #8b898a !important; /* Set the border color to #ad2069 */
+  border-color: #8b898a !important;
+  /* Set the border color to #ad2069 */
 }
 
 .custom-select .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
 .custom-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #b76991 !important; /* Set the border color to #ad2069 on hover and focus */
+  border-color: #b76991 !important;
+  /* Set the border color to #ad2069 on hover and focus */
 }
+
 .custom-select .MuiInputLabel-root.Mui-focused {
   color: black !important;
 }
+
 /**/
 .table-container {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  max-width: 100%; /* Make the container responsive */
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  max-width: 100%;
+  /* Make the container responsive */
 }
+
 /**/
-@media (min-width: 600px){
-.css-1oqqzyl-MuiContainer-root {
+@media (min-width: 600px) {
+  .css-1oqqzyl-MuiContainer-root {
     padding-left: 0px !important;
     padding-right: 0px !important;
+  }
 }
-}
+
 .css-3su884-MuiPaper-root {
   background-color: #fff;
   color: rgba(0, 0, 0, 0.87);
   -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border-radius: 4px;
-  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
   width: 2000px;
-  
+
   margin-left: 300px !important;
 }
-@media (min-width: 600px){
+
+@media (min-width: 600px) {
   .css-3su884-MuiPaper-root {
     background-color: #cb0a0a;
-    
-   
-  }}
 
-.css-1099y7z-MuiTableRow-root {
-    color: inherit;
-    display: table-row;
-    vertical-align: middle;
-    outline: 0;
-    border-radius: 10px;
-    -webkit-transition: box-shadow 0.3s;
-    transition: box-shadow 0.3s;
-    background-color: #ffffff;
-    box-shadow: none;
-    width: auto;
 
   }
-@media (min-width: 600px){
-    .css-1107yuj-MuiContainer-root {
-          padding-left: 0px !important;
-    padding-right:  0px !important;
-      
-     
-}}
-.css-1107yuj-MuiContainer-root {
-  
-  padding-left: 0px !important; 
-  padding-right: 0px !important;
-  
 }
-@media (min-width: 1200px){
 
-.css-1la2456-MuiContainer-root {
-     max-width:1400px !important;
-     border-radius: 20px;
-    
+.css-1099y7z-MuiTableRow-root {
+  color: inherit;
+  display: table-row;
+  vertical-align: middle;
+  outline: 0;
+  border-radius: 10px;
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  background-color: #ffffff;
+  box-shadow: none;
+  width: auto;
+
 }
+
+@media (min-width: 600px) {
+  .css-1107yuj-MuiContainer-root {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+
+
+  }
 }
+
+.css-1107yuj-MuiContainer-root {
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+
+}
+
+@media (min-width: 1200px) {
+
+  .css-1la2456-MuiContainer-root {
+    max-width: 1390px !important;
+    border-radius: 20px;
+
+
+    display: flex !important;
+
+
+    flex-direction: row-reverse !important;
+
+    align-items: center !important;
+
+    justify-content: flex-end !important;
+    background-color: white;
+
+    flex-wrap: wrap !important;
+
+  }
+}
+
 .css-dgfjot-MuiTable-root {
   display: table;
-  width: 100%;
+  /* width: 100%; */
   border-collapse: collapse;
   border-spacing: 0;
-  width: 1400px  !important;
+  width: 1400px !important;
   background-color: white;
 }

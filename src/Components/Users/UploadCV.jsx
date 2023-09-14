@@ -5,49 +5,47 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Typography from '@mui/material/Typography';
 
+import { Storage } from 'aws-amplify';
+
+
 const UploadCV = ({ token }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = async (e) => {
+    console.log("handke file upload ");
     const file = e.target.files[0];
-    setSelectedFile(file);
 
     if (file) {
-      const formData = new FormData();
-      formData.append('inputFile', file);
+      setLoading(true);
 
-    //   try {
-    //     setLoading(true);
-    //     const response = await axios.post(
-    //       'http://localhost:5000/upload',
-    //       formData,
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //           'Content-Type': 'multipart/form-data',
-    //         },
-    //       }
-    //     );
+      const result = await uploadFile(file);
 
-    //     if (response.status === 200) {
-    //       setUploadStatus('File uploaded successfully.');
-    //     }
-    //   } catch (error) {
-    //     if (error.response) {
-    //       setUploadStatus(`Error uploading file: ${error.response.data.message}`);
-    //     } else {
-    //       setUploadStatus('Error uploading file.');
-    //     }
-    //   } finally {
-    //     setLoading(false);
-    //   }
-     }
+      if (result.success) {
+        setUploadStatus('File uploaded successfully.');
+      } else {
+        setUploadStatus(`Error uploading file: ${result.error.message}`);
+      }
+
+      setLoading(false);
+    }
   };
 
+  async function uploadFile(file) {
+    console.log("oploadfile");
+  try {
+    await Storage.put(file.name, file, {
+      contentType: file.type, // Set the content type based on the file type
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error uploading file: ", error);
+    return { success: false, error };
+  }
+}
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10%' }}>
+     
       <input
         type="file"
         accept=".pdf,.docx"

@@ -360,36 +360,3 @@ export const candidateJobsByJobsId = /* GraphQL */ `
     }
   }
 `;
-export const getCandidateByCognitoSub = /* GraphQL */ `
-  query GetCandidateByCognitoSub($cognitoSub: String!) {
-    getCandidate(cognitoSub: $cognitoSub) {
-      id
-      first_name
-      last_name
-      location
-      email
-      phone_number
-      gender
-      education
-      work_experience
-      skills
-      position
-      certifications
-      role
-      Jobs {
-        nextToken
-        startedAt
-        __typename
-      }
-      cognitoSub
-      note
-      status
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
