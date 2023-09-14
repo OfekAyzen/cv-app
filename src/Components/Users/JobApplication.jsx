@@ -72,7 +72,7 @@ export default function JobApplication(props) {
     const [gender, setGender] = useState('');
     const [education, setEducation] = useState('');
     const [work_experience, setWorkExperience] = useState('');
-    const [candidate_id, setCandidateId] = useState('');
+    const [candidateId, setCandidateId] = useState('');
     const [skills, setSkills] = useState('');
     const [position, setPosition] = useState('');
     const [certifications, setCertifications] = useState('');
@@ -85,7 +85,7 @@ export default function JobApplication(props) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const applyJobJobId = job_id || props.job_id;
-
+    
     const educationOptions = [
         "All",
         "High School",
@@ -133,10 +133,12 @@ export default function JobApplication(props) {
 
             if (response.data.createCandidate) {
                 // Candidate was successfully created
-                const candidateId = response.data.createCandidate.id;
+                
                 // console.log("candidateID :", candidateId);
                 // console.log("props job_id : ", props.job_id);
                 // navigate('/HomePage'); 
+                setCandidateId(response.data.createCandidate.id);
+                console.log("candidate id swt : ",candidateId);
                 handleapplyjob(candidateId); // Call the function to create CandidateJobs
                 props.onClose();
             } else {

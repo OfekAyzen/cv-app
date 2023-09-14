@@ -11,7 +11,7 @@ type Candidate @model @auth(rules: [{allow: public}]) {
   skills: String
   position: String
   certifications: String
-  role: String
+  cv: String
   Jobs: [Jobs] @manyToMany(relationName: "CandidateJobs")
   cognitoSub: String
   note: String

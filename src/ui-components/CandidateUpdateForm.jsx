@@ -35,7 +35,7 @@ export default function CandidateUpdateForm(props) {
     skills: "",
     position: "",
     certifications: "",
-    role: "",
+    cv: "",
     cognitoSub: "",
     note: "",
     status: "",
@@ -57,7 +57,7 @@ export default function CandidateUpdateForm(props) {
   const [certifications, setCertifications] = React.useState(
     initialValues.certifications
   );
-  const [role, setRole] = React.useState(initialValues.role);
+  const [cv, setCv] = React.useState(initialValues.cv);
   const [cognitoSub, setCognitoSub] = React.useState(initialValues.cognitoSub);
   const [note, setNote] = React.useState(initialValues.note);
   const [status, setStatus] = React.useState(initialValues.status);
@@ -77,7 +77,7 @@ export default function CandidateUpdateForm(props) {
     setSkills(cleanValues.skills);
     setPosition(cleanValues.position);
     setCertifications(cleanValues.certifications);
-    setRole(cleanValues.role);
+    setCv(cleanValues.cv);
     setCognitoSub(cleanValues.cognitoSub);
     setNote(cleanValues.note);
     setStatus(cleanValues.status);
@@ -107,7 +107,7 @@ export default function CandidateUpdateForm(props) {
     skills: [],
     position: [],
     certifications: [],
-    role: [],
+    cv: [],
     cognitoSub: [],
     note: [],
     status: [],
@@ -149,7 +149,7 @@ export default function CandidateUpdateForm(props) {
           skills,
           position,
           certifications,
-          role,
+          cv,
           cognitoSub,
           note,
           status,
@@ -219,7 +219,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -257,7 +257,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -295,7 +295,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -333,7 +333,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -371,7 +371,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -409,7 +409,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -447,7 +447,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -485,7 +485,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -523,7 +523,7 @@ export default function CandidateUpdateForm(props) {
               skills: value,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -561,7 +561,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position: value,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -599,7 +599,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications: value,
-              role,
+              cv,
               cognitoSub,
               note,
               status,
@@ -618,10 +618,10 @@ export default function CandidateUpdateForm(props) {
         {...getOverrideProps(overrides, "certifications")}
       ></TextField>
       <TextField
-        label="Role"
+        label="Cv"
         isRequired={false}
         isReadOnly={false}
-        value={role}
+        value={cv}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -637,23 +637,23 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role: value,
+              cv: value,
               cognitoSub,
               note,
               status,
             };
             const result = onChange(modelFields);
-            value = result?.role ?? value;
+            value = result?.cv ?? value;
           }
-          if (errors.role?.hasError) {
-            runValidationTasks("role", value);
+          if (errors.cv?.hasError) {
+            runValidationTasks("cv", value);
           }
-          setRole(value);
+          setCv(value);
         }}
-        onBlur={() => runValidationTasks("role", role)}
-        errorMessage={errors.role?.errorMessage}
-        hasError={errors.role?.hasError}
-        {...getOverrideProps(overrides, "role")}
+        onBlur={() => runValidationTasks("cv", cv)}
+        errorMessage={errors.cv?.errorMessage}
+        hasError={errors.cv?.hasError}
+        {...getOverrideProps(overrides, "cv")}
       ></TextField>
       <TextField
         label="Cognito sub"
@@ -675,7 +675,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub: value,
               note,
               status,
@@ -713,7 +713,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note: value,
               status,
@@ -751,7 +751,7 @@ export default function CandidateUpdateForm(props) {
               skills,
               position,
               certifications,
-              role,
+              cv,
               cognitoSub,
               note,
               status: value,

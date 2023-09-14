@@ -16,7 +16,7 @@ export const getCandidate = /* GraphQL */ `
       skills
       position
       certifications
-      role
+      cv
       Jobs {
         nextToken
         startedAt
@@ -54,7 +54,7 @@ export const listCandidates = /* GraphQL */ `
         skills
         position
         certifications
-        role
+        cv
         cognitoSub
         note
         status
@@ -97,7 +97,7 @@ export const syncCandidates = /* GraphQL */ `
         skills
         position
         certifications
-        role
+        cv
         cognitoSub
         note
         status
@@ -210,7 +210,7 @@ export const getCandidateJobs = /* GraphQL */ `
         skills
         position
         certifications
-        role
+        cv
         cognitoSub
         note
         status

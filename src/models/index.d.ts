@@ -23,7 +23,7 @@ type EagerCandidate = {
   readonly skills?: string | null;
   readonly position?: string | null;
   readonly certifications?: string | null;
-  readonly role?: string | null;
+  readonly cv?: string | null;
   readonly Jobs?: (CandidateJobs | null)[] | null;
   readonly cognitoSub?: string | null;
   readonly note?: string | null;
@@ -49,7 +49,7 @@ type LazyCandidate = {
   readonly skills?: string | null;
   readonly position?: string | null;
   readonly certifications?: string | null;
-  readonly role?: string | null;
+  readonly cv?: string | null;
   readonly Jobs: AsyncCollection<CandidateJobs>;
   readonly cognitoSub?: string | null;
   readonly note?: string | null;

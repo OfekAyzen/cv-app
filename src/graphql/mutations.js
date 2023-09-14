@@ -19,7 +19,7 @@ export const createCandidate = /* GraphQL */ `
       skills
       position
       certifications
-      role
+      cv
       Jobs {
         nextToken
         startedAt
@@ -55,7 +55,7 @@ export const updateCandidate = /* GraphQL */ `
       skills
       position
       certifications
-      role
+      cv
       Jobs {
         nextToken
         startedAt
@@ -91,7 +91,7 @@ export const deleteCandidate = /* GraphQL */ `
       skills
       position
       certifications
-      role
+      cv
       Jobs {
         nextToken
         startedAt
@@ -203,7 +203,7 @@ export const createCandidateJobs = /* GraphQL */ `
         skills
         position
         certifications
-        role
+        cv
         cognitoSub
         note
         status
@@ -257,7 +257,7 @@ export const updateCandidateJobs = /* GraphQL */ `
         skills
         position
         certifications
-        role
+        cv
         cognitoSub
         note
         status
@@ -311,7 +311,7 @@ export const deleteCandidateJobs = /* GraphQL */ `
         skills
         position
         certifications
-        role
+        cv
         cognitoSub
         note
         status

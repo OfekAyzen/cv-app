@@ -24,7 +24,7 @@ export declare type CandidateCreateFormInputValues = {
     skills?: string;
     position?: string;
     certifications?: string;
-    role?: string;
+    cv?: string;
     cognitoSub?: string;
     note?: string;
     status?: string;
@@ -41,7 +41,7 @@ export declare type CandidateCreateFormValidationValues = {
     skills?: ValidationFunction<string>;
     position?: ValidationFunction<string>;
     certifications?: ValidationFunction<string>;
-    role?: ValidationFunction<string>;
+    cv?: ValidationFunction<string>;
     cognitoSub?: ValidationFunction<string>;
     note?: ValidationFunction<string>;
     status?: ValidationFunction<string>;
@@ -60,7 +60,7 @@ export declare type CandidateCreateFormOverridesProps = {
     skills?: PrimitiveOverrideProps<TextFieldProps>;
     position?: PrimitiveOverrideProps<TextFieldProps>;
     certifications?: PrimitiveOverrideProps<TextFieldProps>;
-    role?: PrimitiveOverrideProps<TextFieldProps>;
+    cv?: PrimitiveOverrideProps<TextFieldProps>;
     cognitoSub?: PrimitiveOverrideProps<TextFieldProps>;
     note?: PrimitiveOverrideProps<TextFieldProps>;
     status?: PrimitiveOverrideProps<TextFieldProps>;
