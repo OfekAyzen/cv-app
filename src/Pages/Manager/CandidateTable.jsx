@@ -316,7 +316,7 @@ const CandidateTable = ({
     //     rowsPerPageOptions={[10, 25, 50]}
     //   />
     // </div>
-    <div >
+    < >
       {console.log("candidates at table :", candidates)}
       <Snackbar
         open={notification !== null}
@@ -341,7 +341,7 @@ const CandidateTable = ({
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: 'white',
-          
+          width:'1800px',
          
           
         }}
@@ -369,7 +369,7 @@ const CandidateTable = ({
         </FormControl>
       </div>
         {/* <Table sx={{ minWidth: 1024 ,backgroundColor:'white'}}> */}
-        <Table sx={{ backgroundColor: 'white' }}>
+        <Table sx={{ width:'1800px' ,backgroundColor: 'white' }}>
           <TableHead>
             <TableRow>
               <TableCell>Date Apply</TableCell>
@@ -407,7 +407,7 @@ const CandidateTable = ({
           rowsPerPageOptions={[10, 25, 50]}
         />
       </Container>
-    </div>
+    </>
   );
 }
 export default CandidateTable;
