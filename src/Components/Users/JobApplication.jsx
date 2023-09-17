@@ -817,7 +817,7 @@ export default function JobApplication(props) {
 
                 },
             };
-
+            
             const response = await API.graphql(graphqlOperation(createCandidateJobs, candidateJobsData));
             console.log("GraphQL Response:", response);
 

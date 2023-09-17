@@ -540,75 +540,6 @@ function ProfileManager(props) {
   }, []); // Empty dependency array to run once on mount
 
 
-  // useEffect(() => {
-
-
-  //   const fetchCandidatesData = async () => {
-  //     try {
-  //       // Use the listCandidateJobs query to fetch candidate jobs
-  //       const response = await API.graphql(
-  //         graphqlOperation(listCandidateJobs)
-  //       );
-
-  //       // Extract the items from the response
-  //       const candidateJobs = response.data.listCandidateJobs.items;
-
-  //       // Create an array to hold combined job and candidate data
-  //       const combinedData = [];
-
-  //       // Now, for each candidate job, fetch the full data of the candidate and job
-  //       await Promise.all(
-  //         candidateJobs.map(async (candidateJob) => {
-  //           // Fetch the candidate data
-  //           const candidateResponse = await API.graphql(
-  //             graphqlOperation(getCandidate, { id: candidateJob.candidateId })
-  //           );
-
-  //           // Fetch the job data
-  //           const jobResponse = await API.graphql(
-  //             graphqlOperation(getJobs, { id: candidateJob.jobsId })
-  //           );
-
-  //           // Combine the candidate and job data into a single object
-  //           const combinedItem = {
-  //             candidate: candidateResponse.data.getCandidate,
-  //             job: jobResponse.data.getJobs,
-  //             candidateJob: candidateJob, // You can also include the original candidate job data
-  //           };
-
-  //           // Add the combined data to the array
-  //           combinedData.push(combinedItem);
-  //         })
-  //       );
-
-  //       // Now you have an array 'combinedData' that holds both job and candidate objects
-  //       console.log('Combined Data:', combinedData);
-
-  //       // Check if combinedData has more than 6 items
-  //       // if (combinedData.length > 6) {
-  //       //   // Slice the array to keep only the first 6 items
-  //       //   setCombideData(combinedData.slice(0, 6));
-  //       // } else {
-  //       //   // Set the combinedData as is
-  //       //   setCombideData(combinedData);
-  //       // }
-  //       if(combinedData.candidateJob._delete===true          ){
-  //         console.log("deleted candidate ");
-
-  //       }
-  //       setCombideData(combinedData);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error('Error fetching candidate jobs:', error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   // Fetch applied jobs when the component mounts
-  //   fetchCandidatesData();
-  // }, []); // Empty dependency array to run once on mount
-
-  // Use a useEffect to log the changes in candidatesData
   useEffect(() => {
     console.log('Updated Candidates Data:', candidatesData);
   }, [candidatesData]);
@@ -632,30 +563,6 @@ function ProfileManager(props) {
     setIsDialogOpen(false);
   };
   const [selectedCandidateStatus, setSelectedCandidateStatus] = useState("");
-
-
-  // const handleDeleteApplication = (candidateId, applicationId) => {
-  //   if (window.confirm("Are you sure you want to delete this application?")) {
-  //     if (applicationId) {
-  //       CandidateDataService.deleteApplication(applicationId, props.token)
-  //         .then((response) => {
-  //           // Update the state or handle success, if needed
-  //           console.log("Application deleted successfully:", response.message);
-  //           // Refresh the data after deleting
-  //           fetchCandidatesData();
-  //         })
-  //         .catch((error) => {
-  //           // Handle error, if needed
-  //           console.error("Error deleting application:", error);
-  //         });
-  //     }
-  //   }
-  // };
-
-
-  // function parseApplicationDate(dateString) {
-  //   return new Date(dateString).getTime();
-  // }
 
 
 
@@ -698,123 +605,13 @@ function ProfileManager(props) {
   };
 
   const handleStatusChange = (candidate, newStatus) => {
-    // You can implement the logic to update the status here
-    // Make an API call or update the state as needed
-    // candidate contains the candidate data, and newStatus contains the new status value
+ 
 
     console.log("Changing status for candidate ID", candidate.candidate.id, "to", newStatus);
 
-    // Update the status in the state or make an API call here
-
-    // Example API call:
-    // CandidateDataService.updateStatus(candidate.candidate.id, newStatus, props.token)
-    //   .then((response) => {
-    //     // Handle success
-    //   })
-    //   .catch((error) => {
-    //     // Handle error
-    //   });
+   
   };
 
-  // return (
-  //   <ThemeProvider theme={defaultTheme}>
-  //     <div className="profile-div">
-
-  //       <>
-  //         <ToolBars />
-  //         <Typography
-  //           sx={{
-  //             display: 'flex',
-  //             textAlign: 'start',
-  //             fontSize: '35px',
-  //             paddingLeft: '6%',
-  //             paddingTop: '2%',
-  //             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-  //             fontWeight: 'bold',
-
-
-  //           }}
-  //         >
-  //           Applicants
-  //         </Typography>
-  //         <Box className="Box-profile">
-
-
-
-  //           <div className="candidates-list">
-  //             {loading ? (<CircularProgress style={{ margin: "100px auto", display: "block", color: 'rgb(174, 43, 91)' }} /> // Display loading spinner
-  //             ) : (
-  //               <Table>
-
-
-  //                 <CandidateTable candidates={combinedData}
-  //                   selectedJobId={selectedJobId}
-  //                   handleViewCandidate={handleViewCandidate}
-  //                   handleDeleteApplication={handleDeleteApplication}>
-  //                   handleStatusChange={handleStatusChange}
-  //                   open={isDialogOpen}
-  //                 </CandidateTable>
-  //               </Table>
-  //             )}
-
-  //           </div>
-
-  //           <Button
-  //             className="csv-export-button"
-  //             sx={{ color: '#ad2069' }}
-  //           // Set the color style here
-  //           >
-  //             <CSVLink
-  //               data={csvData}
-  //               filename={"candidates.csv"}
-
-  //               sx={{ color: "#ad2069" }}
-  //             >
-  //               Download CSV
-  //             </CSVLink>
-  //           </Button>
-
-
-
-
-
-
-  //         </Box>
-  //         {console.log(" dialog :selectedCandidate", selectedCandidate,
-  //           "selectedJobId", selectedJobId,
-  //         )}
-  //         {console.log("dialog: selectedCandidate", selectedCandidate, "selectedJobId", selectedJobId)}
-        //   <CandidateDialog open={isDialogOpen}
-        //     selectedCandidate={selectedCandidate}
-        //     selectedJobId={selectedJobId}
-        //     handleClose={handleCloseDialog}
-        //     statusChangeMessage={statusChangeMessage}
-        //     statusChangeMessageColor={statusChangeMessageColor}
-        //     handleStatusChangeSuccess={handleStatusChangeSuccess}
-        //     handleStatusChangeError={handleStatusChangeError}
-
-
-
-        //     handleNoteAddSuccess={handleNoteAddSuccess}
-        //     handleNoteAddError={handleNoteAddError}
-        //     handleDeleteApplication={handleDeleteApplication}
-        //   ></CandidateDialog>
-        // </>
-
-
-
-  //       <Typography sx={{ backgroundColor: 'rgb(224 224 224)' }} variant="body2" color="text.secondary" align="center" {...props}>
-  //         {'Copyright © '}
-  //         <Link color="inherit" href="">
-  //           Tech 19
-  //         </Link>{' '}
-  //         {new Date().getFullYear()}
-  //         {'.'}
-  //       </Typography>
-
-  //     </div>
-  //   </ThemeProvider>
-  // );
   return (
     <ThemeProvider theme={defaultTheme}>
     <Container style={{ backgroundColor: "rgb(224, 224, 224)" }}>
