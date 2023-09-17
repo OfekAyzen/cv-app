@@ -634,23 +634,23 @@ function ProfileManager(props) {
   const [selectedCandidateStatus, setSelectedCandidateStatus] = useState("");
 
 
-  const handleDeleteApplication = (candidateId, applicationId) => {
-    if (window.confirm("Are you sure you want to delete this application?")) {
-      if (applicationId) {
-        CandidateDataService.deleteApplication(applicationId, props.token)
-          .then((response) => {
-            // Update the state or handle success, if needed
-            console.log("Application deleted successfully:", response.message);
-            // Refresh the data after deleting
-            fetchCandidatesData();
-          })
-          .catch((error) => {
-            // Handle error, if needed
-            console.error("Error deleting application:", error);
-          });
-      }
-    }
-  };
+  // const handleDeleteApplication = (candidateId, applicationId) => {
+  //   if (window.confirm("Are you sure you want to delete this application?")) {
+  //     if (applicationId) {
+  //       CandidateDataService.deleteApplication(applicationId, props.token)
+  //         .then((response) => {
+  //           // Update the state or handle success, if needed
+  //           console.log("Application deleted successfully:", response.message);
+  //           // Refresh the data after deleting
+  //           fetchCandidatesData();
+  //         })
+  //         .catch((error) => {
+  //           // Handle error, if needed
+  //           console.error("Error deleting application:", error);
+  //         });
+  //     }
+  //   }
+  // };
 
 
   // function parseApplicationDate(dateString) {
@@ -841,7 +841,7 @@ function ProfileManager(props) {
                   candidates={combinedData}
                   selectedJobId={selectedJobId}
                   handleViewCandidate={handleViewCandidate}
-                  handleDeleteApplication={handleDeleteApplication}
+                  // handleDeleteApplication={handleDeleteApplication}
                   handleStatusChange={handleStatusChange}
                   open={isDialogOpen}
                 />
@@ -872,7 +872,7 @@ function ProfileManager(props) {
 
             handleNoteAddSuccess={handleNoteAddSuccess}
             handleNoteAddError={handleNoteAddError}
-            handleDeleteApplication={handleDeleteApplication}
+            // handleDeleteApplication={handleDeleteApplication}
           ></CandidateDialog>
        
         <Grid item xs={12}>
