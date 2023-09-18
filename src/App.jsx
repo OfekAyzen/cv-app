@@ -158,12 +158,12 @@ Amplify.configure(awsconfig);
 
 
 function App() {
-  const { token, removeToken, setToken } = useToken();
-  const [userId, setUserId] = useState(null);
-  const [candidateId,setCandidateId]=useState(null);
-  const [userRole ,setUserRole]=useState('');
-  const [username ,setUserName]=useState('');
-  const [group , setGroup] = useState(null);
+  // const { token, removeToken, setToken } = useToken();
+  // const [userId, setUserId] = useState(null);
+  // const [candidateId,setCandidateId]=useState(null);
+  // const [userRole ,setUserRole]=useState('');
+  // const [username ,setUserName]=useState('');
+  // const [group , setGroup] = useState(null);
   //store the jobapplication data
   const [candidateData, setCandidateData] = useState([]);
 
@@ -225,7 +225,7 @@ function App() {
               <Route path="/Profile" element={<ProfileManager  />} />
               {/* Other routes */}
               <Route path="/HomePage" element={<ProfileUser />} />
-              <Route path="/Apply/:job_id"  />
+              <Route path="/Apply/:job_id"  element={<JobApplication/>}/>
               <Route path="/Position" element={<Position  />} />
 
               <Route path="/confirm-signup/:username" element={<ConfirmSignUp/>} />

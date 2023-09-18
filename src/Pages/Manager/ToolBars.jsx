@@ -28,44 +28,13 @@ export default function ToolBars(props) {
     navigate('/Login');
   } ;  
   return (
-    // <ThemeProvider theme={defaultTheme}>
-    // <Box  sx={{ flexGrow: 1 }}>
-    //   <AppBar position="static">
-    //     <Toolbar sx={{}}>
-    //       <IconButton
-    //         size="large"
-    //         edge="start"
-    //         color="inherit"
-    //         aria-label="menu"
-    //         sx={{ mr: 2 }}
-    //       >
-          
-    //       </IconButton>
-    //       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-    //       <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
-    //       </Typography>
-          
-    //       <Button  onClick={handleJobs } color="inherit">Jobs</Button>
-    //       <Button onClick={handleCandidates } color="inherit">Applicants</Button>
-    //       <Button color="inherit" onClick={handleLogout } ><Logout token={props.token}></Logout></Button>
-    //     </Toolbar>
-    //   </AppBar>
-    // </Box>
-    // </ThemeProvider>
+   
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar sx={{ justifyContent: 'space-between' }}>
             <div sx={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
+              
               <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
             </div>
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField  ,Snackbar ,Alert,Typography} from '@mui/material';
 
 import { API, graphqlOperation } from 'aws-amplify';
-
+import "../../styles/ProfileManager.css";
 import { createJobs } from '../../graphql/mutations';
 
 
@@ -46,19 +46,21 @@ function AddJobForm(props) {
        + Add Position
       </Button>
       <Dialog
+      
         open={open}
         onClose={handleClose}
         fullWidth // Make the dialog occupy full width
         maxWidth="md" // Set maximum width to medium (adjust as needed)
-        PaperProps={{ style: { overflowY: 'visible', textAlign: 'right', borderRadius: '0' } }} // Custom styles
+        PaperProps={{ style: { overflowY: 'visible', textAlign: 'right', borderRadius: '0' } } } // Custom styles
       >
         
         <DialogContent>
-        <DialogTitle sx={{display:'flex',textAlign:'center',}}>Add New Position</DialogTitle>
+        <DialogTitle  sx={{display:'flex',textAlign:'center',}} >Add New Position</DialogTitle>
           <DialogContentText>
             Fill in the details of the new job.
           </DialogContentText>
           <TextField
+          className="custom-text-field"
             autoFocus
             margin="dense"
             label="Job Title"
@@ -67,6 +69,7 @@ function AddJobForm(props) {
             onChange={(e) => setJobTitle(e.target.value)}
           />
           <TextField
+          className="custom-text-field"
             margin="dense"
             label="Job Description"
             fullWidth
@@ -76,6 +79,7 @@ function AddJobForm(props) {
             onChange={(e) => setJobDescription(e.target.value)}
           />
           <TextField
+          className="custom-text-field"
             margin="dense"
             label="Qualifications"
             fullWidth

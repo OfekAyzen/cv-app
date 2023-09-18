@@ -64,12 +64,12 @@ export default function Login(props) {
       const selectedJobId = localStorage.getItem('selectedJobId');
        if (isAdmin) {
         // User is in the Admin group
-        console.log("User is in the Admin group.");
+        // console.log("User is in the Admin group.");
         navigate("/Profile");
       } else if (isGeneral) {
         // User is in the General group
         navigate('/HomePage');
-        console.log("User is in the General group.");
+        // console.log("User is in the General group.");
         if (selectedJobId) {
           // Redirect the user to the specific job page
           navigate(`/Apply/${selectedJobId}`);
@@ -82,7 +82,7 @@ export default function Login(props) {
         // User is not in any specified group
         
         navigate('/HomePage');
-        console.log("User is not in any specified group.");
+        // console.log("User is not in any specified group.");
       }
       
      
