@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import logo from "../images/logo_tech19.png";
 import Typography from '@mui/material/Typography';
-
+import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -23,7 +23,7 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UploadCV from './UploadCV';
-import ApplyJob from './ApplyJob';
+import MuiAlert from '@mui/material/Alert';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createCandidate } from '../../graphql/mutations';
 import { createCandidateJobs } from '../../graphql/mutations';
@@ -31,7 +31,7 @@ import { Auth } from 'aws-amplify';
 import {
     InputLabel,
     Select,
-    Snackbar,
+
     MenuItem
 } from '@mui/material';
 import { Storage } from 'aws-amplify';
@@ -86,9 +86,13 @@ export default function JobApplication(props) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const applyJobJobId = job_id || props.job_id;
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarColor, setSnackbarColor] = useState('');
+
+    const [flashSeverity, setFlashSeverity] = useState('success'); // Severity of the flash message (success, error, warning, info)
+
+    const handleSnackbar = (message, severity) => {
+        setFlashMessage(message);
+        setFlashSeverity(severity);
+    };
     const educationOptions = [
         "All",
         "High School",
@@ -106,16 +110,16 @@ export default function JobApplication(props) {
     const genderOptions = ["All", "Female", "Male", "Other"];
     const [cvFileKey, setCvFileKey] = useState(null);
 
- 
+
     const createCandidateAndApply = async () => {
-      
-    
+
+
         try {
-     
-    
+
+
             // Get the cvFileKey from localStorage
             const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
-    
+
             // Define the candidate data
             const candidateData = {
                 input: {
@@ -133,41 +137,41 @@ export default function JobApplication(props) {
                     cv: cvFileKeyFromStorage, // Use the saved CV file key
                 },
             };
-    
+
             // Update the createCandidate mutation to include cvFileKey
             const response = await API.graphql(
                 graphqlOperation(createCandidate, candidateData)
             );
-    
+
             if (response.data.createCandidate) {
                 // Candidate was successfully created
                 const candidateId = response.data.createCandidate.id;
-                
-                setCandidateId(candidateId);
                 handleapplyjob(candidateId); // Call the function to create CandidateJobs
+
                 navigate('/HomePage');
-                // props.onClose();
-                
+                //  props.onClose();
+
             } else {
                 // Handle candidate creation failure
-                setErrorSnackbarOpen(true);
+                handleSnackbar('Failed to submit application.', 'error');
+
             }
-    
+
             // Remove cvFileKey from localStorage after use
             localStorage.removeItem('cvFileKey');
         } catch (error) {
             // Handle errors
             console.error('Error creating candidate:', error);
-            setErrorSnackbarOpen(true);
+
         }
     };
-  
+
     useEffect(() => {
         // Define a function to upload the CV
         const uploadCV = async () => {
             try {
                 if (!cvFile) return;
-    
+
                 const cvFileName = cvFile.name;
                 // const newCvFileKey = `CVs/${Date.now()}_${cvFileName}`;
                 const newCvFileKey = `${Date.now()}_${cvFileName}`;
@@ -175,7 +179,7 @@ export default function JobApplication(props) {
                     contentType: cvFile.type,
                 });
                 //  console.log('CV uploaded successfully. Key:', newCvFileKey);
-    
+                setFlashMessage('CV uploaded successfully!');
                 // Update cvFileKey and save it
                 setCvFileKey(newCvFileKey);
                 localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
@@ -184,10 +188,7 @@ export default function JobApplication(props) {
                 setErrorSnackbarOpen(true);
             }
         };
-    
-        if (cvFile) {
-            uploadCV();
-        }
+
 
         // Call uploadCV if cvFile is not null
         if (cvFile) {
@@ -196,11 +197,11 @@ export default function JobApplication(props) {
     }, [cvFile, setCvFileKey]);
 
     // Effect to log cvFileKey when it changes
-    
+
     useEffect(() => {
         // console.log('CV . Key:', cvFileKey);
     }, [cvFileKey]);
-    
+
     const handleUploadCV = (event) => {
         const selectedCvFile = event.target.files[0];
         if (selectedCvFile) {
@@ -269,22 +270,16 @@ export default function JobApplication(props) {
             certifications: data.get('certifications'),
         };
 
-        // if (cvFile) {
-        //     await uploadCV(); // Upload the CV file
-        // } else {
-        //     setFlashMessage('Please upload a CV.');
-        //     return; // Stop submission if CV is missing
-        // }
         setData(candidateData);
     };
 
     const handleapplyjob = async (candidateId) => {
-       
+
         try {
             // Get the Cognito User ID of the authenticated user
             const user = await Auth.currentAuthenticatedUser();
             const cognitoSub = user.attributes.sub;
-            
+
             const candidateJobsData = {
                 input: {
                     candidateId: candidateId,
@@ -293,38 +288,44 @@ export default function JobApplication(props) {
 
                 },
             };
-            
+
             const response = await API.graphql(graphqlOperation(createCandidateJobs, candidateJobsData));
             // console.log("GraphQL Response:", response);
 
             if (response.data.createCandidateJobs) {
                 // Application was successfully created
-                setSnackbarMessage('Application submitted successfully!');
-                setSnackbarColor('#4caf50'); 
-                setSnackbarOpen(true);
+                // handleSnackbar('Application submitted successfully!', 'success');
+                if (props && props.onApplicationSuccess && typeof props.onApplicationSuccess === 'function') {
+                    props.onApplicationSuccess('Application submitted successfully!', 'success');
+                  } else {
+                    console.error('invalid function .');
+                    // Handle the case where onApplicationSuccess is not a valid function
+                  }
+                setFlashMessage('Application submitted successfully!','success');
                 localStorage.removeItem('selectedJobId');
                 navigate('/HomePage');
-                 props.onClose();
-                
+                if (props && props.onClose && typeof props.onClose === 'function') {
+                    props.onClose();
+                  } else {
+                    console.error('Invalid function for onClose.');
+                    // Handle the case where onClose is not a valid function
+                  }
+
             } else {
-                setSnackbarMessage('Failed to submit application.');
-                setSnackbarColor('#f44336'); 
-                setSnackbarOpen(true);
+                // handleSnackbar('Failed to submit application.', 'error');
+                setFlashMessage('Failed to submit application.','error');
             }
+            setFlashMessage('Application submitted successfully!','success');
         } catch (error) {
             // Handle GraphQL or other errors
-            setSnackbarMessage('Error applying for the job.');
-        setSnackbarColor('#f44336'); // Red color
-        setSnackbarOpen(true);
-        console.error('Error applying for the job:', error);
+            // handleSnackbar('Error applying for the job.', 'error');
+            setFlashMessage('Error applying for the job.','error');
+            console.error('Error applying for the job:', error);
         }
     };
 
 
 
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
     return (
         <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
 
@@ -374,6 +375,7 @@ export default function JobApplication(props) {
                                             fullWidth
                                             id="firstName"
                                             label="First Name"
+                                            className="custom-text-field"
                                             autoFocus
                                             value={first_name}
                                             onChange={(e) => setFirstName(e.target.value)
@@ -390,6 +392,7 @@ export default function JobApplication(props) {
                                             name="lastName"
                                             autoComplete="family-name"
                                             value={last_name}
+                                            className="custom-text-field"
                                             onChange={(e) => setLastName(e.target.value)}
                                         />
                                     </Grid>
@@ -402,6 +405,7 @@ export default function JobApplication(props) {
                                             label="Location"
                                             name="location"
                                             autoComplete="location"
+                                            className="custom-text-field"
                                             value={location}
                                             onChange={(e) => setLocation(e.target.value)}
                                         />
@@ -414,6 +418,7 @@ export default function JobApplication(props) {
                                             label="Phone Number"
                                             name="phoneNumber"
                                             autoComplete="phone-number"
+                                            className="custom-text-field"
                                             value={phone_number}
                                             onChange={(e) => setPhoneNumber(e.target.value)}
                                         />
@@ -426,6 +431,7 @@ export default function JobApplication(props) {
                                             label="Email Address"
                                             name="email"
                                             autoComplete="email"
+                                            className="custom-text-field"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
@@ -438,6 +444,7 @@ export default function JobApplication(props) {
                                             label="Position"
                                             name="position"
                                             autoComplete="position"
+                                            className="custom-text-field"
                                             value={position}
                                             onChange={(e) => setPosition(e.target.value)}
                                         />
@@ -460,6 +467,7 @@ export default function JobApplication(props) {
                                             label="Skills"
                                             name="skills"
                                             autoComplete="skills"
+                                            className="custom-text-field"
                                             value={skills}
                                             onChange={(e) => setSkills(e.target.value)}
 
@@ -473,17 +481,19 @@ export default function JobApplication(props) {
                                             label="Certifications"
                                             name="certifications"
                                             autoComplete="certifications"
+                                            className="custom-text-field"
                                             value={certifications}
                                             onChange={(e) => setCertifications(e.target.value)}
                                         />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} className="custom-text-field">
                                         <InputLabel>Education</InputLabel>
                                         <Select
                                             fullWidth
                                             id="education"
                                             label="Education"
                                             name="education"
+
                                             value={education}
                                             onChange={(e) => setEducation(e.target.value)}
                                         >
@@ -494,7 +504,7 @@ export default function JobApplication(props) {
                                             ))}
                                         </Select>
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} className="custom-text-field">
                                         <InputLabel>Work Experience</InputLabel>
                                         <Select
                                             fullWidth
@@ -511,7 +521,7 @@ export default function JobApplication(props) {
                                             ))}
                                         </Select>
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} className="custom-text-field">
                                         <InputLabel>Gender</InputLabel>
                                         <Select
                                             fullWidth
@@ -553,37 +563,36 @@ export default function JobApplication(props) {
 
                             <Button onClick={createCandidateAndApply} type="submit" fullWidth variant="contained" sx={{
                                 backgroundColor: "#ad2069",
-                                mt: 4, mb: 3, width: '20%'
+                                mt: 4, mb: 3, width: '20%',
+
+                                '&:hover': {
+                                    backgroundColor: '#b4269a',
+                                },
                             }}>
                                 Apply and Save
                             </Button>
 
                         </div>
-                        {/* Success Snackbar */}
-                        <Snackbar
-                            open={successSnackbarOpen}
-                            autoHideDuration={5000}
-                            onClose={() => setSuccessSnackbarOpen(false)}
-                            message="Application submitted successfully!"
-                            // Snackbar with a green color
-                            style={{ backgroundColor: '#4caf50' }}
-                        ></Snackbar>
 
-                        {/* Error Snackbar */}
-
-                        <Snackbar
-                            open={errorSnackbarOpen}
-                            autoHideDuration={5000}
-                            onClose={() => setErrorSnackbarOpen(false)}
-                            message={flashMessage}
-                            // Snackbar with a red color
-                            style={{ backgroundColor: '#f44336' }}
-                        ></Snackbar>
 
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
-                
+                {/* Flash message Snackbar */}
+                <Snackbar
+                    open={flashMessage !== ''}
+                    autoHideDuration={5000} // Adjust the duration as needed
+                    onClose={() => setFlashMessage('')}
+                >
+                    <MuiAlert
+                        elevation={6}
+                        variant="filled"
+                        onClose={() => setFlashMessage('')}
+                        severity={flashSeverity}
+                    >
+                        {flashMessage}
+                    </MuiAlert>
+                </Snackbar>
             </Container>
 
 

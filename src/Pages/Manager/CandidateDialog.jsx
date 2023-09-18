@@ -278,7 +278,7 @@ const CandidateDialog = ({
 
                 <TextField
                   className="custom-text-field"
-                  label={note ? "Note" : ""}
+                 
                   multiline
                   rows={4}
                   variant="outlined"

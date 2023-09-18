@@ -14,6 +14,8 @@ import {
   CssBaseline,
   Grid,
   Typography,
+  Snackbar ,
+  Alert,
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +30,7 @@ const ViewJobs = (props) => {
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState('');
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -76,9 +79,16 @@ const ViewJobs = (props) => {
     },
   }));
 
+  const handleApplicationSuccess = (message) => {
+    setSuccessMessage(message);
+  };
+
+
   function BootstrapDialogTitle(props) {
     const { children, onClose, ...other } = props;
 
+
+    
     return (
       <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
         {children}
@@ -208,10 +218,16 @@ const ViewJobs = (props) => {
                       <JobApplication //apply to specific job
                         job_id={selectedJobId}
                         onClose={handleClose} //
-                      
+                        onApplicationSuccess={handleApplicationSuccess} 
                       />
                     </BootstrapDialog>
-
+                    {successMessage && (
+        <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={() => setSuccessMessage('')}>
+          <Alert onClose={() => setSuccessMessage('')} severity="success">
+            {successMessage}
+          </Alert>
+        </Snackbar>
+      )}
                   </CardActions>
                 </Card>
               </Grid>

@@ -348,7 +348,7 @@ body {
 .orderby {
   background-color: #ffffff;
   padding-left: 0.9%;
-  padding-top: 3.3%;
+  padding-top: 2.5%;
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
@@ -575,7 +575,7 @@ body {
 @media (min-width: 1200px) {
 
   .css-1la2456-MuiContainer-root {
-    max-width: 1390px !important;
+    max-width: 1700px !important;
     border-radius: 20px;
     
 
@@ -603,6 +603,13 @@ body {
   /* width: 100%; */
   border-collapse: collapse;
   border-spacing: 0;
+  display: flex;
   width: 1400px !important;
   background-color: white;
+}
+.css-dgfjot-MuiTable-root{
+  width:1800px !important;
+}
+.fullWidthCell {
+  width:auto;
 }
