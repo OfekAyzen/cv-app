@@ -72,7 +72,7 @@ function App() {
         
             <Route path="/Login" element={<Login />} />
       
-              {/* <Route path="/" element={<Navigate to="/Login" replace />} />
+              <Route path="/" element={<Navigate to="/Login" replace />} />
               <Route path="/Profile" element={<ProfileManager  />} />
             
               <Route path="/HomePage" element={<ProfileUser />} />
@@ -82,10 +82,10 @@ function App() {
               <Route path="/confirm-signup/:username" element={<ConfirmSignUp/>} />
               <Route path="/confirm_forgot_password/:username" element={<ConfirmForgotPassword/>} />
               <Route path="/SignUp" element={<SignUp></SignUp>} />
-              <Route path="/Logout" element={<Logout />} /> */}
-            {/* <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} /> */}
-            {/* <Route path="/forgot_password" element={<ForgotPassword/>} />
-            <Route path="*" element={<Navigate to="/Login" replace />} /> */}
+              <Route path="/Logout" element={<Logout />} />
+            <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} /> */}
+            <Route path="/forgot_password" element={<ForgotPassword/>} />
+            <Route path="*" element={<Navigate to="/Login" replace />} />
 
         </Routes>
     </div>
