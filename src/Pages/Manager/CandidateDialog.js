@@ -25,7 +25,7 @@ import { updateCandidate } from "../../graphql/mutations";
 import { getCandidate } from "../../graphql/queries"; // Import your query here
 import DownloadCV from "./DownloadCV";
 import { Storage } from 'aws-amplify';
-import "../../styles/ProfileManager.css";
+import "../../styles/Profilemanager.css";
 
 const CandidateDialog = ({
   open,

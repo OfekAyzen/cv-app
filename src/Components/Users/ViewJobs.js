@@ -16,7 +16,12 @@ import {
   Typography,
   Snackbar,
   Alert,
+  DialogTitle,
+  IconButton,
+  
+
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';

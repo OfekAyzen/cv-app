@@ -36,7 +36,7 @@ import '@aws-amplify/ui-react/styles.css';
 import Login from './Pages/Log/Login';
 
 import Logout from './Pages/Log/Logout'
-import useToken from './useToken';
+
 import ProfileManager from "./Pages/Manager/ProfileManager";
 import ProfileUser from './Components/Users/ProfileUser';
 
@@ -83,7 +83,7 @@ function App() {
               <Route path="/confirm_forgot_password/:username" element={<ConfirmForgotPassword/>} />
               <Route path="/SignUp" element={<SignUp></SignUp>} />
               <Route path="/Logout" element={<Logout />} />
-            <Route path="/HomePage" element={<ProfileUser username={username} onApplicationSubmit={handleJobApplication} candidate_id={candidateId} token={token} userRole={userRole} setToken={setToken} />} /> */}
+            <Route path="/HomePage" element={<ProfileUser  />} /> */}
             <Route path="/forgot_password" element={<ForgotPassword/>} />
             <Route path="*" element={<Navigate to="/Login" replace />} />
 

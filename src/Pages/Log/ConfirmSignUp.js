@@ -17,7 +17,7 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink
 import { Link ,Avatar} from '@mui/material';
 import "../../styles/LoginPage.css";
-import "../../styles/ProfileManager.css";
+import "../../styles/Profilemanager.css";
 const defaultTheme = createTheme();
 // const styles = {
 //     container: {

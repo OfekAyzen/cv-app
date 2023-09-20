@@ -146,7 +146,7 @@ export default function Login(props) {
         } else {
           navigate('/HomePage');
         }
-        setMessage('error signing in', error);
+        setMessage('Error signing in');
       }
       else if (selectedJobId) {
                 navigate(`/Apply/${selectedJobId}`);
@@ -228,7 +228,8 @@ export default function Login(props) {
                   backgroundColor: '#b4269a', // Set the hover background color
                 },
               }}  // Center-align the login button
-              onClick={() => { handleSubmit }}
+              // onClick={() => { handleSubmit }}
+              onClick={handleSubmit}
             >
               Login
             </Button>

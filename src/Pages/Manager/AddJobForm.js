@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField  ,Snackbar ,Alert,Typography} from '@mui/material';
 
 import { API, graphqlOperation } from 'aws-amplify';
-import "../../styles/ProfileManager.css";
+import "../../styles/Profilemanager.css";
 import { createJobs } from '../../graphql/mutations';
 
 
