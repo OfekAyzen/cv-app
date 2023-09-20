@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, AppBar, Box, FormControlLabel, Checkbox, FormGroup, Grid, colors,Dialog } from '@mui/material';
 import logo from '../Components/images/logo_tech19.png';
-import Logout from '../Pages/Log/Logout';
+// import Logout from '../Pages/Log/Logout';
 import Button from '@mui/material/Button';
 import {  useNavigate } from "react-router-dom"; 
 import Toolbar from '@mui/material/Toolbar';
@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import '../styles/ToolBar.css';
 import PersonIcon from '@mui/icons-material/Person';
-import UserCard from './Users/UserCard';
+// import UserCard from './Users/UserCard';
 
 const Header = (props) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -49,7 +49,7 @@ const Header = (props) => {
             
             
             
-            <Button sx={{color:'purple'} } onClick={handleLogout } ><Logout token={props.token}></Logout></Button>
+            {/* <Button sx={{color:'purple'} } onClick={handleLogout } ><Logout token={props.token}></Logout></Button> */}
             <PersonIcon
               onClick={handleUserCardClick} // Open the UserCard dialog
              
@@ -76,11 +76,11 @@ const Header = (props) => {
       >
         {/* Pass the required props to the UserCard component */}
         
-        <UserCard
+        {/* <UserCard
           candidate_id={props.candidate_id}
           token={props.token}
           username={props.username}
-        />
+        /> */}
       </Dialog>
     </>
   );
