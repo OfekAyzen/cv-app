@@ -19,44 +19,7 @@ import { Link ,Avatar} from '@mui/material';
 import "../../styles/LoginPage.css";
 import "../../styles/ProfileManager.css";
 const defaultTheme = createTheme();
-// const styles = {
-//     container: {
-//       display: 'flex',
-//       flexDirection: 'column',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//       minHeight: '100vh',
-//     },
-//     divBar: {
-//       position: 'static',
-//     },
-//     img: {
-//       maxWidth: '100%',
-//       height: 'auto',
-//     },
-//     formContainer: {
-//       width: '100%',
-//       display: 'flex',
-//       flexDirection: 'column',
-//       alignItems: 'center',
-//     },
-//     form: {
-//       width: '100%',
-//       marginTop: 1,
-//     },
-//     submitButton: {
-//       margin: '2rem 0',
-//       width: '50%',
-//       backgroundColor: '#ad2069',
-//       color: 'white',
-//       '&:hover': {
-//         backgroundColor: '#b4269a',
-//       },
-//     },
-//     linkGrid: {
-//       marginTop: '1rem',
-//     },
-//   };
+
 
 
 const ConfirmSignUp = () => {
@@ -86,42 +49,6 @@ const ConfirmSignUp = () => {
   };
  
 
-  // const handleConfirmation = async () => {
-  //   try {
-  //     await Auth.confirmSignUp(username, confirmationCode);
-  //     console.log('User confirmed successfully');
-  
-  //     // Call the function to add the user to a group
-  //     await addUsertoGroup(username, 'General'); // Replace 'General' with your group name
-  
-  //     // Open the Snackbar to show a success message
-  //     setOpenSnackbar(true);
-  
-  //     // Redirect the user to the login page or another appropriate page
-  //     navigate('/Login');
-  //   } catch (error) {
-  //     console.log('Error confirming user', error);
-  //     // Handle confirmation error (e.g., display an error message)
-  //   }
-  // };
-  
- 
-  // const addUsertoGroup = async (username, groupname) => {
-  //   const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider();
-  
-  //   const params = {
-  //     GroupName: groupname,
-  //      // Replace with your actual User Pool ID
-  //     Username: username
-  //   };
-  
-  //   try {
-  //     await cognitoidentityserviceprovider.adminAddUserToGroup(params).promise();
-  //     console.log('User added to group successfully');
-  //   } catch (error) {
-  //     console.error('Error adding user to group', error);
-  //   }
-  // };
   
 
   const handleCloseSnackbar = () => {
