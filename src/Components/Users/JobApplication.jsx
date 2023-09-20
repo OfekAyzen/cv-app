@@ -368,7 +368,7 @@ export default function JobApplication(props) {
                                     padding: '0 10px', // Added padding
                                 }}
                             >
-                                <div style={{ flex: 1 }} >
+                                <div className='jobapp' style={{ flex: 1 }} >
 
                                     <Grid item xs={12} sx={{ width: '300px' }}>
                                         {/* Left Side */}
@@ -600,7 +600,7 @@ export default function JobApplication(props) {
                                         padding: '0 30px', // Added padding
                                     }}
                                 >
-                                    <div style={{ flex: 1 }} >
+                                    <div className='jobapp' style={{ flex: 1 }} >
 
                                         <Grid item xs={12} sx={{ width: '300px' }}>
                                             {/* Left Side */}
@@ -696,7 +696,7 @@ export default function JobApplication(props) {
                             </div>
 
                             <div style={{ flex: 1, paddingLeft: '16px' }}>
-                                <div style={{ flex: 1, paddingLeft: '1px' }}>
+                                <div className='jobapp' style={{ flex: 1, paddingLeft: '1px' }}>
                                     {/* Right Side */}
                                     <Grid item xs={12} sx={{ width: '300px' }}>
 

@@ -82,65 +82,76 @@
         /* Adjust the font size for iPhone 8 */
         font-weight: 700;
     }
+
     .img-user {
         margin-right: auto;
         float: right;
-        
+
         margin-right: 10px !important;
         height: 300px !important;
     }
+
     .css-1dhp3u3-MuiGrid-root {
-       
+
         height: 300px !important;
     }
+
     .css-hyum1k-MuiToolbar-root {
-        
+
         padding-left: 0px !important;
-       padding-right: 1px !important;
+        padding-right: 1px !important;
     }
+
     .css-1fdypfd-MuiGrid-root>.MuiGrid-item {
         padding-top: 60px !important;
         padding-left: 60px !important;
     }
-    
+
 }
 
-.css-hyum1k-MuiToolbar-root{
+.css-hyum1k-MuiToolbar-root {
     padding-left: 1px !important;
     padding-right: 0px !important;
 }
+
 /* Adjust font sizes for smaller screens */
 @media (max-width: 390px) {
-    .css-r5q0xi-MuiTypography-root  {
-        font-size: 30px !important; /* Adjust the font size for smaller screens like iPhone */
+    .css-r5q0xi-MuiTypography-root {
+        font-size: 30px !important;
+        /* Adjust the font size for smaller screens like iPhone */
     }
 }
 
 @media (max-width: 600px) {
     .MuiDialog-paper {
-      width: 90%; /* Adjust the dialog width for smaller screens */
+        width: 90%;
+        /* Adjust the dialog width for smaller screens */
     }
-  
+
     .custom-text-field {
-      width: 100%; /* Adjust the input field width for smaller screens */
+        width: 100%;
+        /* Adjust the input field width for smaller screens */
     }
-  
+
     .MuiDialogContent-root {
-      padding: 16px; /* Adjust dialog content padding for smaller screens */
+        padding: 16px;
+        /* Adjust dialog content padding for smaller screens */
     }
-    
+
     .MuiDialogTitle-root {
-      padding: 16px; /* Adjust dialog title padding for smaller screens */
+        padding: 16px;
+        /* Adjust dialog title padding for smaller screens */
     }
-  
+
     .MuiButton-root {
-      width: 100%; /* Adjust button width for smaller screens */
+        width: 100%;
+        /* Adjust button width for smaller screens */
     }
-  }
- 
-  
-  
-  
+}
+
+
+
+
 
 
 
@@ -279,10 +290,13 @@
     padding-top: 60px !important;
     padding-left: 30px !important;
 }
+
 .css-11i0skp {
     margin-top: 91px;
     margin-right: 190px;
     margin-left: 0px;
-     box-shadow: none;
+    box-shadow: none;
 
 }
+
+
