@@ -35,19 +35,19 @@ import '@aws-amplify/ui-react/styles.css';
 
 import Login from './Pages/Log/Login';
 
-// import Logout from './Pages/Log/Logout'
-// import useToken from './useToken';
-// import ProfileManager from "./Pages/Manager/ProfileManager";
-// import ProfileUser from './Components/Users/ProfileUser';
+import Logout from './Pages/Log/Logout'
+import useToken from './useToken';
+import ProfileManager from "./Pages/Manager/ProfileManager";
+import ProfileUser from './Components/Users/ProfileUser';
 
-// import JobApplication from './Components/Users/JobApplication';
-// import Position from './Pages/Manager/Position';
-// // import NotFound from './NotFound';
-// import SignUp from '../src/Components/SignUp/SignUp';
-// import ForgotPassword from './Components/Users/ForgotPassword';
-// import ConfirmSignUp from './Pages/Log/ConfirmSignUp';
-// import ConfirmForgotPassword from './Pages/Log/ConfirmForgotPassword';
-// import {  Storage } from 'aws-amplify';
+import JobApplication from './Components/Users/JobApplication';
+import Position from './Pages/Manager/Position';
+// import NotFound from './NotFound';
+import SignUp from '../src/Components/SignUp/SignUp';
+import ForgotPassword from './Components/Users/ForgotPassword';
+import ConfirmSignUp from './Pages/Log/ConfirmSignUp';
+import ConfirmForgotPassword from './Pages/Log/ConfirmForgotPassword';
+import {  Storage } from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
