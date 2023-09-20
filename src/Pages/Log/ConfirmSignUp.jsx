@@ -11,12 +11,13 @@ import { useParams } from 'react-router-dom';
 import logo from '../../../src/Components/images/logo_tech19.png';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
-
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import MuiAlert from '@mui/material/Alert';
-
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink
-import { Link } from '@mui/material';
+import { Link ,Avatar} from '@mui/material';
 import "../../styles/LoginPage.css";
+import "../../styles/ProfileManager.css";
 const defaultTheme = createTheme();
 // const styles = {
 //     container: {
@@ -59,23 +60,7 @@ const defaultTheme = createTheme();
 
 
 const ConfirmSignUp = () => {
-  // const [confirmationCode, setConfirmationCode] = useState('');
-  // const navigate = useNavigate();
-  // const { username } = useParams();
-  // const handleConfirmation = async () => {
 
-  //   console.log(username);
-
-  //   try {
-  //     await Auth.confirmSignUp(username, confirmationCode);
-  //     console.log('User confirmed successfully');
-  //     // Redirect the user to the login page or another appropriate page
-  //     navigate('/Login'); // You can customize the route
-  //   } catch (error) {
-  //     console.log('Error confirming user', error);
-  //     // Handle confirmation error (e.g., display an error message)
-  //   }
-  // };
 
 
 
@@ -99,6 +84,45 @@ const ConfirmSignUp = () => {
       // Handle confirmation error (e.g., display an error message)
     }
   };
+ 
+
+  // const handleConfirmation = async () => {
+  //   try {
+  //     await Auth.confirmSignUp(username, confirmationCode);
+  //     console.log('User confirmed successfully');
+  
+  //     // Call the function to add the user to a group
+  //     await addUsertoGroup(username, 'General'); // Replace 'General' with your group name
+  
+  //     // Open the Snackbar to show a success message
+  //     setOpenSnackbar(true);
+  
+  //     // Redirect the user to the login page or another appropriate page
+  //     navigate('/Login');
+  //   } catch (error) {
+  //     console.log('Error confirming user', error);
+  //     // Handle confirmation error (e.g., display an error message)
+  //   }
+  // };
+  
+ 
+  // const addUsertoGroup = async (username, groupname) => {
+  //   const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider();
+  
+  //   const params = {
+  //     GroupName: groupname,
+  //      // Replace with your actual User Pool ID
+  //     Username: username
+  //   };
+  
+  //   try {
+  //     await cognitoidentityserviceprovider.adminAddUserToGroup(params).promise();
+  //     console.log('User added to group successfully');
+  //   } catch (error) {
+  //     console.error('Error adding user to group', error);
+  //   }
+  // };
+  
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -113,15 +137,15 @@ const ConfirmSignUp = () => {
       <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignContent: 'center', textAlign: 'center', marginTop: '50px' }}>
         <CssBaseline />
 
+        
+        <div>
         <div style={{ display: 'flex', textAlign: 'center', justifyContent: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
         </div>
-        <div>
-
           <Typography component="h1" variant="h4">
-            Confirm Sign Up
+            Verification code
           </Typography>
           <div>
 

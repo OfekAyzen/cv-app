@@ -114,6 +114,7 @@ const CandidateRow = ({ candidate,
         borderRadius: "10px",
         transition: "box-shadow 0.3s",
         boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
+      
         "&:hover": {
           boxShadow: "0px 0px 5px 3px #ad2069",
           cursor: "pointer",

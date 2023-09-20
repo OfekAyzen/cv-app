@@ -14,7 +14,7 @@ import {
   CssBaseline,
   Grid,
   Typography,
-  Snackbar ,
+  Snackbar,
   Alert,
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
@@ -23,6 +23,7 @@ import Dialog from '@mui/material/Dialog';
 
 import PropTypes from 'prop-types';
 import JobApplication from './JobApplication';
+
 const ViewJobs = (props) => {
   const [open, setOpen] = React.useState(false);
   const [selectedJobId, setSelectedJobId] = useState('');
@@ -54,7 +55,7 @@ const ViewJobs = (props) => {
   };
   const handleButtonClick = async (job_id) => {
     setSelectedJobId(job_id);
-   
+
     try {
       // Check if the user is authenticated using Amplify Auth
       const user = await Auth.currentAuthenticatedUser();
@@ -66,7 +67,7 @@ const ViewJobs = (props) => {
       localStorage.setItem('selectedJobId', job_id);
 
       // Redirect the user to the login page
-      navigate('/Login'); 
+      navigate('/Login');
     }
   };
 
@@ -88,7 +89,7 @@ const ViewJobs = (props) => {
     const { children, onClose, ...other } = props;
 
 
-    
+
     return (
       <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
         {children}
@@ -140,7 +141,7 @@ const ViewJobs = (props) => {
             align="center"
             color="white"
             gutterBottom
-            sx={{ paddingTop: '60px', fontSize: '70px' }}
+            sx={{ paddingTop: '60px', fontSize: '60px' }}
           >
             Join our team
           </Typography>
@@ -161,14 +162,15 @@ const ViewJobs = (props) => {
                     height: '100%',
                     width: '80%',
                     display: 'flex',
+                    
                     flexDirection: 'column',
                   }}
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h4" component="h2">
+                    <Typography gutterBottom variant="h4" >
                       {job.job_title}
                     </Typography>
-                    <Typography variant="h6" component="h4">
+                    <Typography variant="h6" component="h6">
                       <Typography
                         variant="h6"
                         component="span"
@@ -178,7 +180,8 @@ const ViewJobs = (props) => {
                       </Typography>{' '}
                       {job.job_description}
                     </Typography>
-                    <Typography variant="h6" component="h4">
+                    <br></br>
+                    <Typography variant="h6" >
                       <Typography
                         variant="h6"
                         component="span"
@@ -189,6 +192,7 @@ const ViewJobs = (props) => {
                       {job.qualifications}
                     </Typography>
                   </CardContent>
+                 
                   <CardActions
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
@@ -202,6 +206,7 @@ const ViewJobs = (props) => {
                     >
                       Apply
                     </Button>
+
                     <BootstrapDialog
                       onClose={handleClose}
                       aria-labelledby="customized-dialog-title"
@@ -218,17 +223,21 @@ const ViewJobs = (props) => {
                       <JobApplication //apply to specific job
                         job_id={selectedJobId}
                         onClose={handleClose} //
-                        onApplicationSuccess={handleApplicationSuccess} 
+                        onApplicationSuccess={handleApplicationSuccess}
                       />
+
+
                     </BootstrapDialog>
+
                     {successMessage && (
-        <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={() => setSuccessMessage('')}>
-          <Alert onClose={() => setSuccessMessage('')} severity="success">
-            {successMessage}
-          </Alert>
-        </Snackbar>
-      )}
+                      <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={() => setSuccessMessage('')}>
+                        <Alert onClose={() => setSuccessMessage('')} severity="success">
+                          {successMessage}
+                        </Alert>
+                      </Snackbar>
+                    )}
                   </CardActions>
+                  
                 </Card>
               </Grid>
             ))}
@@ -238,7 +247,7 @@ const ViewJobs = (props) => {
         <p>No job data available.</p>
       )}
       {/* Footer */}
-     
+
     </CssBaseline>
   );
 };

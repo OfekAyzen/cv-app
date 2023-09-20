@@ -20,6 +20,7 @@
     "@mui/x-data-grid-pro": "^6.11.0",
     "amazon-cognito-identity-js": "^6.3.5",
     "aws-amplify": "^5.3.10",
+    "aws-sdk": "^2.1460.0",
     "axios": "^1.4.0",
     "globalthis": "^1.0.3",
     "libphonenumber-js": "^1.10.44",

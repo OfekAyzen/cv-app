@@ -40,74 +40,128 @@ export default function Login(props) {
 
 
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+
+  //   try {
+  //     const user = await Auth.signIn(username, password);
+
+  //     console.log(user.signInUserSession.idToken.payload);
+  //     // Assuming you have the user object
+  //     const my_user = user.signInUserSession.idToken.payload;
+
+  //     // Check if the user is in the Admin group
+  //     const isAdmin = my_user["cognito:groups"].includes("Admin");
+
+  //     // Check if the user is in the General group
+  //     const isGeneral = my_user["cognito:groups"].includes("General");
+
+     
+  //     const selectedJobId = localStorage.getItem('selectedJobId');
+  //      if (isAdmin) {
+      
+  //       navigate("/Profile");
+  //     } else if (isGeneral) {
+  //       // User is in the General group
+  //       navigate('/HomePage');
+  //       // console.log("User is in the General group.");
+  //       if (selectedJobId) {
+  //         // Redirect the user to the specific job page
+  //         navigate(`/Apply/${selectedJobId}`);
+  //       } else {
+  //         // Redirect the user to a default page
+  //         navigate('/HomePage'); // Use the actual default route
+  //       }
+  //       setMessage(' fgd'); 
+  //     } else {
+  //       // User is not in any specified group
+        
+  //       navigate('/HomePage');
+  //       // console.log("User is not in any specified group.");
+  //     }
+      
+      
+  //   } catch (error) {
+  //     setMessage(error.message);
+  //     console.log('error signing in', error);
+  //   }
+  // };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  
+  //   try {
+  //     const user = await Auth.signIn(username, password);
+  
+  //     console.log(user.signInUserSession.idToken.payload);
+  //     const my_user = user.signInUserSession.idToken.payload;
+  
+  //     const isAdmin = my_user["cognito:groups"].includes("Admin");
+  //     const isGeneral = my_user["cognito:groups"].includes("General");
+  
+  //     const selectedJobId = localStorage.getItem('selectedJobId');
+  
+  //     if (isAdmin) {
+  //       navigate("/Profile");
+  //     } else if (isGeneral) {
+  //       navigate('/HomePage');
+  //       if (selectedJobId) {
+  //         navigate(`/Apply/${selectedJobId}`);
+  //       } else {
+  //         console.log(" notselectedJobId");
+  //         navigate('/HomePage');
+  //       }
+  //       setMessage(' fgd');
+  //     } else {
+  //       // User is not in any specified group
+  //       console.log("User is not in any specified group");
+  //       navigate('/HomePage');
+  //     }
+  //   } catch (error) {
+  //     setMessage(error.message);
+  //     console.log('error signing in', error);
+  //   }
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+  
     try {
       const user = await Auth.signIn(username, password);
-
-      console.log(user.signInUserSession.idToken.payload);
-      // Assuming you have the user object
       const my_user = user.signInUserSession.idToken.payload;
-
+  
       // Check if the user is in the Admin group
-      const isAdmin = my_user["cognito:groups"].includes("Admin");
-
+      const isAdmin = my_user["cognito:groups"] && my_user["cognito:groups"].includes("Admin");
+  
       // Check if the user is in the General group
-      const isGeneral = my_user["cognito:groups"].includes("General");
-
-      // if (isAdmin && isGeneral) {
-      //   // User is in both Admin and General groups
-      //   console.log("User is in both Admin and General groups.");
-      // } 
+      const isGeneral = my_user["cognito:groups"] && my_user["cognito:groups"].includes("General");
+  
       const selectedJobId = localStorage.getItem('selectedJobId');
-       if (isAdmin) {
-        // User is in the Admin group
-        // console.log("User is in the Admin group.");
+  
+      if (isAdmin) {
         navigate("/Profile");
       } else if (isGeneral) {
-        // User is in the General group
         navigate('/HomePage');
-        // console.log("User is in the General group.");
         if (selectedJobId) {
-          // Redirect the user to the specific job page
           navigate(`/Apply/${selectedJobId}`);
         } else {
-          // Redirect the user to a default page
-          navigate('/HomePage'); // Use the actual default route
+          navigate('/HomePage');
         }
-        setMessage(' fgd'); 
+        setMessage('error signing in', error);
+      }
+      else if (selectedJobId) {
+                navigate(`/Apply/${selectedJobId}`);
+              
       } else {
         // User is not in any specified group
-        
+        console.log(" ");
         navigate('/HomePage');
-        // console.log("User is not in any specified group.");
       }
-      
-     
-      // // Check if the user is confirmed
-      // if (user.challengeName === 'CUSTOM_CHALLENGE') {
-      //   console.log("user confiramtion");
-      //   // User is not confirmed, send confirmation code
-      //   await Auth.confirmSignUp(username);
-      //   console.log('Confirmation code sent');
-      //   // Redirect the user to a page to enter the confirmation code
-      //   navigate('/confirm-signup'); // You can customize the route
-      // } else {
-      //   // User is signed in
-      //   console.log('User signed in successfully');
-      // }
-      // console.log("username = ",username);
-      // navigate(`/confirm-signup?username=${username}`); // You can customize the route
-
-
-      
     } catch (error) {
       setMessage(error.message);
       console.log('error signing in', error);
     }
   };
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className='div-bar' position="static" >
