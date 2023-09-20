@@ -1,4 +1,7 @@
 
+
+
+
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -20,90 +23,145 @@ import { useNavigate } from 'react-router-dom'
 
 import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink
 import { Link } from '@mui/material';
+import { Amplify } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
+
 
 const defaultTheme = createTheme();
 
+
+
 export default function Login(props) {
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-
+  const [message,setMessage]=useState('');
   const navigate = useNavigate();
 
 
 
-  const handleLogin = async (event) => {
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+
+  //   try {
+  //     const user = await Auth.signIn(username, password);
+
+  //     console.log(user.signInUserSession.idToken.payload);
+  //     // Assuming you have the user object
+  //     const my_user = user.signInUserSession.idToken.payload;
+
+  //     // Check if the user is in the Admin group
+  //     const isAdmin = my_user["cognito:groups"].includes("Admin");
+
+  //     // Check if the user is in the General group
+  //     const isGeneral = my_user["cognito:groups"].includes("General");
+
+     
+  //     const selectedJobId = localStorage.getItem('selectedJobId');
+  //      if (isAdmin) {
+      
+  //       navigate("/Profile");
+  //     } else if (isGeneral) {
+  //       // User is in the General group
+  //       navigate('/HomePage');
+  //       // console.log("User is in the General group.");
+  //       if (selectedJobId) {
+  //         // Redirect the user to the specific job page
+  //         navigate(`/Apply/${selectedJobId}`);
+  //       } else {
+  //         // Redirect the user to a default page
+  //         navigate('/HomePage'); // Use the actual default route
+  //       }
+  //       setMessage(' fgd'); 
+  //     } else {
+  //       // User is not in any specified group
+        
+  //       navigate('/HomePage');
+  //       // console.log("User is not in any specified group.");
+  //     }
+      
+      
+  //   } catch (error) {
+  //     setMessage(error.message);
+  //     console.log('error signing in', error);
+  //   }
+  // };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  
+  //   try {
+  //     const user = await Auth.signIn(username, password);
+  
+  //     console.log(user.signInUserSession.idToken.payload);
+  //     const my_user = user.signInUserSession.idToken.payload;
+  
+  //     const isAdmin = my_user["cognito:groups"].includes("Admin");
+  //     const isGeneral = my_user["cognito:groups"].includes("General");
+  
+  //     const selectedJobId = localStorage.getItem('selectedJobId');
+  
+  //     if (isAdmin) {
+  //       navigate("/Profile");
+  //     } else if (isGeneral) {
+  //       navigate('/HomePage');
+  //       if (selectedJobId) {
+  //         navigate(`/Apply/${selectedJobId}`);
+  //       } else {
+  //         console.log(" notselectedJobId");
+  //         navigate('/HomePage');
+  //       }
+  //       setMessage(' fgd');
+  //     } else {
+  //       // User is not in any specified group
+  //       console.log("User is not in any specified group");
+  //       navigate('/HomePage');
+  //     }
+  //   } catch (error) {
+  //     setMessage(error.message);
+  //     console.log('error signing in', error);
+  //   }
+  // };
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (username === '') {
-      console.log('Login Failed');
-      setLoginError('Please enter a username');
-      return;
-    }
-    if (password === '') {
-      console.log('Login Failed');
-      setLoginError('Please enter a password');
-      return;
-    }
-
+  
     try {
-      const response = await axios.post('http://localhost:5000/token', {
-        username: username,
-        password: password,
-      });
-
-      if (response.status === 200) {
-        // Login successful
-
-        props.onLogIn(response.data.role);
-        props.setToken(response.data.access_token)
-       
-        props.setUserName(response.data.username);
-       
-
-        const pendingJobId = sessionStorage.getItem('pendingJobId');
-        if (pendingJobId) {
-         
-
-          localStorage.setItem('candidate_id', response.data.candidate_id);//
-          navigate(`/Apply/${pendingJobId}`);
-          sessionStorage.removeItem('pendingJobId');
+      const user = await Auth.signIn(username, password);
+      const my_user = user.signInUserSession.idToken.payload;
+  
+      // Check if the user is in the Admin group
+      const isAdmin = my_user["cognito:groups"] && my_user["cognito:groups"].includes("Admin");
+  
+      // Check if the user is in the General group
+      const isGeneral = my_user["cognito:groups"] && my_user["cognito:groups"].includes("General");
+  
+      const selectedJobId = localStorage.getItem('selectedJobId');
+  
+      if (isAdmin) {
+        navigate("/Profile");
+      } else if (isGeneral) {
+        navigate('/HomePage');
+        if (selectedJobId) {
+          navigate(`/Apply/${selectedJobId}`);
         } else {
-          // No pending job ID, navigate to the appropriate page based on user role
-          if (response.data.role === 'candidate') {
-            localStorage.setItem('candidate_id', response.data.candidate_id);//
-           
-            props.setCandidateId(response.data.candidate_id);
-            navigate('/HomePage');
-          } else if (response.data.role === 'manager') {
-            props.setUserId(response.data.user_id);
-            navigate('/Profile');
-          }
+          navigate('/HomePage');
         }
+        setMessage('error signing in');
+      }
+      else if (selectedJobId) {
+                navigate(`/Apply/${selectedJobId}`);
+              
       } else {
-        // Login failed
-        setLoginError('Incorrect username or password');
+        // User is not in any specified group
+        console.log(" ");
+        navigate('/HomePage');
       }
     } catch (error) {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
-
-      setLoginError('Error logging in');
+      setMessage(error.message);
+      console.log('error signing in', error);
     }
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className='div-bar' position="static" >
@@ -140,6 +198,7 @@ export default function Login(props) {
               value={username}
               autoFocus
               onChange={(e) => setUsername(e.target.value)}
+              className="custom-text-field"
             />
             <TextField
               margin="normal"
@@ -152,16 +211,25 @@ export default function Login(props) {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="custom-text-field"
+              
             />
-
+            {message && (
+  <Typography variant="body1" color="error" sx={{ mt: 2 }}>
+    {message}
+  </Typography>
+)}
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 4, mb: 2, width: '30%', color: 'white', backgroundColor: '#ad2069','&:hover': {
-                backgroundColor: '#b4269a', // Set the hover background color
-              }, }}  // Center-align the login button
-              onClick={handleLogin}
+              sx={{
+                mt: 4, mb: 2, width: '30%', color: 'white', backgroundColor: '#ad2069', '&:hover': {
+                  backgroundColor: '#b4269a', // Set the hover background color
+                },
+              }}  // Center-align the login button
+              onClick={handleSubmit}
+            //   onClick={() => { handleSubmit }}
             >
               Login
             </Button>
@@ -183,3 +251,5 @@ export default function Login(props) {
     </ThemeProvider>
   );
 }
+
+
