@@ -307,8 +307,6 @@ const CandidateTable = ({
           justifyContent: "center",
           backgroundColor: 'white',
           width: '1800px',
-
-
         }}
       >
         <CandidateFilterForm onFilter={handleFilter} />
