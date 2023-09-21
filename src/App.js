@@ -42,7 +42,7 @@ function App() {
     <>
    
     <BrowserRouter>
-    <div style={{width: 'fit-content'}}>
+    <div style={{width: '100%'}}>
        
         <Routes>
         
