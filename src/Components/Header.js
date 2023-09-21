@@ -44,7 +44,7 @@ const Header = (props) => {
         <AppBar position="static">
           <Toolbar>
 
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1  }}>
                     <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
             </Typography>
             
