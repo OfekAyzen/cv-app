@@ -77,37 +77,7 @@ const CandidateRow = ({ candidate,
 
   return (
 
-    // <TableRow
-    //   key={candidate.candidate.id}
-    //   sx={{
-    //     borderRadius: "10px",
-    //     transition: "box-shadow 0.3s",
-    //     boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
-    //     "&:hover": {
-    //       boxShadow: "0px 0px 5px 3px #ad2069",
-    //       cursor: "pointer",
-    //     },
-    //   }}
-    //   onClick={() => handleViewCandidate(candidate, candidate.job.id)}
-    // >
-    //   {console.log("candidate name  : ", candidate.candidate.first_name)}
-    //   <TableCell>{formatDate(candidate.candidate.createdAt)}</TableCell>
-    //   <TableCell>{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
-    //   <TableCell>{candidate.candidate.location}</TableCell>
-    //   <TableCell>{candidate.candidate.gender}</TableCell>
-    //   <TableCell>{candidate.job.job_title}</TableCell>
-    //   <TableCell>{candidate.candidate.education}</TableCell>
-    //   <TableCell>{candidate.candidate.work_experience}</TableCell>
-    //   <TableCell>{candidate.candidate.skills}</TableCell>
-    //   <TableCell>{candidate.candidate.status}</TableCell>
-
-
-    //   <TableCell>
-    //     <Button variant="contained" color="secondary" onClick={handleDelete}>
-    //       Delete
-    //     </Button>
-    //   </TableCell>
-    // </TableRow>
+   
     <TableRow
       key={candidate.candidate.id}
       sx={{
