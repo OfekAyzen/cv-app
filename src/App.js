@@ -58,7 +58,7 @@ function App() {
               <Route path="/confirm_forgot_password/:username" element={<ConfirmForgotPassword/>} />
               <Route path="/SignUp" element={<SignUp></SignUp>} />
               <Route path="/Logout" element={<Logout />} />
-            <Route path="/HomePage" element={<ProfileUser  />} /> */}
+            <Route path="/HomePage" element={<ProfileUser  />} /> 
             <Route path="/forgot_password" element={<ForgotPassword/>} />
             <Route path="*" element={<Navigate to="/Login" replace />} />
 
