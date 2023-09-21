@@ -40,7 +40,7 @@ function App() {
   
   return (
     <>
-    {console.log("dkfskf")}
+    {console.log("dVCB")}
     <BrowserRouter>
     <div style={{width:'100%'}}>
        
