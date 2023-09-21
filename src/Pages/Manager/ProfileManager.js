@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import CandidateTable from "./CandidateTable";
 import { API, graphqlOperation } from 'aws-amplify';
 import { listCandidateJobs } from '../../graphql/queries'; // Import your GraphQL query
-
+import "../../styles/Profilemanager.css";
 
 import { getCandidate } from '../../graphql/queries'; // Import the query to get candidate data
 import { getJobs } from '../../graphql/queries'; //

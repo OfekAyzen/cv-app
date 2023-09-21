@@ -16,7 +16,7 @@ import ToolBars from './ToolBars';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listJobs } from '../../graphql/queries';
 import { createJobs, updateJobs, deleteJobs } from '../../graphql/mutations';
-
+import "../../styles/Profilemanager.css";
 
 function Position(props) {
   const [positions, setPositions] = useState([]);

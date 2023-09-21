@@ -25,7 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
-
+import "../../styles/User.css";
 import PropTypes from 'prop-types';
 import JobApplication from './JobApplication';
 

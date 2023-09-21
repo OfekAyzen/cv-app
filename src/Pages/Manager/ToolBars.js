@@ -11,7 +11,7 @@ import Logout from '../Log/Logout';
 import logo from '../../Components/images/logo_tech19.png'; 
 import {  useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import "../../styles/ToolBar.css";
 const defaultTheme = createTheme();
 
 export default function ToolBars(props) {
