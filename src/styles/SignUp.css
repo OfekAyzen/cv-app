@@ -7,6 +7,11 @@
 @media (min-width: 0px){
 
     .css-hltdia {
-    max-width: 0px !important;
+    max-width: 444px !important;
     }
+}
+.css-178yklu {
+    /* margin-top: 24px; */
+    width: 800px;
+    height: 300px;
 }
