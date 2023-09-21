@@ -92,7 +92,7 @@ const CandidateRow = ({ candidate,
       }}
       onClick={() => handleViewCandidate(candidate, candidate.job.id)}
     >
-      {console.log("candidate name  : ", candidate.candidate.first_name)}
+   
       <TableCell className="fullWidthCell">{formatDate(candidate.candidate.createdAt)}</TableCell>
       <TableCell className="fullWidthCell">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
       <TableCell className="fullWidthCell">{candidate.candidate.location}</TableCell>
@@ -194,7 +194,7 @@ const CandidateTable = ({
 
   const handleChangeRowsPerPage = (event) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
-    console.log("Rows per page changed:", newRowsPerPage);
+  
     setRowsPerPage(newRowsPerPage);
     setPage(0); // Reset page to 0 when rows per page changes
   };

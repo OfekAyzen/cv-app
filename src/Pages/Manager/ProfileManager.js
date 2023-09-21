@@ -2,30 +2,18 @@
 
 
 import React, { useState, useEffect } from "react";
-
-// import CandidateDataService from "./CandidateDataService";
-// import CandidateFilterForm from "./CandidateFilterForm";
-
 import { CSVLink } from "react-csv";
-import { Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Input, TableContainer, SvgIcon, CardContent ,Container,Grid,Paper} from "@mui/material";
-import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
-
-import Stack from '@mui/material/Stack';
-
+import { Typography, Button ,Container,Grid,Paper} from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CandidateDialog from "./CandidateDialog";
-// import CandidatePagination from "./CandidatePagination";
 import Link from '@mui/material/Link';
-
 import CircularProgress from "@mui/material/CircularProgress"; // Import the CircularProgress component
 import ToolBars from "./ToolBars";
-// import NoteForm from "./NoteForm";
 import { useNavigate } from 'react-router-dom';
 import CandidateTable from "./CandidateTable";
 import { API, graphqlOperation } from 'aws-amplify';
 import { listCandidateJobs } from '../../graphql/queries'; // Import your GraphQL query
 import "../../styles/Profilemanager.css";
-
 import { getCandidate } from '../../graphql/queries'; // Import the query to get candidate data
 import { getJobs } from '../../graphql/queries'; //
 
@@ -35,14 +23,7 @@ function ProfileManager(props) {
   const [candidatesData, setCandidatesData] = useState([]);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [open, setOpen] = useState(false);
-  // const [filters, setFilters] = useState({
-  //   education: "",
-  //   workExperience: "",
-  //   skills: "",
-  //   gender: "",
-  //   location: "",
 
-  // });
 
   const [loading, setLoading] = useState(true);
 
@@ -104,8 +85,7 @@ function ProfileManager(props) {
           })
         );
 
-        // Now you have an array 'combinedData' that holds both job and candidate objects
-        console.log('Combined Data:', combinedData);
+      
 
         setCombideData(combinedData);
         setLoading(false);
@@ -121,7 +101,7 @@ function ProfileManager(props) {
 
 
   useEffect(() => {
-    console.log('Updated Candidates Data:', candidatesData);
+   
   }, [candidatesData]);
 
 
@@ -129,7 +109,7 @@ function ProfileManager(props) {
 
 
   const handleViewCandidate = (candidate, jobId) => {
-    console.log("view candidate data:", candidate, "job id", jobId);
+   
     setSelectedCandidate(candidate.candidate);
     setSelectedJobId(jobId);
     // Set isDialogOpen to true to open the dialog
