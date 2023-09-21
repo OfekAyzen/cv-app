@@ -1,426 +1,620 @@
 /* LandingPage.css */
 body {
+
+  margin: 0px !important;
+  padding: 0px !important;
+
+}
+
+.candidate-table {
+  width: 100%;
+  /**border-collapse: collapse;*/
+
+  margin-top: 20px;
+
+}
+
+.candidate-table th,
+.candidate-table td {
+  border: 1px solid #e0dddd;
+  padding: 10px;
+  text-align: left;
+
+}
+
+.candidate-table th {
+  background-color: #ffffff;
+  font-weight: bold;
+
+}
+
+.candidate-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+
+}
+
+.candidate-table tbody tr:hover {
+  background-color: #f5f5f5;
+
+}
+
+
+/* styles.css or your custom CSS file */
+.data-grid-container .rounded-row {
+  /* Adjust the value as needed for the desired roundedness */
+  height: '100%';
+  width: '100%';
+  overflow: 'hidden';
+  border-radius: 15px;
+  /* Adjust the radius to control the amount of rounding */
+  background-color: #f8f6f6;
+  /* Optional: Set a background color for the rounded rows */
+  margin: 5px;
+  border-bottom: 1px !important;
+
+}
+
+.candidate-details {
+  position: fixed;
+  top: 0%;
+  bottom: 0%;
+  right: 1px;
+  width: 35%;
+  height: '100%';
+  background-color: #f5f5f5;
+  box-shadow: -20px 16px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  /* text-align: center; */
+  padding: 48px;
+  z-index: 9999;
+  display: fixed;
+}
+
+.h2-candidate-details {
+  color: rgb(129, 37, 64);
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.inner-card {
+  padding: 20px;
+  width: '80%';
+
+
+}
+
+.download-button {
+
+
+
+
+
+  color: rgb(174, 43, 91);
+}
+
+/* LandingPage.css or your custom CSS file */
+
+
+/**
+.rounded-row {
+    border-radius: 15px;
+    background-color: #cbc8c8; 
+    margin: 5px;
+ 
+  }*/
+
+
+.data-grid-container {
+  margin-top: 5%;
+  height: 800px;
+
+}
+
+.div-bar {
+  background-color: black;
+
+}
+
+.img {
+  height: 80px;
+  ;
+}
+
+.css-128fb87-MuiDataGrid-toolbarContainer {
+  gap: 56px !important;
+  padding: 81px 8px 25px !important;
+  background-color: #e2e1e6 !important;
+}
+
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root {
+
+  color: #ad2069 !important;
+
+}
+
+.css-128fb87-MuiDataGrid-toolbarContainer {
+
+  background-color: white !important;
+
+  border-radius: 15px ! important;
+}
+
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root {
+
+  height: 50px !important;
+  width: 120px !important;
+  /* border-left: ridge; */
+  border: outset !important;
+}
+
+.css-5wly58-MuiDataGrid-root .MuiDataGrid-row {
+
+  background-color: white !important;
+}
+
+.css-rtrcn9-MuiTablePagination-root {
+
+  display: none !important;
+}
+
+.Box-userprofile {
+  background-color: rgb(34, 33, 33) !important;
+  width: 'auto';
+  height: 432px;
+}
+
+.h3-user {
+
+  color: #ad2069;
+  font-size: 50px;
+  padding-top: 98px;
+  padding-left: 50px;
+  margin: auto;
+
+}
+
+.h4-user {
+  color: white;
+  font-size: 40px;
+
+  padding-left: 50px;
+}
+
+.img-user {
+
+  margin-right: auto;
+  float: right;
+  margin: 0 0 0 15px;
+
+  height: 432px;
+}
+
+
+.FilterCard {
+  background-color: #ffffff !important;
+  margin-top: 15%;
+  height: 92px;
+  text-align: center;
+  /* display: flex;
+    justify-content: center !important;
+    align-items: center !important; */
+}
+
+
+.sorting-options {
+  background-color: #b99baa;
+}
+
+.profile-div {
+  background-color: rgba(224, 224, 224, 1);
+  height: 1050px;
+  width: 100%;
+  display: block;
+  padding: 0px 0px 0px 0px;
+  margin: 0%;
+
+}
+
+.profile-card {
+  background-color: #fbfbfb;
+  width: 90%;
+  margin-top: 10%;
+  height: 120px;
+}
+
+.candidates-list {
+  background-color: #ffffff;
+  height: auto;
+  width: 90%;
+  margin-top: 10px;
+  border-radius: 13px;
+
+}
+
+.tr-candidate {
+  background-color: #ffffff;
+  border-radius: 2%;
+}
+
+.css-1ex1afd-MuiTableCell-root {
+
+  display: table-cell;
+  vertical-align: inherit;
+  border-bottom: 8px solid rgba(224, 224, 224, 1) !important;
+
+}
+
+.css-1ygcj2i-MuiTableCell-root {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.01071em;
+  display: table-cell;
+  vertical-align: inherit;
+  border-bottom: 12px solid rgba(224, 224, 224, 1) !important;
+
+}
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding-right: 112px;
+  width: 100px !important;
+
+}
+
+.FilterCard {
+  background-color: #fefefe;
+}
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+
+
+  height: 40% !important;
+  /* margin-top: -110px !important; */
+  margin-block: auto;
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87) !important;
+  box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.2), 0px 1px 1px 0px rgba(255, 255, 255, 0.14), 0px 1px 3px 0px rgba(255, 255, 255, 0.12) !important;
+  border-radius: 18px !important;
+
+}
+
+.filter-order {
+  background-color: rgb(255, 255, 255);
+  width: 90% !important;
+  height: 30 px !important;
+  /* margin-top: 2px; */
+  background-color: #ffffff;
+  padding-bottom: 2%;
+}
+
+.css-46bh2p-MuiCardContent-root:last-child {
+
+  padding-bottom: 36px;
+  /* padding-top: 90px; */
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.css-46bh2p-MuiCardContent-root {
+  padding: 0px;
+}
+
+.Box-profile {
+  background-color: rgba(224, 224, 224, 1);
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.candidate-card-profile {
+
+  margin-left: 125px !important;
+}
+
+.css-ypiqx9-MuiDialogContent-root {
+
+  /* padding: 273px 35px; */
+  padding: 80px 2px 50px 30px !important;
+}
+
+.css-zw3mfo-MuiModal-root-MuiDialog-root {
+  position: fixed;
+  z-index: 1300;
+  left: unset !important;
+  bottom: 0;
+  top: 0;
+
+}
+
+.orderby {
+  background-color: #ffffff;
+  padding-left: 0.9%;
+  padding-top: 2.5%;
+}
+
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+
+  margin: 1% !important;
+
+  background-color: #ad2069 !important;
+  width: 158px;
+
+}
+
+/* user profile at manager **/
+/* .profilePopUp{
+  background-color: #ffffff;
+  height: 800px;
   
-    margin: 0px !important;
+} */
+.css-ypiqx9-MuiDialogContent-root {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  /* height: 959px !important; */
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  /* padding: 280px 24px !important; */
+  /* margin-top: -15%; */
+}
+
+.css-csmqbv-MuiPaper-root-MuiDialog-paper {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  position: relative;
+  overflow-y: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  max-height: calc(100% - 64px);
+
+
+}
+
+
+
+.css-ahj2mt-MuiTypography-root {
+  margin: 3px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 2;
+  letter-spacing: 0.00998em;
+
+}
+
+.toolbar {
+  display: flex;
+
+}
+
+.tr-candidate:hover {
+  box-shadow: 10px 10px 10px rgb(201, 128, 139);
+  cursor: pointer;
+}
+
+.tr-candidate {
+  transition: box-shadow 0.3s;
+  /* Add transition for a smooth effect */
+  border-radius: 10px;
+  /* Add rounded border radius */
+}
+
+.css-7ldjcq-MuiGrid-root {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: column;
+  margin-top: -8px;
+  width: calc(100% + 8px);
+  margin-left: -8px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: flex-start;
+  align-content: center;
+  justify-content: flex-start;
+}
+
+.csv-export-button {
+  color: #ad2069;
+}
+
+.css-qfso29-MuiTypography-root-MuiDialogContentText-root {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  color: rgba(0, 0, 0, 0.6);
+  display: flex;
+}
+
+.css-164r41r {
+  margin-top: 8px;
+  width: 40%;
+}
+
+.css-rqglhn-MuiTable-root {
+  display: table;
+  width: 100%;
+  margin-top: 120px;
+}
+
+.custom-text-field .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #ad2069 !important;
+}
+
+.custom-text-field .Mui-focused {
+  color: #161516 !important;
+  /* Change the border color to #ad2069 */
+}
+
+/*selector order by style*/
+.custom-select .MuiOutlinedInput-notchedOutline {
+  border-color: #8b898a !important;
+  /* Set the border color to #ad2069 */
+}
+
+.custom-select .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+.custom-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #b76991 !important;
+  /* Set the border color to #ad2069 on hover and focus */
+}
+
+.custom-select .MuiInputLabel-root.Mui-focused {
+  color: black !important;
+}
+
+/**/
+.table-container {
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  max-width: 100%;
+  /* Make the container responsive */
+}
+
+/**/
+@media (min-width: 600px) {
+  .css-1oqqzyl-MuiContainer-root {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+}
+
+.css-3su884-MuiPaper-root {
+  background-color: #e0e0e0 !important;
+  color: rgba(0, 0, 0, 0.87);
+  /* -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12); */
+  height: 1050px;
+  transition:none !important;
+  border-radius: none !important;
+  box-shadow: none !important;
+  /* width: 2000px; */
+  
+  width: 1500px;
+   margin-left: 300px !important; 
+ 
+  /* margin-right: 10%; */
+  /* padding-left: 30px; */
+}
+
+@media (min-width: 600px) {
+  .css-3su884-MuiPaper-root {
+    background-color: #e0e0e0;;
+
+
+  }
+}
+
+.css-1099y7z-MuiTableRow-root {
+  color: inherit;
+  display: table-row;
+  vertical-align: middle;
+  outline: 0;
+  border-radius: 10px;
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  background-color: #ffffff;
+  box-shadow: none;
+  width: auto;
+
+}
+
+@media (min-width: 600px) {
+  .css-1107yuj-MuiContainer-root {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+
+
+  }
+}
+
+.css-1107yuj-MuiContainer-root {
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+ 
+}
+
+@media (min-width: 1200px) {
+
+  .css-1la2456-MuiContainer-root {
+    max-width: 1500px !important;
+    border-radius: 20px;
     
+
+    display: flex !important;
+
+
+    flex-direction: row-reverse !important;
+
+    align-items: center !important;
+
+    justify-content: flex-end !important;
+    background-color: white;
+
+    flex-wrap: wrap !important;
+
   }
-  .candidate-table {
-      width: 100%;
-      /**border-collapse: collapse;*/
-      
-      margin-top: 20px;
-      
-    }
-    
-    .candidate-table th,
-    .candidate-table td {
-      border: 1px solid #e0dddd;
-      padding: 10px;
-      text-align: left;
-      
-    }
-    
-    .candidate-table th {
-      background-color: #ffffff;
-      font-weight: bold;
-      
-    }
-    
-    .candidate-table tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-      
-    }
-    
-    .candidate-table tbody tr:hover {
-      background-color: #f5f5f5;
-      
-    }
+}
+.css-1la2456-MuiContainer-root {
+  width: 1500px !important;
+  margin-top: 30px ;
   
   
-    /* styles.css or your custom CSS file */
-  .data-grid-container .rounded-row {
-      /* Adjust the value as needed for the desired roundedness */
-      height: '100%';
-      width: '100%';
-      overflow: 'hidden';
-      border-radius: 15px; /* Adjust the radius to control the amount of rounding */
-      background-color: #f8f6f6; /* Optional: Set a background color for the rounded rows */
-      margin: 5px;
-      border-bottom: 1px !important;
-      
-  }
-  .candidate-details {
-    position: fixed;
-    top: 0%;
-    bottom: 0%;
-    right: 1px;
-    width: 35%;
-    height: '100%';
-    background-color: #f5f5f5;
-    box-shadow: -20px 16px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    /* text-align: center; */
-    padding: 48px;
-    z-index: 9999;
-    display: fixed;
-  }
-  .h2-candidate-details{
-      color: rgb(129, 37, 64);
-      text-align: center;
-  }
-  .close-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      font-size: 16px;
-      font-weight: bold;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-  
-  .inner-card{
-      padding: 20px;
-      width: '80%';
-     
-      
-  }
-  
-  .download-button{
-      
-      
-      
-     
-   
-      color: rgb(174, 43, 91);
-  }
-  /* LandingPage.css or your custom CSS file */
-  
-  
-  /**
-  .rounded-row {
-      border-radius: 15px;
-      background-color: #cbc8c8; 
-      margin: 5px;
-   
-    }*/
-  
-  
-  .data-grid-container{
-      margin-top: 5%;
-      height: 800px;
-      
-  }
-  
-  .div-bar{
-      background-color: black;
-      
-  }
-  .img{
-    height: 80px;;
-  }
-  
-  .css-128fb87-MuiDataGrid-toolbarContainer{
-    gap: 56px !important;
-    padding: 81px 8px 25px !important;
-    background-color: #e2e1e6 !important;
-  }
-  .css-1knaqv7-MuiButtonBase-root-MuiButton-root {
-  
-    color: #ad2069 !important;
-  
-  }
-  .css-128fb87-MuiDataGrid-toolbarContainer {
-    
-    background-color: white !important;
-    
-    border-radius: 15px ! important;
-  }
-  .css-1knaqv7-MuiButtonBase-root-MuiButton-root {
-  
-    height: 50px !important;
-    width: 120px !important;
-    /* border-left: ridge; */
-    border: outset !important;
-  }
-  .css-5wly58-MuiDataGrid-root .MuiDataGrid-row {
-  
-    background-color: white !important;
-  }
-  .css-rtrcn9-MuiTablePagination-root {
-   
-    display: none !important;
-  }
-  .Box-userprofile{
-    background-color: rgb(34, 33, 33) !important;
-    width: 'auto';
-    height: 432px;
-  }
-  .h3-user{
-    
-    color: #ad2069;
-    font-size: 50px;
-    padding-top: 98px;
-    padding-left: 50px;
-    margin: auto;
-    
-  }
-  .h4-user{
-    color: white;
-    font-size: 40px;
-   
-    padding-left: 50px;
-  }
-  .img-user{
-   
-    margin-right:auto;
-    float: right;    
-   margin: 0 0 0 15px;
-  
-   height: 432px;
-  }
-  
-  
-  .FilterCard{
-    background-color: #ffffff !important;
-    margin-top: 15%;
-    height: 92px ;
-    text-align: center;
-      /* display: flex;
-      justify-content: center !important;
-      align-items: center !important; */
-  }
-  
-  
-  .sorting-options{
-    background-color: #b99baa;
-  }
-  .profile-div{
-    background-color:rgba(224, 224, 224, 1);
-    height: 1050px;
-    width: 100%;
-    display: block;
-    padding: 0px 0px 0px 0px;
-    margin: 0%;
-  
-  }
-  .profile-card{
-    background-color: #fbfbfb;
-      width: 90%;
-      margin-top: 10%;
-      height: 120px;
-  }
-  .candidates-list{
-    background-color: #ffffff;
-      height: auto;
-      width: 90%;
-      margin-top: 10px;
-      border-radius: 13px;
-    
-  }
-  .tr-candidate{
-    background-color: #ffffff;
-    border-radius: 2%;
-  }
-  .css-1ex1afd-MuiTableCell-root {
-  
-    display: table-cell;
-    vertical-align: inherit;
-    border-bottom: 8px solid rgba(224, 224, 224, 1) !important;
-   
-  }
-  .css-1ygcj2i-MuiTableCell-root {
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.01071em;
-    display: table-cell;
-    vertical-align: inherit;
-    border-bottom: 12px solid rgba(224, 224, 224, 1) !important;
-   
-  }
-  .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-    padding-right: 112px; 
-    width: 100px !important;
-  
-  }
-    .FilterCard{
-      background-color: #fefefe;
-    }
-  .css-bhp9pd-MuiPaper-root-MuiCard-root {
-  
-     
-      height: 40% !important;
-      margin-top: -110px !important;
-      background-color: #fff;
-      color: rgba(0, 0, 0, 0.87) !important;
-      box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.2), 0px 1px 1px 0px rgba(255, 255, 255, 0.14), 0px 1px 3px 0px rgba(255, 255, 255, 0.12) !important;
-      border-radius: 18px !important;
-    
-  }
-  .filter-order{
-    background-color: rgb(255, 255, 255);
-      width: 90% !important;
-      height: 30 px !important;
-      margin-top: 10%;
-      background-color: #ffffff;
-      padding-bottom: 2%;
-  }
-  .css-46bh2p-MuiCardContent-root:last-child {
-    
-    padding-bottom: 36px;
-    /* padding-top: 90px; */
-    justify-content: center;
-    text-align: center;
-    display: flex;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    align-content: flex-end; 
-    flex-direction: row-reverse;
-  }
-  
-  .css-46bh2p-MuiCardContent-root {
-    padding: 0px;
-  } 
-  .Box-profile{
-    background-color: rgba(224, 224, 224, 1);
-      justify-content: flex-start;
-      display: flex;
-      align-items: center;
-      align-content: center;
-      flex-wrap: wrap;
-      flex-direction: column;
-  }
-  .candidate-card-profile{
-   
-    margin-left: 125px !important;
-  }
-  
-  .css-ypiqx9-MuiDialogContent-root {
-  
-    padding: 273px 35px;
-  }
-  
-  .css-zw3mfo-MuiModal-root-MuiDialog-root {
-    position: fixed;
-    z-index: 1300;
-    left: unset !important;
-    bottom: 0;
-    top: 0;
-    
-  }
-  
-  .orderby{
-    background-color: #ffffff;
-    padding-left: 0.9%;
-  }
-  .css-sghohy-MuiButtonBase-root-MuiButton-root {
-  
-    margin: 1% !important;
-  
-    background-color: #ad2069 !important;
-    width: 158px;
-    
-  }
-  /* user profile at manager **/
-  /* .profilePopUp{
-    background-color: #ffffff;
-    height: 800px;
-    
-  } */
-  .css-ypiqx9-MuiDialogContent-root {
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    /* height: 959px !important; */
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
-    padding: 280px 24px !important;
-    margin-top: -15%;
-  }
-  .css-csmqbv-MuiPaper-root-MuiDialog-paper {
-    background-color: #fff;
-    color: rgba(0, 0, 0, 0.87);
-    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-   
-    position: relative;
-    overflow-y: auto;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    max-height: calc(100% - 64px);
-  
-  
-  }
-  
-  
-  
-  .css-ahj2mt-MuiTypography-root {
-    margin: 3px;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 2;
-    letter-spacing: 0.00998em;
-  
-  }
-  .toolbar{
-    display: flex;
-    
-  }
-  .tr-candidate:hover {
-    box-shadow: 10px 10px 10px rgb(201, 128, 139);
-    cursor: pointer;
-  }
-  .tr-candidate {
-    transition: box-shadow 0.3s; /* Add transition for a smooth effect */
-    border-radius: 10px; /* Add rounded border radius */
-  }
-  .css-7ldjcq-MuiGrid-root {
-    box-sizing: border-box;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: nowrap;
-    width: 100%;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: column;
-    margin-top: -8px;
-    width: calc(100% + 8px);
-    margin-left: -8px;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: flex-start;
-    align-content: center;
-    justify-content: flex-start;
-  }
-  .csv-export-button{
-    color: #ad2069;
-  }
-  .css-qfso29-MuiTypography-root-MuiDialogContentText-root {
-    margin: 0;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1.5;
-    letter-spacing: 0.00938em;
-    color: rgba(0, 0, 0, 0.6);
-    display: flex;
-  }
-  
-  .css-164r41r {
-    margin-top: 8px;
-    width: 40%;
-  }
+}
+.css-dgfjot-MuiTable-root {
+  display: table;
+  /* width: 100%; */
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: flex;
+  width: 1400px !important;
+  background-color: white;
+}
+.css-dgfjot-MuiTable-root{
+  width:1800px !important;
+}
+.fullWidthCell {
+  width:auto;
+}
