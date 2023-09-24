@@ -174,7 +174,7 @@ function ProfileManager(props) {
 
   return (
     <div>
-    <Container style={{ backgroundColor: "rgb(224, 224, 224)" }}>
+    <Container style={{ backgroundColor: "rgb(224, 224, 224)",display:'contents' }}>
       <Grid container spacing={3}  >
         <Grid item xs={12} >
           <ToolBars />
