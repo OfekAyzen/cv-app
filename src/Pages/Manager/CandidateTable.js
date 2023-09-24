@@ -252,7 +252,9 @@ const CandidateTable = ({
   };
   return (
 
-    <div className="myfilter" >
+    <div style={{display:'block',backgroundColor:'white',
+   
+    borderRadius:'7px'}} >
       <Snackbar
         open={notification !== null}
         autoHideDuration={5000}
@@ -283,7 +285,7 @@ const CandidateTable = ({
 
         }}
       >
-        <div className="myform" >
+        <div  style={{backgroundColor:'white',padding:'15px',    width: '1155x',}} >
         <CandidateFilterForm onFilter={handleFilter} />
 
         <div className="orderby">

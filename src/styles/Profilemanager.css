@@ -250,16 +250,14 @@ body {
   .FilterCard{
     background-color: #fefefe;
   }
-.css-bhp9pd-MuiPaper-root-MuiCard-root {
-
-   
-    height: 80% !important;
-    margin-top: -110px !important;
+  .css-bhp9pd-MuiPaper-root-MuiCard-root {
     background-color: #fff;
-    color: rgba(0, 0, 0, 0.87) !important;
-    box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.2), 0px 1px 1px 0px rgba(255, 255, 255, 0.14), 0px 1px 3px 0px rgba(255, 255, 255, 0.12) !important;
-    border-radius: 18px !important;
-  
+    color: rgba(0, 0, 0, 0.87);
+    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: none !important; 
+    box-shadow: none !important;
+    overflow: hidden;
 }
 .filter-order{
   background-color: rgb(255, 255, 255);
@@ -442,13 +440,21 @@ body {
   padding-right: 0px !important;
 
 }
-/* .myfilter{
+.myfilter{
   background-color: #ad2069;
-  display: flex;
-  /* margin-top: 10%; */
-  /* width: 100%!important; */
-  
-
+  display: contents;
+   margin-top: 10%; 
+  width: 100%!important; 
+   
+}
+.css-hmrlsv-MuiTable-root {
+  display: table;
+  width: 100% !important;
+  border-collapse: collapse;
+  border-spacing: 0;
+  /* width: 140%; */
+  background-color: white;
+}
 .css-15oas58 {
   /* margin-left: auto; */
   /* box-sizing: border-box; */
@@ -485,8 +491,9 @@ body {
 }
 .css-zow5z4-MuiGrid-root{
   display: flex;
+  background-color: lightgrey;
 }
-.myform{
+/* .myform{
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
   background-color:'white';
@@ -494,7 +501,7 @@ body {
   display:'flex';
   flex-direction: "column";
 
-}
+} */
 .css-s18byi {
   background-color: rgb(255, 255, 255);
   color: rgba(0, 0, 0, 0.87);
@@ -515,4 +522,61 @@ body {
   /* color: rgba(0,0,0,.87); */
   /* margin-left:*/
   margin-left: 10%;
+}
+/* .css-13ik8i1-MuiContainer-root {
+
+  height: 1400px !important;
+  width: 100% !important;
+} */
+.css-1vb53xm-MuiTablePagination-root {
+  overflow: auto;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.875rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100% !important; 
+  background-color: white;
+}
+.css-13ik8i1-MuiContainer-root {
+  height: 1280px !important;
+  width: 100% !important;
+  padding-left: 0px;
+  padding-right: 0px;
+  /* margin-left: auto; */
+  /* box-sizing: border-box; */
+  /* margin-right: auto; */
+  /* display: block;
+ 
+  /* display: -webkit-box; */
+  /* display: -webkit-flex; */
+  display: -ms-flexbox;
+  /* display: flex; */
+  /* -webkit-flex-direction: column; */
+  -ms-flex-direction: column;
+  /* flex-direction: column; */
+  /* -webkit-align-items: center; */
+  /* -webkit-box-align: center; */
+  -ms-flex-align: center;
+  /* align-items: center; */
+  /* -webkit-box-pack: center; */
+  -ms-flex-pack: center;
+  /* -webkit-justify-content: center; */
+  /* justify-content: center; */
+  /* width: 140%; */
+  /* height: 215px; */
+}
+@media (min-width: 1200px){
+
+.css-13ik8i1-MuiContainer-root {
+    max-width: 1460px;
+}
+}
+@media (min-width: 600px)
+{
+.css-13ik8i1-MuiContainer-root {
+    padding-left: 0px !important;
+    padding-right:0px !important;
+}
 }
