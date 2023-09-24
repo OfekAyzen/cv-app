@@ -276,7 +276,8 @@ const CandidateTable = ({
           alignItems: "center",
           justifyContent: "center",
          width:'140%',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
+          height:'215px',
          
 
 

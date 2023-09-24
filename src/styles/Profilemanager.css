@@ -442,13 +442,13 @@ body {
   padding-right: 0px !important;
 
 }
-.myfilter{
+/* .myfilter{
   background-color: #ad2069;
   display: flex;
   /* margin-top: 10%; */
-  width: 100%!important;
+  /* width: 100%!important; */
   
-}
+
 .css-15oas58 {
   /* margin-left: auto; */
   /* box-sizing: border-box; */
@@ -462,17 +462,18 @@ body {
   /* -webkit-box-pack: center; */
   /* justify-content: center; */
   /* width: 140%; */
-  margin-left: 20%;
+  /* margin-left: 20%; */
   background-color: #18bcae;
+  margin-right: 20%;
 }
-.css-vuzb25 {
+/* .css-vuzb25 {
   margin-left: 20%;
   background-color: rgb(255 255 255);
   color: rgba(0, 0, 0, 0.87);
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px -2px, rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
-}
+} */
 .css-3su884-MuiPaper-root{
   background-color: #e9fe05 !important;
   display: flex;
@@ -503,4 +504,15 @@ body {
   overflow: hidden;
 
 
+}
+.css-1h77wgb{
+  background-color: #e5e5e5;
+}
+.css-vuzb25 {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+  /* color: rgba(0,0,0,.87); */
+  /* margin-left:*/
+  margin-left: 10%;
 }
