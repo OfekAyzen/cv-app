@@ -282,10 +282,7 @@ const CandidateTable = ({
 
         }}
       >
-        <div style={{backgroundColor:'white',width:'140%',display:'flex',
-        flexDirection: "column",
-      height:'180px',
-      }}>
+        <div className="myform" >
         <CandidateFilterForm onFilter={handleFilter} />
 
         <div className="orderby">
