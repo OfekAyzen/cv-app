@@ -179,7 +179,7 @@ function ProfileManager(props) {
         <Grid item xs={12} >
           <ToolBars />
           <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' }}>
-            Applicants
+            Applicant's
           </Typography>
         </Grid>
         <Grid item xs={6} sm={9} md={10} sx={{ display: 'flex', justifyContent: 'center' }}>
