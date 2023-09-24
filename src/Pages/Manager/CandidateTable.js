@@ -34,7 +34,7 @@ const CandidateRow = ({ candidate,
 
   const handleDelete = async () => {
     try {
-    
+
 
       const input = {
         id: candidate.candidateJob.id,
@@ -50,7 +50,7 @@ const CandidateRow = ({ candidate,
       // Check if the delete operation was successful
       if (response.data && response.data.deleteCandidateJobs) {
         // Notify the parent component (CandidateTable) of the successful deletion
-        
+
         onDeleteCandidate(candidate.candidateJob.id);
       } else {
         // Handle the case where the delete operation did not succeed
@@ -64,7 +64,7 @@ const CandidateRow = ({ candidate,
 
   const handleNotification = (message, type) => {
     // Implement your notification logic here
-  
+
   };
 
   const formatDate = (isoDate) => {
@@ -77,14 +77,14 @@ const CandidateRow = ({ candidate,
 
   return (
 
-   
+
     <TableRow
       key={candidate.candidate.id}
       sx={{
         borderRadius: "10px",
         transition: "box-shadow 0.3s",
         boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
-      
+
         "&:hover": {
           boxShadow: "0px 0px 5px 3px #ad2069",
           cursor: "pointer",
@@ -92,7 +92,7 @@ const CandidateRow = ({ candidate,
       }}
       onClick={() => handleViewCandidate(candidate, candidate.job.id)}
     >
-   
+
       <TableCell className="fullWidthCell">{formatDate(candidate.candidate.createdAt)}</TableCell>
       <TableCell className="fullWidthCell">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
       <TableCell className="fullWidthCell">{candidate.candidate.location}</TableCell>
@@ -194,7 +194,7 @@ const CandidateTable = ({
 
   const handleChangeRowsPerPage = (event) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
-  
+
     setRowsPerPage(newRowsPerPage);
     setPage(0); // Reset page to 0 when rows per page changes
   };
@@ -223,23 +223,23 @@ const CandidateTable = ({
     setFilters(newFilters);
   };
 
- const handleDeleteCandidate = (deletedCandidateId) => {
-  const confirmation = window.confirm("Are you sure you want to delete this candidate?");
-  if (confirmation) {
-    // Update the table data by filtering out the deleted candidate
-    const updatedCandidates = candidates.filter(
-      (candidate) => candidate.candidateJob.id !== deletedCandidateId
-    );
+  const handleDeleteCandidate = (deletedCandidateId) => {
+    const confirmation = window.confirm("Are you sure you want to delete this candidate?");
+    if (confirmation) {
+      // Update the table data by filtering out the deleted candidate
+      const updatedCandidates = candidates.filter(
+        (candidate) => candidate.candidateJob.id !== deletedCandidateId
+      );
 
-    // Display a success notification
-    handleNotification("Candidate job deleted successfully", "success");
-    
-    // Reload the page
-    window.location.reload();
-  }
-};
+      // Display a success notification
+      handleNotification("Candidate job deleted successfully", "success");
 
-  
+      // Reload the page
+      window.location.reload();
+    }
+  };
+
+
 
   const handleNotification = (message, type) => {
     // Set the notification state
@@ -252,7 +252,7 @@ const CandidateTable = ({
   };
   return (
 
-    < >
+    <div className="myfilter" >
       <Snackbar
         open={notification !== null}
         autoHideDuration={5000}
@@ -269,16 +269,23 @@ const CandidateTable = ({
       </Snackbar>
 
 
-      <Container
+      <Container 
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+         width:'140%',
           backgroundColor: 'white',
-          width: '1800px',
+         
+
+
         }}
       >
+        <div style={{backgroundColor:'white',width:'140%',display:'flex',
+        flexDirection: "column",
+      height:'180px',
+      }}>
         <CandidateFilterForm onFilter={handleFilter} />
 
         <div className="orderby">
@@ -301,8 +308,9 @@ const CandidateTable = ({
             </Select>
           </FormControl>
         </div>
+        </div>
         {/* <Table sx={{ minWidth: 1024 ,backgroundColor:'white'}}> */}
-        <Table sx={{ width: '1800px', backgroundColor: 'white' }}>
+        <Table sx={{ width: '140%', backgroundColor: 'white' }}>
           <TableHead>
             <TableRow>
               <TableCell>Date Apply</TableCell>
@@ -329,7 +337,9 @@ const CandidateTable = ({
             ))}
           </TableBody>
         </Table>
+     
         <TablePagination
+        sx={{display:'flex',width:'140%',backgroundColor:'white'}}
           component="div"
           count={sortedCandidates.length} // Use sortedCandidates.length
           page={page}
@@ -339,8 +349,9 @@ const CandidateTable = ({
           labelRowsPerPage="Rows per page:"
           rowsPerPageOptions={[10, 25, 50]}
         />
+     
       </Container>
-    </>
+    </div>
   );
 }
 export default CandidateTable;

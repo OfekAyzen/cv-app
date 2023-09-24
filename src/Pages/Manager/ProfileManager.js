@@ -173,17 +173,17 @@ function ProfileManager(props) {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <div>
     <Container style={{ backgroundColor: "rgb(224, 224, 224)" }}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3}  >
         <Grid item xs={12} >
           <ToolBars />
           <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' }}>
             Applicants
           </Typography>
         </Grid>
-        <Grid fullwidth item xs={12} sm={9} md={10} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3}>
+        <Grid item xs={6} sm={9} md={10} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Paper elevation={3} >
             
               {loading ? (
                 <CircularProgress
@@ -249,7 +249,7 @@ function ProfileManager(props) {
         </Grid>
       </Grid>
     </Container>
-  </ThemeProvider>
+  </div>
   );
 
 }
