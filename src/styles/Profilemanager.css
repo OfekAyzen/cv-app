@@ -603,9 +603,10 @@ body {
     padding-left: 0px !important;
     padding-right: 0px !important;
 }}
-@media (min-width: 1200px)
-{
-.css-1jerziq {
+
+
+@media (min-width: 1200px) {
+  .css-1jerziq {
     max-width: 1200px;
     height: 0% !important;
 }
