@@ -271,19 +271,19 @@ const CandidateTable = ({
       </Snackbar>
 
 
-      <Container 
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-         width:'140%',
-          // backgroundColor: 'white',
-          height:'215px',
+      <Container className="table-container"
+        // sx={{
+        //   display: "flex",
+        //   flexDirection: "column",
+        //   alignItems: "center",
+        //   justifyContent: "center",
+        //  width:'140%',
+        //   // backgroundColor: 'white',
+        //   height:'215px',
          
 
 
-        }}
+        // }}
       >
         <div  style={{backgroundColor:'white',padding:'15px',    width: '1155x',}} >
         <CandidateFilterForm onFilter={handleFilter} />
@@ -310,7 +310,7 @@ const CandidateTable = ({
         </div>
         </div>
         {/* <Table sx={{ minWidth: 1024 ,backgroundColor:'white'}}> */}
-        <Table sx={{ width: '140%', backgroundColor: 'white' }}>
+        <Table sx={{ width: '0%', backgroundColor: 'white' }}>
           <TableHead>
             <TableRow>
               <TableCell>Date Apply</TableCell>
