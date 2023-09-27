@@ -336,9 +336,7 @@ const CandidateTable = ({
               />
             ))}
           </TableBody>
-        </Table>
-     
-        <TablePagination
+          <TablePagination
         sx={{display:'flex',width:'140%',backgroundColor:'white'}}
           component="div"
           count={sortedCandidates.length} // Use sortedCandidates.length
@@ -349,6 +347,9 @@ const CandidateTable = ({
           labelRowsPerPage="Rows per page:"
           rowsPerPageOptions={[10, 25, 50]}
         />
+        </Table>
+     
+        
      
       </Container>
     </div>
