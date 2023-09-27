@@ -523,6 +523,7 @@ body {
 }
 .css-1h77wgb{
   background-color: #e5e5e5;
+  height: 1500px !important;
 }
 .css-vuzb25 {
   background-color: #fff;
@@ -616,6 +617,9 @@ body {
 }
 .table-container{
   display: flex;
-  height: 0% !important; 
-  background-color: #ad2069;
+  /* height: 0% !important; 
+  background-color: #ad2069; */
+}
+.css-3qrssf{ /*table style*/
+  width: none !important;
 }
