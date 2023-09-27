@@ -32,7 +32,7 @@ export default function ToolBars(props) {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
-          <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Toolbar sx={{ justifyContent: 'space-between' ,backgroundColor:'black'}}>
             <div sx={{ display: 'flex', alignItems: 'center' }}>
               
               <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />

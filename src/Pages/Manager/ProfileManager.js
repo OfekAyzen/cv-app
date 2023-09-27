@@ -178,8 +178,8 @@ function ProfileManager(props) {
       <Grid container spacing={3}  className="grid-container">
         <Grid item xs={12} >
           <ToolBars />
-          <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' }}>
-            Applicants ...
+          <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' ,fontFamily:'Roboto, Helvetica, sans-serif'}}>
+            Applicants 
           </Typography>
         </Grid>
         <Grid item xs={6} sm={9} md={10} className="grid-candidateTable">

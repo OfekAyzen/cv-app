@@ -118,6 +118,7 @@ function CandidateFilterForm({ onFilter }) {
           <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth variant="outlined" className="custom-select">
             <TextField
+            
               fullWidth
               label="Location"
               value={location}

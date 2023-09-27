@@ -183,6 +183,13 @@ body {
 .img{
   height: 80px;;
 }
+.custom-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(162, 33, 113, 0.67);
+}
+
+.custom-select .MuiInputLabel-outlined.Mui-focused {
+  color:rgba(162, 33, 113, 0.67);
+}
 /* 
 .css-128fb87-MuiDataGrid-toolbarContainer{
   gap: 56px !important;
@@ -263,7 +270,7 @@ body {
 }
 .profile-div{
   background-color:rgba(224, 224, 224, 1);
-  height: 1050px;
+  height: 1400px;
   width: 100%;
   display: block;
   padding: 0px 0px 0px 0px;
@@ -279,7 +286,7 @@ body {
 .candidates-list{
   background-color: #ffffff;
     height: auto;
-    width: 90%;
+    /* width: 90%; */
     margin-top: 10px;
     border-radius: 13px;
   
@@ -348,13 +355,15 @@ body {
   padding: 0px; */
 
 .Box-profile{
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(147, 53, 53);
     justify-content: flex-start;
     display: flex;
     align-items: center;
     align-content: center;
     flex-wrap: wrap;
     flex-direction: column;
+    width:90%;
+    margin-left: 5%;
 }
 .candidate-card-profile{
  
