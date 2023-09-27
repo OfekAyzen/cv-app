@@ -175,14 +175,14 @@ function ProfileManager(props) {
   return (
     <div>
     <Container style={{ backgroundColor: "rgb(224, 224, 224)",display:'contents' }}>
-      <Grid container spacing={3}  >
+      <Grid container spacing={3}  className="grid-container">
         <Grid item xs={12} >
           <ToolBars />
           <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' }}>
             Applicants ...
           </Typography>
         </Grid>
-        <Grid item xs={6} sm={9} md={10} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid item xs={6} sm={9} md={10} className="grid-candidateTable">
           
             
               {loading ? (
@@ -194,7 +194,7 @@ function ProfileManager(props) {
                   }}
                 />
               ) : (
-                <CandidateTable
+                <CandidateTable 
                   candidates={combinedData}
                   selectedJobId={selectedJobId}
                   handleViewCandidate={handleViewCandidate}

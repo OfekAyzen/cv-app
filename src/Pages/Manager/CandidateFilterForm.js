@@ -50,7 +50,7 @@ function CandidateFilterForm({ onFilter }) {
   };
   return (
  
-<Card >
+<Card className="filter-card">
       <Button
         onClick={clearFilters}
         sx={{

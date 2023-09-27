@@ -252,9 +252,7 @@ const CandidateTable = ({
   };
   return (
 
-    <div style={{display:'block',backgroundColor:'white',
-   
-    borderRadius:'7px'}} >
+    <div     >
       <Snackbar
         open={notification !== null}
         autoHideDuration={5000}
@@ -271,46 +269,36 @@ const CandidateTable = ({
       </Snackbar>
 
 
-      <Container className="table-container"
-        // sx={{
-        //   display: "flex",
-        //   flexDirection: "column",
-        //   alignItems: "center",
-        //   justifyContent: "center",
-        //  width:'140%',
-        //   // backgroundColor: 'white',
-        //   height:'215px',
-         
-
-
-        // }}
+      <Container
+        className="candidate-table"
+    
       >
-        <div  style={{backgroundColor:'white',padding:'15px',    width: '1155x',}} >
-        <CandidateFilterForm onFilter={handleFilter} />
+        <div className="container" style={{  padding: '15px', }} >
+          <CandidateFilterForm onFilter={handleFilter} />
 
-        <div className="orderby">
-          <FormControl variant="outlined" className="custom-select">
-            <InputLabel>Sort By:</InputLabel>
-            <Select
-              value={sortByField}
-              onChange={(e) => handleSortByChange(e.target.value)}
-              label="Sort By:"
+          <div className="orderby">
+            <FormControl variant="outlined" className="custom-select">
+              <InputLabel>Sort By:</InputLabel>
+              <Select
+                value={sortByField}
+                onChange={(e) => handleSortByChange(e.target.value)}
+                label="Sort By:"
 
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="education">Education</MenuItem>
-              <MenuItem value="skills">Skills</MenuItem>
-              <MenuItem value="gender">Gender</MenuItem>
-              <MenuItem value="location">Location</MenuItem>
-              <MenuItem value="application_date">Date</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value="education">Education</MenuItem>
+                <MenuItem value="skills">Skills</MenuItem>
+                <MenuItem value="gender">Gender</MenuItem>
+                <MenuItem value="location">Location</MenuItem>
+                <MenuItem value="application_date">Date</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </div>
         {/* <Table sx={{ minWidth: 1024 ,backgroundColor:'white'}}> */}
-        <Table sx={{ width: '0%', backgroundColor: 'white' }}>
+        <Table className="table-style">
           <TableHead>
             <TableRow>
               <TableCell>Date Apply</TableCell>
@@ -336,21 +324,21 @@ const CandidateTable = ({
               />
             ))}
           </TableBody>
-          <TablePagination
-        sx={{display:'flex',width:'140%',backgroundColor:'white'}}
-          component="div"
-          count={sortedCandidates.length} // Use sortedCandidates.length
-          page={page}
-          onPageChange={handleChangePage} // Ensure handleChangePage is called
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage} // Ensure handleChangeRowsPerPage is called
-          labelRowsPerPage="Rows per page:"
-          rowsPerPageOptions={[10, 25, 50]}
-        />
+          
         </Table>
-     
-        
-     
+
+
+        <TablePagination
+            sx={{ display: 'flex', width: '100%', backgroundColor: 'white',borderBottomLeftRadius:'15px',borderBottomRightRadius:'15px' }}
+            component="div"
+            count={sortedCandidates.length} // Use sortedCandidates.length
+            page={page}
+            onPageChange={handleChangePage} // Ensure handleChangePage is called
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage} // Ensure handleChangeRowsPerPage is called
+            labelRowsPerPage="Rows per page:"
+            rowsPerPageOptions={[10, 25, 50]}
+          />
       </Container>
     </div>
   );
