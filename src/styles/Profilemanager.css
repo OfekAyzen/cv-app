@@ -480,7 +480,7 @@ body {
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px -2px, rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
 } */
-.css-3su884-MuiPaper-root{
+/* .css-3su884-MuiPaper-root{
   background-color: #e9fe05 !important;
   display: flex;
   align-content: center;
@@ -488,6 +488,9 @@ body {
   margin-left: 20%;
  /* width: 160% !important; */
 
+
+.paper-style{
+  background-color: #ad2069;
 }
 .css-zow5z4-MuiGrid-root{
   display: flex;
@@ -613,5 +616,6 @@ body {
 }
 .table-container{
   display: flex;
-  height: 0% !important;
+  height: 0% !important; 
+  background-color: #ad2069;
 }

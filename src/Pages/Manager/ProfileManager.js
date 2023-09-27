@@ -183,7 +183,7 @@ function ProfileManager(props) {
           </Typography>
         </Grid>
         <Grid item xs={6} sm={9} md={10} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} >
+          
             
               {loading ? (
                 <CircularProgress
@@ -204,7 +204,7 @@ function ProfileManager(props) {
                 />
               )}
            
-          </Paper>
+          
         </Grid>
         <Grid item xs={12} >
           <Button
