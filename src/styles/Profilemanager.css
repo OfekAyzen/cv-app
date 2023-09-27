@@ -43,7 +43,8 @@ body {
   align-items: center;
   padding-left: 0px !important;
   padding-right: 0px !important;
-  margin-left: 10% !important;
+  margin-left: 0% !important;
+ 
  
  }
  .filter-card{
@@ -55,13 +56,14 @@ body {
  }
  .table-style{
   background-color: rgb(255, 255, 255);
-
+  width: 120% !important;
   padding-bottom: 2px !important;
 
  }
  .container{
   background-color: rgb(255, 255, 255);
- 
+
+  width: 120% !important;
   border-top-right-radius: 15px !important;
   border-top-left-radius: 15px !important;
  }
@@ -77,6 +79,28 @@ body {
  .grid-container{
   background-color: #eae7e7;
  }
+ .card-contentDialog{
+  background-color: #ffffff;
+  
+   color: rgba(0, 0, 0, 0.87);
+   -webkit-transition: none !important;
+   transition: none !important;
+   border-radius: 0px !important;
+   box-shadow: none !important;
+  width: 50% !important;
+ }
+ .dialog-style{
+
+    width: 40%;
+    
+    position: "fixed";
+    right: 1;
+    top: 0;
+    height: 100%;
+   
+
+ }
+ 
   /* styles.css or your custom CSS file */
 .data-grid-container .rounded-row {
     /* Adjust the value as needed for the desired roundedness */
@@ -324,7 +348,7 @@ body {
   padding: 0px; */
 
 .Box-profile{
-  background-color: rgba(224, 224, 224, 1);
+  background-color: rgb(255, 255, 255);
     justify-content: flex-start;
     display: flex;
     align-items: center;
@@ -334,7 +358,8 @@ body {
 }
 .candidate-card-profile{
  
-  margin-left: 125px !important;
+  margin-left: 10%!important;
+  box-shadow: none !important;
 }
 
 /* .css-ypiqx9-MuiDialogContent-root {

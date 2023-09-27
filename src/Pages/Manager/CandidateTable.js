@@ -273,7 +273,7 @@ const CandidateTable = ({
         className="candidate-table"
     
       >
-        <div className="container" style={{  padding: '15px', }} >
+        <div className="container" style={{  padding: '15px',width: '120%'  }} >
           <CandidateFilterForm onFilter={handleFilter} />
 
           <div className="orderby">
@@ -329,7 +329,7 @@ const CandidateTable = ({
 
 
         <TablePagination
-            sx={{ display: 'flex', width: '100%', backgroundColor: 'white',borderBottomLeftRadius:'15px',borderBottomRightRadius:'15px' }}
+            sx={{ display: 'flex', width: '120%', backgroundColor: 'white',borderBottomLeftRadius:'15px',borderBottomRightRadius:'15px' }}
             component="div"
             count={sortedCandidates.length} // Use sortedCandidates.length
             page={page}

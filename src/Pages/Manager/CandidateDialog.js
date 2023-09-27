@@ -157,15 +157,7 @@ const CandidateDialog = ({
     <Dialog
       open={open}
       onClose={handleClose}
-      style={{
-        width: "50%",
-        maxWidth: "none",
-        position: "fixed",
-        right: 1,
-        top: 0,
-        height: "100%",
-        borderRadius: 0,
-      }}
+      className="dialog-style"
       maxWidth="xl"
       fullWidth
     >
@@ -178,6 +170,7 @@ const CandidateDialog = ({
           width: "10px",
           position: "fixed",
           color: "black",
+         
         }}
       >
         X
@@ -187,14 +180,7 @@ const CandidateDialog = ({
         {selectedCandidate ? (
           <Card className="candidate-card-profile" style={{ height: "100%" }}>
             <CardContent
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                height: "100%",
-                padding: "16px",
-                alignContent: "flex-start",
-              }}
+             className="card-contentDialog"
             >
               <Typography variant="h4" sx={{ paddingTop: "15px", fontSize: "40px" }}>
                 {selectedCandidate.first_name} {selectedCandidate.last_name} cv
