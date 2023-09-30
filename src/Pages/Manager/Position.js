@@ -2,13 +2,13 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { Button, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography,Link } from '@mui/material';
+import { Button, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Link } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import Header from '../../Components/Header';
 // import CandidateDataService from './CandidateDataService';
-import { Box,Alert } from '@mui/material';
+import { Box, Alert } from '@mui/material';
 import "../../styles/Profilemanager.css";
 import AddJobForm from './AddJobForm';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -27,8 +27,8 @@ function Position(props) {
   const [editedQualifications, setEditedQualifications] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  
-  
+
+
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -38,11 +38,11 @@ function Position(props) {
       const response = await API.graphql(graphqlOperation(listJobs));
       const jobList = response.data.listJobs.items;
       setPositions(jobList);
-      console.log("POSITION ",response);
+      console.log("POSITION ", response);
       setIsLoading(false); // Set loading to false when data is fetched
     } catch (error) {
       console.error('Error fetching jobs:', error);
-      
+
       setIsLoading(false); // Set loading to false in case of an error
     }
   }
@@ -51,13 +51,13 @@ function Position(props) {
 
   const handleDeletePosition = async (position) => {
     console.log("DELETE JOB ID : ", position);
-  
+
     try {
       // Perform the deletion
       const response = await API.graphql(graphqlOperation(deleteJobs, { input: { id: position.id, _version: position._version } }));
       console.log('GraphQL Response:', response);
       if (!response.errors) {
- 
+
         setPositions((prevPositions) => prevPositions.filter((p) => p.id !== position.id));
         setSnackbarOpen(true); // Open the success snackbar
       } else {
@@ -67,7 +67,7 @@ function Position(props) {
       console.error('Error deleting position:', error);
     }
   };
-  
+
   const handleAddPosition = () => {
     setPositionName('');
     setEditedJobDescription('');
@@ -85,10 +85,10 @@ function Position(props) {
   };
 
 
-  
+
 
   const handleSaveChanges = async (position) => {
-    console.log("updated ID:",position);
+    console.log("updated ID:", position);
     try {
       const response = await API.graphql(
         graphqlOperation(updateJobs, {
@@ -97,21 +97,21 @@ function Position(props) {
             job_description: editedJobDescription,
             qualifications: editedQualifications,
             job_title: positionName,
-            _version : position._version
+            _version: position._version
             // Add other fields you want to update
           },
         })
       );
-  
+
       console.log('GraphQL Update Response:', response);
-  
-      
+
+
       setOpen(false);
       fetchJobs();
       setSnackbarOpen(true); // Open the success snackbar
     } catch (error) {
       console.error('Error updating job:', error);
-  
+
       // Handle error - you can display an error message to the user
     }
   };
@@ -124,41 +124,36 @@ function Position(props) {
   const handleJobAdded = () => {
     fetchJobs(); // Fetch updated positions after adding a new job
   };
-  
+
   return (
     <div className="profile-div">
-      <ToolBars/>
+      <ToolBars />
+      {isLoading && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <CircularProgress sx={{ color: '#b4269a' }} />
+        </div>
+      )}
       <Typography sx={{
-    display: 'flex',
-    textAlign: 'start',
-    fontSize: '35px',
-    paddingLeft: '6%',
-    paddingTop: '3%',
-    paddingBottom: '3%',
-    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-    fontWeight: 'bold',
+        display: 'flex',
+        textAlign: 'start',
+        fontSize: '35px',
+        paddingLeft: '6%',
+        paddingTop: '3%',
+        paddingBottom: '3%',
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontWeight: 'bold',
 
-   
-  }}>Manage Job list</Typography>
+
+      }}>Manage Job list</Typography>
+
+
       <Box className="Box-profile">
         <div className='candidates-list'>
-         {/* AddJobForm component */}
-         {isLoading ? (
-          <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '9vh',
-            backgroundColor:'#e0e0e0'
-          }}
-        >
-          <CircularProgress sx={{ color: '#b4269a' }} />
-        </div>     ) : (
-          <>
-            <AddJobForm token={props.token} onJobAdded={handleJobAdded} />
-            <TableContainer>
-          <Table>
+
+
+          <AddJobForm token={props.token} onJobAdded={handleJobAdded} />
+          <TableContainer>
+            <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Job id</TableCell>
@@ -172,10 +167,11 @@ function Position(props) {
                 {positions.map((position) => (
                   <TableRow key={position.id} sx={{ borderRadius: '50px' }}>
                     <TableCell>{position.id}</TableCell>
-                   
+
                     <TableCell>
                       {selectedPosition === position ? (
                         <TextField
+                          className="custom-select"
                           value={positionName}
                           multiline // Enable multiline input
                           rows={3} // Adjust the number of rows as needed
@@ -189,10 +185,11 @@ function Position(props) {
                     <TableCell>
                       {selectedPosition === position ? (
                         <TextField
+                          className="custom-select"
                           value={editedJobDescription}
                           multiline // Enable multiline input
-                      rows={3} // Adjust the number of rows as needed
-                      fullWidth // Expand to fit the container width
+                          rows={3} // Adjust the number of rows as needed
+                          fullWidth // Expand to fit the container width
                           onChange={(e) => setEditedJobDescription(e.target.value)}
                         />
                       ) : (
@@ -202,10 +199,11 @@ function Position(props) {
                     <TableCell>
                       {selectedPosition === position ? (
                         <TextField
+                          className="custom-select"
                           value={editedQualifications}
                           multiline // Enable multiline input
-                      rows={3} // Adjust the number of rows as needed
-                      fullWidth // Expand to fit the container width
+                          rows={3} // Adjust the number of rows as needed
+                          fullWidth // Expand to fit the container width
                           onChange={(e) => setEditedQualifications(e.target.value)}
                         />
                       ) : (
@@ -215,13 +213,14 @@ function Position(props) {
                     <TableCell>
                       {selectedPosition === position ? (
                         <Button
+
                           variant="contained"
                           color="secondary"
-                          onClick={()=>handleSaveChanges(position)}
-                          sx={{backgroundColor:'#ad2069'}}
+                          onClick={() => handleSaveChanges(position)}
+                          sx={{ backgroundColor: '#ad2069' }}
                           multiline // Enable multiline input
-                      rows={3} // Adjust the number of rows as needed
-                      fullWidth // Expand to fit the container width
+                          rows={3} // Adjust the number of rows as needed
+                          fullWidth // Expand to fit the container width
                         >
                           Save
                         </Button>
@@ -232,7 +231,7 @@ function Position(props) {
                             startIcon={<DeleteIcon />}
                             onClick={() => handleDeletePosition(position)}
                           >
-                            Delete 
+                            Delete
                           </Button>
                           <Button
                             color="primary"
@@ -249,10 +248,10 @@ function Position(props) {
               </TableBody>
             </Table>
           </TableContainer>
-          </>
-        )}
-         
-          
+
+
+
+
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={3000}
@@ -264,14 +263,14 @@ function Position(props) {
           </Snackbar>
         </div>
       </Box>
-      <Typography sx={{backgroundColor:'rgb(224 224 224)'}} variant="body2" color="text.secondary" align="center" {...props}>
-          {'Copyright © '}
-          <Link color="inherit" href="">
-            Tech 19
-          </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
+      <Typography sx={{ backgroundColor: 'rgb(224 224 224)' }} variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="">
+          Tech 19
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
     </div>
   );
 }

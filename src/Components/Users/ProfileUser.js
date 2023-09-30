@@ -16,7 +16,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createJobs, updateJobs, deleteJobs } from '../../graphql/mutations';
 import { listJobs } from '../../graphql/queries';
 import { Auth } from 'aws-amplify';
-
+import "../../styles/User.css";
 const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
@@ -59,7 +59,7 @@ export default function ProfileUser(props) {
     navigate('/Login');
   }
   return (
-    <ThemeProvider theme={defaultTheme}>
+    < >
 
       {isAuthenticated ? (
         <>
@@ -99,13 +99,7 @@ export default function ProfileUser(props) {
       )}
 
 
-      {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
-        <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
-    </Typography> */}
-
-
-
-      <Grid container alignItems="center" sx={{ backgroundColor: '#1e1c1c', width: '100%',height:'450px' }}>
+      <Grid container alignItems="center" sx={{ backgroundColor: '#1e1c1c', width: '100%', height: '450px' }}>
         {/* Left side: Advanced Engineering Solutions */}
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px', height: '80%', }}>
@@ -129,7 +123,7 @@ export default function ProfileUser(props) {
 
 
       <ViewJobs></ViewJobs>
-    </ThemeProvider>
+    </>
   );
 }
 

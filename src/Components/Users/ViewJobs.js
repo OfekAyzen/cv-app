@@ -18,7 +18,7 @@ import {
   Alert,
   DialogTitle,
   IconButton,
-  
+
 
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -123,16 +123,16 @@ const ViewJobs = (props) => {
 
 
   return (
-    <CssBaseline>
+    <div style={{ backgroundColor: 'black', width: '100%', display: 'flex' }}>
       {loading ? (
         <Container
           className="container-user"
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-          }}
+        // sx={{
+        //   display: 'flex',
+        //   justifyContent: 'center',
+        //   alignItems: 'center',
+        //   height: '100vh',
+        // }}
         >
           <CircularProgress sx={{ color: 'purple' }} />
         </Container>
@@ -159,23 +159,29 @@ const ViewJobs = (props) => {
           >
             We are hiring!
           </Typography>
-          <Grid container spacing={1} sx={{ alignContent: 'center' }}>
+          <Grid container spacing={1}  >
             {jobsData.map((job) => (
-              <Grid item key={job.id} sm={6} md={4}>
+              <Grid item key={job.id} sm={6} md={4} >
                 <Card
                   sx={{
                     height: '100%',
+
                     width: '80%',
                     display: 'flex',
-                    
+                    marginLeft: '10%',
                     flexDirection: 'column',
+                    backgroundColor: 'rgb(34, 7, 46)',
+                    paddingLeft: '5%',
+                    boxShadow: '-15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)'
+
                   }}
+
                 >
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h4" >
+                  <CardContent sx={{ flexGrow: 1 }} className='jobs-cards'>
+                    <Typography gutterBottom variant="h4" className="job-font-style" >
                       {job.job_title}
                     </Typography>
-                    <Typography variant="h6" component="h6">
+                    <Typography variant="h6" component="h6" className="job-font-style">
                       <Typography
                         variant="h6"
                         component="span"
@@ -186,7 +192,7 @@ const ViewJobs = (props) => {
                       {job.job_description}
                     </Typography>
                     <br></br>
-                    <Typography variant="h6" >
+                    <Typography variant="h6" className="job-font-style">
                       <Typography
                         variant="h6"
                         component="span"
@@ -197,9 +203,9 @@ const ViewJobs = (props) => {
                       {job.qualifications}
                     </Typography>
                   </CardContent>
-                 
+
                   <CardActions
-                    sx={{ display: 'flex', justifyContent: 'center' }}
+                    sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgb(34, 7, 46)', }}
                   >
                     <Button
                       variant="outlined"
@@ -207,23 +213,19 @@ const ViewJobs = (props) => {
                       sx={{
                         color: 'rgb(224, 104, 154)',
                         borderBlockColor: ' rgb(224, 104, 154)',
+
                       }}
                     >
                       Apply
                     </Button>
 
                     <BootstrapDialog
-                      onClose={handleClose}
-                      aria-labelledby="customized-dialog-title"
-                      open={open}
-                      PaperProps={{
-                        sx: {
-                          width: '100%',
-                          maxHeight: '90vh', // Set maximum height to 90% of viewport height
-
-                        },
-                      }}
-                    >
+                onClose={handleClose}
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                fullWidth={true}
+                maxWidth="md"
+            >
 
                       <JobApplication //apply to specific job
                         job_id={selectedJobId}
@@ -242,7 +244,7 @@ const ViewJobs = (props) => {
                       </Snackbar>
                     )}
                   </CardActions>
-                  
+
                 </Card>
               </Grid>
             ))}
@@ -253,7 +255,7 @@ const ViewJobs = (props) => {
       )}
       {/* Footer */}
 
-    </CssBaseline>
+    </div>
   );
 };
 

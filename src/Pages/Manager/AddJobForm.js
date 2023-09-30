@@ -42,7 +42,7 @@ function AddJobForm(props) {
   return (
     <div>
      
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" onClick={handleClickOpen} className="button-position">
        + Add Position
       </Button>
       <Dialog
@@ -51,16 +51,17 @@ function AddJobForm(props) {
         onClose={handleClose}
         fullWidth // Make the dialog occupy full width
         maxWidth="md" // Set maximum width to medium (adjust as needed)
-        PaperProps={{ style: { overflowY: 'visible', textAlign: 'right', borderRadius: '0' } } } // Custom styles
+        PaperProps={{ style: { overflowY: 'visible', borderRadius: '0' } } } // Custom styles
       >
         
         <DialogContent>
-        <DialogTitle  sx={{display:'flex',textAlign:'center',}} >Add New Position</DialogTitle>
-          <DialogContentText>
+        <DialogTitle  sx={{display:'flex'}} >Add New Position</DialogTitle>
+          <DialogContentText sx={{paddingLeft:'20px'}}>
             Fill in the details of the new job.
           </DialogContentText>
           <TextField
-          className="custom-text-field"
+           className="custom-select"
+        
             autoFocus
             margin="dense"
             label="Job Title"
@@ -69,7 +70,8 @@ function AddJobForm(props) {
             onChange={(e) => setJobTitle(e.target.value)}
           />
           <TextField
-          className="custom-text-field"
+           className="custom-select"
+          
             margin="dense"
             label="Job Description"
             fullWidth
@@ -79,7 +81,7 @@ function AddJobForm(props) {
             onChange={(e) => setJobDescription(e.target.value)}
           />
           <TextField
-          className="custom-text-field"
+           className="custom-select"
             margin="dense"
             label="Qualifications"
             fullWidth
@@ -90,10 +92,10 @@ function AddJobForm(props) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary" sx={{color:'#ad2069 '}}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button onClick={handleSubmit} color="primary" sx={{color:'#ad2069 '}}>
             Add
           </Button>
         </DialogActions>
