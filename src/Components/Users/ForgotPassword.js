@@ -127,7 +127,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Auth } from 'aws-amplify'; // Import AWS Amplify
-
+import "../../styles/Login.css";
 const defaultTheme = createTheme();
 
 function Copyright(props) {
@@ -216,6 +216,7 @@ const ForgotPassword = () => {
          
             <Box component='form' onSubmit={handleForgotPassword} noValidate sx={{ mt: 3, width: '100%' }}>
               <TextField
+                 className='custom-select'
                 margin='normal'
                 required
                 fullWidth

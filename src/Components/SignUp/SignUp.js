@@ -120,7 +120,7 @@ export default function SignUp({ }) {
                   autoFocus
                   value={first_name}
                   onChange={(e) => setFirstName(e.target.value)}
-                  sx={{ width: '70%' ,paddingBottom:'15px'}}
+                  sx={{ width: '95%' ,paddingBottom:'15px'}}
                 />
                 <TextField
                   className='custom-select'
@@ -132,7 +132,7 @@ export default function SignUp({ }) {
                   autoComplete="family-name"
                   value={last_name}
                   onChange={(e) => setLastName(e.target.value)}
-                  sx={{ width: '70%',paddingBottom:'15px' }}
+                  sx={{ width: '95%',paddingBottom:'15px' }}
                 />
                 <TextField
                   className='custom-select'
@@ -145,7 +145,7 @@ export default function SignUp({ }) {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ width: '70%' ,paddingBottom:'15px'}}
+                  sx={{ width: '95%' ,paddingBottom:'15px'}}
                 />
               </div>
               <div style={{ flex: 1, borderLeft: '2px solid #ad2069', paddingLeft: '1px' }}>
@@ -158,10 +158,10 @@ export default function SignUp({ }) {
                   type="tel"
                   id="phone_number"
                   autoComplete="tel"
-                  placeholder="058-5008855"
+                  placeholder="058-000000"
                   value={phone_number}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  sx={{ width: '70%',paddingBottom:'15px' }}
+                  sx={{ width: '95%',paddingBottom:'15px' }}
                 />
                 {/* <TextField
                   required
@@ -185,7 +185,7 @@ export default function SignUp({ }) {
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  sx={{ width: '70%',paddingBottom:'15px' }}
+                  sx={{ width: '95%',paddingBottom:'15px' }}
                 />
               </div>
             </div>
