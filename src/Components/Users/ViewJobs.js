@@ -18,6 +18,7 @@ import {
   Alert,
   DialogTitle,
   IconButton,
+  Divider,
 
 
 } from '@mui/material';
@@ -161,7 +162,7 @@ const ViewJobs = (props) => {
           </Typography>
           <Grid container spacing={1}  >
             {jobsData.map((job) => (
-              <Grid item key={job.id} sm={6} md={4} >
+              <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom:'2%',}} >
                 <Card
                   sx={{
                     height: '100%',
@@ -178,9 +179,10 @@ const ViewJobs = (props) => {
 
                 >
                   <CardContent sx={{ flexGrow: 1 }} className='jobs-cards'>
-                    <Typography gutterBottom variant="h4" className="job-font-style" >
+                    <Typography gutterBottom variant="h4" sx={{ color: 'white' }} >
                       {job.job_title}
                     </Typography>
+                  
                     <Typography variant="h6" component="h6" className="job-font-style">
                       <Typography
                         variant="h6"
@@ -220,12 +222,12 @@ const ViewJobs = (props) => {
                     </Button>
 
                     <BootstrapDialog
-                onClose={handleClose}
-                aria-labelledby="customized-dialog-title"
-                open={open}
-                fullWidth={true}
-                maxWidth="md"
-            >
+                      onClose={handleClose}
+                      aria-labelledby="customized-dialog-title"
+                      open={open}
+                      fullWidth={true}
+                      maxWidth="md"
+                    >
 
                       <JobApplication //apply to specific job
                         job_id={selectedJobId}

@@ -5,37 +5,41 @@
     background-color: rgb(66, 20, 88);
     padding-bottom: 84px !important;
 }
-.jobs-cards{
-    background-color:  rgb(34, 7, 46);
+
+.jobs-cards {
+    background-color: rgb(34, 7, 46);
     padding-left: 5% !important;
-    box-shadow: -15px 12px 0px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12) !important;
+    /* box-shadow: -15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important; */
 }
 
 @media (min-width: 1200px) {
     .container-user {
-        
+
         max-width: 100% !important;
         height: 100% !important;
 
     }
 }
-.job-font-style{
+
+.job-font-style {
     color: white;
+    font-size: 15px !important;
 }
 
-.bootstrapdialog-job{
+.bootstrapdialog-job {
     background-color: aquamarine;
     width: 100%;
-    
+
 }
 
-.dialog-app-style{
-    min-width: 1200px  !important;
+.dialog-app-style {
+    min-width: 1200px !important;
     width: 100% !important;
     overflow-y: none !important;
 }
+
 @media (min-width: 391px) and (max-width: 844px) {
- 
+
 
     .img-user {
         margin-right: auto;
@@ -60,9 +64,18 @@
 
     margin-top: 2%;
 }
-.container-application{
+
+.container-application {
     display: flex;
     background-color: aqua;
 }
 
 /**contents center */
+
+.custom-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(162, 33, 113, 0.67);
+}
+
+.custom-select .MuiInputLabel-outlined.Mui-focused {
+    color: rgba(162, 33, 113, 0.67);
+}
