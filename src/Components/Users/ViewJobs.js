@@ -37,6 +37,7 @@ const ViewJobs = (props) => {
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
   const [successMessage, setSuccessMessage] = useState('');
   useEffect(() => {
     fetchJobs();
@@ -55,6 +56,18 @@ const ViewJobs = (props) => {
     }
   }
 
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -162,7 +175,7 @@ const ViewJobs = (props) => {
           </Typography>
           <Grid container spacing={1}  >
             {jobsData.map((job) => (
-              <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom:'2%',}} >
+              <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%', }} >
                 <Card
                   sx={{
                     height: '100%',
@@ -182,7 +195,7 @@ const ViewJobs = (props) => {
                     <Typography gutterBottom variant="h4" sx={{ color: 'white' }} >
                       {job.job_title}
                     </Typography>
-                  
+
                     <Typography variant="h6" component="h6" className="job-font-style">
                       <Typography
                         variant="h6"
@@ -221,7 +234,7 @@ const ViewJobs = (props) => {
                       Apply
                     </Button>
 
-                    <BootstrapDialog
+                    {/* <BootstrapDialog
                       onClose={handleClose}
                       aria-labelledby="customized-dialog-title"
                       open={open}
@@ -236,7 +249,10 @@ const ViewJobs = (props) => {
                       />
 
 
-                    </BootstrapDialog>
+                    </BootstrapDialog> */}
+                    
+                  </CardActions>
+                  
 
                     {successMessage && (
                       <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={() => setSuccessMessage('')}>
@@ -245,12 +261,26 @@ const ViewJobs = (props) => {
                         </Alert>
                       </Snackbar>
                     )}
-                  </CardActions>
-
                 </Card>
               </Grid>
             ))}
           </Grid>
+          <Dialog
+                      onClose={handleClose}
+
+                      open={open}
+                      fullWidth={true}
+                      maxWidth="md"
+                    >
+
+                      <JobApplication //apply to specific job
+                        job_id={selectedJobId}
+                        onClose={handleClose} //
+                        onApplicationSuccess={handleApplicationSuccess}
+                      />
+
+
+                    </Dialog>
         </Container>
       ) : (
         <p>No job data available.</p>

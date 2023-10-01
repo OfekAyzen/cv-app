@@ -68,6 +68,7 @@ const Header = (props) => {
         onClose={handleUserCardClose}
         fullWidth // Open dialog in full width
         maxWidth="md" // Limit max width to medium size
+        sx={{marginLeft:'60%'}}
         PaperProps={{
             sx: {
               borderRadius: '5px',

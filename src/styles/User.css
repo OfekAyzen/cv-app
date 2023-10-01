@@ -26,6 +26,30 @@
     font-size: 15px !important;
 }
 
+@media (max-width: 600px) {
+
+    /* Adjust styles for screens less than or equal to 600px (e.g., smartphones) */
+    /* You can modify padding, font sizes, etc. to fit smaller screens */
+    body {
+        font-size: 14px;
+        width: fit-content;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Adjust styles for screens less than or equal to 767px (e.g., mobile devices) */
+    .custom-select {
+      width: 100%; /* Adjust the width for smaller screens */
+    }
+    
+    .divider-horizontal {
+      display: none; /* Hide the horizontal divider on smaller screens */
+    }
+  }
+ 
+  
+  
+
 .bootstrapdialog-job {
     background-color: aquamarine;
     width: 100%;

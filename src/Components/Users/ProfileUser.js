@@ -21,7 +21,7 @@ const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
   const [status, setStatus] = useState('');
-
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
   const Jobs = { job_title: "My fdh", job_description: "Hello world!", qualifications: "slkdfh dsfkjsdfkj saflsdjkf" };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [jobs, setJobs] = useState([]);
@@ -39,6 +39,21 @@ export default function ProfileUser(props) {
 
     checkAuthentication();
   }, []);
+
+
+
+  useEffect(() => {
+    const handleResize = () => {
+        setIsMobileView(window.innerWidth < 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
+
 
   useEffect(() => {
     fetchJobs();
@@ -103,7 +118,7 @@ export default function ProfileUser(props) {
         {/* Left side: Advanced Engineering Solutions */}
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px', height: '80%', }}>
-            <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: '10px', fontSize: '60px', fontWeight: 'bold', color: '#f500ec' }}>
+            <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: '10px', fontSize:isMobileView? '35px' : '60px', fontWeight: 'bold', color: '#f500ec' }}>
               Advanced Engineering
             </Typography>
             <Typography variant="h4" sx={{ textAlign: 'center', color: 'white', fontSize: '40px', fontWeight: 'bold' }}>

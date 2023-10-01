@@ -339,15 +339,20 @@ export default function JobApplication(props) {
 
     return (
         // <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '800px', backgroundColor: 'black' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  backgroundColor: 'white' }}>
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px' ,backgroundColor:'black'}}>
-                <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
-                
+        // <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  backgroundColor: 'white' }}>
+        //     <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px' ,backgroundColor:'black'}}>
+        //         <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
+
+        //     </div>
+        //     <Divider style={{ backgroundColor: 'white' }} />
+        //     <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex', minWidth: '900px', height: '600px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px', backgroundColor: 'black' }}>
+                <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
             </div>
             <Divider style={{ backgroundColor: 'white' }} />
-            <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex', minWidth: '900px', height: '600px' }}>
-           
-                <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px' ,paddingTop:'60px'}}>
+            <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
+                <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '60px' }}>
                     <div
                         style={{
                             display: 'flex',
@@ -359,11 +364,11 @@ export default function JobApplication(props) {
                     >
 
 
-                        <Grid item xs={12} sx={{ width: '350px' }}>
+                        <Grid item xs={12} sx={{ width: '350px' ,paddingTop: isMobileView ? '15px' : '0px'}}>
                             {/* Left Side */}
                             <Grid item xs={12}>
                                 <TextField
-                                    sx={{paddingBottom:'15px'}}
+                                    sx={{ paddingBottom: '15px' }}
                                     autoComplete="given-name"
                                     name="firstName"
                                     required
@@ -380,8 +385,8 @@ export default function JobApplication(props) {
                             </Grid>
                             <Grid item xs={12} >
                                 <TextField
-                                sx={{paddingBottom:'20px'}}
-                                className="custom-select"
+                                    sx={{ paddingBottom: '20px' }}
+                                    className="custom-select"
                                     required
                                     fullWidth
                                     id="lastName"
@@ -389,14 +394,14 @@ export default function JobApplication(props) {
                                     name="lastName"
                                     autoComplete="family-name"
                                     value={last_name}
-                                  
+
                                     onChange={(e) => setLastName(e.target.value)}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
                                 <TextField
-                                sx={{paddingBottom:'20px'}}
+                                    sx={{ paddingBottom: '20px' }}
                                     required
                                     className="custom-select"
                                     fullWidth
@@ -404,14 +409,14 @@ export default function JobApplication(props) {
                                     label="Location"
                                     name="location"
                                     autoComplete="location"
-                                    
+
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                 sx={{paddingBottom:'20px'}}
+                                    sx={{ paddingBottom: '20px' }}
                                     required
                                     fullWidth
                                     className="custom-select"
@@ -419,14 +424,14 @@ export default function JobApplication(props) {
                                     label="Phone Number"
                                     name="phoneNumber"
                                     autoComplete="phone-number"
-                                  
+
                                     value={phone_number}
                                     onChange={(e) => setPhoneNumber(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                sx={{paddingBottom:'20px'}}
+                                    sx={{ paddingBottom: '20px' }}
                                     required
                                     fullWidth
                                     className="custom-select"
@@ -434,14 +439,14 @@ export default function JobApplication(props) {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                   
+
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                sx={{paddingBottom:'20px'}}
+                                    sx={{ paddingBottom: '20px' }}
                                     required
                                     fullWidth
                                     className="custom-select"
@@ -449,7 +454,7 @@ export default function JobApplication(props) {
                                     label="Position"
                                     name="position"
                                     autoComplete="position"
-                                    
+
                                     value={position}
                                     onChange={(e) => setPosition(e.target.value)}
                                 />
@@ -458,12 +463,11 @@ export default function JobApplication(props) {
                         </Grid>
 
                     </div>
-                    <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ad2069' }} />
-
+                    
 
                 </div>
 
-                <div style={{ flex: 1, paddingLeft: '16px', paddingRight: '16px' ,paddingTop:'60px'}}>
+                <div style={{ flex: 1, paddingLeft: '16px', paddingRight: '16px', paddingTop:isMobileView ?  '0px' : '60px' }}>
 
                     {/* Right Side */}
                     <Grid item xs={12} sx={{ width: '350px' }}>
@@ -472,7 +476,7 @@ export default function JobApplication(props) {
                         <Grid item xs={12}>
                             <TextField
                                 required
-                                sx={{paddingBottom:'15px'}}
+                                sx={{ paddingBottom: '15px' }}
                                 fullWidth
                                 id="skills"
                                 label="Skills"
@@ -515,7 +519,7 @@ export default function JobApplication(props) {
                                 ))}
                             </Select>
                         </Grid>
-                        <Grid item xs={12}  className="custom-select">
+                        <Grid item xs={12} className="custom-select">
                             <InputLabel>Work Experience</InputLabel>
                             <Select
                                 fullWidth
@@ -532,11 +536,11 @@ export default function JobApplication(props) {
                                 ))}
                             </Select>
                         </Grid>
-                        <Grid item xs={12}  className="custom-select">
+                        <Grid item xs={12} className="custom-select">
                             <InputLabel>Gender</InputLabel>
                             <Select
                                 fullWidth
-                               
+
                                 id="gender"
                                 label="Gender"
                                 name="gender"
@@ -553,7 +557,7 @@ export default function JobApplication(props) {
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{ flex: 1 }}>
-                                <label htmlFor="cvUpload" style={{ cursor: 'pointer', color: '#ad2069',paddingTop:'25px' }}>
+                                <label htmlFor="cvUpload" style={{ cursor: 'pointer', color: '#ad2069', paddingTop: '25px' }}>
                                     Upload CV
                                     <input
                                         type="file"
