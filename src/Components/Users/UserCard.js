@@ -141,13 +141,13 @@ export default function UserCard(props) {
   };
   const renderCandidates = () => {
     return candidatesData.map((data, index) => (
-      <div key={index}>
+      <div  style={{color:'black'}} key={index}>
         {renderJobDetails(data.jobs)}
-        <Typography sx={{ color: 'green' }}> {/* Set the color to green */}
+        <Typography sx={{ color: 'green' }}> 
         Candidate Status: {data.status}
         <br />
       </Typography>
-        <hr /> {/* Add a horizontal line after each candidate */}
+        <hr />
       </div>
     ));
   };
@@ -162,23 +162,25 @@ export default function UserCard(props) {
   return (
     <>
       
-      <Container maxWidth="sm" sx={{ marginTop: '15%', borderRadius: '15px' ,display:'flex',alignContent:'center',textAlign:'center'}}>
+      {/* <Container maxWidth="sm" sx={{ marginTop: '15%', borderRadius: '15px' ,display:'flex',alignContent:'center',textAlign:'center'}}> */}
     
-      <Box className="user-card">
-        
-      <Typography variant="h4" sx={{ paddingTop: '15px', fontSize: '20px' }}>
-        Welcome {username}
-      </Typography>
-        <Typography variant="h5" sx={{ paddingTop: '30px', fontSize: '30px' }}>
-          You have applied for the following positions:
-        </Typography>
+      <Box  style={{alignContent:'center',textAlign:'center'}} >
+        <div style={{backgroundColor:'black' ,padding:'0px'}}>
+            <Typography  sx={{paddingTop: '35px', fontSize: '20px' ,color:'purple'}}>
+            Welcome {username} 
+          </Typography>
+            <Typography  sx={{ paddingTop: '30px', fontSize: '25px' ,color:'#ccadcc'}}>
+              You have applied for the following positions:
+            </Typography>
+          </div>
+     
         <div>
           <h3> </h3>
           {loading ? <CircularProgress /> : renderCandidates()}
         </div>
       </Box>
     
-  </Container>
+  {/* </Container> */}
     </>
   );
 }

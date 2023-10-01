@@ -16,7 +16,7 @@ const Header = (props) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isUserCardOpen, setUserCardOpen] = useState(false); // State for UserCard dialog
   const navigate = useNavigate();
-
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -37,7 +37,17 @@ const Header = (props) => {
   const handleUserCardClose = () => {
     setUserCardOpen(false);
   };
+  useEffect(() => {
+    const handleResize = () => {
+        setIsMobileView(window.innerWidth < 600);
+    };
 
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -68,7 +78,7 @@ const Header = (props) => {
         onClose={handleUserCardClose}
         fullWidth // Open dialog in full width
         maxWidth="md" // Limit max width to medium size
-        sx={{marginLeft:'60%'}}
+        sx={{marginLeft:isMobileView ? '0%' :'60%'}}
         PaperProps={{
             sx: {
               borderRadius: '5px',

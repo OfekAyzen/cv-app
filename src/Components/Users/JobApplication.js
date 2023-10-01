@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
-
+import { Alert } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import logo from "../images/logo_tech19.png";
@@ -89,7 +89,7 @@ export default function JobApplication(props) {
     const applyJobJobId = job_id || props.job_id;
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
     const [flashSeverity, setFlashSeverity] = useState('success'); // Severity of the flash message (success, error, warning, info)
-
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const handleSnackbar = (message, severity) => {
         setFlashMessage(message);
         setFlashSeverity(severity);
@@ -163,6 +163,8 @@ export default function JobApplication(props) {
         } catch (error) {
             // Handle errors
             console.error('Error creating candidate:', error);
+          
+            setSnackbarOpen(true ); // Open the success snackbar
 
         }
     };
@@ -196,7 +198,7 @@ export default function JobApplication(props) {
                 localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
             } catch (error) {
                 console.error('Error uploading CV:', error);
-                setErrorSnackbarOpen(true);
+                setSnackbarOpen(true);
             }
         };
 
@@ -221,7 +223,9 @@ export default function JobApplication(props) {
         }
     };
 
-
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false); // Close the snackbar
+      };
 
     const handleSubmit = async (event) => {
         // console.log("handleSubmit");
@@ -263,6 +267,7 @@ export default function JobApplication(props) {
 
         if (fieldsToCheck.some(field => field === '')) {
             setFlashMessage('Please fill out all fields.');
+           
             return;
         }
         const data = new FormData(event.currentTarget);
@@ -584,7 +589,16 @@ export default function JobApplication(props) {
                     </Button>
                 </div>
 
-
+                <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert severity="error" sx={{ width: '100%' }}>
+            Error creating candidate 
+            </Alert>
+          </Snackbar>
+                    
             </Container>
         </div>
     );

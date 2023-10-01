@@ -128,11 +128,11 @@ function Position(props) {
   return (
     <div className="profile-div">
       <ToolBars />
-      {isLoading && (
+      {/* {isLoading && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <CircularProgress sx={{ color: '#b4269a' }} />
         </div>
-      )}
+      )} */}
       <Typography sx={{
         display: 'flex',
         textAlign: 'start',
@@ -156,7 +156,7 @@ function Position(props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Job id</TableCell>
+                  {/* <TableCell>Job id</TableCell> */}
                   <TableCell>Position Name</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Qualifications</TableCell>
@@ -166,7 +166,7 @@ function Position(props) {
               <TableBody>
                 {positions.map((position) => (
                   <TableRow key={position.id} sx={{ borderRadius: '50px' }}>
-                    <TableCell>{position.id}</TableCell>
+                    {/* <TableCell>{position.id}</TableCell> */}
 
                     <TableCell>
                       {selectedPosition === position ? (

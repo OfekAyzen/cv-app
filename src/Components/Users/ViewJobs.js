@@ -155,12 +155,12 @@ const ViewJobs = (props) => {
       ) : jobsData.length > 0 ? (
         <Container className="container-user">
           <Typography
-            component="h1"
+           
             variant="h2"
             align="center"
             color="white"
             gutterBottom
-            sx={{ paddingTop: '60px', fontSize: '60px' }}
+            sx={{ paddingTop: '60px', fontSize: '50px' }}
           >
             Join our team
           </Typography>
