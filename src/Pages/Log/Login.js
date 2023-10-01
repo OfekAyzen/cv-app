@@ -198,7 +198,7 @@ export default function Login(props) {
               value={username}
               autoFocus
               onChange={(e) => setUsername(e.target.value)}
-              className="custom-text-field"
+              className="custom-select"
             />
             <TextField
               margin="normal"
@@ -211,7 +211,7 @@ export default function Login(props) {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="custom-text-field"
+              className="custom-select"
               
             />
             {message && (

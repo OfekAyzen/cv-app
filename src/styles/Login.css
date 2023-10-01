@@ -13,7 +13,7 @@ main {
 }
 
 
-h1{
+h1 {
     /* Welcome back! */
     /*position: absolute;*/
     width: 315px;
@@ -29,6 +29,7 @@ h1{
     align-items: center;
     color: #000000;
 }
+
 /**
 h2{
    
@@ -48,7 +49,7 @@ h2{
     color: #9D9C9C;
 }
 */
-.submit-button-login{
+.submit-button-login {
     position: absolute;
     width: 188px;
     height: 60px;
@@ -58,7 +59,7 @@ h2{
     border-radius: 5px;
 }
 
-.submit-button-register{
+.submit-button-register {
     position: absolute;
     width: 188px;
     height: 60px;
@@ -70,7 +71,7 @@ h2{
 
 
 
-.login-label-user{
+.login-label-user {
     position: absolute;
     width: 118px;
     height: 50px;
@@ -86,7 +87,7 @@ h2{
     color: #000000;
 }
 
-.login-input-user{
+.login-input-user {
     /* Rectangle 1 */
     box-sizing: border-box;
     position: absolute;
@@ -100,7 +101,7 @@ h2{
 }
 
 
-.login-label-pass{
+.login-label-pass {
     position: absolute;
     width: 118px;
     height: 50px;
@@ -117,7 +118,7 @@ h2{
 }
 
 
-.login-input-pass{
+.login-input-pass {
     box-sizing: border-box;
     position: absolute;
     width: 486px;
@@ -141,11 +142,19 @@ h2{
 
 /*}*/
 
-.logo{
+.logo {
     position: absolute;
     width: 498px;
     height: 230px;
     left: 909px;
-    top: 397px;}
+    top: 397px;
+}
 
 
+.custom-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(162, 33, 113, 0.67);
+}
+
+.custom-select .MuiInputLabel-outlined.Mui-focused {
+    color: rgba(162, 33, 113, 0.67);
+}

@@ -34,7 +34,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp({}) {
+export default function SignUp({ }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -62,9 +62,9 @@ export default function SignUp({}) {
             family_name: last_name,
           },
         });
-        setSnackbarMessage('User added successfully!' );
+        setSnackbarMessage('User added successfully!');
         setSnackbarOpen(true);
-        navigate(`/confirm-signup/${username}`); 
+        navigate(`/confirm-signup/${username}`);
       } else {
         console.log('Invalid phone number format');
         setSnackbarMessage('Invalid phone number format');
@@ -99,7 +99,7 @@ export default function SignUp({}) {
           <Typography component="h1" variant="h5">
             Join our website
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3 ,minWidth:'600px' ,height:'600px'}}>
             <div
               style={{
                 display: 'flex',
@@ -110,6 +110,7 @@ export default function SignUp({}) {
             >
               <div style={{ flex: 1 }}>
                 <TextField
+                  className='custom-select'
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -119,9 +120,10 @@ export default function SignUp({}) {
                   autoFocus
                   value={first_name}
                   onChange={(e) => setFirstName(e.target.value)}
-                  sx={{ width: '70%' }}
+                  sx={{ width: '70%' ,paddingBottom:'15px'}}
                 />
                 <TextField
+                  className='custom-select'
                   required
                   fullWidth
                   id="lastName"
@@ -130,9 +132,10 @@ export default function SignUp({}) {
                   autoComplete="family-name"
                   value={last_name}
                   onChange={(e) => setLastName(e.target.value)}
-                  sx={{ width: '70%' }}
+                  sx={{ width: '70%',paddingBottom:'15px' }}
                 />
                 <TextField
+                  className='custom-select'
                   required
                   fullWidth
                   name="password"
@@ -142,11 +145,12 @@ export default function SignUp({}) {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ width: '70%' }}
+                  sx={{ width: '70%' ,paddingBottom:'15px'}}
                 />
               </div>
               <div style={{ flex: 1, borderLeft: '2px solid #ad2069', paddingLeft: '1px' }}>
                 <TextField
+                  className='custom-select'
                   required
                   fullWidth
                   name="phone_number"
@@ -157,7 +161,7 @@ export default function SignUp({}) {
                   placeholder="058-5008855"
                   value={phone_number}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  sx={{ width: '70%' }}
+                  sx={{ width: '70%',paddingBottom:'15px' }}
                 />
                 {/* <TextField
                   required
@@ -171,6 +175,7 @@ export default function SignUp({}) {
                   sx={{ width: '70%' }}
                 /> */}
                 <TextField
+                  className='custom-select'
                   required
                   fullWidth
                   name="username"
@@ -180,7 +185,7 @@ export default function SignUp({}) {
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  sx={{ width: '70%' }}
+                  sx={{ width: '70%',paddingBottom:'15px' }}
                 />
               </div>
             </div>
@@ -191,7 +196,7 @@ export default function SignUp({}) {
               sx={{
                 mt: 4,
                 mb: 2,
-                width: '15%',
+                width: '30%',
                 color: 'white',
                 backgroundColor: '#ad2069',
                 '&:hover': {
