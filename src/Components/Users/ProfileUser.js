@@ -91,7 +91,7 @@ export default function ProfileUser(props) {
 
         </>
       ) : (
-        // If the user is not authenticated, you can show a message or component here
+        // If the user is not authenticated
         <>
           <Toolbar sx={{ justifyContent: 'space-between', backgroundColor: 'black' }}>
             <div sx={{ display: 'flex', alignItems: 'center' }}>
@@ -123,6 +123,9 @@ export default function ProfileUser(props) {
             </Typography>
             <Typography variant="h4" sx={{ textAlign: 'center', color: 'white', fontSize: '40px', fontWeight: 'bold' }}>
               Solutions
+            </Typography>
+            <Typography variant="h5" sx={{ textAlign: 'center', color: 'white', fontSize: '30px', fontWeight: 'bold' }}>
+             Open Jobs
             </Typography>
           </Box>
         </Grid>

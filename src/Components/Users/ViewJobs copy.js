@@ -20,8 +20,6 @@ import {
   IconButton,
   Divider,
 
-  DialogContent,
-  DialogActions,
 
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -58,13 +56,6 @@ const ViewJobs = (props) => {
   //     setLoading(false); // Set loading to false in case of an error
   //   }
   // }
-
-  const [selectedJob, setSelectedJob] = useState(null);
-
-  const handleJobClick = (job) => {
-    setSelectedJob(job);
-    setOpen(true);
-  };
   async function fetchJobs() {
     try {
       const response = await API.graphql(graphqlOperation(listJobs));
@@ -162,100 +153,69 @@ const ViewJobs = (props) => {
     <div style={{ backgroundColor: 'black', width: '100%', display: 'flex' }}>
       {loading ? (
         <Container
-        className="container-user"
-      // sx={{
-      //   display: 'flex',
-      //   justifyContent: 'center',
-      //   alignItems: 'center',
-      //   height: '100vh',
-      // }}
-      >
-        <CircularProgress sx={{ color: 'purple' }} />
-      </Container>
+          className="container-user"
+        // sx={{
+        //   display: 'flex',
+        //   justifyContent: 'center',
+        //   alignItems: 'center',
+        //   height: '100vh',
+        // }}
+        >
+          <CircularProgress sx={{ color: 'purple' }} />
+        </Container>
       ) : error ? (
         <div>{error}</div>
       ) : jobsData.length > 0 ? (
-        <Container className="container-user">
-          <Typography
-            variant="h2"
-            align="center"
-            color="white"
-            gutterBottom
-            sx={{ paddingTop: '60px', fontSize: '50px' }}
-          >
-            Join our team
-          </Typography>
-          <Typography
-            variant="h5"
-            align="center"
-            color="white"
-            paragraph
-            sx={{ fontSize: '40px', color: 'yellow', paddingBottom: '25px' }}
-          >
-            We are hiring!
-          </Typography>
-          <Grid container spacing={1}>
-            {jobsData.map((job) => (
-              <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%' }}>
-                <Card
+        <Grid container spacing={1}>
+        {jobsData.map((job) => (
+          <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%' }}>
+            <Card
+              sx={{
+                height: '100%',
+                width: '80%',
+                display: 'flex',
+                marginLeft: '10%',
+                flexDirection: 'column',
+                backgroundColor: 'rgb(34, 7, 46)',
+                paddingLeft: '5%',
+                boxShadow:
+                  '-15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)',
+              }}
+            >
+              <CardContent sx={{ flexGrow: 1 }} className="jobs-cards">
+                <Typography gutterBottom variant="h4" sx={{ color: 'white' }}>
+                  {job.job_title}
+                </Typography>
+              </CardContent>
+              <CardActions
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'rgb(34, 7, 46)',
+                  padding: '0 16px',
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={() => handleJobClick(job)}
                   sx={{
-                    height: '100%',
-                    width: '80%',
-                    display: 'flex',
-                    marginLeft: '10%',
-                    flexDirection: 'column',
-                    backgroundColor: 'rgb(34, 7, 46)',
-                    paddingLeft: '5%',
-                    boxShadow:
-                      '-15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)',
+                    color: 'rgb(224, 104, 154)',
+                    borderBlockColor: ' rgb(224, 104, 154)',
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1 }} className="jobs-cards">
-                    <Typography gutterBottom variant="h4" sx={{ color: 'white' }}>
-                      {job.job_title}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      backgroundColor: 'rgb(34, 7, 46)',
-                      padding: '0 16px',
-                    }}
-                  >
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleJobClick(job)}
-                      sx={{
-                        color: 'rgb(224, 104, 154)',
-                        borderBlockColor: ' rgb(224, 104, 154)',
-                      }}
-                    >
-                     Apply
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+                  Open/Apply
+                </Button>
+              </CardActions>
+            </Card>
           </Grid>
-        </Container>
+        ))}
+      </Grid>
+    </Container>
       ) : (
         <p>No job data available.</p>
       )}
+      {/* Footer */}
 
-      {selectedJob && (
-        <Dialog onClose={() => setSelectedJob(null)} open={Boolean(selectedJob)} fullWidth maxWidth="md">
-          <DialogTitle onClose={() => setSelectedJob(null)}>{selectedJob.job_title}</DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">{selectedJob.job_description}</Typography>
-            <Divider style={{ marginTop: '16px', marginBottom: '16px' }} />
-            <Typography variant="body1">{selectedJob.qualifications}</Typography>
-          </DialogContent>
-          <DialogActions>
-            {/* Additional actions if needed */}
-          </DialogActions>
-        </Dialog>
-      )}
     </div>
   );
 };
