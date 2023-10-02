@@ -43,10 +43,24 @@ const ViewJobs = (props) => {
     fetchJobs();
   }, []);
 
+  // async function fetchJobs() {
+  //   try {
+  //     const response = await API.graphql(graphqlOperation(listJobs));
+  //     const jobList = response.data.listJobs.items;
+  //     console.log("joblost :",jobList);
+  //     setJobsData(jobList);
+  //     setLoading(false); // Set loading to false when data is fetched
+  //   } catch (error) {
+  //     console.error('Error fetching jobs:', error);
+  //     setError('Error fetching jobs'); // Set an error message
+  //     setLoading(false); // Set loading to false in case of an error
+  //   }
+  // }
   async function fetchJobs() {
     try {
       const response = await API.graphql(graphqlOperation(listJobs));
-      const jobList = response.data.listJobs.items;
+      const jobList = response.data.listJobs.items.filter(job => !job._deleted); // Filter out deleted jobs
+      
       setJobsData(jobList);
       setLoading(false); // Set loading to false when data is fetched
     } catch (error) {
@@ -55,7 +69,6 @@ const ViewJobs = (props) => {
       setLoading(false); // Set loading to false in case of an error
     }
   }
-
 
   useEffect(() => {
     const handleResize = () => {

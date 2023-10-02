@@ -33,33 +33,64 @@ function Position(props) {
     fetchJobs();
   }, []);
 
+  // async function fetchJobs() {
+  //   try {
+  //     const response = await API.graphql(graphqlOperation(listJobs));
+  //     const jobList = response.data.listJobs.items;
+  //     console.log("joblist ",jobList);
+  //     setPositions(jobList);
+  //     console.log("POSITION ", response);
+  //     setIsLoading(false); // Set loading to false when data is fetched
+  //   } catch (error) {
+  //     console.error('Error fetching jobs:', error);
+
+  //     setIsLoading(false); // Set loading to false in case of an error
+  //   }
+  // }
+
   async function fetchJobs() {
     try {
       const response = await API.graphql(graphqlOperation(listJobs));
-      const jobList = response.data.listJobs.items;
+      const jobList = response.data.listJobs.items.filter(job => !job._deleted); // Filter out deleted jobs
+      console.log("jobList:", jobList);
       setPositions(jobList);
-      console.log("POSITION ", response);
       setIsLoading(false); // Set loading to false when data is fetched
     } catch (error) {
       console.error('Error fetching jobs:', error);
-
       setIsLoading(false); // Set loading to false in case of an error
     }
   }
 
+  // const handleDeletePosition = async (position) => {
+  //   console.log("DELETE JOB ID : ", position);
 
+  //   try {
+  //     // Perform the deletion
+  //     const response = await API.graphql(graphqlOperation(deleteJobs, { input: { id: position.id, _version: position._version } }));
+  //     console.log('GraphQL Response:', response);
+  //     if (!response.errors) {
 
+  //       setPositions((prevPositions) => prevPositions.filter((p) => p.id !== position.id));
+  //       setSnackbarOpen(true); // Open the success snackbar
+  //     } else {
+  //       console.error('Error deleting position:', response.errors);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting position:', error);
+  //   }
+  // };
   const handleDeletePosition = async (position) => {
-    console.log("DELETE JOB ID : ", position);
-
+    console.log("DELETE JOB ID: ", position);
+  
     try {
       // Perform the deletion
       const response = await API.graphql(graphqlOperation(deleteJobs, { input: { id: position.id, _version: position._version } }));
       console.log('GraphQL Response:', response);
       if (!response.errors) {
-
         setPositions((prevPositions) => prevPositions.filter((p) => p.id !== position.id));
         setSnackbarOpen(true); // Open the success snackbar
+        // Refresh the page after successful deletion
+        window.location.reload();
       } else {
         console.error('Error deleting position:', response.errors);
       }
@@ -67,7 +98,6 @@ function Position(props) {
       console.error('Error deleting position:', error);
     }
   };
-
   const handleAddPosition = () => {
     setPositionName('');
     setEditedJobDescription('');
