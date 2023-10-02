@@ -156,7 +156,7 @@ function Position(props) {
   };
 
   return (
-    <div className="profile-div">
+    <div>
       <ToolBars />
       {/* {isLoading && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -177,8 +177,8 @@ function Position(props) {
       }}>Manage Job list</Typography>
 
 
-      <Box className="Box-profile">
-        <div className='candidates-list'>
+      <Box className="Box-profile" >
+        <div className='candidates-list'  >
 
 
           <AddJobForm token={props.token} onJobAdded={handleJobAdded} />
@@ -201,6 +201,7 @@ function Position(props) {
                     <TableCell>
                       {selectedPosition === position ? (
                         <TextField
+                       
                           className="custom-select"
                           value={positionName}
                           multiline // Enable multiline input
@@ -293,7 +294,7 @@ function Position(props) {
           </Snackbar>
         </div>
       </Box>
-      <Typography sx={{ backgroundColor: 'rgb(224 224 224)' }} variant="body2" color="text.secondary" align="center" {...props}>
+      <Typography sx={{ backgroundColor: 'rgb(224 224 224)' ,paddingTop:'5%'}} variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" href="">
           Tech 19

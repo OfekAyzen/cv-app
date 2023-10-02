@@ -18,50 +18,88 @@ import {
 import CandidateFilterForm from "./CandidateFilterForm"; // Import the CandidateFilterForm component
 import "../../styles/Profilemanager.css";
 import { API, graphqlOperation } from "aws-amplify";
-import { deleteCandidateJobs } from "../../graphql/mutations";
+import { deleteCandidate } from "../../graphql/mutations";
 import Snackbar from "@mui/material/Snackbar";
 import TablePagination from "@mui/material/TablePagination";
 import MuiAlert from "@mui/material/Alert";
+import AddCandidateForm from "./AddCandidateForm";
+import Dialog from '@mui/material/Dialog';
 
 const CandidateRow = ({ candidate,
   appliedJob, selectedJobId, handleViewCandidate,
   handleDeleteApplication, onDeleteCandidate, }) => {
+
+
   const [isRowClicked, setIsRowClicked] = useState(false);
 
-  const handleRowClick = () => {
-    setIsRowClicked(!isRowClicked);
-  };
+  // const handleRowClick = () => {
+  //   setIsRowClicked(!isRowClicked);
+  // };
 
-  const handleDelete = async () => {
+  // const handleDelete = async (deletedCandidateId) => {
+  //   console.log("handle delete :",deletedCandidateId);
+  //   try {
+      
+  //     const input = {
+  //       id: candidate.candidateJob.id ,
+  //       _version: 1,
+  //     };
+
+  //     // Perform the delete operation
+  //     const response = await API.graphql(
+  //       graphqlOperation(deleteCandidateJobs, { input })
+  //     );
+
+
+  //     // Check if the delete operation was successful
+  //     if (response.data && response.data.deleteCandidateJobs) {
+  //       // Notify the parent component (CandidateTable) of the successful deletion
+
+  //       onDeleteCandidate(candidate.candidateJob.id);
+  //     } else {
+  //       // Handle the case where the delete operation did not succeed
+  //       handleNotification("Error deleting candidate job", "error");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting candidate job:", error);
+  //     handleNotification("Error deleting candidate job", "error");
+  //   }
+  // };
+  const handleDelete = async (deletedCandidateId) => {
+    // Ask for confirmation before deleting the candidate
+    const confirmed = window.confirm("Are you sure you want to delete this candidate?");
+    
+    if (!confirmed) {
+      // If not confirmed, do nothing
+      return;
+    }
+  
     try {
-
-
       const input = {
-        id: candidate.candidateJob.id,
+        id: deletedCandidateId,  // Use id field for candidate ID
         _version: 1,
       };
-
+  
       // Perform the delete operation
       const response = await API.graphql(
-        graphqlOperation(deleteCandidateJobs, { input })
+        graphqlOperation(deleteCandidate, { input })
       );
-
-
+  
       // Check if the delete operation was successful
-      if (response.data && response.data.deleteCandidateJobs) {
+      if (response.data && response.data.deleteCandidate) {
         // Notify the parent component (CandidateTable) of the successful deletion
-
-        onDeleteCandidate(candidate.candidateJob.id);
+        console.log("Candidate deleted successfully");
+        window.location.reload();
       } else {
         // Handle the case where the delete operation did not succeed
-        handleNotification("Error deleting candidate job", "error");
+        handleNotification("Error deleting candidate", "error");
       }
     } catch (error) {
-      console.error("Error deleting candidate job:", error);
-      handleNotification("Error deleting candidate job", "error");
+      console.error("Error deleting candidate:", error);
+      handleNotification("Error deleting candidate", "error");
     }
   };
-
+  
   const handleNotification = (message, type) => {
     // Implement your notification logic here
 
@@ -75,6 +113,17 @@ const CandidateRow = ({ candidate,
     return `${day}-${month}-${year}`;
   };
 
+
+
+  const handleRowClick = () => {
+    if (candidate.job && candidate.job.id) {
+      handleViewCandidate(candidate, candidate.job.id);
+    } else {
+      // Handle the case where candidate.job or candidate.job.id is null or undefined
+      // For example, you can display a message or take appropriate action
+      handleViewCandidate(candidate, null);
+    }
+  };
   return (
 
 
@@ -90,26 +139,44 @@ const CandidateRow = ({ candidate,
           cursor: "pointer",
         },
       }}
-      onClick={() => handleViewCandidate(candidate, candidate.job.id)}
+      // onClick={() => handleViewCandidate(candidate, candidate.job.id)}
+      onClick={handleRowClick}
     >
 
-      <TableCell className="fullWidthCell">{formatDate(candidate.candidate.createdAt)}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.location}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.gender}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.job.job_title}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.education}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.work_experience}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.skills}</TableCell>
-      <TableCell className="fullWidthCell">{candidate.candidate.status}</TableCell>
-      <TableCell className="fullWidthCell">
-        <Button variant="contained" color="secondary" onClick={handleDelete}>
+      <TableCell   className="my-font">{formatDate(candidate.candidate.createdAt)}</TableCell>
+      <TableCell   className="my-font">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
+      <TableCell   className="my-font">{candidate.candidate.location}</TableCell>
+      <TableCell    className="my-font">{candidate.candidate.gender}</TableCell>
+     
+      {/* <TableCell className="fullWidthCell">{candidate.job.job_title}</TableCell> */}
+      <TableCell   className="my-font">
+        {candidate.job?.job_title || candidate.candidate.position || 'No job title'}
+      </TableCell> {/* Render 'No Job Title' if job_title is null or undefined */}
+      <TableCell    className="my-font">{candidate.candidate.education}</TableCell>
+      <TableCell    className="my-font">{candidate.candidate.work_experience}</TableCell>
+      <TableCell   className="my-font">{candidate.candidate.skills}</TableCell>
+      <TableCell   className="my-font">{candidate.candidate.status}</TableCell>
+      <TableCell   className="fullWidthCell">
+        <Button variant="contained" color="secondary" onClick={() => handleDelete(candidate.candidate.id)}>
           Delete
         </Button>
       </TableCell>
     </TableRow>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const CandidateTable = ({
   candidates,
@@ -126,11 +193,23 @@ const CandidateTable = ({
     gender: "",
     location: "",
   });
-
+  const [showAddCandidateForm, setShowAddCandidateForm] = useState(false);
   const [notification, setNotification] = useState(null);
   const [page, setPage] = useState(0); // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page
-  // Create a function to sort candidates based on the selected sorting criteria
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleAddCandidateClick = () => {
+    setShowAddCandidateForm(!showAddCandidateForm);
+    setDialogOpen(true); // Open the dialog when Add Candidate is clicked
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+
+  // function to sort candidates based on the selected sorting criteria
   const sortCandidates = (candidates) => {
     return candidates.slice().sort((a, b) => {
       let comparison = 0;
@@ -153,6 +232,13 @@ const CandidateTable = ({
       return sortOrder === "dsc" ? comparison : -comparison;
     });
   };
+
+
+
+  // const handleAddCandidateClick = () => {
+  //   setShowAddCandidateForm(prevShowAddCandidateForm => !prevShowAddCandidateForm);
+  // };
+
 
   const filteredCandidates = candidates.filter((candidate) => {
     const {
@@ -223,21 +309,23 @@ const CandidateTable = ({
     setFilters(newFilters);
   };
 
-  const handleDeleteCandidate = (deletedCandidateId) => {
-    const confirmation = window.confirm("Are you sure you want to delete this candidate?");
-    if (confirmation) {
-      // Update the table data by filtering out the deleted candidate
-      const updatedCandidates = candidates.filter(
-        (candidate) => candidate.candidateJob.id !== deletedCandidateId
-      );
+  // const handleDeleteCandidate = (deletedCandidateId) => {
+    // console.log("handleDeleteCandidate __________________________________",deletedCandidateId);
+    
+    // const confirmation = window.confirm("Are you sure you want to delete this candidate?");
+    // if (confirmation) {
+    //   // Update the table data by filtering out the deleted candidate
+    //   const updatedCandidates = candidates.filter(
+    //     (candidate) => candidate.candidateJob.id !== deletedCandidateId
+    //   );
 
-      // Display a success notification
-      handleNotification("Candidate job deleted successfully", "success");
+    //   // Display a success notification
+    //   handleNotification("Candidate job deleted successfully", "success");
 
-      // Reload the page
-      window.location.reload();
-    }
-  };
+    //   // Reload the page
+    //   window.location.reload();
+    // }
+  // };
 
 
 
@@ -249,6 +337,18 @@ const CandidateTable = ({
     }, 5000);
 
     return () => clearTimeout(timer);
+  };
+
+
+  const AddCandidateDialog = ({ open, handleClose }) => {
+    return (
+      <Dialog  open={open} onClose={handleClose}>
+        
+      
+          <AddCandidateForm />
+      
+      </Dialog>
+    );
   };
   return (
 
@@ -301,16 +401,16 @@ const CandidateTable = ({
         <Table className="table-style">
           <TableHead>
             <TableRow>
-              <TableCell>Date Apply</TableCell>
-              <TableCell>Full Name</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Gender</TableCell>
-              <TableCell>Position</TableCell>
-              <TableCell>Education</TableCell>
-              <TableCell>Work Experience</TableCell>
-              <TableCell>Skills</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell className="my-font">Date Apply</TableCell>
+              <TableCell   className="my-font">Full Name</TableCell>
+              <TableCell  className="my-font">Location</TableCell>
+              <TableCell  className="my-font">Gender</TableCell>
+              <TableCell  className="my-font">Position</TableCell>
+              <TableCell  className="my-font">Education</TableCell>
+              <TableCell   className="my-font">Work Experience</TableCell>
+              <TableCell  className="my-font">Skills</TableCell>
+              <TableCell  className="my-font">Status</TableCell>
+              <TableCell  className="my-font">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -320,16 +420,18 @@ const CandidateTable = ({
                 candidate={candidate}
                 selectedJobId={selectedJobId}
                 handleViewCandidate={handleViewCandidate}
-                onDeleteCandidate={handleDeleteCandidate}
+                // onDeleteCandidate={handleDeleteCandidate}
               />
             ))}
           </TableBody>
           
         </Table>
 
-
+     
+      
         <TablePagination
-            sx={{ display: 'flex', width: '120%', backgroundColor: 'white',borderBottomLeftRadius:'15px',borderBottomRightRadius:'15px' }}
+        
+            sx={{ display: 'flex', width: '120%', backgroundColor: 'white'}}
             component="div"
             count={sortedCandidates.length} // Use sortedCandidates.length
             page={page}
@@ -339,6 +441,25 @@ const CandidateTable = ({
             labelRowsPerPage="Rows per page:"
             rowsPerPageOptions={[10, 25, 50]}
           />
+          <div style={{backgroundColor:'white',width:'120%',padding:'15px',
+           borderBottomLeftRadius:'10px',borderBottomRightRadius:'15px',}}>
+          <Button
+        variant="contained"
+        sx={{ backgroundColor: 'grey','&:hover': {
+          backgroundColor: 'darkgrey'
+        } }}
+        onClick={handleAddCandidateClick}
+      >
+       Add Candidate
+      </Button>
+      </div>
+
+      {showAddCandidateForm && (
+        <AddCandidateDialog
+          open={dialogOpen}
+          handleClose={handleDialogClose}
+        />
+      )}
       </Container>
     </div>
   );

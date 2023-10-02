@@ -199,7 +199,7 @@ const CandidateDialog = ({
               </Typography>
               <hr />
               <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
-                Position: {selectedCandidate.position}
+                Position: {selectedCandidate.position || 'No Job Title'}
               </Typography>
               <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
                 Education: {selectedCandidate.education}

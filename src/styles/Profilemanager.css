@@ -2,9 +2,14 @@
 body {
   
   margin: 0px !important;
+  font-family: 'Calibri', sans-serif !important;
   
 }
-
+.my-font{
+  
+  font-family:"Calibri", sans-serif !important;
+  font-size:'16px';
+}
  .candidate-table{
   background-color: #eae7e7;
   display: flex;
@@ -13,9 +18,11 @@ body {
   padding-left: 0px !important;
   padding-right: 0px !important;
   margin-left: 0% !important;
+  border-collapse: collapse;
  
  
  }
+
  .filter-card{
   background-color: rgb(255, 255, 255) !important;
   box-shadow: none !important;
@@ -144,10 +151,12 @@ body {
 }
 .custom-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: rgba(162, 33, 113, 0.67);
+ 
 }
 
 .custom-select .MuiInputLabel-outlined.Mui-focused {
   color:rgba(162, 33, 113, 0.67);
+
 }
 
 .Box-userprofile{
@@ -188,7 +197,7 @@ body {
   height: 100%;
   width: 100%;
   display: block;
-  padding: 0px 0px 0px 0px;
+ 
   margin: 0%;
 
 }
@@ -286,3 +295,7 @@ body {
 }
 /* .css-3qrssf{ /*table style*/
   /* width: none !important; */
+/*add candidate form*/
+.addcandidate-form{
+  background-color: #eae7e7;
+}
