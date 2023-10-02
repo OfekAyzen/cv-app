@@ -16,8 +16,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import "../../styles/SignUp.css";
 import Link from '@mui/material/Link';
-
-
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -86,19 +86,23 @@ export default function SignUp({ }) {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            textAlign: 'center',
           }}
         >
+        <Box sx={{display:'flex',alignContent:'center',textAlign:'center',flexDirection:'column'}}>
+           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
           <Typography component="h1" variant="h4">
             Sign up
           </Typography>
           <Typography component="h1" variant="h5">
             Join our website
           </Typography>
+          </Box>
           <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3 ,minWidth:'600px' ,height:'600px'}}>
             <div
               style={{
