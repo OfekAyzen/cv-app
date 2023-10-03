@@ -95,6 +95,7 @@ const ViewJobs = (props) => {
     setOpen(false);
   };
   const handleButtonClick = async (job,job_id) => {
+    console.log("job : ",job , "job id :",job_id);
     setSelectedJob(job);
     setSelectedJobId(job_id);
 
@@ -161,9 +162,7 @@ const ViewJobs = (props) => {
 
   return (
     <div style={{ backgroundColor: 'black', width: '100%', display: 'flex' }}>
-      {selectedJob && (
-      <JobDetailsPage selectedJob={selectedJob} onClose={() => setSelectedJob(null)} />
-    )}
+     
       {loading ? (
         <Container
         className="container-user"
@@ -230,7 +229,7 @@ const ViewJobs = (props) => {
                       padding: '0 16px',
                     }}
                   >
-                    {console.log("job.id L ",job.id)}
+                    
                     <Button
                       variant="outlined"
                       onClick={() => handleButtonClick(job,job.id)}
@@ -240,7 +239,7 @@ const ViewJobs = (props) => {
                         marginBottom:'5%',
                       }}
                     >
-                     Apply
+                     apply
                     </Button>
                   </CardActions>
                 </Card>
@@ -251,8 +250,11 @@ const ViewJobs = (props) => {
       ) : (
         <p>No job data available.</p>
       )}
-
-
+{console.log("before passed : ",selectedJob)}
+{selectedJob && (
+  
+      <JobDetailsPage selectedJob={selectedJob} onClose={() => setSelectedJob(null)} />
+    )}
     </div>
   );
 };

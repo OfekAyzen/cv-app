@@ -12,6 +12,13 @@
     /* box-shadow: -15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important; */
 }
 
+.position-text{
+    font-family: "NeueHelvetica" !important;
+    font-size: 1.0rem !important;
+      
+
+    font-weight: 400 !important;
+}
 @media (min-width: 1200px) {
     .container-user {
 
