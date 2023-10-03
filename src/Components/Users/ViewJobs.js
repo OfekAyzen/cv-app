@@ -103,14 +103,15 @@ const ViewJobs = (props) => {
       // Check if the user is authenticated using Amplify Auth
       const user = await Auth.currentAuthenticatedUser();
       localStorage.setItem('selectedJobId', job_id);
+      navigate(`/Apply/${job_id}`);
       // If the user is authenticated, open the dialog 
       setOpen(true);
     } catch (error) {
       // If the user is not authenticated, store the selected job ID in localStorage
       localStorage.setItem('selectedJobId', job_id);
-
+      navigate(`/Apply/${job_id}`);
       // Redirect the user to the login page
-      
+     
     }
   };
 
@@ -251,10 +252,10 @@ const ViewJobs = (props) => {
         <p>No job data available.</p>
       )}
 {console.log("before passed : ",selectedJob)}
-{selectedJob && (
+{/* {selectedJob && (
   
       <JobDetailsPage selectedJob={selectedJob} onClose={() => setSelectedJob(null)} />
-    )}
+    )} */}
     </div>
   );
 };

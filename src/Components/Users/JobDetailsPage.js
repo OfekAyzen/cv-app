@@ -110,9 +110,10 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { getJobs } from '../../graphql/queries';  // Update the import path
 import JobApplication from './JobApplication';
 import logo from "../images/logo_tech19.png";
+import { useNavigate } from 'react-router-dom';
 import "../../styles/User.css";
-const JobDetailsPage = ({ selectedJob, onClose }) => {
-   
+const JobDetailsPage = ({ selectedJob }) => {
+    const navigate = useNavigate();
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
     const [jobDetails, setJobDetails] = useState(null);
     const [jobID, setJobID] = useState();
@@ -122,6 +123,7 @@ const JobDetailsPage = ({ selectedJob, onClose }) => {
         setIsSnackbarOpen(false);
       };
    
+    
     // useEffect(() => {
     //     // Extract the selectedJobId from local storage
     //     const savedSelectedJobId = localStorage.getItem('selectedJobId');
@@ -204,6 +206,10 @@ const JobDetailsPage = ({ selectedJob, onClose }) => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    const onClose = () => {
+       navigate("/HomePage");
+      };
     return (
         <div
        
