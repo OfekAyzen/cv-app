@@ -31,7 +31,7 @@ import Dialog from '@mui/material/Dialog';
 // import "../../styles/User.css";
 import PropTypes from 'prop-types';
 import JobApplication from './JobApplication';
-
+import JobDetailsPage from './JobDetailsPage';
 const ViewJobs = (props) => {
   const [open, setOpen] = React.useState(false);
   const [selectedJobId, setSelectedJobId] = useState('');
@@ -94,13 +94,14 @@ const ViewJobs = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleButtonClick = async (job_id) => {
+  const handleButtonClick = async (job,job_id) => {
+    setSelectedJob(job);
     setSelectedJobId(job_id);
 
     try {
       // Check if the user is authenticated using Amplify Auth
       const user = await Auth.currentAuthenticatedUser();
-
+      localStorage.setItem('selectedJobId', job_id);
       // If the user is authenticated, open the dialog 
       setOpen(true);
     } catch (error) {
@@ -108,7 +109,7 @@ const ViewJobs = (props) => {
       localStorage.setItem('selectedJobId', job_id);
 
       // Redirect the user to the login page
-      navigate('/Login');
+      
     }
   };
 
@@ -160,6 +161,9 @@ const ViewJobs = (props) => {
 
   return (
     <div style={{ backgroundColor: 'black', width: '100%', display: 'flex' }}>
+      {selectedJob && (
+      <JobDetailsPage selectedJob={selectedJob} onClose={() => setSelectedJob(null)} />
+    )}
       {loading ? (
         <Container
         className="container-user"
@@ -214,6 +218,9 @@ const ViewJobs = (props) => {
                     <Typography gutterBottom variant="h4" sx={{ color: 'white' }}>
                       {job.job_title}
                     </Typography>
+                    <Typography gutterBottom variant="h6" sx={{ color: 'white' }}>
+                      Full Time | Part Time
+                    </Typography>
                   </CardContent>
                   <CardActions
                     sx={{
@@ -223,9 +230,10 @@ const ViewJobs = (props) => {
                       padding: '0 16px',
                     }}
                   >
+                    {console.log("job.id L ",job.id)}
                     <Button
                       variant="outlined"
-                      onClick={() => handleJobClick(job)}
+                      onClick={() => handleButtonClick(job,job.id)}
                       sx={{
                         color: 'rgb(224, 104, 154)',
                         borderBlockColor: ' rgb(224, 104, 154)',
@@ -243,19 +251,7 @@ const ViewJobs = (props) => {
         <p>No job data available.</p>
       )}
 
-      {selectedJob && (
-        <Dialog onClose={() => setSelectedJob(null)} open={Boolean(selectedJob)} fullWidth maxWidth="md">
-          <DialogTitle onClose={() => setSelectedJob(null)}>{selectedJob.job_title}</DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">{selectedJob.job_description}</Typography>
-            <Divider style={{ marginTop: '16px', marginBottom: '16px' }} />
-            <Typography variant="body1">{selectedJob.qualifications}</Typography>
-          </DialogContent>
-          <DialogActions>
-            {/* Additional actions if needed */}
-          </DialogActions>
-        </Dialog>
-      )}
+
     </div>
   );
 };

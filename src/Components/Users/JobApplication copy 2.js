@@ -113,49 +113,50 @@ export default function JobApplication(props) {
 
 
     const createCandidateAndApply = async () => {
-        console.log(" createCandidateAndApply");
+
 
         try {
 
 
             // Get the cvFileKey from localStorage
-            // const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
+            const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
 
-            // // Define the candidate data
-            // const candidateData = {
-            //     input: {
-            //         first_name: first_name,
-            //         last_name: last_name,
-            //         location: location,
-            //         email: email,
-            //         phone_number: phone_number,
-            //         gender: gender,
-            //         education: education,
-            //         work_experience: work_experience,
-            //         skills: skills,
-            //         position: position,
-            //         certifications: certifications,
-            //         cv: cvFileKeyFromStorage, // Use the saved CV file key
-            //     },
-            // };
+            // Define the candidate data
+            const candidateData = {
+                input: {
+                    first_name: first_name,
+                    last_name: last_name,
+                    location: location,
+                    email: email,
+                    phone_number: phone_number,
+                    gender: gender,
+                    education: education,
+                    work_experience: work_experience,
+                    skills: skills,
+                    position: position,
+                    certifications: certifications,
+                    cv: cvFileKeyFromStorage, // Use the saved CV file key
+                },
+            };
 
-            // // Update the createCandidate mutation to include cvFileKey
-            // const response = await API.graphql(
-            //     graphqlOperation(createCandidate, candidateData)
-            // );
+            // Update the createCandidate mutation to include cvFileKey
+            const response = await API.graphql(
+                graphqlOperation(createCandidate, candidateData)
+            );
 
-            // if (response.data.createCandidate) {
-            //     // Candidate was successfully created
-            //     const candidateId = response.data.createCandidate.id;
+            if (response.data.createCandidate) {
+                // Candidate was successfully created
+                const candidateId = response.data.createCandidate.id;
                 handleapplyjob(candidateId); // Call the function to create CandidateJobs
+
                 navigate('/HomePage');
                 //  props.onClose();
 
-            // } else {
-            //     // Handle candidate creation failure
-            //     handleSnackbar('Failed to submit application.', 'error');
+            } else {
+                // Handle candidate creation failure
+                handleSnackbar('Failed to submit application.', 'error');
 
-            // }
+            }
 
             // Remove cvFileKey from localStorage after use
             localStorage.removeItem('cvFileKey');
@@ -178,7 +179,6 @@ export default function JobApplication(props) {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
     useEffect(() => {
         // Define a function to upload the CV
         const uploadCV = async () => {
@@ -228,7 +228,7 @@ export default function JobApplication(props) {
       };
 
     const handleSubmit = async (event) => {
-        console.log("handleSubmit");
+        // console.log("handleSubmit");
         event.preventDefault();
         setFormSubmitted(true); // Mark the form as submitted
 
@@ -290,37 +290,12 @@ export default function JobApplication(props) {
     };
 
     const handleapplyjob = async (candidateId) => {
-        console.log(" handleapplyjob");
+
         try {
             // Get the Cognito User ID of the authenticated user
             const user = await Auth.currentAuthenticatedUser();
             const cognitoSub = user.attributes.sub;
-            console.log("cognitoSub");
-            const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
 
-            // Define the candidate data
-            const candidateData = {
-                input: {
-                    first_name: first_name,
-                    last_name: last_name,
-                    location: location,
-                    email: email,
-                    phone_number: phone_number,
-                    gender: gender,
-                    education: education,
-                    work_experience: work_experience,
-                    skills: skills,
-                    position: position,
-                    certifications: certifications,
-                    cv: cvFileKeyFromStorage, // Use the saved CV file key
-                },
-            };
-
-            // Update the createCandidate mutation to include cvFileKey
-            const resp = await API.graphql(
-                graphqlOperation(createCandidate, candidateData)
-            );
-            const candidateId = resp.data.createCandidate.id;
             const candidateJobsData = {
                 input: {
                     candidateId: candidateId,
@@ -334,47 +309,23 @@ export default function JobApplication(props) {
             // console.log("GraphQL Response:", response);
 
             if (response.data.createCandidateJobs) {
-                //  const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
-
-            // Define the candidate data
-            // const candidateData = {
-            //     input: {
-            //         first_name: first_name,
-            //         last_name: last_name,
-            //         location: location,
-            //         email: email,
-            //         phone_number: phone_number,
-            //         gender: gender,
-            //         education: education,
-            //         work_experience: work_experience,
-            //         skills: skills,
-            //         position: position,
-            //         certifications: certifications,
-            //         cv: cvFileKeyFromStorage, // Use the saved CV file key
-            //     },
-            // };
-
-            // // Update the createCandidate mutation to include cvFileKey
-            // const response = await API.graphql(
-            //     graphqlOperation(createCandidate, candidateData)
-            // );
                 // Application was successfully created
                 // handleSnackbar('Application submitted successfully!', 'success');
-                // if (props && props.onApplicationSuccess && typeof props.onApplicationSuccess === 'function') {
-                //     props.onApplicationSuccess('Application submitted successfully!', 'success');
-                // } else {
-                //     console.error('invalid function .');
-                //     // Handle the case where onApplicationSuccess is not a valid function
-                // }
+                if (props && props.onApplicationSuccess && typeof props.onApplicationSuccess === 'function') {
+                    props.onApplicationSuccess('Application submitted successfully!', 'success');
+                } else {
+                    console.error('invalid function .');
+                    // Handle the case where onApplicationSuccess is not a valid function
+                }
                 setFlashMessage('Application submitted successfully!', 'success');
                 localStorage.removeItem('selectedJobId');
                 navigate('/HomePage');
-                // if (props && props.onClose && typeof props.onClose === 'function') {
-                //     props.onClose();
-                // } else {
-                //     console.error('Invalid function for onClose.');
-                //     // Handle the case where onClose is not a valid function
-                // }
+                if (props && props.onClose && typeof props.onClose === 'function') {
+                    props.onClose();
+                } else {
+                    console.error('Invalid function for onClose.');
+                    // Handle the case where onClose is not a valid function
+                }
 
             } else {
                 // handleSnackbar('Failed to submit application.', 'error');
@@ -384,9 +335,9 @@ export default function JobApplication(props) {
         } catch (error) {
             // Handle GraphQL or other errors
             // handleSnackbar('Error applying for the job.', 'error');
-            setFlashMessage('For applying the job you need to login', 'error');
+            setFlashMessage('For applying to this job you need to login');
             console.error('Error applying for the job:', error);
-            navigate("/Login");
+            navigate('/Login');
         }
     };
 
@@ -402,9 +353,9 @@ export default function JobApplication(props) {
         //     <Divider style={{ backgroundColor: 'white' }} />
         //     <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex', minWidth: '900px', height: '600px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-            {/* <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px', backgroundColor: 'black' }}>
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px', backgroundColor: 'black' }}>
                 <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-            </div> */}
+            </div>
             <Divider style={{ backgroundColor: 'white' }} />
             <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
                 <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '60px' }}>

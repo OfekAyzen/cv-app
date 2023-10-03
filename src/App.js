@@ -24,6 +24,7 @@ import ConfirmSignUp from './Pages/Log/ConfirmSignUp';
 import ConfirmForgotPassword from './Pages/Log/ConfirmForgotPassword';
 import {  Storage } from 'aws-amplify';
 import awsconfig from './aws-exports';
+import JobDetailsPage from './Components/Users/JobDetailsPage';
 Amplify.configure(awsconfig);
 
 
@@ -52,7 +53,7 @@ function App() {
               <Route path="/Profile" element={<ProfileManager  />} />
             
               <Route path="/HomePage" element={<ProfileUser />} />
-              <Route path="/Apply/:job_id"  element={<JobApplication/>}/>
+              {/* <Route path="/Apply/:job_id"  element={<JobApplication/>}/> */}
               <Route path="/Position" element={<Position  />} />
 
               <Route path="/confirm-signup/:username" element={<ConfirmSignUp/>} />
@@ -62,7 +63,8 @@ function App() {
             <Route path="/HomePage" element={<ProfileUser  />} /> 
             <Route path="/forgot_password" element={<ForgotPassword/>} />
             <Route path="*" element={<Navigate to="/Login" replace />} />
-
+            <Route path="/Apply/:job_id"  element={<JobDetailsPage/>}/>
+      
         </Routes>
     </div>
 
