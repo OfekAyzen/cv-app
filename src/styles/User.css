@@ -2,12 +2,12 @@
     /* display: flex; */
     width: '100%' !important;
     height: '100%' !important;
-    background-color: rgb(66, 20, 88);
+    background-color: rgb(255, 255, 255);
     padding-bottom: 84px !important;
 }
 
 .jobs-cards {
-    background-color: rgb(34, 7, 46);
+    background-color:rgb(243 243 243);
     padding-left: 5% !important;
     /* box-shadow: -15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important; */
 }

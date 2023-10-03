@@ -183,21 +183,21 @@ const ViewJobs = (props) => {
           <Typography
             variant="h2"
             align="center"
-            color="white"
+            color="Black"
             gutterBottom
-            sx={{ paddingTop: '60px', fontSize: '50px' }}
+            sx={{ paddingTop: '60px', fontSize: '50px' ,paddingBottom:'50px'}}
           >
             Join our team
           </Typography>
-          <Typography
+          {/* <Typography
             variant="h5"
             align="center"
             color="white"
             paragraph
             sx={{ fontSize: '40px', color: 'yellow', paddingBottom: '25px' }}
           >
-            We are hiring!
-          </Typography>
+            Open Jobs
+          </Typography> */}
           <Grid container spacing={1}>
             {jobsData.map((job) => (
               <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%' }}>
@@ -208,17 +208,17 @@ const ViewJobs = (props) => {
                     display: 'flex',
                     marginLeft: '10%',
                     flexDirection: 'column',
-                    backgroundColor: 'rgb(34, 7, 46)',
+                    backgroundColor: 'rgb(243 243 243)',
                     paddingLeft: '5%',
                     boxShadow:
                       '-15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)',
                   }}
                 >
                   <CardContent sx={{ flexGrow: 1 }} className="jobs-cards">
-                    <Typography gutterBottom variant="h4" sx={{ color: 'white' }}>
+                    <Typography gutterBottom variant="h4" sx={{ color: 'black' }}>
                       {job.job_title}
                     </Typography>
-                    <Typography gutterBottom variant="h6" sx={{ color: 'white' }}>
+                    <Typography gutterBottom variant="h6" sx={{ color: '#6d6363' }}>
                       Full Time | Part Time
                     </Typography>
                   </CardContent>
@@ -226,7 +226,7 @@ const ViewJobs = (props) => {
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      backgroundColor: 'rgb(34, 7, 46)',
+                      backgroundColor: 'rgb(243 243 243)',
                       padding: '0 16px',
                     }}
                   >
@@ -237,6 +237,7 @@ const ViewJobs = (props) => {
                       sx={{
                         color: 'rgb(224, 104, 154)',
                         borderBlockColor: ' rgb(224, 104, 154)',
+                        marginBottom:'5%',
                       }}
                     >
                      Apply

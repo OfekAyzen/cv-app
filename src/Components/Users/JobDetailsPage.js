@@ -105,17 +105,17 @@
 
 // export default JobDetailsPage;
 import React, { useState, useEffect } from 'react';
-import { Typography, Divider, Button } from '@mui/material';
+import { Typography, Divider, Button, CircularProgress } from '@mui/material';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getJobs } from '../../graphql/queries';  // Update the import path
 import JobApplication from './JobApplication';
 import logo from "../images/logo_tech19.png";
 const JobDetailsPage = ({ job ,onClose }) => {
 
-
+    const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
   const [jobDetails, setJobDetails] = useState(null);
     const [jobID,setJobID]=useState();
-
+    const [loading, setLoading] = useState(true);
   useEffect(() => {
     // Extract the selectedJobId from local storage
     const savedSelectedJobId = localStorage.getItem('selectedJobId');
@@ -127,30 +127,53 @@ const JobDetailsPage = ({ job ,onClose }) => {
         const jobDetails = response.data.getJobs;
         setJobID(savedSelectedJobId);
         setJobDetails(jobDetails);
+        setLoading(false); 
       } catch (error) {
         console.error('Error fetching job details:', error);
+        setLoading(true); 
       }
     };
 
     fetchJobDetails();
   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+        setIsMobileView(window.innerWidth < 600);
+    };
 
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 999 }}>
-        {/* <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px', backgroundColor: 'black' }}>
-                <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-            </div> */}
-      <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', width: '100%', backgroundColor: 'black' }}>
-                <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-            </div>
-      <Button onClick={onClose} style={{color:'#ad2069'}}>
+    <div style={{position: isMobileView ? 'fixed' : 'fixed' , top: 0, left: 0,
+    marginBottom:'50px', width: '100%', height: '100%', backgroundColor: 'white', display: 'flex', justifyContent: 'center',
+     alignItems: 'center', zIndex: 999,
+     flexDirection: 'column', // Allow vertical scrolling
+     overflowY: isMobileView ? 'auto' : 'hidden',
+     
+     
+     }}>
+      
+        {loading ? (
+            <CircularProgress style={{  color:'#ad2069'}} />
+          ) : (<>
+      <div style={{ width: '100%',height:'1080px' }}>
+        {!isMobileView && ( <div style={{ display: 'flex', alignItems: 'center', width: '100%', backgroundColor: 'black' ,paddingTop:'3%'}}>
+      <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+            </div>)}
+      
+      
+        <div style={{ width: '100%',display:'flex', justifyContent:'center' ,paddingTop: isMobileView ? '80%' : '0%'}}>
+        {console.log("jobDetails",jobDetails)}
+       
+        {jobDetails && (
+          <div style={{backgroundColor:"white",width:'80%'}}>
+             <Button onClick={onClose} style={{color:'#ad2069'}}>
          Back
         </Button>
-        <div style={{ width: '100%',display:'flex', justifyContent:'center' }}>
-        {console.log("jobDetails",jobDetails)}
-        {jobDetails && (
-          <div style={{backgroundColor:"white",width:'60%'}}>
             <Typography style={{paddingTop:'30px'}} variant="h4">{jobDetails.job_title}</Typography>
             <Typography variant="body1">{jobDetails.job_description}</Typography>
             <Divider style={{ marginTop: '16px', marginBottom: '16px' }} />
@@ -163,8 +186,12 @@ const JobDetailsPage = ({ job ,onClose }) => {
          </div>
         
       </div>
+      </>)}
     </div>
   );
 };
 
 export default JobDetailsPage;
+
+
+

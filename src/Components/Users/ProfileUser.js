@@ -124,7 +124,7 @@ export default function ProfileUser(props) {
             <Typography variant="h4" sx={{ textAlign: 'center', color: 'white', fontSize: '40px', fontWeight: 'bold' }}>
               Solutions
             </Typography>
-            <Typography variant="h5" sx={{ textAlign: 'center', color: 'white', fontSize: '30px', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ textAlign: 'center', color: 'white', fontSize: '35px',fontWeight: 'bold'  }}>
              Open Jobs
             </Typography>
           </Box>

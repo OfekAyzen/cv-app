@@ -401,13 +401,13 @@ export default function JobApplication(props) {
         //     </div>
         //     <Divider style={{ backgroundColor: 'white' }} />
         //     <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex', minWidth: '900px', height: '600px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',height: '800px' , }}>
             {/* <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px', backgroundColor: 'black' }}>
                 <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
             </div> */}
             <Divider style={{ backgroundColor: 'white' }} />
             <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
-                <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '60px' }}>
+                <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '30px' }}>
                     <div
                         style={{
                             display: 'flex',
