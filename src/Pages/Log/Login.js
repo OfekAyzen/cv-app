@@ -35,25 +35,25 @@ export default function Login(props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message,setMessage]=useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
       const user = await Auth.signIn(username, password);
       const my_user = user.signInUserSession.idToken.payload;
-  
+
       // Check if the user is in the Admin group
       const isAdmin = my_user["cognito:groups"] && my_user["cognito:groups"].includes("Admin");
-  
+
       // Check if the user is in the General group
       const isGeneral = my_user["cognito:groups"] && my_user["cognito:groups"].includes("General");
-  
+
       const selectedJobId = localStorage.getItem('selectedJobId');
-  
+
       if (isAdmin) {
         navigate("/Profile");
       } else if (isGeneral) {
@@ -66,8 +66,8 @@ export default function Login(props) {
         setMessage('Error signing in');
       }
       else if (selectedJobId) {
-                navigate(`/Apply/${selectedJobId}`);
-              
+        navigate(`/Apply/${selectedJobId}`);
+
       } else {
         // User is not in any specified group
         console.log(" ");
@@ -78,13 +78,13 @@ export default function Login(props) {
       console.log('error signing in', error);
     }
   };
-  
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className='div-bar' position="static" >
         <img src={logo} />
       </div>
-      <Container  component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
@@ -97,10 +97,10 @@ export default function Login(props) {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h4">
+          <Typography style={{ fontFamily: '"Calibri", sans-serif' ,display:'flex',textAlign:'center' ,justifyContent:'center'}} component="h1" variant="h4">
             Welcome back !
           </Typography>
-          <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h6">
+          <Typography style={{ fontFamily: '"Calibri", sans-serif' ,display:'flex',textAlign:'center' ,justifyContent:'center'}} component="h1" variant="h6">
             Welcome back! Please enter your details.
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, textAlign: 'center', }}>
@@ -129,18 +129,19 @@ export default function Login(props) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="custom-select"
-              
+
             />
             {message && (
-  <Typography variant="body1" color="error" sx={{ mt: 2 }}>
-    {message}
-  </Typography>
-)}
+              <Typography variant="body1" color="error" sx={{ mt: 2 }}>
+                {message}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{   fontFamily:'"Calibri", sans-serif',
+              sx={{
+                fontFamily: '"Calibri", sans-serif',
                 mt: 4, mb: 2, width: '30%', color: 'white', backgroundColor: '#ad2069', '&:hover': {
                   backgroundColor: '#b4269a', // Set the hover background color
                 },
@@ -152,12 +153,12 @@ export default function Login(props) {
             </Button>
             <Grid container>
               <Grid item xs={6}> {/* Change the xs value */}
-                <Link style={{fontFamily:'"Calibri", sans-serif'}} component={RouterLink} to="/forgot_password" variant="body2">
+                <Link style={{ fontFamily: '"Calibri", sans-serif' }} component={RouterLink} to="/forgot_password" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item xs={6}> {/* Change the xs value */}
-                <Link style={{fontFamily:'"Calibri", sans-serif'}} component={RouterLink} to="/SignUp" variant="body2">
+                <Link style={{ fontFamily: '"Calibri", sans-serif' }} component={RouterLink} to="/SignUp" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

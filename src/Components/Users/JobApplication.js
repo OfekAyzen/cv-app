@@ -68,7 +68,7 @@ export default function JobApplication(props) {
     const [email, setEmail] = useState('');
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
-    const [flashMessage, setFlashMessage] = useState('');
+  
     const [location, setLocation] = useState('');
     const [phone_number, setPhoneNumber] = useState('');
     const [gender, setGender] = useState('');
@@ -79,8 +79,8 @@ export default function JobApplication(props) {
     const [position, setPosition] = useState('');
     const [certifications, setCertifications] = useState('');
     const [data, setData] = useState('');
-    const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-    const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+ 
+   
     const { job_id } = useParams();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [cvFile, setCvFile] = useState('');
@@ -88,12 +88,10 @@ export default function JobApplication(props) {
     const [open, setOpen] = useState(false);
     const applyJobJobId = job_id || props.job_id;
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
-    const [flashSeverity, setFlashSeverity] = useState('success'); // Severity of the flash message (success, error, warning, info)
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const handleSnackbar = (message, severity) => {
-        setFlashMessage(message);
-        setFlashSeverity(severity);
-    };
+  
+   
+   
+   
     const educationOptions = [
         "All",
         "High School",
@@ -117,53 +115,15 @@ export default function JobApplication(props) {
 
         try {
 
-
-            // Get the cvFileKey from localStorage
-            // const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
-
-            // // Define the candidate data
-            // const candidateData = {
-            //     input: {
-            //         first_name: first_name,
-            //         last_name: last_name,
-            //         location: location,
-            //         email: email,
-            //         phone_number: phone_number,
-            //         gender: gender,
-            //         education: education,
-            //         work_experience: work_experience,
-            //         skills: skills,
-            //         position: position,
-            //         certifications: certifications,
-            //         cv: cvFileKeyFromStorage, // Use the saved CV file key
-            //     },
-            // };
-
-            // // Update the createCandidate mutation to include cvFileKey
-            // const response = await API.graphql(
-            //     graphqlOperation(createCandidate, candidateData)
-            // );
-
-            // if (response.data.createCandidate) {
-            //     // Candidate was successfully created
-            //     const candidateId = response.data.createCandidate.id;
                 handleapplyjob(candidateId); // Call the function to create CandidateJobs
                 navigate('/HomePage');
-                //  props.onClose();
-
-            // } else {
-            //     // Handle candidate creation failure
-            //     handleSnackbar('Failed to submit application.', 'error');
-
-            // }
-
-            // Remove cvFileKey from localStorage after use
+             
             localStorage.removeItem('cvFileKey');
         } catch (error) {
             // Handle errors
             console.error('Error creating candidate:', error);
           
-            setSnackbarOpen(true ); // Open the success snackbar
+           
 
         }
     };
@@ -192,13 +152,14 @@ export default function JobApplication(props) {
                     contentType: cvFile.type,
                 });
                 //  console.log('CV uploaded successfully. Key:', newCvFileKey);
-                setFlashMessage('CV uploaded successfully!');
+                
+                console.log('CV uploaded successfully!:');
                 // Update cvFileKey and save it
                 setCvFileKey(newCvFileKey);
                 localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
             } catch (error) {
                 console.error('Error uploading CV:', error);
-                setSnackbarOpen(true);
+                
             }
         };
 
@@ -223,71 +184,7 @@ export default function JobApplication(props) {
         }
     };
 
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false); // Close the snackbar
-      };
-
-    const handleSubmit = async (event) => {
-        console.log("handleSubmit");
-        event.preventDefault();
-        setFormSubmitted(true); // Mark the form as submitted
-
-        // Validate all fields before proceeding
-        if (
-            !first_name ||
-            !last_name ||
-            !location ||
-            !email ||
-            !phone_number ||
-            !gender ||
-            !education ||
-            !work_experience ||
-            !skills ||
-            !position ||
-            !certifications
-        ) {
-            setFlashMessage('Please fill out all fields.');
-            return; // Stop submission if any field is missing
-        }
-
-        // Check if any field is empty
-        const fieldsToCheck = [
-            first_name,
-            last_name,
-            location,
-            email,
-            phone_number,
-            gender,
-            education,
-            work_experience,
-            skills,
-            position, // Include 'position' in the fields to check
-            certifications,
-        ];
-
-        if (fieldsToCheck.some(field => field === '')) {
-            setFlashMessage('Please fill out all fields.');
-           
-            return;
-        }
-        const data = new FormData(event.currentTarget);
-
-        const candidateData = {
-            first_name: data.get('firstName'),
-            last_name: data.get('lastName'),
-            gender: data.get('gender'),
-            location: data.get('location'),
-            phone_number: data.get('phoneNumber'),
-            email: data.get('email'),
-            position: data.get('position'),
-            education: data.get('education'),
-            work_experience: data.get('workExperience'),
-            skills: data.get('skills'),
-            certifications: data.get('certifications'),
-        };
-
-        setData(candidateData);
-    };
+ 
 
     const handleapplyjob = async (candidateId) => {
         console.log(" handleapplyjob");
@@ -315,7 +212,24 @@ export default function JobApplication(props) {
                     cv: cvFileKeyFromStorage, // Use the saved CV file key
                 },
             };
-
+            if (
+                !first_name ||
+                !last_name ||
+                !location ||
+                !email ||
+                !phone_number ||
+                !gender ||
+                !education ||
+                !work_experience ||
+                !skills ||
+                !position ||
+                !certifications
+            ) {
+               
+       
+        console.log("Please fill out all fields.");
+               // Stop submission if any field is missing
+            }
             // Update the createCandidate mutation to include cvFileKey
             const resp = await API.graphql(
                 graphqlOperation(createCandidate, candidateData)
@@ -334,57 +248,20 @@ export default function JobApplication(props) {
             // console.log("GraphQL Response:", response);
 
             if (response.data.createCandidateJobs) {
-                //  const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
-
-            // Define the candidate data
-            // const candidateData = {
-            //     input: {
-            //         first_name: first_name,
-            //         last_name: last_name,
-            //         location: location,
-            //         email: email,
-            //         phone_number: phone_number,
-            //         gender: gender,
-            //         education: education,
-            //         work_experience: work_experience,
-            //         skills: skills,
-            //         position: position,
-            //         certifications: certifications,
-            //         cv: cvFileKeyFromStorage, // Use the saved CV file key
-            //     },
-            // };
-
-            // // Update the createCandidate mutation to include cvFileKey
-            // const response = await API.graphql(
-            //     graphqlOperation(createCandidate, candidateData)
-            // );
-                // Application was successfully created
-                // handleSnackbar('Application submitted successfully!', 'success');
-                // if (props && props.onApplicationSuccess && typeof props.onApplicationSuccess === 'function') {
-                //     props.onApplicationSuccess('Application submitted successfully!', 'success');
-                // } else {
-                //     console.error('invalid function .');
-                //     // Handle the case where onApplicationSuccess is not a valid function
-                // }
-                setFlashMessage('Application submitted successfully!', 'success');
+         
                 localStorage.removeItem('selectedJobId');
                 navigate('/HomePage');
-                // if (props && props.onClose && typeof props.onClose === 'function') {
-                //     props.onClose();
-                // } else {
-                //     console.error('Invalid function for onClose.');
-                //     // Handle the case where onClose is not a valid function
-                // }
+            
 
             } else {
-                // handleSnackbar('Failed to submit application.', 'error');
-                setFlashMessage('Failed to submit application.', 'error');
+              
+                
+                console.log('Failed to submit application.');
             }
-            setFlashMessage('Application submitted successfully!', 'success');
+            console.log('Application submitted successfully!');
+          
         } catch (error) {
-            // Handle GraphQL or other errors
-            // handleSnackbar('Error applying for the job.', 'error');
-            setFlashMessage('For applying the job you need to login', 'error');
+     
             console.error('Error applying for the job:', error);
             navigate("/Login");
         }
@@ -393,18 +270,9 @@ export default function JobApplication(props) {
 
 
     return (
-        // <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '800px', backgroundColor: 'black' }}>
-        // <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  backgroundColor: 'white' }}>
-        //     <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px' ,backgroundColor:'black'}}>
-        //         <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
-
-        //     </div>
-        //     <Divider style={{ backgroundColor: 'white' }} />
-        //     <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex', minWidth: '900px', height: '600px' }}>
+       
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',height: '800px' , }}>
-            {/* <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '8px', backgroundColor: 'black' }}>
-                <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-            </div> */}
+        
             <Divider style={{ backgroundColor: 'white' }} />
             <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
                 <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '30px' }}>
@@ -637,17 +505,10 @@ export default function JobApplication(props) {
                     }}>
                         Apply and Save
                     </Button>
+
+                  
                 </div>
 
-                <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={3000}
-            onClose={handleSnackbarClose}
-          >
-            <Alert severity="error" sx={{ width: '100%' }}>
-            Error creating candidate 
-            </Alert>
-          </Snackbar>
                     
             </Container>
         </div>

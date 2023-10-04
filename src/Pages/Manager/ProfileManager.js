@@ -326,7 +326,7 @@ function ProfileManager() {
               {loading ? (
                 <CircularProgress
                   style={{
-                    margin: "100px auto",
+                    margin: "1000px auto",
                     display: "flex",
                     color: "rgb(174, 43, 91)",
                   }}

@@ -114,6 +114,7 @@ import { useNavigate } from 'react-router-dom';
 import "../../styles/User.css";
 
 import { Link, RouterLink } from 'react-router-dom';
+import MaterialIcon from './MaterialIcon';
 const JobDetailsPage = ({ selectedJob }) => {
     const navigate = useNavigate();
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
@@ -233,7 +234,7 @@ const JobDetailsPage = ({ selectedJob }) => {
         >
 
             {loading ? (
-                <CircularProgress style={{ color: '#ad2069' }} />
+                <CircularProgress style={{backgroundColor:'whitesmoke', color: '#ad2069' ,display:'flex',alignContent:'center',justifyContent:'center',flexDirection:'column'}} />
             ) : (
                 <div style={{ width: '100%', paddingTop: isMobileView ? '2%' : '2%' }}>
 
@@ -251,7 +252,10 @@ const JobDetailsPage = ({ selectedJob }) => {
                         <div style={{ display: 'flex', ackgroundColor: 'white', width: '100%', padding: '20px' }}>
                             <Container style={{
                                 backgroundColor: 'white',
-                                padding: 0,
+                                // padding: 0,
+                                paddingLeft:'10%',
+                                paddingRight:'10%',
+                                
                                 display: 'flex',
                                 flexDirection: isMobileView ? 'column' : 'column',
                                 alignItems: 'center',
@@ -259,10 +263,10 @@ const JobDetailsPage = ({ selectedJob }) => {
                                 // maxWidth: '1200px',
                             }}>
 
-                                <Typography variant="h4" style={{ paddingBottom: '10px' }}>
+                                <Typography variant="h4" style={{ paddingBottom: '5%' }}>
                                     {jobDetails.job_title}
                                 </Typography>
-                                <Typography variant="h4" style={{ fontSize: '10px', color: 'grey ', justifyContent: 'flex-start' }}>
+                                <Typography variant="h4" style={{ fontSize: '14px', color: 'grey ', justifyContent: 'flex-start' }}>
                                     Full-time  ·  Yeruham, israel
                                 </Typography>
                                 <Typography className='position-text' variant="body1">{jobDetails.job_description}</Typography>
@@ -274,12 +278,18 @@ const JobDetailsPage = ({ selectedJob }) => {
                                     </Link>
                                 </Typography>
                                 <JobApplication job_id={(selectedJob && selectedJob.id) || jobID} onCloseSnackbar={handleCloseSnackbar} />
+                                <div style={{display:'flex',alignItems:'center'  }}>
+                                    {!isMobileView && ( <MaterialIcon ></MaterialIcon> )}
+                               
+                                </div>
+                               
                             </Container>
                         </div>
                     )}
 
                 </div>
             )}
+            
         </div>
 
 

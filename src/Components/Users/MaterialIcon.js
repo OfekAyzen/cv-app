@@ -14,7 +14,7 @@ export default function MaterialIcon() {
       <Stack direction="row" alignItems="center" spacing={4} >
     
        
-        <a href="https://www.facebook.com/TECH19YERUHAM"><FacebookIcon  sx={{ color: "grey" }} fontSize="large" /></a>
+        <a href="https://www.facebook.com/TECH19YERUHAM"><FacebookIcon  sx={{ color: "grey", }} fontSize="large" /></a>
         <a href="https://www.linkedin.com/company/tech-19/mycompany/"><LinkedInIcon sx={{ color: "grey" }} fontSize="large"  /></a>
         <a href="https://instagram.com/tech__19?igshid=MzRlODBiNWFlZA=="><InstagramIcon fontSize="large" sx={{ color: "grey" }} /></a>
        

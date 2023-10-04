@@ -176,6 +176,7 @@ const ViewJobs = (props) => {
       {loading ? (
         <Container
         className="container-user"
+     
       // sx={{
       //   display: 'flex',
       //   justifyContent: 'center',
@@ -188,7 +189,7 @@ const ViewJobs = (props) => {
       ) : error ? (
         <div>{error}</div>
       ) : jobsData.length > 0 ? (
-        <Container className="container-user">
+        <Container className="container-user"  >
           <Typography
             variant="h2"
             align="center"
@@ -207,7 +208,7 @@ const ViewJobs = (props) => {
           >
             Open Jobs
           </Typography> */}
-          <Grid container spacing={1}>
+          <Grid container spacing={1}  sx={{display:isMobileView? 'contents':'flex'}}>
             {jobsData.map((job) => (
               <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%' }}>
                 <Card

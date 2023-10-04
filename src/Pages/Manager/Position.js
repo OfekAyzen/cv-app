@@ -158,11 +158,7 @@ function Position(props) {
   return (
     <div className="profile-div" >
       <ToolBars />
-      {/* {isLoading && (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <CircularProgress sx={{ color: '#b4269a' }} />
-        </div>
-      )} */}
+     
       <Typography sx={{
         display: 'flex',
         textAlign: 'start',
@@ -210,7 +206,8 @@ function Position(props) {
                           onChange={(e) => setPositionName(e.target.value)}
                         />
                       ) : (
-                        position.job_title
+                        <Typography   style={{fontFamily:'"Calibri", sans-serif' }}> {position.job_title}</Typography> 
+                        
                       )}
                     </TableCell>
                     <TableCell>
@@ -224,12 +221,14 @@ function Position(props) {
                           onChange={(e) => setEditedJobDescription(e.target.value)}
                         />
                       ) : (
-                        position.job_description
+                        <Typography   style={{fontFamily:'"Calibri", sans-serif' }}> {position.job_description}</Typography> 
+                        
                       )}
                     </TableCell>
                     <TableCell>
                       {selectedPosition === position ? (
                         <TextField
+                      
                           className="custom-select"
                           value={editedQualifications}
                           multiline // Enable multiline input
@@ -238,7 +237,7 @@ function Position(props) {
                           onChange={(e) => setEditedQualifications(e.target.value)}
                         />
                       ) : (
-                        position.qualifications
+                      <Typography   style={{fontFamily:'"Calibri", sans-serif' }}> {position.qualifications}</Typography> 
                       )}
                     </TableCell>
                     <TableCell>

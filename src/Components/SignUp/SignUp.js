@@ -92,14 +92,14 @@ export default function SignUp({ }) {
             alignItems: 'center',
           }}
         >
-        <Box sx={{display:'flex',alignContent:'center',textAlign:'center',flexDirection:'column'}}>
-           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+        <Box sx={{display:'flex',alignContent:'center',textAlign:'center',flexDirection:'column',alignItems:'center',}}>
+           <Avatar sx={{ m: 1, bgcolor: 'secondary.main'}}>
+            <LockOutlinedIcon  />
           </Avatar>
-          <Typography style={{fontFamily:'"Calibri", sans-serif'}}  component="h1" variant="h4">
+          <Typography style={{fontFamily:'"Calibri", sans-serif',display:'flex',textAlign:'center' ,justifyContent:'center'}}  component="h1" variant="h4">
             Sign up
           </Typography>
-          <Typography  style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h5">
+          <Typography  style={{fontFamily:'"Calibri", sans-serif',display:'flex',textAlign:'center' ,justifyContent:'center'}} component="h1" variant="h5">
             Join our website
           </Typography>
           </Box>
@@ -198,6 +198,7 @@ export default function SignUp({ }) {
               fullWidth
               variant="contained"
               sx={{
+                
                 fontFamily:'"Calibri", sans-serif',
                 mt: 4,
                 mb: 2,
@@ -214,7 +215,7 @@ export default function SignUp({ }) {
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
-                <Link style={{fontFamily:'"Calibri", sans-serif'}} href="/Login" variant="body2">
+                <Link style={{fontFamily:'"Calibri", sans-serif',display:'flex',textAlign:'center' ,justifyContent:'center'}} href="/Login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
