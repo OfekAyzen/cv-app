@@ -174,18 +174,11 @@ const ViewJobs = (props) => {
     <div style={{ backgroundColor: 'black', width: '100%', display: 'flex' }}>
      
       {loading ? (
-        <Container
-        className="container-user"
-     
-      // sx={{
-      //   display: 'flex',
-      //   justifyContent: 'center',
-      //   alignItems: 'center',
-      //   height: '100vh',
-      // }}
-      >
-        <CircularProgress sx={{ color: 'purple' }} />
-      </Container>
+          <div style={{height:'1200px',width:'100%',backgroundColor:'white', color: '#ad2069' }}>
+          <CircularProgress style={{backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
+         </div>
+       
+
       ) : error ? (
         <div>{error}</div>
       ) : jobsData.length > 0 ? (
@@ -222,7 +215,7 @@ const ViewJobs = (props) => {
                     backgroundColor: 'rgb(243 243 243)',
                     paddingLeft: '5%',
                     boxShadow:
-                      '-15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)',
+                     '-9px 7px 0px 0px rgb(0 0 0 / 10%), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);',
                   }}
                 >
                   <CardContent sx={{ flexGrow: 1 ,minWidth:'30px' }} className="jobs-cards">

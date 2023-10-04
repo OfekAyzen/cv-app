@@ -118,11 +118,11 @@ export default function ProfileUser(props) {
       <Grid container alignItems="center" sx={{ backgroundColor: 'whitesmoke', width: '100%', height:isMobileView? '200px': '350px' }}>
        
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px', height: '80%', }}>
-            <Typography variant="h3" sx={{ color:'black',fontFamily:'"Calibri", sans-serif',textAlign: 'center', marginBottom: '10px', fontSize:isMobileView? '25px' : '50px', fontWeight: 'bold', }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobileView? '0px':'10px', height: '80%', }}>
+            <Typography variant="h3" sx={{ color:'black',fontFamily:'"Calibri", sans-serif',textAlign: 'center', marginBottom: isMobileView?'20px':'10px', fontSize:isMobileView? '28px' : '50px', fontWeight: 'bold', }}>
               Advanced Engineering
             </Typography>
-            <Typography variant="h4" sx={{ color:'#ad2069',fontFamily:'"Calibri", sans-serif',textAlign: 'center',  fontSize:isMobileView? '15px' : '30px', fontWeight: 'bold' }}>
+            <Typography variant="h4" sx={{ color:'#ad2069',fontFamily:'"Calibri", sans-serif',textAlign: 'center',  fontSize:isMobileView? '18px' : '30px', fontWeight: 'bold',marginBottom: isMobileView?'30px':'10px' }}>
               Solutions
             </Typography>
           
@@ -153,6 +153,7 @@ export default function ProfileUser(props) {
 
 
       <ViewJobs></ViewJobs>
+      
       <MaterialIcon></MaterialIcon>
     </>
   );

@@ -27,7 +27,7 @@ function Position(props) {
   const [editedQualifications, setEditedQualifications] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  
 
   useEffect(() => {
     fetchJobs();
@@ -172,7 +172,16 @@ function Position(props) {
 
       }}>Manage Job list</Typography>
 
-
+{isLoading ? (
+                <div style={{display:'flex',height:'1500px',marginLeft:'5%'}}> <CircularProgress
+                style={{
+                  margin: "100px auto",
+                  display: "flex",
+                  color: "rgb(174, 43, 91)",
+                }}
+              /></div>
+               
+              ) : (
       <Box className="Box-profile" >
         <div className='candidates-list'  >
 
@@ -295,6 +304,7 @@ function Position(props) {
           </Snackbar>
         </div>
       </Box>
+      )}
       <Typography sx={{ backgroundColor: 'rgb(224 224 224)' ,paddingTop:'5%'}} variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" href="">

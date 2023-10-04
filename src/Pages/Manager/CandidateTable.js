@@ -373,7 +373,7 @@ const CandidateTable = ({
         className="candidate-table"
     
       >
-        <div className="container" style={{  padding: '15px',width: '120%'  }} >
+        <div className="container" style={{  padding: '15px',width: '140%'  }} >
           <CandidateFilterForm onFilter={handleFilter} />
 
           <div className="orderby">

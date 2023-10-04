@@ -324,15 +324,17 @@ function ProfileManager() {
           
             
               {loading ? (
-                <CircularProgress
-                  style={{
-                    margin: "1000px auto",
-                    display: "flex",
-                    color: "rgb(174, 43, 91)",
-                  }}
-                />
+                <div style={{display:'flex',height:'1500px',marginLeft:'15%'}}> <CircularProgress
+                style={{
+                  margin: "100px auto",
+                  display: "flex",
+                  color: "rgb(174, 43, 91)",
+                }}
+              /></div>
+               
               ) : (
-                <CandidateTable 
+              
+                  <CandidateTable 
                   candidates={combinedData}
                   selectedJobId={selectedJobId}
                   handleViewCandidate={handleViewCandidate}
@@ -340,6 +342,8 @@ function ProfileManager() {
                   handleStatusChange={handleStatusChange}
                   open={isDialogOpen}
                 />
+            
+                
               )}
            
           

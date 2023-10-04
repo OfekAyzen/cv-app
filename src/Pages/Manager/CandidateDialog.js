@@ -185,35 +185,35 @@ const CandidateDialog = ({
               <Typography variant="h4" sx={{ paddingTop: "15px", fontSize: "40px" }}>
                 {selectedCandidate.first_name} {selectedCandidate.last_name} cv
               </Typography>
-              <Typography sx={{ paddingTop: "35px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "35px", fontSize: "18px", fontFamily:'"Calibri", sans-serif',}}>
                 <MailOutlineIcon fontSize="small" /> Email: {selectedCandidate.email}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
                 <LocalPhoneOutlinedIcon fontSize="small" /> Phone: {selectedCandidate.phone_number}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
                 <AddLocationAltOutlinedIcon fontSize="small" /> Location: {selectedCandidate.location}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
                 <WcOutlinedIcon fontSize="small" /> Gender: {selectedCandidate.gender}
               </Typography>
               <hr />
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
                 Position: {selectedCandidate.position || 'No Job Title'}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
                 Education: {selectedCandidate.education}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
                 Experience: {selectedCandidate.work_experience}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
                 Skills: {selectedCandidate.skills}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
                 Certification: {selectedCandidate.certifications}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" }}>
+              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
                 Department: {selectedCandidate.position}
               </Typography>
 
@@ -228,7 +228,7 @@ const CandidateDialog = ({
                 }}
               >
                 <FormControl variant="outlined" sx={{ width: "300px" }} className="custom-text-field">
-                  <InputLabel>Status</InputLabel>
+                  <InputLabel style={{ fontFamily:'"Calibri", sans-serif',}}>Status</InputLabel>
                   <Select
                     value={newStatus || ""}
                     onChange={(e) => setNewStatus(e.target.value)}
@@ -249,7 +249,7 @@ const CandidateDialog = ({
                   variant="contained"
                   color="primary"
                   size="small"
-                  sx={{
+                  sx={{fontFamily:'"Calibri", sans-serif',
                     backgroundColor: "#ad2069",
                     "&:hover": {
                       backgroundColor: "#ff98b5",
@@ -277,6 +277,7 @@ const CandidateDialog = ({
                   color="primary"
                   size="small"
                   sx={{
+                     fontFamily:'"Calibri", sans-serif',
                     backgroundColor: "#ad2069",
                     "&:hover": {
                       backgroundColor: "#ff98b5",

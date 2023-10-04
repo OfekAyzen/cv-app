@@ -221,7 +221,7 @@ const JobDetailsPage = ({ selectedJob }) => {
                 // top: 0,
                 // left: 0,
                 width: '100%',
-
+                
                 // height: '100vh', // Adjusted to 100vh to fill viewport height
                 backgroundColor: 'white',
                 display: 'flex',
@@ -234,7 +234,10 @@ const JobDetailsPage = ({ selectedJob }) => {
         >
 
             {loading ? (
-                <CircularProgress style={{backgroundColor:'whitesmoke', color: '#ad2069' ,display:'flex',alignContent:'center',justifyContent:'center',flexDirection:'column'}} />
+                <div style={{height:'1200px',width:'100%',backgroundColor:'white', color: '#ad2069' }}>
+                     <CircularProgress style={{backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
+                    </div>
+               
             ) : (
                 <div style={{ width: '100%', paddingTop: isMobileView ? '2%' : '2%' }}>
 
