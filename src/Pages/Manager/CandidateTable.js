@@ -157,7 +157,7 @@ const CandidateRow = ({ candidate,
       <TableCell   className="my-font">{candidate.candidate.skills}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.status}</TableCell>
       <TableCell   className="fullWidthCell">
-        <Button variant="contained" color="secondary" onClick={() => handleDelete(candidate.candidate.id)}>
+        <Button variant="contained" color="secondary" style={{fontFamily:'"Calibri", sans-serif',}} onClick={() => handleDelete(candidate.candidate.id)}>
           Delete
         </Button>
       </TableCell>
@@ -445,7 +445,7 @@ const CandidateTable = ({
            borderBottomLeftRadius:'10px',borderBottomRightRadius:'15px',}}>
           <Button
         variant="contained"
-        sx={{ backgroundColor: 'grey','&:hover': {
+        sx={{fontFamily:'"Calibri", sans-serif', backgroundColor: 'grey','&:hover': {
           backgroundColor: 'darkgrey'
         } }}
         onClick={handleAddCandidateClick}

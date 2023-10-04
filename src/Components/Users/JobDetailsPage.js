@@ -255,14 +255,18 @@ const JobDetailsPage = ({ selectedJob }) => {
                             width: '100%',
                             maxWidth: '1200px',
                             }}>
+                               
                             <Typography variant="h4" style={{ paddingBottom: '10px' }}>
                                 {jobDetails.job_title}
+                            </Typography>
+                            <Typography variant="h4" style={{ fontSize: '10px',color:'grey ',justifyContent:'flex-start' }}>
+                                Yeruham , full time 
                             </Typography>
                             <Typography className='position-text' variant="body1">{jobDetails.job_description}</Typography>
                             <Divider style={{ margin: '16px 0' }} />
                             <Typography className='position-text' variant="body1">Qualifications: {jobDetails.qualifications}</Typography>
                             <Typography variant="body1" style={{ fontSize: '16px', marginTop: '15px', color: 'purple' }}>
-                                To apply to this job, you need to login
+                                To apply for this job, you need to login
                             </Typography>
                             <JobApplication job_id={(selectedJob && selectedJob.id) || jobID} onCloseSnackbar={handleCloseSnackbar} />
                             </Container>

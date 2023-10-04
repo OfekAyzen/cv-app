@@ -72,7 +72,7 @@ const ConfirmForgotPassword = () => {
                         </Avatar>
                     </div>
 
-                    <Typography component="h1" variant="h4">
+                    <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h4">
                         Confirm Sign Up
                     </Typography>
                     <div>
@@ -108,6 +108,7 @@ const ConfirmForgotPassword = () => {
                             fullWidth
                             variant="contained"
                             sx={{
+                               fontFamily:'"Calibri", sans-serif',
                                 mt: 3,
                                 mb: 2,
                                 backgroundColor: '#ad2069',
@@ -124,7 +125,7 @@ const ConfirmForgotPassword = () => {
                             {message}
                         </Typography>
                         <Grid item xs={6}>
-                            <Link component={RouterLink} to="/forgot_password" variant="body2">
+                            <Link style={{fontFamily:'"Calibri", sans-serif'}} component={RouterLink} to="/forgot_password" variant="body2">
                                 Forgot password?
                             </Link>
                         </Grid>

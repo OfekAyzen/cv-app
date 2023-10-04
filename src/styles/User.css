@@ -13,7 +13,8 @@
 }
 
 .position-text{
-    font-family: "NeueHelvetica" !important;
+    /* font-family: "NeueHelvetica" !important; */
+    font-family:"Calibri", sans-serif !important;
     font-size: 1.0rem !important;
       
 

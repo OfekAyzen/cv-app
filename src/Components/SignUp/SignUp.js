@@ -96,10 +96,10 @@ export default function SignUp({ }) {
            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h4">
+          <Typography style={{fontFamily:'"Calibri", sans-serif'}}  component="h1" variant="h4">
             Sign up
           </Typography>
-          <Typography component="h1" variant="h5">
+          <Typography  style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h5">
             Join our website
           </Typography>
           </Box>
@@ -198,6 +198,7 @@ export default function SignUp({ }) {
               fullWidth
               variant="contained"
               sx={{
+                fontFamily:'"Calibri", sans-serif',
                 mt: 4,
                 mb: 2,
                 width: '30%',
@@ -213,7 +214,7 @@ export default function SignUp({ }) {
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
-                <Link href="/Login" variant="body2">
+                <Link style={{fontFamily:'"Calibri", sans-serif'}} href="/Login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

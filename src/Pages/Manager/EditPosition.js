@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import "../../styles/Profilemanager.css";
 import Link from '@mui/material/Link';
 function Copyright(props) {
   return (
@@ -62,7 +63,7 @@ const EditPostion = ({ jobId }) => {
             }}
           >
         
-            <Typography component="h1" variant="h4">
+            <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h4">
               Job Application
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>

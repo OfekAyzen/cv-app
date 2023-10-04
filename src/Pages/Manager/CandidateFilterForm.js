@@ -145,6 +145,7 @@ function CandidateFilterForm({ onFilter }) {
               onClick={handleFilter}
               fullWidth
               sx={{
+               fontFamily:'"Calibri", sans-serif',
                 height: "50%",
                 width: '150px',
                 backgroundColor: '#ad2069',

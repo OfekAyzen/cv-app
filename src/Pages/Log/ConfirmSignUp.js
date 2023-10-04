@@ -144,7 +144,7 @@ const ConfirmSignUp = () => {
             <LockOutlinedIcon />
           </Avatar>
         </div>
-          <Typography component="h1" variant="h4">
+          <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h4">
             Verification code
           </Typography>
           <div>
@@ -169,6 +169,7 @@ const ConfirmSignUp = () => {
               fullWidth
               variant="contained"
               sx={{
+               fontFamily:'"Calibri", sans-serif',
                 mt: 3,
                 mb: 2,
                 backgroundColor: '#ad2069',
@@ -182,13 +183,13 @@ const ConfirmSignUp = () => {
             </Button>
             {/* Snackbar for success message */}
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-              <MuiAlert elevation={6} variant="filled" severity="success" onClose={handleCloseSnackbar}>
+              <MuiAlert style={{fontFamily:'"Calibri", sans-serif'}} elevation={6} variant="filled" severity="success" onClose={handleCloseSnackbar}>
                 Confirmation successful!
               </MuiAlert>
             </Snackbar>
           </div>
           <Grid item xs={6}> {/* Change the xs value */}
-            <Link component={RouterLink} to="/forgot_password" variant="body2">
+            <Link style={{fontFamily:'"Calibri", sans-serif'}} component={RouterLink} to="/forgot_password" variant="body2">
               Forgot password?
             </Link>
           </Grid>

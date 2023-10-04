@@ -39,89 +39,6 @@ export default function Login(props) {
   const navigate = useNavigate();
 
 
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-
-  //   try {
-  //     const user = await Auth.signIn(username, password);
-
-  //     console.log(user.signInUserSession.idToken.payload);
-  //     // Assuming you have the user object
-  //     const my_user = user.signInUserSession.idToken.payload;
-
-  //     // Check if the user is in the Admin group
-  //     const isAdmin = my_user["cognito:groups"].includes("Admin");
-
-  //     // Check if the user is in the General group
-  //     const isGeneral = my_user["cognito:groups"].includes("General");
-
-     
-  //     const selectedJobId = localStorage.getItem('selectedJobId');
-  //      if (isAdmin) {
-      
-  //       navigate("/Profile");
-  //     } else if (isGeneral) {
-  //       // User is in the General group
-  //       navigate('/HomePage');
-  //       // console.log("User is in the General group.");
-  //       if (selectedJobId) {
-  //         // Redirect the user to the specific job page
-  //         navigate(`/Apply/${selectedJobId}`);
-  //       } else {
-  //         // Redirect the user to a default page
-  //         navigate('/HomePage'); // Use the actual default route
-  //       }
-  //       setMessage(' fgd'); 
-  //     } else {
-  //       // User is not in any specified group
-        
-  //       navigate('/HomePage');
-  //       // console.log("User is not in any specified group.");
-  //     }
-      
-      
-  //   } catch (error) {
-  //     setMessage(error.message);
-  //     console.log('error signing in', error);
-  //   }
-  // };
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  
-  //   try {
-  //     const user = await Auth.signIn(username, password);
-  
-  //     console.log(user.signInUserSession.idToken.payload);
-  //     const my_user = user.signInUserSession.idToken.payload;
-  
-  //     const isAdmin = my_user["cognito:groups"].includes("Admin");
-  //     const isGeneral = my_user["cognito:groups"].includes("General");
-  
-  //     const selectedJobId = localStorage.getItem('selectedJobId');
-  
-  //     if (isAdmin) {
-  //       navigate("/Profile");
-  //     } else if (isGeneral) {
-  //       navigate('/HomePage');
-  //       if (selectedJobId) {
-  //         navigate(`/Apply/${selectedJobId}`);
-  //       } else {
-  //         console.log(" notselectedJobId");
-  //         navigate('/HomePage');
-  //       }
-  //       setMessage(' fgd');
-  //     } else {
-  //       // User is not in any specified group
-  //       console.log("User is not in any specified group");
-  //       navigate('/HomePage');
-  //     }
-  //   } catch (error) {
-  //     setMessage(error.message);
-  //     console.log('error signing in', error);
-  //   }
-  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -167,7 +84,7 @@ export default function Login(props) {
       <div className='div-bar' position="static" >
         <img src={logo} />
       </div>
-      <Container component="main" maxWidth="xs">
+      <Container  component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
@@ -180,10 +97,10 @@ export default function Login(props) {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h4">
+          <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h4">
             Welcome back !
           </Typography>
-          <Typography component="h1" variant="h6">
+          <Typography style={{fontFamily:'"Calibri", sans-serif'}} component="h1" variant="h6">
             Welcome back! Please enter your details.
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, textAlign: 'center', }}>
@@ -223,7 +140,7 @@ export default function Login(props) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{
+              sx={{   fontFamily:'"Calibri", sans-serif',
                 mt: 4, mb: 2, width: '30%', color: 'white', backgroundColor: '#ad2069', '&:hover': {
                   backgroundColor: '#b4269a', // Set the hover background color
                 },
@@ -235,12 +152,12 @@ export default function Login(props) {
             </Button>
             <Grid container>
               <Grid item xs={6}> {/* Change the xs value */}
-                <Link component={RouterLink} to="/forgot_password" variant="body2">
+                <Link style={{fontFamily:'"Calibri", sans-serif'}} component={RouterLink} to="/forgot_password" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item xs={6}> {/* Change the xs value */}
-                <Link component={RouterLink} to="/SignUp" variant="body2">
+                <Link style={{fontFamily:'"Calibri", sans-serif'}} component={RouterLink} to="/SignUp" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

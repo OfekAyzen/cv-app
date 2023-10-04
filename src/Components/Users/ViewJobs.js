@@ -32,6 +32,15 @@ import Dialog from '@mui/material/Dialog';
 import PropTypes from 'prop-types';
 import JobApplication from './JobApplication';
 import JobDetailsPage from './JobDetailsPage';
+
+import Stack from "@mui/material/Stack";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import PinterestIcon from "@mui/icons-material/Pinterest";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import MaterialIcon from './MaterialIcon';
 const ViewJobs = (props) => {
   const [open, setOpen] = React.useState(false);
   const [selectedJobId, setSelectedJobId] = useState('');
@@ -185,9 +194,9 @@ const ViewJobs = (props) => {
             align="center"
             color="Black"
             gutterBottom
-            sx={{ paddingTop: '60px', fontSize: '50px' ,paddingBottom:'50px'}}
+            sx={{ paddingTop: '60px', fontSize: '40px' ,paddingBottom:'50px', fontFamily:'"Calibri", sans-serif',}}
           >
-            Join our team
+            Careers
           </Typography>
           {/* <Typography
             variant="h5"
@@ -203,6 +212,7 @@ const ViewJobs = (props) => {
               <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%' }}>
                 <Card
                   sx={{
+                    
                     height: '100%',
                     width: '80%',
                     display: 'flex',
@@ -214,12 +224,13 @@ const ViewJobs = (props) => {
                       '-15px 12px 0px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)',
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1 }} className="jobs-cards">
-                    <Typography gutterBottom variant="h4" sx={{ color: 'black' }}>
+                  <CardContent sx={{ flexGrow: 1 ,minWidth:'30px' }} className="jobs-cards">
+                    <Typography gutterBottom variant="h4" sx={{ fontFamily:'"Calibri", sans-serif',color: 'black',fontSize:'19px' }}>
                       {job.job_title}
                     </Typography>
-                    <Typography gutterBottom variant="h6" sx={{ color: '#6d6363' }}>
-                      Full Time | Part Time
+                    <Typography gutterBottom variant="h6" sx={{ fontFamily:'"Calibri", sans-serif',color: '#6d6363',fontSize:'16px' }}>
+                     
+                    Full-time  ·  Yeruham, israel                                                
                     </Typography>
                   </CardContent>
                   <CardActions
@@ -232,9 +243,9 @@ const ViewJobs = (props) => {
                   >
                     
                     <Button
-                      variant="outlined"
+                      
                       onClick={() => handleButtonClick(job,job.id)}
-                      sx={{
+                      sx={{fontFamily:'"Calibri", sans-serif',
                         color: 'rgb(224, 104, 154)',
                         borderBlockColor: ' rgb(224, 104, 154)',
                         marginBottom:'5%',
@@ -247,6 +258,7 @@ const ViewJobs = (props) => {
               </Grid>
             ))}
           </Grid>
+        
         </Container>
       ) : (
         <p>No job data available.</p>

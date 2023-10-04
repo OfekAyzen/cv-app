@@ -156,7 +156,7 @@ function Position(props) {
   };
 
   return (
-    <div>
+    <div className="profile-div" >
       <ToolBars />
       {/* {isLoading && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -170,7 +170,7 @@ function Position(props) {
         paddingLeft: '6%',
         paddingTop: '3%',
         paddingBottom: '3%',
-        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontFamily:'"Calibri", sans-serif',
         fontWeight: 'bold',
 
 
@@ -187,9 +187,9 @@ function Position(props) {
               <TableHead>
                 <TableRow>
                   {/* <TableCell>Job id</TableCell> */}
-                  <TableCell>Position Name</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Qualifications</TableCell>
+                  <TableCell style={{ fontFamily:'"Calibri", sans-serif',}}>Position Name</TableCell>
+                  <TableCell style={{ fontFamily:'"Calibri", sans-serif',}}>Description</TableCell>
+                  <TableCell style={{ fontFamily:'"Calibri", sans-serif',}}>Qualifications</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -244,11 +244,11 @@ function Position(props) {
                     <TableCell>
                       {selectedPosition === position ? (
                         <Button
-
+                     
                           variant="contained"
                           color="secondary"
                           onClick={() => handleSaveChanges(position)}
-                          sx={{ backgroundColor: '#ad2069' }}
+                          sx={{fontFamily:'"Calibri", sans-serif', backgroundColor: '#ad2069' }}
                           multiline // Enable multiline input
                           rows={3} // Adjust the number of rows as needed
                           fullWidth // Expand to fit the container width
@@ -259,12 +259,14 @@ function Position(props) {
                         <>
                           <Button
                             color="secondary"
+                            style={{fontFamily:'"Calibri", sans-serif'}}
                             startIcon={<DeleteIcon />}
                             onClick={() => handleDeletePosition(position)}
                           >
                             Delete
                           </Button>
                           <Button
+                           style={{fontFamily:'"Calibri", sans-serif'}}
                             color="primary"
                             startIcon={<EditIcon />}
                             onClick={() => handleEditPosition(position)}

@@ -17,6 +17,7 @@ import { createJobs, updateJobs, deleteJobs } from '../../graphql/mutations';
 import { listJobs } from '../../graphql/queries';
 import { Auth } from 'aws-amplify';
 import "../../styles/User.css";
+import MaterialIcon from './MaterialIcon';
 const defaultTheme = createTheme();
 
 export default function ProfileUser(props) {
@@ -118,13 +119,13 @@ export default function ProfileUser(props) {
         {/* Left side: Advanced Engineering Solutions */}
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px', height: '80%', }}>
-            <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: '10px', fontSize:isMobileView? '35px' : '60px', fontWeight: 'bold', color: '#f500ec' }}>
+            <Typography variant="h3" sx={{ fontFamily:'"Calibri", sans-serif',textAlign: 'center', marginBottom: '10px', fontSize:isMobileView? '35px' : '60px', fontWeight: 'bold', color: '#f500ec' }}>
               Advanced Engineering
             </Typography>
-            <Typography variant="h4" sx={{ textAlign: 'center', color: 'white', fontSize: '40px', fontWeight: 'bold' }}>
+            <Typography variant="h4" sx={{ fontFamily:'"Calibri", sans-serif',textAlign: 'center', color: 'white', fontSize: '40px', fontWeight: 'bold' }}>
               Solutions
             </Typography>
-            <Typography variant="h6" sx={{ textAlign: 'center', color: 'white', fontSize: '35px',fontWeight: 'bold'  }}>
+            <Typography variant="h6" sx={{fontFamily:'"Calibri", sans-serif', textAlign: 'center', color: 'white', fontSize: '35px',fontWeight: 'bold'  }}>
              Open Jobs
             </Typography>
           </Box>
@@ -141,6 +142,7 @@ export default function ProfileUser(props) {
 
 
       <ViewJobs></ViewJobs>
+      <MaterialIcon></MaterialIcon>
     </>
   );
 }

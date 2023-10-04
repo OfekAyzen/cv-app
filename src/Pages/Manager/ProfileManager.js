@@ -316,7 +316,7 @@ function ProfileManager() {
       <Grid container spacing={3}  className="grid-container">
         <Grid item xs={12} >
           <ToolBars />
-          <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' ,fontFamily:'Calibri, sans-serif'}}>
+          <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' ,fontFamily:'"Calibri", sans-serif',}}>
             Applicants 
           </Typography>
         </Grid>
@@ -349,7 +349,7 @@ function ProfileManager() {
             className="csv-export-button"
             sx={{ color: "#ad2069", marginTop: "16px" ,display:'flex',paddingLeft:'47%'}}
           >
-            <CSVLink data={csvData} filename={"candidates.csv"} sx={{ color: "#ad2069" }}>
+            <CSVLink data={csvData} filename={"candidates.csv"} sx={{ color: "#ad2069",fontFamily:'"Calibri", sans-serif', }}>
               Download CSV
             </CSVLink>
           </Button>
