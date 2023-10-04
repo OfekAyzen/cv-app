@@ -112,6 +112,8 @@ import JobApplication from './JobApplication';
 import logo from "../images/logo_tech19.png";
 import { useNavigate } from 'react-router-dom';
 import "../../styles/User.css";
+
+import { Link, RouterLink } from 'react-router-dom';
 const JobDetailsPage = ({ selectedJob }) => {
     const navigate = useNavigate();
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
@@ -121,9 +123,9 @@ const JobDetailsPage = ({ selectedJob }) => {
     const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
     const handleCloseSnackbar = () => {
         setIsSnackbarOpen(false);
-      };
-   
-    
+    };
+
+
     // useEffect(() => {
     //     // Extract the selectedJobId from local storage
     //     const savedSelectedJobId = localStorage.getItem('selectedJobId');
@@ -169,7 +171,7 @@ const JobDetailsPage = ({ selectedJob }) => {
     useEffect(() => {
         const fetchJobDetails = async () => {
             let jobIdToFetch = selectedJob?.id;
-    
+
             // If selectedJob.id is undefined or null, use the one from localStorage
             if (!jobIdToFetch) {
                 const savedSelectedJobId = localStorage.getItem('selectedJobId');
@@ -177,9 +179,9 @@ const JobDetailsPage = ({ selectedJob }) => {
                     jobIdToFetch = savedSelectedJobId;
                 }
             }
-    
+
             if (!jobIdToFetch) return;
-    
+
             try {
                 const response = await API.graphql(graphqlOperation(getJobs, { id: jobIdToFetch }));
                 const jobDetails = response.data.getJobs;
@@ -191,10 +193,10 @@ const JobDetailsPage = ({ selectedJob }) => {
                 setLoading(true);
             }
         };
-    
+
         fetchJobDetails();
     }, [selectedJob]);
-    
+
     useEffect(() => {
         const handleResize = () => {
             setIsMobileView(window.innerWidth < 600);
@@ -208,17 +210,18 @@ const JobDetailsPage = ({ selectedJob }) => {
     }, []);
 
     const onClose = () => {
-       navigate("/HomePage");
-      };
+        navigate("/HomePage");
+    };
     return (
         <div
-       
+
             style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
+                // position: 'fixed',
+                // top: 0,
+                // left: 0,
                 width: '100%',
-                height: '100vh', // Adjusted to 100vh to fill viewport height
+
+                // height: '100vh', // Adjusted to 100vh to fill viewport height
                 backgroundColor: 'white',
                 display: 'flex',
                 flexDirection: 'column',
@@ -228,47 +231,49 @@ const JobDetailsPage = ({ selectedJob }) => {
                 zIndex: 999
             }}
         >
-            
+
             {loading ? (
                 <CircularProgress style={{ color: '#ad2069' }} />
             ) : (
-                <div style={{ width: '100%', paddingTop: isMobileView ? '230%' : '10%' }}>
-                  
+                <div style={{ width: '100%', paddingTop: isMobileView ? '2%' : '2%' }}>
+
                     <Button
                         onClick={onClose}
                         style={{
                             color: '#ad2069',
-                            marginTop: '20px', // Adjust the margin as needed
+                            // marginTop: '20px', // Adjust the margin as needed
                             width: 'fit-content'
                         }}
                     >
                         ← Back
                     </Button>
                     {jobDetails && (
-                        <div style={{ backgroundColor: 'white', width: '100%', padding: '20px'}}>
+                        <div style={{ display: 'flex', ackgroundColor: 'white', width: '100%', padding: '20px' }}>
                             <Container style={{
-                            backgroundColor: 'white',
-                            padding: 0,
-                            display: 'flex',
-                            flexDirection: isMobileView ? 'column' : 'column',
-                            alignItems: 'center',
-                            width: '100%',
-                            maxWidth: '1200px',
+                                backgroundColor: 'white',
+                                padding: 0,
+                                display: 'flex',
+                                flexDirection: isMobileView ? 'column' : 'column',
+                                alignItems: 'center',
+                                width: '100%',
+                                // maxWidth: '1200px',
                             }}>
-                               
-                            <Typography variant="h4" style={{ paddingBottom: '10px' }}>
-                                {jobDetails.job_title}
-                            </Typography>
-                            <Typography variant="h4" style={{ fontSize: '10px',color:'grey ',justifyContent:'flex-start' }}>
-                            Full-time  ·  Yeruham, israel 
-                            </Typography>
-                            <Typography className='position-text' variant="body1">{jobDetails.job_description}</Typography>
-                            <Divider style={{ margin: '16px 0' }} />
-                            <Typography className='position-text' variant="body1">Qualifications: {jobDetails.qualifications}</Typography>
-                            <Typography variant="body1" style={{ fontSize: '16px', marginTop: '15px', color: 'purple' }}>
-                                To apply for this job, you need to login
-                            </Typography>
-                            <JobApplication job_id={(selectedJob && selectedJob.id) || jobID} onCloseSnackbar={handleCloseSnackbar} />
+
+                                <Typography variant="h4" style={{ paddingBottom: '10px' }}>
+                                    {jobDetails.job_title}
+                                </Typography>
+                                <Typography variant="h4" style={{ fontSize: '10px', color: 'grey ', justifyContent: 'flex-start' }}>
+                                    Full-time  ·  Yeruham, israel
+                                </Typography>
+                                <Typography className='position-text' variant="body1">{jobDetails.job_description}</Typography>
+                                <Divider style={{ margin: '16px 0' }} />
+                                <Typography className='position-text' variant="body1">Qualifications: {jobDetails.qualifications}</Typography>
+                                <Typography variant="body1" style={{ fontSize: '16px', marginTop: '15px', color: 'purple' }}>
+                                    <Link style={{ fontFamily: '"Calibri", sans-serif' }} to="/Login" variant="body2">
+                                        {" To apply for this job, you need to Login"}
+                                    </Link>
+                                </Typography>
+                                <JobApplication job_id={(selectedJob && selectedJob.id) || jobID} onCloseSnackbar={handleCloseSnackbar} />
                             </Container>
                         </div>
                     )}
