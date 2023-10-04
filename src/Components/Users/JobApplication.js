@@ -4,12 +4,12 @@ import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
-import { Alert } from '@mui/material';
+
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import logo from "../images/logo_tech19.png";
 import Typography from '@mui/material/Typography';
-import Snackbar from '@mui/material/Snackbar';
+
 import SnackbarContent from '@mui/material/SnackbarContent';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -28,6 +28,8 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createCandidate } from '../../graphql/mutations';
 import { createCandidateJobs } from '../../graphql/mutations';
 import { Auth } from 'aws-amplify';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import "../../styles/User.css";
 import {
     InputLabel,
@@ -88,8 +90,10 @@ export default function JobApplication(props) {
     const [open, setOpen] = useState(false);
     const applyJobJobId = job_id || props.job_id;
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
-  
-   
+  //handling notifications
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
    
    
     const educationOptions = [
@@ -110,11 +114,37 @@ export default function JobApplication(props) {
     const [cvFileKey, setCvFileKey] = useState(null);
 
 
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (message, severity) => {
+        setSnackbarMessage(message);
+        setSnackbarSeverity(severity);
+        setSnackbarOpen(true);
+    };
+
+
     const createCandidateAndApply = async () => {
         console.log(" createCandidateAndApply");
 
         try {
-
+            if (
+                !first_name ||
+                !last_name ||
+                !location ||
+                !email ||
+                !phone_number ||
+                !gender ||
+                !education ||
+                !work_experience ||
+                !skills ||
+                !position ||
+                !certifications
+            ) {
+                showSnackbar('Please fill out all fields.', 'error');
+                return; // Stop submission if any field is missing
+            }
                 handleapplyjob(candidateId); // Call the function to create CandidateJobs
                 navigate('/HomePage');
              
@@ -154,12 +184,13 @@ export default function JobApplication(props) {
                 //  console.log('CV uploaded successfully. Key:', newCvFileKey);
                 
                 console.log('CV uploaded successfully!:');
+                showSnackbar('CV uploaded successfully!', 'success');
                 // Update cvFileKey and save it
                 setCvFileKey(newCvFileKey);
                 localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
             } catch (error) {
                 console.error('Error uploading CV:', error);
-                
+                showSnackbar('Error uploading CV', 'error');
             }
         };
 
@@ -212,24 +243,8 @@ export default function JobApplication(props) {
                     cv: cvFileKeyFromStorage, // Use the saved CV file key
                 },
             };
-            if (
-                !first_name ||
-                !last_name ||
-                !location ||
-                !email ||
-                !phone_number ||
-                !gender ||
-                !education ||
-                !work_experience ||
-                !skills ||
-                !position ||
-                !certifications
-            ) {
-               
-       
-        console.log("Please fill out all fields.");
-               // Stop submission if any field is missing
-            }
+           
+    
             // Update the createCandidate mutation to include cvFileKey
             const resp = await API.graphql(
                 graphqlOperation(createCandidate, candidateData)
@@ -248,26 +263,35 @@ export default function JobApplication(props) {
             // console.log("GraphQL Response:", response);
 
             if (response.data.createCandidateJobs) {
-         
+                showSnackbar('Application submitted successfully!', 'success');
                 localStorage.removeItem('selectedJobId');
                 navigate('/HomePage');
             
 
             } else {
               
-                
+                showSnackbar('Failed to submit application.', 'error');
                 console.log('Failed to submit application.');
             }
             console.log('Application submitted successfully!');
           
         } catch (error) {
-     
+            showSnackbar('Failed to submit application.', 'error');
             console.error('Error applying for the job:', error);
             navigate("/Login");
         }
     };
 
-
+    useEffect(() => {
+        // Handle Snackbar display based on state
+        if (snackbarOpen) {
+            // Auto-close the Snackbar after 5 seconds
+            const timer = setTimeout(() => {
+                handleSnackbarClose();
+            }, 15000);
+            return () => clearTimeout(timer);
+        }
+    }, [snackbarOpen]);
 
     return (
        
@@ -495,7 +519,7 @@ export default function JobApplication(props) {
                     </Grid>
 
 
-                    <Button onClick={createCandidateAndApply} type="submit" fullWidth variant="contained" sx={{
+                    {/* <Button onClick={createCandidateAndApply} type="submit" fullWidth variant="contained" sx={{
                         backgroundColor: "#ad2069",
                         mt: 4, mb: 3, width: '50%', display: 'flex',
 
@@ -504,13 +528,54 @@ export default function JobApplication(props) {
                         },
                     }}>
                         Apply and Save
-                    </Button>
-
-                  
+                    </Button> */}
+<Button
+    onClick={createCandidateAndApply}
+    type="submit"
+    fullWidth
+    variant="contained"
+    sx={{
+        backgroundColor: "#ad2069",
+        mt: 4,
+        mb: 3,
+        width: '50%',
+        display: 'flex',
+        '&:hover': {
+            backgroundColor: '#b4269a',
+        },
+    }}
+    disabled={
+        !first_name ||
+        !last_name ||
+        !location ||
+        !email ||
+        !phone_number ||
+        !gender ||
+        !education ||
+        !work_experience ||
+        !skills ||
+        !position ||
+        !certifications
+    }
+>
+    Apply and Save
+</Button>
+                   {/* Snackbar for flash messages */}
+            
                 </div>
 
                     
             </Container>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={5000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

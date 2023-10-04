@@ -20,7 +20,8 @@ import Header from "../../Components/Header";
 import "../../styles/LoginPage.css";
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink
 import { Link } from '@mui/material';
 import { Amplify } from 'aws-amplify';
@@ -38,7 +39,59 @@ export default function Login(props) {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const handleSnackbarOpen = (message) => {
+    setMessage(message);
+    setSnackbarOpen(true);
+  };
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   try {
+  //     const user = await Auth.signIn(username, password);
+  //     const my_user = user.signInUserSession.idToken.payload;
+
+  //     // Check if the user is in the Admin group
+  //     const isAdmin = my_user["cognito:groups"] && my_user["cognito:groups"].includes("Admin");
+
+  //     // Check if the user is in the General group
+  //     const isGeneral = my_user["cognito:groups"] && my_user["cognito:groups"].includes("General");
+
+  //     const selectedJobId = localStorage.getItem('selectedJobId');
+
+  //     if (isAdmin) {
+  //       navigate("/Profile");
+  //     } else if (isGeneral) {
+  //       navigate('/HomePage');
+  //       if (selectedJobId) {
+  //         navigate(`/Apply/${selectedJobId}`);
+  //       } else {
+  //         navigate('/HomePage');
+  //       }
+  //       setMessage('Error signing in');
+  //     }
+  //     else if (selectedJobId) {
+  //       navigate(`/Apply/${selectedJobId}`);
+
+  //     } else {
+  //       // User is not in any specified group
+  //       console.log(" ");
+  //       navigate('/HomePage');
+  //     }
+  //   } catch (error) {
+  //     setMessage(error.message);
+  //     console.log('error signing in', error);
+  //   }
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -63,22 +116,19 @@ export default function Login(props) {
         } else {
           navigate('/HomePage');
         }
-        setMessage('Error signing in');
+        handleSnackbarOpen('Error signing in');
       }
       else if (selectedJobId) {
         navigate(`/Apply/${selectedJobId}`);
-
       } else {
         // User is not in any specified group
-        console.log(" ");
         navigate('/HomePage');
       }
     } catch (error) {
-      setMessage(error.message);
-      console.log('error signing in', error);
+      handleSnackbarOpen(error.message);
+
     }
   };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className='div-bar' position="static" >
@@ -97,10 +147,10 @@ export default function Login(props) {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography style={{ fontFamily: '"Calibri", sans-serif' ,display:'flex',textAlign:'center' ,justifyContent:'center'}} component="h1" variant="h4">
+          <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h4">
             Welcome back !
           </Typography>
-          <Typography style={{ fontFamily: '"Calibri", sans-serif' ,display:'flex',textAlign:'center' ,justifyContent:'center'}} component="h1" variant="h6">
+          <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h6">
             Welcome back! Please enter your details.
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, textAlign: 'center', }}>
@@ -109,7 +159,7 @@ export default function Login(props) {
               required
               fullWidth
               id="username"
-              label="Username"
+              label="Email"
               name="username"
               autoComplete="username"
               value={username}
@@ -131,11 +181,7 @@ export default function Login(props) {
               className="custom-select"
 
             />
-            {message && (
-              <Typography variant="body1" color="error" sx={{ mt: 2 }}>
-                {message}
-              </Typography>
-            )}
+          
             <Button
               type="submit"
               fullWidth
@@ -166,6 +212,20 @@ export default function Login(props) {
           </Box>
         </Box>
       </Container>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          {message}
+        </MuiAlert>
+      </Snackbar>
     </ThemeProvider>
   );
 }
