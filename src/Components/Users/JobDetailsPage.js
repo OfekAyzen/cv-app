@@ -260,7 +260,7 @@ const JobDetailsPage = ({ selectedJob }) => {
                                 {jobDetails.job_title}
                             </Typography>
                             <Typography variant="h4" style={{ fontSize: '10px',color:'grey ',justifyContent:'flex-start' }}>
-                                Yeruham , full time 
+                            Full-time  ·  Yeruham, israel 
                             </Typography>
                             <Typography className='position-text' variant="body1">{jobDetails.job_description}</Typography>
                             <Divider style={{ margin: '16px 0' }} />

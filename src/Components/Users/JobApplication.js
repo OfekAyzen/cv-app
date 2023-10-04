@@ -413,7 +413,7 @@ export default function JobApplication(props) {
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'stretch',
-                            gap: '10px', // Increased gap
+                           
                             padding: '0 30px', // Added padding
                         }}
                     >

@@ -4,7 +4,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from '../Header';
-import logo2 from '../images/tapet2.jpg';
+import logo2 from '../images/jobslogo.jpg';
 import ViewJobs from './ViewJobs';
 import { Link } from 'react-router-dom';
 import UserCard from './UserCard';
@@ -115,25 +115,25 @@ export default function ProfileUser(props) {
       )}
 
 
-      <Grid container alignItems="center" sx={{ backgroundColor: '#1e1c1c', width: '100%', height: '450px' }}>
+      <Grid container alignItems="center" sx={{ backgroundColor: 'whitesmoke', width: '100%', height:isMobileView? '250px': '350px' }}>
         {/* Left side: Advanced Engineering Solutions */}
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px', height: '80%', }}>
-            <Typography variant="h3" sx={{ fontFamily:'"Calibri", sans-serif',textAlign: 'center', marginBottom: '10px', fontSize:isMobileView? '35px' : '60px', fontWeight: 'bold', color: '#f500ec' }}>
+            <Typography variant="h3" sx={{ color:'black',fontFamily:'"Calibri", sans-serif',textAlign: 'center', marginBottom: '10px', fontSize:isMobileView? '25px' : '50px', fontWeight: 'bold', }}>
               Advanced Engineering
             </Typography>
-            <Typography variant="h4" sx={{ fontFamily:'"Calibri", sans-serif',textAlign: 'center', color: 'white', fontSize: '40px', fontWeight: 'bold' }}>
+            <Typography variant="h4" sx={{ color:'#ad2069',fontFamily:'"Calibri", sans-serif',textAlign: 'center',  fontSize:isMobileView? '15px' : '30px', fontWeight: 'bold' }}>
               Solutions
             </Typography>
-            <Typography variant="h6" sx={{fontFamily:'"Calibri", sans-serif', textAlign: 'center', color: 'white', fontSize: '35px',fontWeight: 'bold'  }}>
+            {/* <Typography variant="h6" sx={{fontFamily:'"Calibri", sans-serif', textAlign: 'center', color: 'white', fontSize: '35px',fontWeight: 'bold'  }}>
              Open Jobs
-            </Typography>
+            </Typography> */}
           </Box>
         </Grid>
         {/* Right side: Logo Image */}
         <Grid item xs={6} sm={6} sx={{ textAlign: 'right' }}>
           <Box sx={{ padding: '0px', height: '300px', }}>
-            <img className="img-user" src={logo2} alt="img" style={{ maxWidth: '100%', height: '450px' }} />
+            <img className="img-user" src={logo2} alt="img" style={{ maxWidth: '100%', height:isMobileView?'250px': '370px' }} />
           </Box>
         </Grid>
       </Grid>
