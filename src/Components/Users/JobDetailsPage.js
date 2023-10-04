@@ -242,6 +242,7 @@ const JobDetailsPage = ({ selectedJob }) => {
                         onClick={onClose}
                         style={{
                             color: '#ad2069',
+                            marginLeft:'5%',
                             // marginTop: '20px', // Adjust the margin as needed
                             width: 'fit-content'
                         }}
