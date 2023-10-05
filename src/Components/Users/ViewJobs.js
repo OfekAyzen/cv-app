@@ -171,13 +171,13 @@ const ViewJobs = (props) => {
 
 
   return (
-    <div style={{ backgroundColor: 'black', width: '100%', display: 'flex' }}>
+    <div style={{ backgroundColor: 'white', width: '100%',height:isMobileView? '100%':'100%', display: 'flex' }}>
      
       {loading ? (
-          <div style={{height:'1200px',width:'100%',backgroundColor:'white', color: '#ad2069' }}>
-          <CircularProgress style={{backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
-         </div>
-       
+         
+          <CircularProgress style={{height:isMobileView? '800px':'300px',backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
+        
+    
 
       ) : error ? (
         <div>{error}</div>

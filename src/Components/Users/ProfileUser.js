@@ -27,12 +27,13 @@ export default function ProfileUser(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
         await Auth.currentAuthenticatedUser();
         setIsAuthenticated(true); // User is authenticated
+        
       } catch (error) {
         setIsAuthenticated(false); // User is not authenticated
       }
@@ -115,7 +116,7 @@ export default function ProfileUser(props) {
       )}
 
 
-      <Grid container alignItems="center" sx={{ backgroundColor: 'whitesmoke', width: '100%', height:isMobileView? '250px': '350px' }}>
+      <Grid container alignItems="center" sx={{ backgroundColor: 'whitesmoke', width: '100%', height:isMobileView? '220px': '350px' }}>
        
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobileView? '0px':'10px', height: '80%', }}>
@@ -150,10 +151,18 @@ export default function ProfileUser(props) {
        
       </Grid>
 
+{/* 
+      {loading ? (
+          <div style={{height:'1200px',width:'100%',backgroundColor:'white', color: '#ad2069' }}>
+          <CircularProgress style={{backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
+         </div>
+       
 
+      ) :  ( */}
+        <ViewJobs></ViewJobs>
+      {/* ) */}
 
-
-      <ViewJobs></ViewJobs>
+      
       
       <MaterialIcon></MaterialIcon>
     </>
