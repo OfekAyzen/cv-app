@@ -41,141 +41,13 @@ function ProfileManager() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchCandidatesData = async () => {
-  //     try {
-  //       // Use the listCandidateJobs query to fetch candidate jobs
-  //       const response = await API.graphql(
-  //         graphqlOperation(listCandidateJobs)
-  //       );
 
-  //       // Extract the items from the response
-  //       const candidateJobs = response.data.listCandidateJobs.items;
-
-  //       // Filter out candidate jobs with _deleted: true
-  //       const activeCandidateJobs = candidateJobs.filter(
-  //         (candidateJob) => !candidateJob._deleted
-  //       );
-  //         console.log("candidate jobs ",candidateJobs);
-  //       // Create an array to hold combined job and candidate data
-  //       const combinedData = [];
-
-  //       // Now, for each active candidate job, fetch the full data of the candidate and job
-  //       await Promise.all(
-  //         activeCandidateJobs.map(async (candidateJob) => {
-  //           // Fetch the candidate data
-  //           const candidateResponse = await API.graphql(
-  //             graphqlOperation(getCandidate, { id: candidateJob.candidateId })
-  //           );
-
-  //           // Fetch the job data
-  //           const jobResponse = await API.graphql(
-  //             graphqlOperation(getJobs, { id: candidateJob.jobsId })
-  //           );
-
-  //           // Combine the candidate and job data into a single object
-  //           const combinedItem = {
-  //             candidate: candidateResponse.data.getCandidate,
-  //             job: jobResponse.data.getJobs,
-  //             candidateJob: candidateJob, // You can also include the original candidate job data
-  //           };
-
-  //           // Add the combined data to the array
-  //           combinedData.push(combinedItem);
-  //         })
-  //       );
-
-      
-
-  //       setCombideData(combinedData);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error('Error fetching candidate jobs:', error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   // Fetch applied jobs when the component mounts
-  //   fetchCandidatesData();
-  // }, []); // Empty dependency array to run once on mount
-
-  // useEffect(() => {
-  //   const fetchCandidatesData = async () => {
-  //     try {
-  //       // Use the listCandidates query to fetch all candidates
-  //       const candidatesResponse = await API.graphql(
-  //         graphqlOperation(listCandidates)
-  //       );
-    
-  //       // Extract the items from the response
-  //       const candidates = candidatesResponse.data.listCandidates.items;
-    
-  //       // Use the listCandidateJobs query to fetch candidate jobs
-  //       const response = await API.graphql(
-  //         graphqlOperation(listCandidateJobs)
-  //       );
-    
-  //       // Extract the items from the response
-  //       const candidateJobs = response.data.listCandidateJobs.items;
-    
-  //       // Create an array to hold combined job and candidate data
-  //       const combinedData = [];
-    
-  //       // Iterate through candidates and check if they have candidate jobs
-  //       for (const candidate of candidates) {
-  //         const candidateJob = candidateJobs.find(
-  //           (job) => job.candidateId === candidate.id
-  //         );
-    
-  //         if (candidateJob) {
-  //           // Fetch the job data
-  //           const jobResponse = await API.graphql(
-  //             graphqlOperation(getJobs, { id: candidateJob.jobsId })
-  //           );
-   
-  //           // Combine the candidate and job data into a single object
-  //           const combinedItem = {
-  //             candidate: candidate,
-  //             job: jobResponse.data.getJobs,
-  //             candidateJob: candidateJob,
-  //           };
-    
-  //           combinedData.push(combinedItem);
-  //         } else {
-  //           // Candidate has no candidate jobs
-  //           const combinedItem = {
-  //             candidate: candidate,
-  //             job: null,
-  //             candidateJob: null,
-  //           };
-    
-  //           combinedData.push(combinedItem);
-  //         }
-  //       }
-    
-  //       setCombideData(combinedData);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error('Error fetching candidate data:', error);
-  //       setLoading(false);
-  //     }
-  //   };
-  
-  //   // Fetch candidates and candidate jobs when the component mounts
-  //   fetchCandidatesData();
-  // }, []); // Empty dependency array to run once on mount
   useEffect(() => {
     const fetchCandidatesData = async () => {
       try {
         const candidatesResponse = await API.graphql(graphqlOperation(listCandidates));
         const candidates = candidatesResponse.data.listCandidates.items;
-//   console.log("candidatesResponse",candidates);
-//           // Filter out candidate jobs with _deleted: true
-//         const activeCandidate = candidates.filter(
-//           (candidateJob) => !candidateJob._deleted
-//         );
-// console.log("activeCandidate",activeCandidate);
-        // Fetch candidate jobs for all candidates in parallel
+
         const candidateJobResponses = await Promise.all(
           candidates.map(candidate =>
             API.graphql(
@@ -316,7 +188,18 @@ function ProfileManager() {
       <Grid container spacing={3}  className="grid-container">
         <Grid item xs={12} >
           <ToolBars />
-          <Typography variant="h4" style={{ paddingTop: "30px", fontWeight: "bold",paddingLeft:'5%' ,fontFamily:'"Calibri", sans-serif',}}>
+          <Typography variant="h4" style={{
+
+display: 'flex',
+        textAlign: 'start',
+        fontSize: '35px',
+        paddingLeft: '6%',
+        paddingTop: '1%',
+        paddingBottom: '1%',
+        fontFamily:'"Calibri", sans-serif',
+        fontWeight: 'bold',
+
+          }}>
             Applicants 
           </Typography>
         </Grid>

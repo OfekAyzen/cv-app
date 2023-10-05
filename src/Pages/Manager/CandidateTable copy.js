@@ -128,19 +128,20 @@ const CandidateRow = ({ candidate,
 
 
     <TableRow
-    key={candidate.candidate.id}
-    sx={{
-      borderRadius: "10px",
-      transition: "box-shadow 0.3s",
-      boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
+      key={candidate.candidate.id}
+      sx={{
+        borderRadius: "10px",
+        transition: "box-shadow 0.3s",
+        boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
 
-      "&:hover": {
-        boxShadow: "0px 0px 5px 3px #d166b1",
-        cursor: "pointer",
-      },
-    }}
-    onClick={handleRowClick}
-  >
+        "&:hover": {
+          boxShadow: "0px 0px 5px 3px #ad2069",
+          cursor: "pointer",
+        },
+      }}
+      // onClick={() => handleViewCandidate(candidate, candidate.job.id)}
+      onClick={handleRowClick}
+    >
 
       <TableCell   className="my-font">{formatDate(candidate.candidate.createdAt)}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
@@ -155,8 +156,8 @@ const CandidateRow = ({ candidate,
       <TableCell    className="my-font">{candidate.candidate.work_experience}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.skills}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.status}</TableCell>
-      <TableCell className="fullWidthCell">
-        <Button variant="contained" color="secondary" style={{ fontFamily: '"Calibri", sans-serif' }} onClick={() => handleDelete(candidate.candidate.id)}>
+      <TableCell   className="fullWidthCell">
+        <Button variant="contained" color="secondary" style={{fontFamily:'"Calibri", sans-serif',}} onClick={() => handleDelete(candidate.candidate.id)}>
           Delete
         </Button>
       </TableCell>
@@ -308,7 +309,26 @@ const CandidateTable = ({
     setFilters(newFilters);
   };
 
-  
+  // const handleDeleteCandidate = (deletedCandidateId) => {
+    // console.log("handleDeleteCandidate __________________________________",deletedCandidateId);
+    
+    // const confirmation = window.confirm("Are you sure you want to delete this candidate?");
+    // if (confirmation) {
+    //   // Update the table data by filtering out the deleted candidate
+    //   const updatedCandidates = candidates.filter(
+    //     (candidate) => candidate.candidateJob.id !== deletedCandidateId
+    //   );
+
+    //   // Display a success notification
+    //   handleNotification("Candidate job deleted successfully", "success");
+
+    //   // Reload the page
+    //   window.location.reload();
+    // }
+  // };
+
+
+
   const handleNotification = (message, type) => {
     // Set the notification state
     setNotification({ message, type });
@@ -322,9 +342,7 @@ const CandidateTable = ({
 
   const AddCandidateDialog = ({ open, handleClose }) => {
     return (
-      <Dialog 
-     
-      open={open} onClose={handleClose}>
+      <Dialog  open={open} onClose={handleClose}>
         
       
           <AddCandidateForm />
@@ -334,7 +352,7 @@ const CandidateTable = ({
   };
   return (
 
-    <div style={{ width: '1700px', height: '1200px',paddingLeft:'5%',paddingRight:'4%' }}>
+    <div style={{ width: '1500px', height: '1200px' }}>
       <Snackbar
         open={notification !== null}
         autoHideDuration={5000}

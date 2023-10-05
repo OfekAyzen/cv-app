@@ -117,8 +117,8 @@ const AddCandidateForm = () => {
         }
     }, [cvFile, setCvFileKey]);
     return (
-        <div className='addcandidate-form' style={{ backgroundColor: 'white', display: 'flex', paddingBottom: '30px' }}>
-            <Container style={{ backgroundColor: 'white', width: '60%', paddingTop: '50px' }}>
+        <div  style={{ backgroundColor: 'white', display: 'flex', paddingBottom: '30px' }}>
+            <Container style={{ backgroundColor: 'white', width: '70%', paddingTop: '50px' }}>
                 <Typography sx={{ paddingBottom: '5%', fontSize: '30px', fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }}>
                     Add new candidate
                 </Typography>

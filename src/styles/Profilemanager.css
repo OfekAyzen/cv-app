@@ -19,7 +19,7 @@ body {
   padding-right: 0px !important;
   margin-left: 0% !important;
   border-collapse: collapse;
- 
+  min-width: 100% !important;
  
  }
 
@@ -239,7 +239,7 @@ body {
 }
 
 .Box-profile{
-  background-color: rgb(255, 255, 255);
+  
     justify-content: flex-start;
     display: flex;
     align-items: center;
@@ -247,13 +247,14 @@ body {
     flex-wrap: wrap;
     flex-direction: column;
     width:90%;
+    
     margin-left: 5%;
     border-top-right-radius: 15px !important;
     border-top-left-radius: 15px !important;
 }
 .candidate-card-profile{
  
-  margin-left: 10%!important;
+  margin-left: 7%!important;
   box-shadow: none !important;
 }
 
@@ -297,6 +298,3 @@ body {
 /* .css-3qrssf{ /*table style*/
   /* width: none !important; */
 /*add candidate form*/
-.addcandidate-form{
-  background-color: #eae7e7;
-}

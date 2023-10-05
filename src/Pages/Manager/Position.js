@@ -61,24 +61,7 @@ function Position(props) {
     }
   }
 
-  // const handleDeletePosition = async (position) => {
-  //   console.log("DELETE JOB ID : ", position);
 
-  //   try {
-  //     // Perform the deletion
-  //     const response = await API.graphql(graphqlOperation(deleteJobs, { input: { id: position.id, _version: position._version } }));
-  //     console.log('GraphQL Response:', response);
-  //     if (!response.errors) {
-
-  //       setPositions((prevPositions) => prevPositions.filter((p) => p.id !== position.id));
-  //       setSnackbarOpen(true); // Open the success snackbar
-  //     } else {
-  //       console.error('Error deleting position:', response.errors);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error deleting position:', error);
-  //   }
-  // };
   const handleDeletePosition = async (position) => {
     console.log("DELETE JOB ID: ", position);
   
@@ -156,7 +139,7 @@ function Position(props) {
   };
 
   return (
-    <div className="profile-div" >
+    <div >
       <ToolBars />
      
       <Typography sx={{
@@ -164,8 +147,8 @@ function Position(props) {
         textAlign: 'start',
         fontSize: '35px',
         paddingLeft: '6%',
-        paddingTop: '3%',
-        paddingBottom: '3%',
+        paddingTop: '1%',
+        paddingBottom: '1%',
         fontFamily:'"Calibri", sans-serif',
         fontWeight: 'bold',
 
@@ -305,7 +288,7 @@ function Position(props) {
         </div>
       </Box>
       )}
-      <Typography sx={{ backgroundColor: 'rgb(224 224 224)' ,paddingTop:'5%'}} variant="body2" color="text.secondary" align="center" {...props}>
+      <Typography sx={{ backgroundColor: 'rgb(235 231 231)',paddingTop:'5%'}} variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" href="">
           Tech 19
