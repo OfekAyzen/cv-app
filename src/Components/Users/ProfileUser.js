@@ -76,7 +76,7 @@ export default function ProfileUser(props) {
     navigate('/Login');
   }
   return (
-    < >
+    < div style={{width:isMobileView? '400px':'100%'}}>
 
       {isAuthenticated ? (
         <>
@@ -165,7 +165,7 @@ export default function ProfileUser(props) {
       
       
       <MaterialIcon></MaterialIcon>
-    </>
+    </div>
   );
 }
 
