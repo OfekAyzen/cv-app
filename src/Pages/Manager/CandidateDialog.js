@@ -227,7 +227,7 @@ const CandidateDialog = ({
                   marginTop: "16px",
                 }}
               >
-                <FormControl variant="outlined" sx={{ width: "300px" }} className="custom-text-field">
+                <FormControl variant="outlined" sx={{ width: "395px" }} className="custom-text-field">
                   <InputLabel style={{ fontFamily:'"Calibri", sans-serif',}}>Status</InputLabel>
                   <Select
                     value={newStatus || ""}
@@ -243,8 +243,9 @@ const CandidateDialog = ({
                     <MenuItem value={"Interview Scheduled"}>Interview Scheduled</MenuItem>
                     <MenuItem value={"Assessment/Testing"}>Assessment/Testing</MenuItem>
                     <MenuItem value={"Application Unsuccessful"}>Application Unsuccessful</MenuItem>
-                  </Select>
+                  </Select >
                 </FormControl>
+             
                 <Button
                   variant="contained"
                   color="primary"
@@ -283,12 +284,14 @@ const CandidateDialog = ({
                       backgroundColor: "#ff98b5",
                     },
                     marginTop: "16px",
-                    width: "100%",
+                    width: "25%",
                   }}
                   onClick={handleSaveNote}
                 >
                   Save Note
                 </Button>
+                
+                
                 <Typography style={{ color: "green", marginLeft: "16px" }}>{noteMessage}</Typography>
               </div>
               {selectedCandidate.cv ? (<Button
