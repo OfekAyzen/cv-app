@@ -32,29 +32,7 @@ const AddCandidateForm = () => {
         setCandidateData({ ...candidateData, [fieldName]: event.target.value });
     };
 
-    //   const handleAddCandidate = async () => {
-    //     try {
-    //       // Create a new candidate using the createCandidate mutation
-    //       const newCandidate = {
-    //         input: {
-    //           ...candidateData,
-    //         },
-    //       };
-
-    //       const response = await API.graphql(
-    //         graphqlOperation(createCandidate, {
-    //           input: newCandidate.input,
-    //         })
-    //       );
-
-    //       console.log('New Candidate created:', response);
-    //       window.location.reload();
-    //       // TODO: Handle success and update UI if needed
-    //     } catch (error) {
-    //       console.error('Error creating new candidate:', error);
-    //       // TODO: Handle error and notify the user
-    //     }
-    //   };
+   
     const handleAddCandidate = async () => {
         try {
             // Create a new candidate using the createCandidate mutation

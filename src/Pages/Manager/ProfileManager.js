@@ -94,11 +94,11 @@ function ProfileManager() {
           };
         });
          // Filter out candidate jobs with _deleted: true
-         console.log("combied date",combinedData);
+       
          const activeCombind =combinedData.filter(
           (candidateJob) => !candidateJob.candidate._deleted
         );
-        console.log("active combied",activeCombind);
+    
         setCombideData(activeCombind);
         setLoading(false);
       } catch (error) {

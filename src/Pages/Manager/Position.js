@@ -33,26 +33,12 @@ function Position(props) {
     fetchJobs();
   }, []);
 
-  // async function fetchJobs() {
-  //   try {
-  //     const response = await API.graphql(graphqlOperation(listJobs));
-  //     const jobList = response.data.listJobs.items;
-  //     console.log("joblist ",jobList);
-  //     setPositions(jobList);
-  //     console.log("POSITION ", response);
-  //     setIsLoading(false); // Set loading to false when data is fetched
-  //   } catch (error) {
-  //     console.error('Error fetching jobs:', error);
-
-  //     setIsLoading(false); // Set loading to false in case of an error
-  //   }
-  // }
-
+ 
   async function fetchJobs() {
     try {
       const response = await API.graphql(graphqlOperation(listJobs));
       const jobList = response.data.listJobs.items.filter(job => !job._deleted); // Filter out deleted jobs
-      console.log("jobList:", jobList);
+   
       setPositions(jobList);
       setIsLoading(false); // Set loading to false when data is fetched
     } catch (error) {
@@ -63,12 +49,12 @@ function Position(props) {
 
 
   const handleDeletePosition = async (position) => {
-    console.log("DELETE JOB ID: ", position);
+  
   
     try {
       // Perform the deletion
       const response = await API.graphql(graphqlOperation(deleteJobs, { input: { id: position.id, _version: position._version } }));
-      console.log('GraphQL Response:', response);
+   
       if (!response.errors) {
         setPositions((prevPositions) => prevPositions.filter((p) => p.id !== position.id));
         setSnackbarOpen(true); // Open the success snackbar
@@ -101,7 +87,7 @@ function Position(props) {
 
 
   const handleSaveChanges = async (position) => {
-    console.log("updated ID:", position);
+   
     try {
       const response = await API.graphql(
         graphqlOperation(updateJobs, {
@@ -116,7 +102,7 @@ function Position(props) {
         })
       );
 
-      console.log('GraphQL Update Response:', response);
+   
 
 
       setOpen(false);

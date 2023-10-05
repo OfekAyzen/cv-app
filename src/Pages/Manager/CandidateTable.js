@@ -32,39 +32,6 @@ const CandidateRow = ({ candidate,
 
   const [isRowClicked, setIsRowClicked] = useState(false);
 
-  // const handleRowClick = () => {
-  //   setIsRowClicked(!isRowClicked);
-  // };
-
-  // const handleDelete = async (deletedCandidateId) => {
-  //   console.log("handle delete :",deletedCandidateId);
-  //   try {
-      
-  //     const input = {
-  //       id: candidate.candidateJob.id ,
-  //       _version: 1,
-  //     };
-
-  //     // Perform the delete operation
-  //     const response = await API.graphql(
-  //       graphqlOperation(deleteCandidateJobs, { input })
-  //     );
-
-
-  //     // Check if the delete operation was successful
-  //     if (response.data && response.data.deleteCandidateJobs) {
-  //       // Notify the parent component (CandidateTable) of the successful deletion
-
-  //       onDeleteCandidate(candidate.candidateJob.id);
-  //     } else {
-  //       // Handle the case where the delete operation did not succeed
-  //       handleNotification("Error deleting candidate job", "error");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting candidate job:", error);
-  //     handleNotification("Error deleting candidate job", "error");
-  //   }
-  // };
   const handleDelete = async (deletedCandidateId) => {
     // Ask for confirmation before deleting the candidate
     const confirmed = window.confirm("Are you sure you want to delete this candidate?");
@@ -233,10 +200,6 @@ const CandidateTable = ({
   };
 
 
-
-  // const handleAddCandidateClick = () => {
-  //   setShowAddCandidateForm(prevShowAddCandidateForm => !prevShowAddCandidateForm);
-  // };
 
 
   const filteredCandidates = candidates.filter((candidate) => {

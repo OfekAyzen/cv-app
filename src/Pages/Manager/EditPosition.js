@@ -51,7 +51,7 @@ const EditPostion = ({ jobId }) => {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
+      
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -140,7 +140,7 @@ const EditPostion = ({ jobId }) => {
                         name="position"
                         autoComplete="position"
                     />
-                    </Grid>a
+                    </Grid>
                 </Grid>
                 {/* Right Side */}
                 <Grid item xs={12}>
@@ -200,7 +200,7 @@ const EditPostion = ({ jobId }) => {
           </Box>
       
         </Container>
-      </ThemeProvider>
+    
     </>
   );
 };
