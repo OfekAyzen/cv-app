@@ -1,7 +1,7 @@
 
 import { Auth } from 'aws-amplify';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -43,6 +43,7 @@ export default function SignUp({ }) {
   const [phone_number, setPhoneNumber] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
@@ -76,13 +77,24 @@ export default function SignUp({ }) {
       setSnackbarOpen(true);
     }
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
         <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
       </Typography>
-      <Container component="main" maxWidth="xs">
+      
         <CssBaseline />
         <Box
           sx={{
@@ -90,26 +102,31 @@ export default function SignUp({ }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            minWidth:isMobileView ? '200px': '100%',
           }}
         >
-        <Box sx={{display:'flex',alignContent:'center',textAlign:'center',flexDirection:'column',alignItems:'center',}}>
-           <Avatar sx={{ m: 1, bgcolor: 'secondary.main'}}>
-            <LockOutlinedIcon  />
-          </Avatar>
-          <Typography style={{fontFamily:'"Calibri", sans-serif',display:'flex',textAlign:'center' ,justifyContent:'center'}}  component="h1" variant="h4">
-            Sign up
-          </Typography>
-          <Typography  style={{fontFamily:'"Calibri", sans-serif',display:'flex',textAlign:'center' ,justifyContent:'center'}} component="h1" variant="h5">
-            Join our website
-          </Typography>
+          <Box sx={{ display: 'flex', alignContent: 'center', textAlign: 'center', flexDirection: 'column', alignItems: 'center', }}>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h4">
+              Sign up
+            </Typography>
+            <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h5">
+              Join our website
+            </Typography>
           </Box>
-          <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3 ,minWidth:'600px' ,height:'600px'}}>
+          <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3, minWidth: '600px', height: '600px' }}>
             <div
               style={{
-                display: 'flex',
+
+                display: ' flex',
+             
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 gap: '1px',
+
+
               }}
             >
               <div style={{ flex: 1 }}>
@@ -124,7 +141,7 @@ export default function SignUp({ }) {
                   autoFocus
                   value={first_name}
                   onChange={(e) => setFirstName(e.target.value)}
-                  sx={{ width: '95%' ,paddingBottom:'15px'}}
+                  sx={{ width: '95%', paddingBottom: '15px' }}
                 />
                 <TextField
                   className='custom-select'
@@ -136,7 +153,7 @@ export default function SignUp({ }) {
                   autoComplete="family-name"
                   value={last_name}
                   onChange={(e) => setLastName(e.target.value)}
-                  sx={{ width: '95%',paddingBottom:'15px' }}
+                  sx={{ width: '95%', paddingBottom: '15px' }}
                 />
                 <TextField
                   className='custom-select'
@@ -149,10 +166,10 @@ export default function SignUp({ }) {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ width: '95%' ,paddingBottom:'15px'}}
+                  sx={{ width: '95%', paddingBottom: '15px' }}
                 />
               </div>
-              <div style={{ flex: 1, borderLeft: '2px solid #ad2069', paddingLeft: '1px' }}>
+              <div style={{ flex: 1, paddingLeft: '1px' }}>
                 <TextField
                   className='custom-select'
                   required
@@ -165,7 +182,7 @@ export default function SignUp({ }) {
                   placeholder="058-000000"
                   value={phone_number}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  sx={{ width: '95%',paddingBottom:'15px' }}
+                  sx={{ width: '95%', paddingBottom: '15px' }}
                 />
                 {/* <TextField
                   required
@@ -189,7 +206,7 @@ export default function SignUp({ }) {
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  sx={{ width: '95%',paddingBottom:'15px' }}
+                  sx={{ width: '95%', paddingBottom: '15px' }}
                 />
               </div>
             </div>
@@ -198,8 +215,8 @@ export default function SignUp({ }) {
               fullWidth
               variant="contained"
               sx={{
-                
-                fontFamily:'"Calibri", sans-serif',
+
+                fontFamily: '"Calibri", sans-serif',
                 mt: 4,
                 mb: 2,
                 width: '30%',
@@ -215,7 +232,7 @@ export default function SignUp({ }) {
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
-                <Link style={{fontFamily:'"Calibri", sans-serif',display:'flex',textAlign:'center' ,justifyContent:'center'}} href="/Login" variant="body2">
+                <Link style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} href="/Login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -229,7 +246,7 @@ export default function SignUp({ }) {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container>
+    
     </ThemeProvider>
   );
 }
