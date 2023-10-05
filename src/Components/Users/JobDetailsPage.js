@@ -239,7 +239,7 @@ const JobDetailsPage = ({ selectedJob }) => {
                     </div>
                
             ) : (
-                <div style={{ width: '100%', paddingTop: isMobileView ? '2%' : '2%' }}>
+                <div style={{ width: isMobileView?'420px':'100%', paddingTop: isMobileView ? '2%' : '2%' }}>
 
                     <Button
                         onClick={onClose}
