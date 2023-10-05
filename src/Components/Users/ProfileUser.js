@@ -115,7 +115,7 @@ export default function ProfileUser(props) {
       )}
 
 
-      <Grid container alignItems="center" sx={{ backgroundColor: 'whitesmoke', width: '100%', height:isMobileView? '200px': '350px' }}>
+      <Grid container alignItems="center" sx={{ backgroundColor: 'whitesmoke', width: '100%', height:isMobileView? '250px': '350px' }}>
        
         <Grid item xs={6} sm={6} sx={{ textAlign: 'left' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobileView? '0px':'10px', height: '80%', }}>
@@ -131,7 +131,8 @@ export default function ProfileUser(props) {
        
         <Grid item xs={6} sm={6} sx={{ textAlign: 'right' }}>
           <Box sx={{ padding: '0px', height: '300px', }}>
-            <img className="img-user" src={logo2} alt="img" style={{ maxWidth: '100%', height:isMobileView?'200px': '400px' }} />
+            <img className="img-user" src={logo2} alt="img" style={{ maxWidth: '100%', height:isMobileView?'250px': '400px',paddingBottom:isMobileView? '30px':'0px'
+             }} />
           </Box>
         </Grid>
          {/* <Grid  sx={{ display:'flex',justifyContent:'center',textAlign: 'center' }}>

@@ -298,7 +298,10 @@ export default function JobApplication(props) {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',height: '800px' , }}>
         
             <Divider style={{ backgroundColor: 'white' }} />
-            <Container style={{ backgroundColor: 'white', padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
+            <Container style={{ backgroundColor: 'white',
+             padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row',
+              alignItems: 'center', width: '100%' ,maxWidth:isMobileView ? '380px': '100%',
+               }}>
                 <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '30px' }}>
                     <div
                         style={{

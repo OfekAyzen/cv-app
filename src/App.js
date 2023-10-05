@@ -6,7 +6,7 @@ import { BrowserRouter , Route, Routes, Navigate, Outlet, Link } from 'react-rou
 import { Amplify } from '@aws-amplify/core';
 
 
-import '@aws-amplify/ui-react/styles.css';
+// import '@aws-amplify/ui-react/styles.css';
 
 import Login from './Pages/Log/Login';
 
@@ -30,20 +30,30 @@ Amplify.configure(awsconfig);
 
 
 function App() {
- 
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
   const [candidateData, setCandidateData] = useState([]);
 
   const handleJobApplication = (applicationData) => {
     setCandidateData([...candidateData, applicationData]);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+        setIsMobileView(window.innerWidth < 600);
+    };
 
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
   
   return (
     <>
    
     <BrowserRouter>
-    <div style={{width: '100%'}}>
+    <div style={{width: '100%' ,}}>
        
         <Routes>
         

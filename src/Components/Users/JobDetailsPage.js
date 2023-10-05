@@ -234,7 +234,7 @@ const JobDetailsPage = ({ selectedJob }) => {
         >
 
             {loading ? (
-                <div style={{height:'1200px',width:'100%',backgroundColor:'white', color: '#ad2069' }}>
+                <div style={{height: isMobileView? '900px':'1200px',width:isMobileView?'400px':'100%',backgroundColor:'white', color: '#ad2069' }}>
                      <CircularProgress style={{backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
                     </div>
                
