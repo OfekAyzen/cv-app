@@ -91,32 +91,32 @@ export default function SignUp({ }) {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
-        <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '300px' }} />
-      </Typography>
-      
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            minWidth:isMobileView ? '200px': '100%',
-          }}
-        >
-          <Box sx={{ display: 'flex', alignContent: 'center', textAlign: 'center', flexDirection: 'column', alignItems: 'center', }}>
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h4">
-              Sign up
-            </Typography>
-            <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h5">
-              Join our website
-            </Typography>
-          </Box>
-          <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3, minWidth: '600px', height: '600px' }}>
+    <Typography variant="h6" component="div" sx={{ flexGrow: 1, backgroundColor: 'black' }}>
+      <img src={logo} alt="Tech19 Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+    </Typography>
+    <CssBaseline />
+    <Box
+      sx={{
+        marginTop: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: isMobileView ? '100%' : '600px',
+        margin: 'auto',
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h4">
+          Sign up
+        </Typography>
+        <Typography style={{ fontFamily: '"Calibri", sans-serif', display: 'flex', textAlign: 'center', justifyContent: 'center' }} component="h1" variant="h5">
+          Join our website
+        </Typography>
+      </Box>
+      <Box component="form" noValidate onSubmit={handleSignUp} sx={{ mt: 3 }}>
             <div
               style={{
 
@@ -245,7 +245,9 @@ export default function SignUp({ }) {
             />
           </Box>
         </Box>
+        <Container>
         <Copyright sx={{ mt: 5 }} />
+      </Container>
     
     </ThemeProvider>
   );
