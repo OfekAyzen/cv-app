@@ -97,6 +97,7 @@ export default function SignUp({ }) {
     <CssBaseline />
     <Box
       sx={{
+        padding: '1%',
         marginTop: 1,
         display: 'flex',
         flexDirection: 'column',

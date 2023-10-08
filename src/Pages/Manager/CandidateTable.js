@@ -32,33 +32,63 @@ const CandidateRow = ({ candidate,
 
   const [isRowClicked, setIsRowClicked] = useState(false);
 
-  const handleDelete = async (deletedCandidateId) => {
-    // Ask for confirmation before deleting the candidate
-    const confirmed = window.confirm("Are you sure you want to delete this candidate?");
+  // const handleDelete = async (deletedCandidateId) => {
+  //   // Ask for confirmation before deleting the candidate
+  //   console.log("deletedCandidateId",deletedCandidateId);
+  //   const confirmed = window.confirm("Are you sure you want to delete this candidate? ");
     
+  //   if (!confirmed) {
+  //     // If not confirmed, do nothing
+  //     return;
+  //   }
+  
+  //   try {
+     
+  //     const input = {
+  //       id: deletedCandidateId,  // Use id field for candidate ID
+  //       _version: 1  || 2,
+  //     };
+  
+  //     // Perform the delete operation
+  //     const response = await API.graphql(
+  //       graphqlOperation(deleteCandidate, { input })
+  //     );
+  // console.log("response ",response);
+  //     // operation was successful
+  //     if (response.data && response.data.deleteCandidate) {
+       
+  //       console.log("Candidate deleted successfully");
+  //       window.location.reload();
+  //     } else {
+        
+  //       handleNotification("Error deleting candidate", "error");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting candidate:", error);
+  //     handleNotification("Error deleting candidate", "error");
+  //   }
+  // };
+  const handleDelete = async (deletedCandidateId, candidateVersion) => {
+    const confirmed = window.confirm("Are you sure you want to delete this candidate?");
+  
     if (!confirmed) {
-      // If not confirmed, do nothing
       return;
     }
   
     try {
       const input = {
-        id: deletedCandidateId,  // Use id field for candidate ID
-        _version: 1,
+        id: deletedCandidateId,
+        _version: candidateVersion, // Use the correct version for the candidate
       };
   
-      // Perform the delete operation
       const response = await API.graphql(
         graphqlOperation(deleteCandidate, { input })
       );
   
-      // Check if the delete operation was successful
       if (response.data && response.data.deleteCandidate) {
-        // Notify the parent component (CandidateTable) of the successful deletion
         console.log("Candidate deleted successfully");
         window.location.reload();
       } else {
-        // Handle the case where the delete operation did not succeed
         handleNotification("Error deleting candidate", "error");
       }
     } catch (error) {
@@ -66,7 +96,6 @@ const CandidateRow = ({ candidate,
       handleNotification("Error deleting candidate", "error");
     }
   };
-  
   const handleNotification = (message, type) => {
     // Implement your notification logic here
 
@@ -123,7 +152,7 @@ const CandidateRow = ({ candidate,
       <TableCell   className="my-font">{candidate.candidate.skills}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.status}</TableCell>
       <TableCell className="fullWidthCell">
-        <Button variant="contained" color="secondary" style={{ fontFamily: '"Calibri", sans-serif' }} onClick={() => handleDelete(candidate.candidate.id)}>
+        <Button variant="contained" color="secondary" style={{ fontFamily: '"Calibri", sans-serif' }} onClick={() => handleDelete(candidate.candidate.id,candidate.candidate._version)}>
           Delete
         </Button>
       </TableCell>
@@ -359,7 +388,9 @@ const CandidateTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
+         
             {displayedCandidates.map((candidate) => (
+             
               <CandidateRow
                 key={candidate.candidate.id}
                 candidate={candidate}

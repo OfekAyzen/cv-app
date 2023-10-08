@@ -47,7 +47,7 @@ function ProfileManager() {
       try {
         const candidatesResponse = await API.graphql(graphqlOperation(listCandidates));
         const candidates = candidatesResponse.data.listCandidates.items;
-
+        
         const candidateJobResponses = await Promise.all(
           candidates.map(candidate =>
             API.graphql(
@@ -59,7 +59,7 @@ function ProfileManager() {
             )
           )
         );
-  
+       
         // Create a map of candidate jobs by candidate ID for efficient lookup
         const candidateJobMap = {};
         candidateJobResponses.forEach((response, index) => {
@@ -100,6 +100,7 @@ function ProfileManager() {
         );
     
         setCombideData(activeCombind);
+     
         setLoading(false);
       } catch (error) {
         console.error('Error fetching candidate data:', error);
