@@ -67,11 +67,11 @@ function Logout() {
     justifyContent: 'flex-end',
         }}>
             
-            <Button 
+            <div
              sx={{ p: 0, ml: 2, '&:hover': { cursor: 'pointer', color: colors.purple[500] },color:'white' }}
                   onClick={signOut}> 
                 Logout
-            </Button>
+            </div>
         </header>
     )
 }

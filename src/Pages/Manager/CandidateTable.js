@@ -138,16 +138,13 @@ const CandidateRow = ({ candidate,
     }}
     onClick={handleRowClick}
   >
-
       <TableCell   className="my-font">{formatDate(candidate.candidate.createdAt)}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.location}</TableCell>
       <TableCell    className="my-font">{candidate.candidate.gender}</TableCell>
-     
-      {/* <TableCell className="fullWidthCell">{candidate.job.job_title}</TableCell> */}
       <TableCell   className="my-font">
         {candidate.job?.job_title || candidate.candidate.position || 'No job title'}
-      </TableCell> {/* Render 'No Job Title' if job_title is null or undefined */}
+      </TableCell>
       <TableCell    className="my-font">{candidate.candidate.education}</TableCell>
       <TableCell    className="my-font">{candidate.candidate.work_experience}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.skills}</TableCell>
