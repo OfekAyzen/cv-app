@@ -29,7 +29,7 @@ import { Storage } from 'aws-amplify';
 // import awsConfig from './aws-configuration';
 import { Amplify } from '@aws-amplify/core';
 import "../../styles/Profilemanager.css";
-
+import TextareaAutosize from '@mui/material/TextareaAutosize'; 
 // Amplify.configure(awsConfig);
 
 const CandidateDialog = ({
@@ -274,7 +274,7 @@ const CandidateDialog = ({
                     value={newStatus || ""}
                     onChange={(e) => setNewStatus(e.target.value)}
                     label="Status"
-
+                    sx={{width:'80%'}}
                   >
 
                     <MenuItem value={"Accepted"}>Accepted</MenuItem>
@@ -304,7 +304,7 @@ const CandidateDialog = ({
                 </Button>
                 <Typography style={{ color: "green", marginLeft: "16px" }}>{statusChangeMessage}</Typography>
 
-                <TextField
+                <TextareaAutosize
                   className="custom-text-field"
                  
                   multiline
@@ -312,7 +312,11 @@ const CandidateDialog = ({
                   variant="outlined"
                   value={note}
                   onChange={handleNoteChange}
-                  style={{ marginTop: "16px", width: "100%" }}
+                  style={{ marginTop: "16px", width: "98%" ,height:'50px',borderBlockColor:'lightgrey',
+                borderRadius:'5px', "&:hover": {
+                  backgroundColor: "pink",
+                },
+                }}
                 />
                 <Button
                   variant="contained"
@@ -325,7 +329,7 @@ const CandidateDialog = ({
                       backgroundColor: "#ff98b5",
                     },
                     marginTop: "16px",
-                    width: "25%",
+                    width: "28%",
                   }}
                   onClick={handleSaveNote}
                 >

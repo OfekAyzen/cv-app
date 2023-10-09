@@ -408,7 +408,7 @@ const CandidateTable = ({
       
         <TablePagination
         
-            sx={{ display: 'flex', width: '123.4%', backgroundColor: 'white'}}
+            sx={{ display: 'flex', width: '122.6%', backgroundColor: 'white'}}
             component="div"
             count={sortedCandidates.length} // Use sortedCandidates.length
             page={page}
