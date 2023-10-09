@@ -70,7 +70,7 @@ export default function JobApplication(props) {
     const [email, setEmail] = useState('');
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
-  
+
     const [location, setLocation] = useState('');
     const [phone_number, setPhoneNumber] = useState('');
     const [gender, setGender] = useState('');
@@ -81,8 +81,8 @@ export default function JobApplication(props) {
     const [position, setPosition] = useState('');
     const [certifications, setCertifications] = useState('');
     const [data, setData] = useState('');
- 
-   
+
+
     const { job_id } = useParams();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [cvFile, setCvFile] = useState('');
@@ -90,12 +90,12 @@ export default function JobApplication(props) {
     const [open, setOpen] = useState(false);
     const applyJobJobId = job_id || props.job_id;
     const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
-  //handling notifications
+    //handling notifications
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-   
-   
+
+
     const educationOptions = [
         "All",
         "High School",
@@ -126,7 +126,7 @@ export default function JobApplication(props) {
 
 
     const createCandidateAndApply = async () => {
-      
+
 
         try {
             if (
@@ -145,15 +145,15 @@ export default function JobApplication(props) {
                 showSnackbar('Please fill out all fields.', 'error');
                 return; // Stop submission if any field is missing
             }
-                handleapplyjob(candidateId); // Call the function to create CandidateJobs
-                navigate('/HomePage');
-             
+            handleapplyjob(candidateId); // Call the function to create CandidateJobs
+            navigate('/HomePage');
+
             localStorage.removeItem('cvFileKey');
         } catch (error) {
             // Handle errors
             console.error('Error creating candidate:', error);
-          
-           
+
+
 
         }
     };
@@ -168,83 +168,131 @@ export default function JobApplication(props) {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
-    useEffect(() => {
-        // Define a function to upload the CV
-        const uploadCV = async () => {
-            try {
-                if (!cvFile) return;
 
-                const cvFileName = cvFile.name;
-                // const newCvFileKey = `CVs/${Date.now()}_${cvFileName}`;
-                const newCvFileKey = `${Date.now()}_${cvFileName}`;
-                await Storage.put(newCvFileKey, cvFile, {
-                    contentType: cvFile.type,
-                });
-                //  console.log('CV uploaded successfully. Key:', newCvFileKey);
-                
-                console.log('CV uploaded successfully!:');
-                showSnackbar('CV uploaded successfully!', 'success');
-                // Update cvFileKey and save it
-                setCvFileKey(newCvFileKey);
-                localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
-            } catch (error) {
-                console.error('Error uploading CV:', error);
-                showSnackbar('Error uploading CV', 'error');
-            }
-        };
+    // useEffect(() => {
+    //     // Define a function to upload the CV
+    //     const uploadCV = async () => {
+    //         try {
+    //             if (!cvFile) return;
+
+    //             const cvFileName = cvFile.name;
+    //             // const newCvFileKey = `CVs/${Date.now()}_${cvFileName}`;
+    //             const newCvFileKey = `${Date.now()}_${cvFileName}`;
+    //             console.log("new cv file : ",newCvFileKey);
+    //             await Storage.put(newCvFileKey, cvFile, {
+    //                 contentType: cvFile.type,
+    //             });
+    //             //  console.log('CV uploaded successfully. Key:', newCvFileKey);
+
+    //             console.log('CV uploaded successfully!:');
+    //             showSnackbar('CV uploaded successfully!', 'success');
+    //             // Update cvFileKey and save it
+    //             setCvFileKey(newCvFileKey);
+    //             localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
+    //         } catch (error) {
+    //             console.error('Error uploading CV:', error);
+    //             showSnackbar('Error uploading CV', 'error');
+    //         }
+    //     };
 
 
-        // Call uploadCV if cvFile is not null
-        if (cvFile) {
-            uploadCV();
+    //     // Call uploadCV if cvFile is not null
+    //     if (cvFile) {
+    //         uploadCV();
+    //     }
+    // }, [cvFile, setCvFileKey]);
+
+    // useEffect(() => {
+    //     const uploadCV = async () => {
+    //       try {
+    //         if (!cvFile) return;
+      
+    //         const cvFileName = cvFile.name;
+    //         const newCvFileKey = `public/${Date.now()}_${cvFileName}`;
+      
+    //         await Storage.put(newCvFileKey, cvFile, {
+    //           contentType: cvFile.type,
+    //         });
+      
+    //         console.log('CV uploaded successfully:', newCvFileKey);
+    //         showSnackbar('CV uploaded successfully!', 'success');
+      
+    //         // Update cvFileKey and save it
+    //         setCvFileKey(newCvFileKey);
+    //         localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
+    //       } catch (error) {
+    //         console.error('Error uploading CV:', error);
+    //         showSnackbar('Error uploading CV', 'error');
+    //       }
+    //     };
+      
+    //     uploadCV();
+    //   }, [cvFile, setCvFileKey]);
+      
+    const uploadCV = async () => {
+        try {
+          if (!cvFile) return;
+      
+          const cvFileName = cvFile.name;
+          const newCvFileKey = `${Date.now()}_${cvFileName}`;
+      
+          await Storage.put(newCvFileKey, cvFile, {
+            contentType: cvFile.type,
+          });
+      
+          console.log('CV uploaded successfully:', newCvFileKey);
+          showSnackbar('CV uploaded successfully!', 'success');
+      
+          // Return the new CV file key
+          return newCvFileKey;
+        } catch (error) {
+          console.error('Error uploading CV:', error);
+          showSnackbar('Error uploading CV', 'error');
+          return null;
         }
-    }, [cvFile, setCvFileKey]);
-
+      };
     // Effect to log cvFileKey when it changes
 
     useEffect(() => {
         // console.log('CV . Key:', cvFileKey);
     }, [cvFileKey]);
 
-    const handleUploadCV = (event) => {
-        const selectedCvFile = event.target.files[0];
-        if (selectedCvFile) {
-            // console.log('Selected CV File:', selectedCvFile);
-            setCvFile(selectedCvFile);
-        }
-    };
 
- 
-
+    
     const handleapplyjob = async (candidateId) => {
-       
+
         try {
             // Get the Cognito User ID of the authenticated user
             const user = await Auth.currentAuthenticatedUser();
             const cognitoSub = user.attributes.sub;
-            console.log("cognitoSub");
-            const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
+            
+            const cvFileKeyFromStorage = await uploadCV();
 
+            // if (!cvFileKeyFromStorage) {
+            //   console.log("CV file key is null or undefined. Upload the CV first.");
+            //   return;
+            // }
+        
             // Define the candidate data
             const candidateData = {
-                input: {
-                    first_name: first_name,
-                    last_name: last_name,
-                    location: location,
-                    email: email,
-                    phone_number: phone_number,
-                    gender: gender,
-                    education: education,
-                    work_experience: work_experience,
-                    skills: skills,
-                    position: position,
-                    certifications: certifications,
-                    cv: cvFileKeyFromStorage, // Use the saved CV file key
-                },
+              input: {
+                first_name: first_name,
+                last_name: last_name,
+                location: location,
+                email: email,
+                phone_number: phone_number,
+                gender: gender,
+                education: education,
+                work_experience: work_experience,
+                skills: skills,
+                position: position,
+                certifications: certifications,
+                cv: cvFileKeyFromStorage, // Use the saved CV file key
+              },
             };
-           
-    
+            localStorage.setItem('cvFileKey', cvFileKeyFromStorage);        
+
+
             // Update the createCandidate mutation to include cvFileKey
             const resp = await API.graphql(
                 graphqlOperation(createCandidate, candidateData)
@@ -260,27 +308,108 @@ export default function JobApplication(props) {
             };
 
             const response = await API.graphql(graphqlOperation(createCandidateJobs, candidateJobsData));
-          
+
 
             if (response.data.createCandidateJobs) {
                 showSnackbar('Application submitted successfully!', 'success');
                 localStorage.removeItem('selectedJobId');
                 navigate('/HomePage');
-            
+
 
             } else {
-              
+
                 showSnackbar('Failed to submit application.', 'error');
                 console.log('Failed to submit application.');
             }
             console.log('Application submitted successfully!');
-          
+
         } catch (error) {
             showSnackbar('Failed to submit application.', 'error');
             console.error('Error applying for the job:', error);
             navigate("/Login");
         }
     };
+
+    const handleUploadCV = (event) => {
+        const selectedCvFile = event.target.files[0];
+        if (selectedCvFile) {
+             console.log('Selected CV File:', selectedCvFile);
+            setCvFile(selectedCvFile);
+        }
+    };
+
+
+
+    // const handleapplyjob = async (candidateId) => {
+
+    //     try {
+    //         // Get the Cognito User ID of the authenticated user
+    //         const user = await Auth.currentAuthenticatedUser();
+    //         const cognitoSub = user.attributes.sub;
+            
+    //         const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
+           
+    //         if (!cvFileKeyFromStorage) {
+    //             console.log("cvFileKey is null or undefined. Check if it's being saved correctly.");
+    //             // Handle accordingly, e.g., show an error message or take appropriate action
+    //         } else {
+    //             console.log("cv from storage",cvFileKeyFromStorage);
+    //         }
+    //         // Define the candidate data
+    //         const candidateData = {
+    //             input: {
+    //                 first_name: first_name,
+    //                 last_name: last_name,
+    //                 location: location,
+    //                 email: email,
+    //                 phone_number: phone_number,
+    //                 gender: gender,
+    //                 education: education,
+    //                 work_experience: work_experience,
+    //                 skills: skills,
+    //                 position: position,
+    //                 certifications: certifications,
+    //                 cv: cvFileKeyFromStorage, // Use the saved CV file key
+    //             },
+    //         };
+
+
+    //         // Update the createCandidate mutation to include cvFileKey
+    //         const resp = await API.graphql(
+    //             graphqlOperation(createCandidate, candidateData)
+    //         );
+    //         const candidateId = resp.data.createCandidate.id;
+    //         const candidateJobsData = {
+    //             input: {
+    //                 candidateId: candidateId,
+    //                 jobsId: props.job_id || job_id,
+    //                 // cognitoSub: cognitoSub, // Set cognitoSub using the Cognito User ID
+
+    //             },
+    //         };
+
+    //         const response = await API.graphql(graphqlOperation(createCandidateJobs, candidateJobsData));
+
+
+    //         if (response.data.createCandidateJobs) {
+    //             showSnackbar('Application submitted successfully!', 'success');
+    //             localStorage.removeItem('selectedJobId');
+    //             navigate('/HomePage');
+
+
+    //         } else {
+
+    //             showSnackbar('Failed to submit application.', 'error');
+    //             console.log('Failed to submit application.');
+    //         }
+    //         console.log('Application submitted successfully!');
+
+    //     } catch (error) {
+    //         showSnackbar('Failed to submit application.', 'error');
+    //         console.error('Error applying for the job:', error);
+    //         navigate("/Login");
+    //     }
+    // };
 
     useEffect(() => {
         // Handle Snackbar display based on state
@@ -294,27 +423,28 @@ export default function JobApplication(props) {
     }, [snackbarOpen]);
 
     return (
-       
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',height: '800px' , }}>
-        
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '800px', }}>
+
             <Divider style={{ backgroundColor: 'white' }} />
-            <Container style={{ backgroundColor: 'white',
-             padding: 0, display: 'flex',  flexDirection: isMobileView ? 'column' : 'row',
-              alignItems: 'center', width: '100%' ,maxWidth:isMobileView ? '380px': '100%',
-               }}>
+            <Container style={{
+                backgroundColor: 'white',
+                padding: 0, display: 'flex', flexDirection: isMobileView ? 'column' : 'row',
+                alignItems: 'center', width: '100%', maxWidth: isMobileView ? '380px' : '100%',
+            }}>
                 <div style={{ flex: 1, paddingRight: '16px', paddingLeft: '16px', paddingTop: '30px' }}>
                     <div
                         style={{
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'stretch',
-                           
+
                             padding: '0 30px', // Added padding
                         }}
                     >
 
 
-                        <Grid item xs={12} sx={{ width: '350px' ,paddingTop: isMobileView ? '15px' : '0px'}}>
+                        <Grid item xs={12} sx={{ width: '350px', paddingTop: isMobileView ? '15px' : '0px' }}>
                             {/* Left Side */}
                             <Grid item xs={12}>
                                 <TextField
@@ -413,11 +543,11 @@ export default function JobApplication(props) {
                         </Grid>
 
                     </div>
-                    
+
 
                 </div>
 
-                <div style={{ flex: 1, paddingLeft: '16px', paddingRight: '16px', paddingTop:isMobileView ?  '0px' : '60px' }}>
+                <div style={{ flex: 1, paddingLeft: '16px', paddingRight: '16px', paddingTop: isMobileView ? '0px' : '60px' }}>
 
                     {/* Right Side */}
                     <Grid item xs={12} sx={{ width: '350px' }}>
@@ -532,42 +662,42 @@ export default function JobApplication(props) {
                     }}>
                         Apply and Save
                     </Button> */}
-<Button
-    onClick={createCandidateAndApply}
-    type="submit"
-    fullWidth
-    variant="contained"
-    sx={{
-        backgroundColor: "#ad2069",
-        mt: 4,
-        mb: 3,
-        width: '50%',
-        display: 'flex',
-        '&:hover': {
-            backgroundColor: '#b4269a',
-        },
-    }}
-    disabled={
-        !first_name ||
-        !last_name ||
-        !location ||
-        !email ||
-        !phone_number ||
-        !gender ||
-        !education ||
-        !work_experience ||
-        !skills ||
-        !position ||
-        !certifications
-    }
->
-    Apply and Save
-</Button>
-                   {/* Snackbar for flash messages */}
-            
+                    <Button
+                        onClick={createCandidateAndApply}
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            backgroundColor: "#ad2069",
+                            mt: 4,
+                            mb: 3,
+                            width: '50%',
+                            display: 'flex',
+                            '&:hover': {
+                                backgroundColor: '#b4269a',
+                            },
+                        }}
+                        disabled={
+                            !first_name ||
+                            !last_name ||
+                            !location ||
+                            !email ||
+                            !phone_number ||
+                            !gender ||
+                            !education ||
+                            !work_experience ||
+                            !skills ||
+                            !position ||
+                            !certifications
+                        }
+                    >
+                        Apply and Save
+                    </Button>
+                    {/* Snackbar for flash messages */}
+
                 </div>
 
-                    
+
             </Container>
             <Snackbar
                 open={snackbarOpen}

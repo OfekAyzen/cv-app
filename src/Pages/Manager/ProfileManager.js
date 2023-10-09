@@ -16,6 +16,7 @@ import { listCandidateJobs } from '../../graphql/queries'; // Import your GraphQ
 import "../../styles/Profilemanager.css";
 import { listCandidates } from '../../graphql/queries'; // Import the query to get candidate data
 import { getJobs } from '../../graphql/queries'; //
+import { ConstructionOutlined } from "@mui/icons-material";
 
 
 const defaultTheme = createTheme();
@@ -47,7 +48,10 @@ function ProfileManager() {
       try {
         const candidatesResponse = await API.graphql(graphqlOperation(listCandidates));
         const candidates = candidatesResponse.data.listCandidates.items;
-        
+        // const activeCandidates = candidates.filter(candidate => !candidate._deleted);
+
+        console.log("candidates:", candidates);
+        // console.log("Active candidates Data Length:", activeCandidates.length);
         const candidateJobResponses = await Promise.all(
           candidates.map(candidate =>
             API.graphql(
@@ -99,6 +103,7 @@ function ProfileManager() {
           (candidateJob) => !candidateJob.candidate._deleted
         );
     
+        console.log("combied data activeCombind:",activeCombind);
         setCombideData(activeCombind);
      
         setLoading(false);

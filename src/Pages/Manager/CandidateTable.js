@@ -120,6 +120,7 @@ const CandidateRow = ({ candidate,
       handleViewCandidate(candidate, null);
     }
   };
+  
   return (
 
 
@@ -407,7 +408,7 @@ const CandidateTable = ({
       
         <TablePagination
         
-            sx={{ display: 'flex', width: '120%', backgroundColor: 'white'}}
+            sx={{ display: 'flex', width: '122.3%', backgroundColor: 'white'}}
             component="div"
             count={sortedCandidates.length} // Use sortedCandidates.length
             page={page}
