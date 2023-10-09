@@ -25,7 +25,12 @@ import { updateCandidate } from "../../graphql/mutations";
 import { getCandidate } from "../../graphql/queries"; // Import your query here
 import DownloadCV from "./DownloadCV";
 import { Storage } from 'aws-amplify';
+// import { Storage } from "@aws-amplify/storage";
+// import awsConfig from './aws-configuration';
+import { Amplify } from '@aws-amplify/core';
 import "../../styles/Profilemanager.css";
+
+// Amplify.configure(awsConfig);
 
 const CandidateDialog = ({
   open,
@@ -124,33 +129,69 @@ const CandidateDialog = ({
     }
   };
 
+  // const handleDownloadCV = async () => {
+  //   if (selectedCandidate && selectedCandidate.cv) {
+
+  //     try {
+
+  //       // Construct the download URL using the cvFileKey
+  //       const downloadUrl = await Storage.get(`${selectedCandidate.cv}`);
+
+  //       // Create a hidden anchor element
+  //       const link = document.createElement('a');
+  //       link.href = downloadUrl;
+  //       link.target = '_blank';
+  //       link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`; // Adjust the desired download file name
+
+  //       // Append the anchor to the body and programmatically click it to initiate the download
+  //       document.body.appendChild(link);
+  //       link.click();
+
+  //       // Clean up: remove the anchor from the DOM
+  //       document.body.removeChild(link);
+  //     } catch (error) {
+  //       console.error("Error downloading CV:", error);
+  //     }
+  //   }
+  //   else {
+  //     setNoteMessage("No CV to the candidate");
+
+  //   }
+  // };
   const handleDownloadCV = async () => {
-    if (selectedCandidate && selectedCandidate.cv) {
-
-      try {
-
-        // Construct the download URL using the cvFileKey
-        const downloadUrl = await Storage.get(`${selectedCandidate.cv}`);
-
-        // Create a hidden anchor element
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.target = '_blank';
-        link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`; // Adjust the desired download file name
-
-        // Append the anchor to the body and programmatically click it to initiate the download
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up: remove the anchor from the DOM
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("Error downloading CV:", error);
-      }
+    if (!selectedCandidate || !selectedCandidate.cv) {
+      setNoteMessage("No CV for the candidate");
+      return;
     }
-    else {
-      setNoteMessage("No CV to the candidate");
-
+  
+    try {
+     // Ensure AWS configuration is properly set up
+      Amplify.configure({
+        Storage: {
+          AWSS3: {
+            bucket: 'amplify-amplify20e2396a2d654-staging-72154-storages3cvmanagementappstorage7140768f-OWEDL5NTQVQ3',
+            region: 'US East (Ohio) us-east-2',
+          },
+        },
+      });
+  
+      // Construct the download URL using the cvFileKey
+      const downloadUrl = await Storage.get(selectedCandidate.cv);
+  
+      // Create a hidden anchor element
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.target = '_blank';
+      link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`;
+  
+      // Append the anchor to the body and programmatically click it to initiate the download
+      document.body.appendChild(link);
+      link.click();
+  
+      // Clean up: remove the anchor from the DOM
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading CV:", error);
     }
   };
   return (
