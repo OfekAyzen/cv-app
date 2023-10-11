@@ -26,6 +26,7 @@ import UploadCV from './UploadCV';
 import MuiAlert from '@mui/material/Alert';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createCandidate } from '../../graphql/mutations';
+import {getJobs} from "../../graphql/queries";
 import { createCandidateJobs } from '../../graphql/mutations';
 import { Auth } from 'aws-amplify';
 import Snackbar from '@mui/material/Snackbar';
@@ -81,7 +82,7 @@ export default function JobApplication(props) {
     const [position, setPosition] = useState('');
     const [certifications, setCertifications] = useState('');
     const [data, setData] = useState('');
-
+    const [defaultPosition, setDefaultPosition] = useState('');
 
     const { job_id } = useParams();
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -169,65 +170,7 @@ export default function JobApplication(props) {
         };
     }, []);
 
-    // useEffect(() => {
-    //     // Define a function to upload the CV
-    //     const uploadCV = async () => {
-    //         try {
-    //             if (!cvFile) return;
-
-    //             const cvFileName = cvFile.name;
-    //             // const newCvFileKey = `CVs/${Date.now()}_${cvFileName}`;
-    //             const newCvFileKey = `${Date.now()}_${cvFileName}`;
-    //             console.log("new cv file : ",newCvFileKey);
-    //             await Storage.put(newCvFileKey, cvFile, {
-    //                 contentType: cvFile.type,
-    //             });
-    //             //  console.log('CV uploaded successfully. Key:', newCvFileKey);
-
-    //             console.log('CV uploaded successfully!:');
-    //             showSnackbar('CV uploaded successfully!', 'success');
-    //             // Update cvFileKey and save it
-    //             setCvFileKey(newCvFileKey);
-    //             localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
-    //         } catch (error) {
-    //             console.error('Error uploading CV:', error);
-    //             showSnackbar('Error uploading CV', 'error');
-    //         }
-    //     };
-
-
-    //     // Call uploadCV if cvFile is not null
-    //     if (cvFile) {
-    //         uploadCV();
-    //     }
-    // }, [cvFile, setCvFileKey]);
-
-    // useEffect(() => {
-    //     const uploadCV = async () => {
-    //       try {
-    //         if (!cvFile) return;
-      
-    //         const cvFileName = cvFile.name;
-    //         const newCvFileKey = `public/${Date.now()}_${cvFileName}`;
-      
-    //         await Storage.put(newCvFileKey, cvFile, {
-    //           contentType: cvFile.type,
-    //         });
-      
-    //         console.log('CV uploaded successfully:', newCvFileKey);
-    //         showSnackbar('CV uploaded successfully!', 'success');
-      
-    //         // Update cvFileKey and save it
-    //         setCvFileKey(newCvFileKey);
-    //         localStorage.setItem('cvFileKey', newCvFileKey);  // Save in localStorage
-    //       } catch (error) {
-    //         console.error('Error uploading CV:', error);
-    //         showSnackbar('Error uploading CV', 'error');
-    //       }
-    //     };
-      
-    //     uploadCV();
-    //   }, [cvFile, setCvFileKey]);
+ 
       
     const uploadCV = async () => {
         try {
@@ -268,11 +211,6 @@ export default function JobApplication(props) {
             
             const cvFileKeyFromStorage = await uploadCV();
 
-            // if (!cvFileKeyFromStorage) {
-            //   console.log("CV file key is null or undefined. Upload the CV first.");
-            //   return;
-            // }
-        
             // Define the candidate data
             const candidateData = {
               input: {
@@ -340,76 +278,6 @@ export default function JobApplication(props) {
 
 
 
-    // const handleapplyjob = async (candidateId) => {
-
-    //     try {
-    //         // Get the Cognito User ID of the authenticated user
-    //         const user = await Auth.currentAuthenticatedUser();
-    //         const cognitoSub = user.attributes.sub;
-            
-    //         const cvFileKeyFromStorage = localStorage.getItem('cvFileKey');
-           
-    //         if (!cvFileKeyFromStorage) {
-    //             console.log("cvFileKey is null or undefined. Check if it's being saved correctly.");
-    //             // Handle accordingly, e.g., show an error message or take appropriate action
-    //         } else {
-    //             console.log("cv from storage",cvFileKeyFromStorage);
-    //         }
-    //         // Define the candidate data
-    //         const candidateData = {
-    //             input: {
-    //                 first_name: first_name,
-    //                 last_name: last_name,
-    //                 location: location,
-    //                 email: email,
-    //                 phone_number: phone_number,
-    //                 gender: gender,
-    //                 education: education,
-    //                 work_experience: work_experience,
-    //                 skills: skills,
-    //                 position: position,
-    //                 certifications: certifications,
-    //                 cv: cvFileKeyFromStorage, // Use the saved CV file key
-    //             },
-    //         };
-
-
-    //         // Update the createCandidate mutation to include cvFileKey
-    //         const resp = await API.graphql(
-    //             graphqlOperation(createCandidate, candidateData)
-    //         );
-    //         const candidateId = resp.data.createCandidate.id;
-    //         const candidateJobsData = {
-    //             input: {
-    //                 candidateId: candidateId,
-    //                 jobsId: props.job_id || job_id,
-    //                 // cognitoSub: cognitoSub, // Set cognitoSub using the Cognito User ID
-
-    //             },
-    //         };
-
-    //         const response = await API.graphql(graphqlOperation(createCandidateJobs, candidateJobsData));
-
-
-    //         if (response.data.createCandidateJobs) {
-    //             showSnackbar('Application submitted successfully!', 'success');
-    //             localStorage.removeItem('selectedJobId');
-    //             navigate('/HomePage');
-
-
-    //         } else {
-
-    //             showSnackbar('Failed to submit application.', 'error');
-    //             console.log('Failed to submit application.');
-    //         }
-    //         console.log('Application submitted successfully!');
-
-    //     } catch (error) {
-    //         showSnackbar('Failed to submit application.', 'error');
-    //         console.error('Error applying for the job:', error);
-    //         navigate("/Login");
-    //     }
-    // };
 
     useEffect(() => {
         // Handle Snackbar display based on state
@@ -421,6 +289,22 @@ export default function JobApplication(props) {
             return () => clearTimeout(timer);
         }
     }, [snackbarOpen]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await API.graphql(
+                    graphqlOperation(getJobs, { id: localStorage.getItem('selectedJobId') })
+                );
+                const job = response.data.getJobs;
+                setDefaultPosition(job.job_title || '');
+            } catch (error) {
+                console.error('Error fetching job details:', error);
+            }
+        };
+    
+        fetchData();
+    }, []);
 
     return (
 
@@ -524,7 +408,7 @@ export default function JobApplication(props) {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <TextField
                                     sx={{ paddingBottom: '20px' }}
                                     required
@@ -538,8 +422,20 @@ export default function JobApplication(props) {
                                     value={position}
                                     onChange={(e) => setPosition(e.target.value)}
                                 />
-                            </Grid>
-
+                            </Grid> */}
+<Grid item xs={12}>
+    <TextField
+        required
+        fullWidth
+        className="custom-select"
+        id="position"
+        label="Position"
+        name="position"
+        autoComplete="position"
+        value={position || defaultPosition}
+        onChange={(e) => setPosition(e.target.value)}
+    />
+</Grid>
                         </Grid>
 
                     </div>
@@ -652,16 +548,6 @@ export default function JobApplication(props) {
                     </Grid>
 
 
-                    {/* <Button onClick={createCandidateAndApply} type="submit" fullWidth variant="contained" sx={{
-                        backgroundColor: "#ad2069",
-                        mt: 4, mb: 3, width: '50%', display: 'flex',
-
-                        '&:hover': {
-                            backgroundColor: '#b4269a',
-                        },
-                    }}>
-                        Apply and Save
-                    </Button> */}
                     <Button
                         onClick={createCandidateAndApply}
                         type="submit"

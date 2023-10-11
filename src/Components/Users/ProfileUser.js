@@ -4,7 +4,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from '../Header';
-import logo2 from '../images/tech.jpg';
+import logo2 from '../images/jobslogo.jpg';
 import ViewJobs from './ViewJobs';
 import { Link } from 'react-router-dom';
 import UserCard from './UserCard';

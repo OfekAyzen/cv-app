@@ -123,7 +123,42 @@ const CandidateDialog = ({
       setNoteMessage("Error saving note");
     }
   };
-
+  const handleDownloadCV = async () => {
+    if (!selectedCandidate || !selectedCandidate.cv) {
+      setNoteMessage("No CV for the candidate");
+      return;
+    }
+  
+    try {
+     // Ensure AWS configuration is properly set up
+      Amplify.configure({
+        Storage: {
+          AWSS3: {
+            bucket: 'amplify-amplify20e2396a2d654-staging-72154-storages3cvmanagementappstorage7140768f-OWEDL5NTQVQ3',
+            region: 'US East (Ohio) us-east-2',
+          },
+        },
+      });
+  
+      // Construct the download URL using the cvFileKey
+      const downloadUrl = await Storage.get(selectedCandidate.cv);
+  
+      // Create a hidden anchor element
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.target = '_blank';
+      link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`;
+  
+      // Append the anchor to the body and programmatically click it to initiate the download
+      document.body.appendChild(link);
+      link.click();
+  
+      // Clean up: remove the anchor from the DOM
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading CV:", error);
+    }
+  };
   return (
     <Dialog
       open={open}
@@ -220,10 +255,13 @@ const CandidateDialog = ({
                 },
               }}
             >
-              <MenuItem value={"Accepted"}>Accepted</MenuItem>
-              <MenuItem value={"Pending"}>Pending</MenuItem>
-              <MenuItem value={"Application Received"}>Application Received</MenuItem>
-              {/* ... add more status options ... */}
+               <MenuItem value={"Accepted"}>Accepted</MenuItem>
+                    <MenuItem value={"Pending"}>Pending</MenuItem>
+                    <MenuItem value={"Application Received"}>Application Received</MenuItem>
+                    <MenuItem value={"Application Under Review"}>Application Under Review</MenuItem>
+                    <MenuItem value={"Interview Scheduled"}>Interview Scheduled</MenuItem>
+                    <MenuItem value={"Assessment/Testing"}>Assessment/Testing</MenuItem>
+                    <MenuItem value={"Application Unsuccessful"}>Application Unsuccessful</MenuItem>
             </Select>
           </FormControl>
 
@@ -282,7 +320,7 @@ const CandidateDialog = ({
               </div>
               {selectedCandidate.cv ? (<Button
 
-                // onClick={handleDownloadCV} // Attach the download function to the button click event
+                 onClick={handleDownloadCV} // Attach the download function to the button click event
               >
                 Download CV
               </Button>) : (
