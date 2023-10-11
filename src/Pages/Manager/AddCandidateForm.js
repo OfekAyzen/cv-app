@@ -1,6 +1,7 @@
 // AddCandidateForm.js
 import React, { useState, useEffect } from 'react';
-
+import { Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 import { TextField, Button, Container } from '@mui/material';
@@ -30,11 +31,17 @@ const AddCandidateForm = () => {
         note: '',
         status: '',
     });
+    const [error, setError] = useState(null);
     const [education, setEducation] = useState('');
     const [workExperience, setWorkExperience] = useState('');
     const [gender, setGender] = useState('');
-
-
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Added severity state
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setError(null);
+    };
     const handleFieldChange = (fieldName) => (event) => {
         const value = event.target.value;
         switch (fieldName) {
@@ -73,10 +80,15 @@ const AddCandidateForm = () => {
             );
 
             console.log('New Candidate created:', response);
+            setSnackbarSeverity('success');
+            setError('New Candidate created');
+
             window.location.reload();
             // TODO: Handle success and update UI if needed
         } catch (error) {
             console.error('Error creating new candidate:', error);
+            setSnackbarSeverity('error');
+            setError('An error occurred while adding the candidate.Please check the email \ phone number');
             // TODO: Handle error and notify the user
         }
     };
@@ -101,6 +113,7 @@ const AddCandidateForm = () => {
                     contentType: cvFile.type,
                 });
                 //  console.log('CV uploaded successfully. Key:', newCvFileKey);
+                setError('CV uploaded successfully');
                 console.log('CV uploaded successfully!');
                 // Update cvFileKey and save it
                 setCvFileKey(newCvFileKey);
@@ -323,6 +336,18 @@ const AddCandidateForm = () => {
                 >
                     Add Candidate
                 </Button>
+               {/* Snackbar to display error */}
+               <Snackbar open={!!error} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                    <MuiAlert
+                        elevation={6}
+                        variant="filled"
+                        severity={snackbarSeverity} // Use the severity state to determine color
+                        onClose={handleSnackbarClose}
+                    >
+                        {error}
+                    </MuiAlert>
+                </Snackbar>
+
     </div>
                
             </Container>
