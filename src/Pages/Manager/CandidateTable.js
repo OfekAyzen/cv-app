@@ -28,42 +28,77 @@ import Dialog from '@mui/material/Dialog';
 const CandidateRow = ({ candidate,
   appliedJob, selectedJobId, handleViewCandidate,
   handleDeleteApplication, onDeleteCandidate, }) => {
-
-
-  const [isRowClicked, setIsRowClicked] = useState(false);
-
-  const handleDelete = async (deletedCandidateId, candidateVersion) => {
-    const confirmed = window.confirm("Are you sure you want to delete this candidate?");
+    const [isRowClicked, setIsRowClicked] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
   
-    if (!confirmed) {
-      return;
-    }
+    const handleDelete = async (deletedCandidateId, candidateVersion) => {
+      const confirmed = window.confirm('Are you sure you want to delete this candidate?');
   
-    try {
-      const input = {
-        id: deletedCandidateId,
-        _version: candidateVersion, // Use the correct version for the candidate
-      };
-  
-      const response = await API.graphql(
-        graphqlOperation(deleteCandidate, { input })
-      );
-  
-      if (response.data && response.data.deleteCandidate) {
-        console.log("Candidate deleted successfully");
-        window.location.reload();
-      } else {
-        handleNotification("Error deleting candidate", "error");
+      if (!confirmed) {
+        return;
       }
-    } catch (error) {
-      console.error("Error deleting candidate:", error);
-      handleNotification("Error deleting candidate", "error");
-    }
-  };
-  const handleNotification = (message, type) => {
-    // Implement your notification logic here
+  
+      try {
+        const input = {
+          id: deletedCandidateId,
+          _version: candidateVersion, // Use the correct version for the candidate
+        };
+  
+        const response = await API.graphql(graphqlOperation(deleteCandidate, { input }));
+  
+        if (response.data && response.data.deleteCandidate) {
+          console.log('Candidate deleted successfully');
+          setSnackbarMessage('Candidate deleted successfully');
+          setSnackbarOpen(true);
+          setTimeout(() => {
+            setSnackbarOpen(false);
+          }, 10000);
+          window.location.reload();
+        } else {
+          handleNotification('Error deleting candidate', 'error');
+        }
+      } catch (error) {
+        console.error('Error deleting candidate:', error);
+        handleNotification('Error deleting candidate', 'error');
+      }
+    };
+  
 
-  };
+  // const [isRowClicked, setIsRowClicked] = useState(false);
+
+  // const handleDelete = async (deletedCandidateId, candidateVersion) => {
+  //   const confirmed = window.confirm("Are you sure you want to delete this candidate?");
+  
+  //   if (!confirmed) {
+  //     return;
+  //   }
+  
+  //   try {
+  //     const input = {
+  //       id: deletedCandidateId,
+  //       _version: candidateVersion, // Use the correct version for the candidate
+  //     };
+  
+  //     const response = await API.graphql(
+  //       graphqlOperation(deleteCandidate, { input })
+  //     );
+  
+  //     if (response.data && response.data.deleteCandidate) {
+  //       console.log("Candidate deleted successfully");
+  //       window.location.reload();
+  //     } else {
+  //       handleNotification("Error deleting candidate", "error");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting candidate:", error);
+  //     handleNotification("Error deleting candidate", "error");
+  //   }
+  // };
+  // const handleNotification = (message, type) => {
+  //   // Implement your notification logic here
+
+  // };
 
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);
@@ -83,6 +118,9 @@ const CandidateRow = ({ candidate,
       // For example, you can display a message or take appropriate action
       handleViewCandidate(candidate, null);
     }
+  };
+  const handleNotification = (message, type) => {
+    // Implement your notification logic here
   };
   
   return (
@@ -114,10 +152,27 @@ const CandidateRow = ({ candidate,
       <TableCell   className="my-font">{candidate.candidate.skills}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.status}</TableCell>
       <TableCell className="fullWidthCell">
-        <Button variant="contained" color="secondary" style={{ fontFamily: '"Calibri", sans-serif' }} onClick={() => handleDelete(candidate.candidate.id,candidate.candidate._version)}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ fontFamily: '"Calibri", sans-serif' }}
+          onClick={() => handleDelete(candidate.candidate.id, candidate.candidate._version)}
+        >
           Delete
         </Button>
       </TableCell>
+
+      {/* Snackbar to display delete message */}
+      <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={() => setSnackbarOpen(false)}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          severity="success"
+          onClose={() => setSnackbarOpen(false)}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </TableRow>
   );
 };

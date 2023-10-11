@@ -97,20 +97,20 @@ export default function JobApplication(props) {
 
 
     const educationOptions = [
-        "All",
+        
         "High School",
         "Bachelor's Degree",
         "Master's Degree"
     ];
 
     const workExperienceOptions = [
-        "All",
+        
         "Less than 1 year",
         "1-3 years",
         "3-5 years"
     ];
 
-    const genderOptions = ["All", "Female", "Male", "Other"];
+    const genderOptions = [ "Female", "Male", "Other"];
     const [cvFileKey, setCvFileKey] = useState(null);
 
 

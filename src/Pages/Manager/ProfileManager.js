@@ -50,7 +50,7 @@ function ProfileManager() {
         const candidates = candidatesResponse.data.listCandidates.items;
         // const activeCandidates = candidates.filter(candidate => !candidate._deleted);
 
-        console.log("candidates:", candidates);
+      
         // console.log("Active candidates Data Length:", activeCandidates.length);
         const candidateJobResponses = await Promise.all(
           candidates.map(candidate =>
@@ -103,7 +103,7 @@ function ProfileManager() {
           (candidateJob) => !candidateJob.candidate._deleted
         );
     
-        console.log("combied data activeCombind:",activeCombind);
+       
         setCombideData(activeCombind);
      
         setLoading(false);

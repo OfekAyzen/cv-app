@@ -301,8 +301,36 @@ const AddCandidateForm = () => {
                     onChange={handleFieldChange('certifications')}
                     fullWidth
                 />
+<TextField
+                    sx={{ paddingBottom: '5px', fontFamily: `'Calibri', sans-serif` }}
+                    className='custom-select'
+                    label="Note"
+                    value={candidateData.note}
+                    onChange={handleFieldChange('note')}
+                    fullWidth
+                />
 
-                <TextField
+                <FormControl fullWidth variant="outlined" className="custom-select" style={{ width: '360px',paddingBottom:'6px' }}>
+                    <InputLabel>Status</InputLabel>
+                    <Select
+                        value={candidateData.status}
+                        onChange={handleFieldChange('status')}
+                        label="Status"
+                    >
+                        <MenuItem value="">
+                            <em>All</em>
+                        </MenuItem>
+                        <MenuItem value={"Accepted"}>Accepted</MenuItem>
+                    <MenuItem value={"Pending"}>Pending</MenuItem>
+                    <MenuItem value={"Application Received"}>Application Received</MenuItem>
+                    <MenuItem value={"Application Under Review"}>Application Under Review</MenuItem>
+                    <MenuItem value={"Interview Scheduled"}>Interview Scheduled</MenuItem>
+                    <MenuItem value={"Assessment/Testing"}>Assessment/Testing</MenuItem>
+                    <MenuItem value={"Application Unsuccessful"}>Application Unsuccessful</MenuItem>
+                        {/* Add more status options as needed */}
+                    </Select>
+                </FormControl>
+                {/* <TextField
                     sx={{ paddingBottom: '5px', fontFamily: `'Calibri', sans-serif` }}
                     className='custom-select'
                     label="Note"
@@ -317,7 +345,7 @@ const AddCandidateForm = () => {
                     value={candidateData.status}
                     onChange={handleFieldChange('status')}
                     fullWidth
-                />
+                /> */}
     <div style={{display:'flex',flexDirection:'column'}}>
     <label htmlFor="cvUpload" style={{ fontFamily:'"Calibri", sans-serif',cursor: 'pointer', color: '#ad2069',marginTop:'5%' }}>
                     Upload CV

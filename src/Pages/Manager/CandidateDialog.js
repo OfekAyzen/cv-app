@@ -21,7 +21,7 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import WcOutlinedIcon from "@mui/icons-material/WcOutlined";
 import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
 import { API, graphqlOperation } from "aws-amplify";
-import { updateCandidate } from "../../graphql/mutations";
+import { updateCandidate,updateCandidateJobs } from "../../graphql/mutations";
 import { getCandidate } from "../../graphql/queries"; // Import your query here
 import DownloadCV from "./DownloadCV";
 import { Storage } from 'aws-amplify';
@@ -32,11 +32,11 @@ import "../../styles/Profilemanager.css";
 import TextareaAutosize from '@mui/material/TextareaAutosize'; 
 // Amplify.configure(awsConfig);
 
+
 const CandidateDialog = ({
   open,
   handleClose,
   selectedCandidate,
-  selectedJobId,
   handleNoteAddSuccess,
   handleNoteAddError,
 }) => {
@@ -46,7 +46,6 @@ const CandidateDialog = ({
   const [noteMessage, setNoteMessage] = useState("");
 
   useEffect(() => {
-    // Fetch the candidate data when the dialog opens
     if (open && selectedCandidate) {
       fetchCandidateData(selectedCandidate.id);
     }
@@ -61,139 +60,70 @@ const CandidateDialog = ({
       );
 
       const candidateData = response.data.getCandidate;
-      setNote(candidateData.note);
+      setNote(candidateData.note || "");
     } catch (error) {
-      setStatusChangeMessage("Error fetching candidate data");
-      // Clear the note message after 3 seconds (3000 milliseconds)
-      setTimeout(() => {
-        setNoteMessage("");
-      }, 3000); // Adjust the delay as needed
-
       console.error("Error fetching candidate data:", error);
-      
     }
   };
 
   const handleStatusChange = async () => {
+    console.log("handleStatusChange");
     try {
       const input = {
         id: selectedCandidate.id,
         status: newStatus,
+        _version: selectedCandidate._version, // Include the _version field
       };
-
+      console.log('API Input:', input);  // Log the input
+  
       const response = await API.graphql(
         graphqlOperation(updateCandidate, { input })
       );
-
-      console.log("Candidate status updated:", response.data.updateCandidate);
-      setStatusChangeMessage("Status updated successfully");
-      // Clear the note message after 3 seconds (3000 milliseconds)
+  
+      console.log('API Response:', response);  // Log the response
+      // Check if the status has been updated
+      if (response?.data?.updateCandidate?.status === newStatus) {
+        console.log('Candidate status updated successfully');
+        setStatusChangeMessage('Status updated successfully');
+      } else {
+        console.error('Error updating status: Status not updated');
+        setStatusChangeMessage('Error updating status: Status not updated');
+      }
+  
       setTimeout(() => {
         setStatusChangeMessage("");
-      }, 3000); // Adjust the delay as needed
-
-      //   handleNoteAddSuccess("Status updated successfully", "green");
+      }, 3000);
     } catch (error) {
       console.error("Error updating status:", error);
       setStatusChangeMessage("Error updating status");
-      //   handleNoteAddError("Error updating status", "red");
     }
   };
 
   const handleNoteChange = (e) => {
     setNote(e.target.value);
   };
-
   const handleSaveNote = async () => {
     try {
       const input = {
         id: selectedCandidate.id,
         note: note,
+        _version: selectedCandidate._version, // Include the _version field
       };
-
+  
       const response = await API.graphql(
         graphqlOperation(updateCandidate, { input })
       );
-
-      console.log("Note saved:", response.data.updateCandidate);
+  
       setNoteMessage("Note saved successfully");
-      // handleNoteAddSuccess("Note saved successfully", "green");
-      // Clear the note message after 3 seconds (3000 milliseconds)
       setTimeout(() => {
         setNoteMessage("");
-      }, 3000); // Adjust the delay as needed
+      }, 3000);
     } catch (error) {
       console.error("Error saving note:", error);
       setNoteMessage("Error saving note");
-      handleNoteAddError("Error saving note", "red");
     }
   };
 
-  // const handleDownloadCV = async () => {
-  //   if (selectedCandidate && selectedCandidate.cv) {
-
-  //     try {
-
-  //       // Construct the download URL using the cvFileKey
-  //       const downloadUrl = await Storage.get(`${selectedCandidate.cv}`);
-
-  //       // Create a hidden anchor element
-  //       const link = document.createElement('a');
-  //       link.href = downloadUrl;
-  //       link.target = '_blank';
-  //       link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`; // Adjust the desired download file name
-
-  //       // Append the anchor to the body and programmatically click it to initiate the download
-  //       document.body.appendChild(link);
-  //       link.click();
-
-  //       // Clean up: remove the anchor from the DOM
-  //       document.body.removeChild(link);
-  //     } catch (error) {
-  //       console.error("Error downloading CV:", error);
-  //     }
-  //   }
-  //   else {
-  //     setNoteMessage("No CV to the candidate");
-
-  //   }
-  // };
-  const handleDownloadCV = async () => {
-    if (!selectedCandidate || !selectedCandidate.cv) {
-      setNoteMessage("No CV for the candidate");
-      return;
-    }
-  
-    try {
-     // Ensure AWS configuration is properly set up
-      Amplify.configure({
-        Storage: {
-          AWSS3: {
-            bucket: 'amplify-amplify20e2396a2d654-staging-72154-storages3cvmanagementappstorage7140768f-OWEDL5NTQVQ3',
-            region: 'US East (Ohio) us-east-2',
-          },
-        },
-      });
-  
-      // Construct the download URL using the cvFileKey
-      const downloadUrl = await Storage.get(selectedCandidate.cv);
-  
-      // Create a hidden anchor element
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.target = '_blank';
-      link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`;
-  
-      // Append the anchor to the body and programmatically click it to initiate the download
-      document.body.appendChild(link);
-      link.click();
-  
-      // Clean up: remove the anchor from the DOM
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error downloading CV:", error);
-    }
-  };
   return (
     <Dialog
       open={open}
@@ -269,84 +199,90 @@ const CandidateDialog = ({
                   
                 }}
               >
-                <FormControl variant="outlined" sx={{ width: "395px", }} className="custom-text-field">
-                  <InputLabel style={{ fontFamily:'"Calibri", sans-serif',}}>Status</InputLabel>
-                  <Select
-                    value={newStatus || ""}
-                    onChange={(e) => setNewStatus(e.target.value)}
-                    label="Status"
-                    style={{
-                      width: '350px',
-                      borderColor: '#ccc',  // Default border color
-                      '&:hover': {
-                        borderColor: '#b4269a',  // Border color on hover
-                      },
-                      '&:focus': {
-                        borderColor: '#b4269a',  // Border color on focus
-                      },
-                    }}
-                   
-                  >
+                <FormControl
+            variant="outlined"
+            sx={{ width: "395px", }}
+            className="custom-text-field"
+          >
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={newStatus || ""}
+              onChange={(e) => setNewStatus(e.target.value)}
+              label="Status"
+              style={{
+                width: '350px',
+                borderColor: '#ccc',
+                '&:hover': {
+                  borderColor: '#b4269a',
+                },
+                '&:focus': {
+                  borderColor: '#b4269a',
+                },
+              }}
+            >
+              <MenuItem value={"Accepted"}>Accepted</MenuItem>
+              <MenuItem value={"Pending"}>Pending</MenuItem>
+              <MenuItem value={"Application Received"}>Application Received</MenuItem>
+              {/* ... add more status options ... */}
+            </Select>
+          </FormControl>
 
-                    <MenuItem value={"Accepted"}>Accepted</MenuItem>
-                    <MenuItem value={"Pending"}>Pending</MenuItem>
-                    <MenuItem value={"Application Received"}>Application Received</MenuItem>
-                    <MenuItem value={"Application Under Review"}>Application Under Review</MenuItem>
-                    <MenuItem value={"Interview Scheduled"}>Interview Scheduled</MenuItem>
-                    <MenuItem value={"Assessment/Testing"}>Assessment/Testing</MenuItem>
-                    <MenuItem value={"Application Unsuccessful"}>Application Unsuccessful</MenuItem>
-                  </Select >
-                </FormControl>
-             
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  sx={{fontFamily:'"Calibri", sans-serif',
-                    backgroundColor: "#ad2069",
-                    width:'100px',
-                    marginTop: "16px",
-                  }}
-                  onClick={handleStatusChange}
-                >
-                  Save Status
-                </Button>
-                <Typography style={{ color: "green", marginLeft: "16px" }}>{statusChangeMessage}</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            sx={{
+              fontFamily: '"Calibri", sans-serif',
+              backgroundColor: "#ad2069",
+              width: '100px',
+              marginTop: "16px",
+            }}
+            onClick={handleStatusChange}
+          >
+            Save Status
+          </Button>
+          <Typography style={{ color: "green", marginLeft: "16px" }}>
+            {statusChangeMessage}
+          </Typography>
 
-                <TextareaAutosize
-                  className="custom-text-field"
-                 
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                  value={note}
-                  onChange={handleNoteChange}
-                  style={{ marginTop: "16px", width: "350px" ,height:'50px',borderBlockColor:'lightgrey',
-                borderRadius:'5px', 
-                }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  sx={{
-                     fontFamily:'"Calibri", sans-serif',
-                    backgroundColor: "#ad2069",
-                    
-                    marginTop: "16px",
-                    width: "100px",
-                  }}
-                  onClick={handleSaveNote}
-                >
-                  Save Note
-                </Button>
-                
-                
-                <Typography style={{ color: "green", marginLeft: "16px" }}>{noteMessage}</Typography>
+          <TextareaAutosize
+            className="custom-text-field"
+            multiline
+            rows={4}
+            variant="outlined"
+            value={note}
+            onChange={handleNoteChange}
+            style={{
+              marginTop: "16px",
+              width: "350px",
+              height: '50px',
+              borderBlockColor: 'lightgrey',
+              borderRadius: '5px',
+            }}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            sx={{
+              fontFamily: '"Calibri", sans-serif',
+              backgroundColor: "#ad2069",
+              marginTop: "16px",
+              width: "100px",
+            }}
+            onClick={handleSaveNote}
+          >
+            Save Note
+          </Button>
+
+          <Typography style={{ color: "green", marginLeft: "16px" }}>
+            {noteMessage}
+          </Typography>
               </div>
               {selectedCandidate.cv ? (<Button
 
-                onClick={handleDownloadCV} // Attach the download function to the button click event
+                // onClick={handleDownloadCV} // Attach the download function to the button click event
               >
                 Download CV
               </Button>) : (
