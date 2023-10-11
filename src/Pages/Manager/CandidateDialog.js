@@ -266,15 +266,26 @@ const CandidateDialog = ({
                   flexDirection: "column",
                   alignItems: "flex-start",
                   marginTop: "16px",
+                  
                 }}
               >
-                <FormControl variant="outlined" sx={{ width: "395px" }} className="custom-text-field">
+                <FormControl variant="outlined" sx={{ width: "395px", }} className="custom-text-field">
                   <InputLabel style={{ fontFamily:'"Calibri", sans-serif',}}>Status</InputLabel>
                   <Select
                     value={newStatus || ""}
                     onChange={(e) => setNewStatus(e.target.value)}
                     label="Status"
-                    sx={{width:'80%'}}
+                    style={{
+                      width: '350px',
+                      borderColor: '#ccc',  // Default border color
+                      '&:hover': {
+                        borderColor: '#b4269a',  // Border color on hover
+                      },
+                      '&:focus': {
+                        borderColor: '#b4269a',  // Border color on focus
+                      },
+                    }}
+                   
                   >
 
                     <MenuItem value={"Accepted"}>Accepted</MenuItem>
@@ -293,9 +304,7 @@ const CandidateDialog = ({
                   size="small"
                   sx={{fontFamily:'"Calibri", sans-serif',
                     backgroundColor: "#ad2069",
-                    "&:hover": {
-                      backgroundColor: "#ff98b5",
-                    },
+                    width:'100px',
                     marginTop: "16px",
                   }}
                   onClick={handleStatusChange}
@@ -312,10 +321,8 @@ const CandidateDialog = ({
                   variant="outlined"
                   value={note}
                   onChange={handleNoteChange}
-                  style={{ marginTop: "16px", width: "98%" ,height:'50px',borderBlockColor:'lightgrey',
-                borderRadius:'5px', "&:hover": {
-                  backgroundColor: "pink",
-                },
+                  style={{ marginTop: "16px", width: "350px" ,height:'50px',borderBlockColor:'lightgrey',
+                borderRadius:'5px', 
                 }}
                 />
                 <Button
@@ -325,11 +332,9 @@ const CandidateDialog = ({
                   sx={{
                      fontFamily:'"Calibri", sans-serif',
                     backgroundColor: "#ad2069",
-                    "&:hover": {
-                      backgroundColor: "#ff98b5",
-                    },
+                    
                     marginTop: "16px",
-                    width: "28%",
+                    width: "100px",
                   }}
                   onClick={handleSaveNote}
                 >

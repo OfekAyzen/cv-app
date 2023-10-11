@@ -1,5 +1,8 @@
 // AddCandidateForm.js
 import React, { useState, useEffect } from 'react';
+
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
 import { TextField, Button, Container } from '@mui/material';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createCandidate } from '../../graphql/mutations';  // Adjust the import path
@@ -27,9 +30,29 @@ const AddCandidateForm = () => {
         note: '',
         status: '',
     });
+    const [education, setEducation] = useState('');
+    const [workExperience, setWorkExperience] = useState('');
+    const [gender, setGender] = useState('');
+
 
     const handleFieldChange = (fieldName) => (event) => {
-        setCandidateData({ ...candidateData, [fieldName]: event.target.value });
+        const value = event.target.value;
+        switch (fieldName) {
+            case 'education':
+                setEducation(value);
+                setCandidateData({ ...candidateData, education: value });
+                break;
+            case 'work_experience':
+                setWorkExperience(value);
+                setCandidateData({ ...candidateData, work_experience: value });
+                break;
+            case 'gender':
+                setGender(value);
+                setCandidateData({ ...candidateData, gender: value });
+                break;
+            default:
+                setCandidateData({ ...candidateData, [fieldName]: value });
+        }
     };
 
    
@@ -94,6 +117,23 @@ const AddCandidateForm = () => {
             uploadCV();
         }
     }, [cvFile, setCvFileKey]);
+    const areAllFieldsFilled = () => {
+        const requiredFields = [
+            'first_name',
+            'last_name',
+            'location',
+            'email',
+            'phone_number',
+            'gender',
+            'education',
+            'work_experience',
+            'skills',
+            'position',
+            'certifications',
+            
+        ];
+        return requiredFields.every(field => candidateData[field]);
+    };
     return (
         <div  style={{ backgroundColor: 'white', display: 'flex', paddingBottom: '30px' }}>
             <Container style={{ backgroundColor: 'white', width: '70%', paddingTop: '50px' }}>
@@ -142,7 +182,7 @@ const AddCandidateForm = () => {
                     onChange={handleFieldChange('phone_number')}
                     fullWidth
                 />
-                <TextField
+                {/* <TextField
                     sx={{ paddingBottom: '5px', fontFamily: `'Calibri', sans-serif` }}
                     className='custom-select'
                     label="Gender"
@@ -158,15 +198,63 @@ const AddCandidateForm = () => {
                     value={candidateData.education}
                     onChange={handleFieldChange('education')}
                     fullWidth
-                />
-                <TextField
+                /> */}
+                {/* <TextField
                     sx={{ paddingBottom: '5px', fontFamily: `'Calibri', sans-serif` }}
                     className='custom-select'
                     label="Work Experience"
                     value={candidateData.work_experience}
                     onChange={handleFieldChange('work_experience')}
                     fullWidth
-                />
+                /> */}
+                 <FormControl  fullWidth variant="outlined" className="custom-select" style={{ width: '360px' ,paddingBottom:'6px'}}>
+      <InputLabel>Education</InputLabel>
+      <Select
+        value={education}
+        onChange={handleFieldChange('education')}
+        label="Education"
+      >
+        <MenuItem value="">
+          <em>All</em>
+        </MenuItem>
+        <MenuItem value="High School">High School</MenuItem>
+        <MenuItem value="Bachelor's Degree">Bachelor's Degree</MenuItem>
+        <MenuItem value="Master's Degree">Master's Degree</MenuItem>
+      </Select>
+    </FormControl>
+
+    <FormControl fullWidth variant="outlined" className="custom-select" style={{ width: '360px',paddingBottom:'6px' }}>
+      <InputLabel>Work Experience</InputLabel>
+      <Select
+        value={workExperience}
+         onChange={handleFieldChange('work_experience')}
+        label="Work Experience"
+      >
+        <MenuItem value="">
+          <em>All</em>
+        </MenuItem>
+        <MenuItem value="Less than 1 year">Less than 1 year</MenuItem>
+        <MenuItem value="1-3 years">1-3 years</MenuItem>
+        <MenuItem value="3-5 years">3-5 years</MenuItem>
+      </Select>
+    </FormControl>
+
+    <FormControl fullWidth variant="outlined" className="custom-select" style={{ width: '360px',paddingBottom:'6px' }}>
+      <InputLabel>Gender</InputLabel>
+      <Select
+        value={gender}
+        onChange={handleFieldChange('gender')}
+        label="Gender"
+      >
+        <MenuItem value="">
+          <em>All</em>
+        </MenuItem>
+        <MenuItem value="male">Male</MenuItem>
+        <MenuItem value="female">Female</MenuItem>
+        <MenuItem value="Other">Other</MenuItem>
+      </Select>
+    </FormControl>
+
                 <TextField
                     sx={{ paddingBottom: '5px', fontFamily: '"Calibri", sans-serif', }}
                     className='custom-select'
@@ -221,13 +309,18 @@ const AddCandidateForm = () => {
                     />
                 </label>
 
-
-                <Button variant="contained" sx={{
-                    fontFamily:'"Calibri", sans-serif',
-                    backgroundColor: '#9c27b0', '&:hover': {
-                        backgroundColor: 'purple'
-                    }
-                }} onClick={handleAddCandidate}>
+                <Button
+                    variant="contained"
+                    sx={{
+                        fontFamily: '"Calibri", sans-serif',
+                        backgroundColor: '#9c27b0',
+                        '&:hover': {
+                            backgroundColor: 'purple'
+                        }
+                    }}
+                    onClick={handleAddCandidate}
+                    disabled={!areAllFieldsFilled()}  // Disable the button if not all fields are filled
+                >
                     Add Candidate
                 </Button>
     </div>

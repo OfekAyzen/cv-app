@@ -32,42 +32,6 @@ const CandidateRow = ({ candidate,
 
   const [isRowClicked, setIsRowClicked] = useState(false);
 
-  // const handleDelete = async (deletedCandidateId) => {
-  //   // Ask for confirmation before deleting the candidate
-  //   console.log("deletedCandidateId",deletedCandidateId);
-  //   const confirmed = window.confirm("Are you sure you want to delete this candidate? ");
-    
-  //   if (!confirmed) {
-  //     // If not confirmed, do nothing
-  //     return;
-  //   }
-  
-  //   try {
-     
-  //     const input = {
-  //       id: deletedCandidateId,  // Use id field for candidate ID
-  //       _version: 1  || 2,
-  //     };
-  
-  //     // Perform the delete operation
-  //     const response = await API.graphql(
-  //       graphqlOperation(deleteCandidate, { input })
-  //     );
-  // console.log("response ",response);
-  //     // operation was successful
-  //     if (response.data && response.data.deleteCandidate) {
-       
-  //       console.log("Candidate deleted successfully");
-  //       window.location.reload();
-  //     } else {
-        
-  //       handleNotification("Error deleting candidate", "error");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting candidate:", error);
-  //     handleNotification("Error deleting candidate", "error");
-  //   }
-  // };
   const handleDelete = async (deletedCandidateId, candidateVersion) => {
     const confirmed = window.confirm("Are you sure you want to delete this candidate?");
   
@@ -130,7 +94,7 @@ const CandidateRow = ({ candidate,
       borderRadius: "10px",
       transition: "box-shadow 0.3s",
       boxShadow: isRowClicked ? "0px 0px 5px 3px #ad2069" : "none",
-
+    
       "&:hover": {
         boxShadow: "0px 0px 5px 3px #d166b1",
         cursor: "pointer",
@@ -138,7 +102,7 @@ const CandidateRow = ({ candidate,
     }}
     onClick={handleRowClick}
   >
-      <TableCell   className="my-font">{formatDate(candidate.candidate.createdAt)}</TableCell>
+      <TableCell  className="my-font">{formatDate(candidate.candidate.createdAt)}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.first_name} {candidate.candidate.last_name}</TableCell>
       <TableCell   className="my-font">{candidate.candidate.location}</TableCell>
       <TableCell    className="my-font">{candidate.candidate.gender}</TableCell>
@@ -349,7 +313,7 @@ const CandidateTable = ({
           <CandidateFilterForm onFilter={handleFilter} />
 
           <div className="orderby">
-            <FormControl variant="outlined" className="custom-select">
+            <FormControl variant="outlined" className="custom-select" sx={{width:'15.5%',paddingLeft:'5px'}}>
               <InputLabel>Sort By:</InputLabel>
               <Select
                 value={sortByField}
