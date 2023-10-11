@@ -36,12 +36,14 @@ const AddCandidateForm = () => {
     const [workExperience, setWorkExperience] = useState('');
     const [gender, setGender] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // Added severity state
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setError(null);
     };
+    
     const handleFieldChange = (fieldName) => (event) => {
         const value = event.target.value;
         switch (fieldName) {
@@ -81,6 +83,10 @@ const AddCandidateForm = () => {
 
             console.log('New Candidate created:', response);
             setSnackbarSeverity('success');
+            setSnackbarOpen(true);  // Open the Snackbar
+            setTimeout(() => {
+                setSnackbarOpen(false);  
+            }, 9000);
             setError('New Candidate created');
 
             window.location.reload();
@@ -88,6 +94,9 @@ const AddCandidateForm = () => {
         } catch (error) {
             console.error('Error creating new candidate:', error);
             setSnackbarSeverity('error');
+            setTimeout(() => {
+                setSnackbarOpen(false);
+            }, 5000);
             setError('An error occurred while adding the candidate.Please check the email \ phone number');
             // TODO: Handle error and notify the user
         }
@@ -337,11 +346,11 @@ const AddCandidateForm = () => {
                     Add Candidate
                 </Button>
                {/* Snackbar to display error */}
-               <Snackbar open={!!error} autoHideDuration={6000} onClose={handleSnackbarClose}>
+               <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleSnackbarClose}>
                     <MuiAlert
                         elevation={6}
                         variant="filled"
-                        severity={snackbarSeverity} // Use the severity state to determine color
+                        severity={snackbarSeverity}
                         onClose={handleSnackbarClose}
                     >
                         {error}
