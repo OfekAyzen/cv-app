@@ -140,13 +140,21 @@ export default function JobApplication(props) {
                 !education ||
                 !work_experience ||
                 !skills ||
-                !position ||
+                // !position ||
                 !certifications
             ) {
                 showSnackbar('Please fill out all fields.', 'error');
                 return; // Stop submission if any field is missing
             }
-            handleapplyjob(candidateId); // Call the function to create CandidateJobs
+             // Set the final position to either the selected position or the default position
+        const finalPosition = position || defaultPosition;
+
+        // Update the condition to allow for the default position
+        if (!finalPosition && finalPosition !== defaultPosition) {
+            showSnackbar('Please select a position.', 'error');
+            return; // Stop submission if the position is missing
+        }
+            handleapplyjob(candidateId, finalPosition); // Call the function to create CandidateJobs
             navigate('/HomePage');
 
             localStorage.removeItem('cvFileKey');
@@ -202,7 +210,7 @@ export default function JobApplication(props) {
 
 
     
-    const handleapplyjob = async (candidateId) => {
+    const handleapplyjob = async (candidateId, finalPosition) => {
 
         try {
             // Get the Cognito User ID of the authenticated user
@@ -223,7 +231,7 @@ export default function JobApplication(props) {
                 education: education,
                 work_experience: work_experience,
                 skills: skills,
-                position: position,
+                position: finalPosition, 
                 certifications: certifications,
                 cv: cvFileKeyFromStorage, // Use the saved CV file key
               },
@@ -433,7 +441,7 @@ export default function JobApplication(props) {
         name="position"
         autoComplete="position"
         value={position || defaultPosition}
-        onChange={(e) => setPosition(e.target.value)}
+        onChange={(e) => setPosition(defaultPosition)}
     />
 </Grid>
                         </Grid>
@@ -573,7 +581,7 @@ export default function JobApplication(props) {
                             !education ||
                             !work_experience ||
                             !skills ||
-                            !position ||
+                            // !position ||
                             !certifications
                         }
                     >
