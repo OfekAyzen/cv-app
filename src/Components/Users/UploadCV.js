@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Typography from '@mui/material/Typography';
 import { Storage, API, graphqlOperation } from 'aws-amplify';
+import "../../styles/User.css";
 // Import your GraphQL mutation (update this import as needed)
 import { updateCandidate } from '../../graphql/mutations';
 

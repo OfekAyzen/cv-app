@@ -178,7 +178,19 @@ export default function JobApplication(props) {
         };
     }, []);
 
- 
+    useEffect(() => {
+        // Handle Snackbar display based on state
+        if (snackbarOpen) {
+            // Auto-close the Snackbar after 5 seconds
+            const timer = setTimeout(() => {
+                handleSnackbarClose();
+            }, 15000);
+            return () => clearTimeout(timer);
+        }
+    
+        // Scroll to the top of the page
+        window.scrollTo(0, 0);
+    }, [snackbarOpen]);
       
     const uploadCV = async () => {
         try {

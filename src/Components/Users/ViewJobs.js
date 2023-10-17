@@ -30,17 +30,17 @@ import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 // import "../../styles/User.css";
 import PropTypes from 'prop-types';
-import JobApplication from './JobApplication';
-import JobDetailsPage from './JobDetailsPage';
+// import JobApplication from './JobApplication';
+// import JobDetailsPage from './JobDetailsPage';
 
-import Stack from "@mui/material/Stack";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import MaterialIcon from './MaterialIcon';
+// import Stack from "@mui/material/Stack";
+// import InstagramIcon from "@mui/icons-material/Instagram";
+// import YouTubeIcon from "@mui/icons-material/YouTube";
+// import FacebookIcon from "@mui/icons-material/Facebook";
+// import TwitterIcon from "@mui/icons-material/Twitter";
+// import PinterestIcon from "@mui/icons-material/Pinterest";
+// import LinkedInIcon from "@mui/icons-material/LinkedIn";
+// import MaterialIcon from './MaterialIcon';
 const ViewJobs = (props) => {
   const [open, setOpen] = React.useState(false);
   const [selectedJobId, setSelectedJobId] = useState('');

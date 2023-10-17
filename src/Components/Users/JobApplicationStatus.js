@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-
+import "../../styles/User.css";
 export default function JobApplicationStatus(props) {
   const { jobTitle, jobStatus, appliedDate, onBack,job_description } = props;
 

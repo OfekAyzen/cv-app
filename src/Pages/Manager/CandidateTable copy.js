@@ -352,7 +352,7 @@ const CandidateTable = ({
   };
   return (
 
-    <div style={{ width: '1500px', height: '1200px' }}>
+    <div     >
       <Snackbar
         open={notification !== null}
         autoHideDuration={5000}
