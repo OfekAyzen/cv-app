@@ -8,7 +8,7 @@ body {
   font-size: "16px";
 }
 .candidate-table {
-  background-color: #eae7e7;
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
