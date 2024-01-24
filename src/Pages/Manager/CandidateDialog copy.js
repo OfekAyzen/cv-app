@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -21,15 +18,15 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import WcOutlinedIcon from "@mui/icons-material/WcOutlined";
 import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
 import { API, graphqlOperation } from "aws-amplify";
-import { updateCandidate,updateCandidateJobs } from "../../graphql/mutations";
+import { updateCandidate, updateCandidateJobs } from "../../graphql/mutations";
 import { getCandidate } from "../../graphql/queries"; // Import your query here
 import DownloadCV from "./DownloadCV";
-import { Storage } from 'aws-amplify';
+import { Storage } from "aws-amplify";
 // import { Storage } from "@aws-amplify/storage";
 // import awsConfig from './aws-configuration';
-import { Amplify } from '@aws-amplify/core';
+import { Amplify } from "@aws-amplify/core";
 import "../../styles/Profilemanager.css";
-import TextareaAutosize from '@mui/material/TextareaAutosize'; 
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 // Amplify.configure(awsConfig);
 
 const CandidateDialog = ({
@@ -70,7 +67,6 @@ const CandidateDialog = ({
       }, 3000); // Adjust the delay as needed
 
       console.error("Error fetching candidate data:", error);
-      
     }
   };
 
@@ -100,7 +96,6 @@ const CandidateDialog = ({
   //   }
   // };
 
-
   const handleStatusChange = async () => {
     console.log("handleStatusChange");
     try {
@@ -108,20 +103,25 @@ const CandidateDialog = ({
         id: selectedCandidate.id,
         status: newStatus,
       };
-console.log("the inputs is :",selectedCandidate.id , "   and ",newStatus);
-console.log('API Input:', input); 
+      console.log(
+        "the inputs is :",
+        selectedCandidate.id,
+        "   and ",
+        newStatus
+      );
+      console.log("API Input:", input);
       const response = await API.graphql(
         graphqlOperation(updateCandidate, { input })
       );
-      console.log('API Response:', response); 
-// Check if the status has been updated
-if (response?.data?.updateCandidate?.status === newStatus) {
-  console.log('Candidate status updated successfully');
-  setStatusChangeMessage('Status updated successfully');
-} else {
-  console.error('Error updating status: Status not updated');
-  setStatusChangeMessage('Error updating status: Status not updated');
-}
+      console.log("API Response:", response);
+      // Check if the status has been updated
+      if (response?.data?.updateCandidate?.status === newStatus) {
+        console.log("Candidate status updated successfully");
+        setStatusChangeMessage("Status updated successfully");
+      } else {
+        console.error("Error updating status: Status not updated");
+        setStatusChangeMessage("Error updating status: Status not updated");
+      }
       console.log("Candidate status updated:", response.data.updateCandidate);
       setStatusChangeMessage("Status updated successfully");
       // Clear the note message after 3 seconds (3000 milliseconds)
@@ -143,7 +143,7 @@ if (response?.data?.updateCandidate?.status === newStatus) {
 
   const handleSaveNote = async () => {
     try {
-      console.log("note:",note);
+      console.log("note:", note);
       const input = {
         id: selectedCandidate.id,
         note: note,
@@ -201,31 +201,33 @@ if (response?.data?.updateCandidate?.status === newStatus) {
       setNoteMessage("No CV for the candidate");
       return;
     }
-  
+
     try {
-     // Ensure AWS configuration is properly set up
+      hi;
+      // Ensure AWS configuration is properly set up
       Amplify.configure({
         Storage: {
           AWSS3: {
-            bucket: 'amplify-amplify20e2396a2d654-staging-72154-storages3cvmanagementappstorage7140768f-OWEDL5NTQVQ3',
-            region: 'US East (Ohio) us-east-2',
+            bucket:
+              "amplify-amplify20e2396a2d654-staging-72154-storages3cvmanagementappstorage7140768f-OWEDL5NTQVQ3",
+            region: "US East (Ohio) us-east-2",
           },
         },
       });
-  
+
       // Construct the download URL using the cvFileKey
       const downloadUrl = await Storage.get(selectedCandidate.cv);
-  
+
       // Create a hidden anchor element
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = downloadUrl;
-      link.target = '_blank';
+      link.target = "_blank";
       link.download = `CV_${selectedCandidate.first_name}_${selectedCandidate.last_name}.pdf`;
-  
+
       // Append the anchor to the body and programmatically click it to initiate the download
       document.body.appendChild(link);
       link.click();
-  
+
       // Clean up: remove the anchor from the DOM
       document.body.removeChild(link);
     } catch (error) {
@@ -249,7 +251,6 @@ if (response?.data?.updateCandidate?.status === newStatus) {
           width: "10px",
           position: "fixed",
           color: "black",
-         
         }}
       >
         X
@@ -258,41 +259,106 @@ if (response?.data?.updateCandidate?.status === newStatus) {
       <DialogContent className="profilePopUp">
         {selectedCandidate ? (
           <Card className="candidate-card-profile" style={{ height: "100%" }}>
-            <CardContent
-             className="card-contentDialog"
-            >
-              <Typography variant="h4" sx={{ paddingTop: "15px", fontSize: "40px" }}>
+            <CardContent className="card-contentDialog">
+              <Typography
+                variant="h4"
+                sx={{ paddingTop: "15px", fontSize: "40px" }}
+              >
                 {selectedCandidate.first_name} {selectedCandidate.last_name} cv
               </Typography>
-              <Typography sx={{ paddingTop: "35px", fontSize: "18px", fontFamily:'"Calibri", sans-serif',}}>
-                <MailOutlineIcon fontSize="small" /> Email: {selectedCandidate.email}
+              <Typography
+                sx={{
+                  paddingTop: "35px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
+                <MailOutlineIcon fontSize="small" /> Email:{" "}
+                {selectedCandidate.email}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
-                <LocalPhoneOutlinedIcon fontSize="small" /> Phone: {selectedCandidate.phone_number}
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
+                <LocalPhoneOutlinedIcon fontSize="small" /> Phone:{" "}
+                {selectedCandidate.phone_number}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
-                <AddLocationAltOutlinedIcon fontSize="small" /> Location: {selectedCandidate.location}
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
+                <AddLocationAltOutlinedIcon fontSize="small" /> Location:{" "}
+                {selectedCandidate.location}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
-                <WcOutlinedIcon fontSize="small" /> Gender: {selectedCandidate.gender}
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
+                <WcOutlinedIcon fontSize="small" /> Gender:{" "}
+                {selectedCandidate.gender}
               </Typography>
               <hr />
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
-                Position: {selectedCandidate.position || 'No Job Title'}
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
+                Position: {selectedCandidate.position || "No Job Title"}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
                 Education: {selectedCandidate.education}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
                 Experience: {selectedCandidate.work_experience}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
                 Skills: {selectedCandidate.skills}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px", fontFamily:'"Calibri", sans-serif', }}>
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
                 Certification: {selectedCandidate.certifications}
               </Typography>
-              <Typography sx={{ paddingTop: "5px", fontSize: "18px" , fontFamily:'"Calibri", sans-serif',}}>
+              <Typography
+                sx={{
+                  paddingTop: "5px",
+                  fontSize: "18px",
+                  fontFamily: '"Calibri", sans-serif',
+                }}
+              >
                 Department: {selectedCandidate.position}
               </Typography>
 
@@ -304,73 +370,92 @@ if (response?.data?.updateCandidate?.status === newStatus) {
                   flexDirection: "column",
                   alignItems: "flex-start",
                   marginTop: "16px",
-                  
                 }}
               >
-                <FormControl variant="outlined" sx={{ width: "395px", }} className="custom-text-field">
-                  <InputLabel style={{ fontFamily:'"Calibri", sans-serif',}}>Status</InputLabel>
+                <FormControl
+                  variant="outlined"
+                  sx={{ width: "395px" }}
+                  className="custom-text-field"
+                >
+                  <InputLabel style={{ fontFamily: '"Calibri", sans-serif' }}>
+                    Status
+                  </InputLabel>
                   <Select
                     value={newStatus || ""}
                     onChange={(e) => setNewStatus(e.target.value)}
                     label="Status"
                     style={{
-                      width: '350px',
-                      borderColor: '#ccc',  // Default border color
-                      '&:hover': {
-                        borderColor: '#b4269a',  // Border color on hover
+                      width: "350px",
+                      borderColor: "#ccc", // Default border color
+                      "&:hover": {
+                        borderColor: "#b4269a", // Border color on hover
                       },
-                      '&:focus': {
-                        borderColor: '#b4269a',  // Border color on focus
+                      "&:focus": {
+                        borderColor: "#b4269a", // Border color on focus
                       },
                     }}
-                   
                   >
-
                     <MenuItem value={"Accepted"}>Accepted</MenuItem>
                     <MenuItem value={"Pending"}>Pending</MenuItem>
-                    <MenuItem value={"Application Received"}>Application Received</MenuItem>
-                    <MenuItem value={"Application Under Review"}>Application Under Review</MenuItem>
-                    <MenuItem value={"Interview Scheduled"}>Interview Scheduled</MenuItem>
-                    <MenuItem value={"Assessment/Testing"}>Assessment/Testing</MenuItem>
-                    <MenuItem value={"Application Unsuccessful"}>Application Unsuccessful</MenuItem>
-                  </Select >
+                    <MenuItem value={"Application Received"}>
+                      Application Received
+                    </MenuItem>
+                    <MenuItem value={"Application Under Review"}>
+                      Application Under Review
+                    </MenuItem>
+                    <MenuItem value={"Interview Scheduled"}>
+                      Interview Scheduled
+                    </MenuItem>
+                    <MenuItem value={"Assessment/Testing"}>
+                      Assessment/Testing
+                    </MenuItem>
+                    <MenuItem value={"Application Unsuccessful"}>
+                      Application Unsuccessful
+                    </MenuItem>
+                  </Select>
                 </FormControl>
-             
+
                 <Button
                   variant="contained"
                   color="primary"
                   size="small"
-                  sx={{fontFamily:'"Calibri", sans-serif',
+                  sx={{
+                    fontFamily: '"Calibri", sans-serif',
                     backgroundColor: "#ad2069",
-                    width:'100px',
+                    width: "100px",
                     marginTop: "16px",
                   }}
                   onClick={handleStatusChange}
                 >
                   Save Status
                 </Button>
-                <Typography style={{ color: "green", marginLeft: "16px" }}>{statusChangeMessage}</Typography>
+                <Typography style={{ color: "green", marginLeft: "16px" }}>
+                  {statusChangeMessage}
+                </Typography>
 
                 <TextareaAutosize
                   className="custom-text-field"
-                 
                   multiline
                   rows={4}
                   variant="outlined"
                   value={note}
                   onChange={handleNoteChange}
-                  style={{ marginTop: "16px", width: "350px" ,height:'50px',borderBlockColor:'lightgrey',
-                borderRadius:'5px', 
-                }}
+                  style={{
+                    marginTop: "16px",
+                    width: "350px",
+                    height: "50px",
+                    borderBlockColor: "lightgrey",
+                    borderRadius: "5px",
+                  }}
                 />
                 <Button
                   variant="contained"
                   color="primary"
                   size="small"
                   sx={{
-                     fontFamily:'"Calibri", sans-serif',
+                    fontFamily: '"Calibri", sans-serif',
                     backgroundColor: "#ad2069",
-                    
+
                     marginTop: "16px",
                     width: "100px",
                   }}
@@ -378,17 +463,21 @@ if (response?.data?.updateCandidate?.status === newStatus) {
                 >
                   Save Note
                 </Button>
-                
-                
-                <Typography style={{ color: "green", marginLeft: "16px" }}>{noteMessage}</Typography>
-              </div>
-              {selectedCandidate.cv ? (<Button
 
-                onClick={handleDownloadCV} // Attach the download function to the button click event
-              >
-                Download CV
-              </Button>) : (
-                <Typography style={{ color: "Grey", marginLeft: "16px" }}>No cv for the candidate</Typography>
+                <Typography style={{ color: "green", marginLeft: "16px" }}>
+                  {noteMessage}
+                </Typography>
+              </div>
+              {selectedCandidate.cv ? (
+                <Button
+                  onClick={handleDownloadCV} // Attach the download function to the button click event
+                >
+                  Download CV
+                </Button>
+              ) : (
+                <Typography style={{ color: "Grey", marginLeft: "16px" }}>
+                  No cv for the candidate
+                </Typography>
               )}
 
               <Divider style={{ margin: "16px 0", color: "grey" }} />
@@ -403,4 +492,3 @@ if (response?.data?.updateCandidate?.status === newStatus) {
 };
 
 export default CandidateDialog;
-

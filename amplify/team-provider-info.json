@@ -19,5 +19,29 @@
         "s3cvmanagementappstorage7140768f": {}
       }
     }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cvmanagementapp-dev-151857-authRole",
+      "UnauthRoleArn": "arn:aws:iam::735786243927:role/amplify-cvmanagementapp-dev-151857-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::735786243927:role/amplify-cvmanagementapp-dev-151857-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-cvmanagementapp-dev-151857-deployment",
+      "UnauthRoleName": "amplify-cvmanagementapp-dev-151857-unauthRole",
+      "StackName": "amplify-cvmanagementapp-dev-151857",
+      "StackId": "arn:aws:cloudformation:eu-north-1:735786243927:stack/amplify-cvmanagementapp-dev-151857/f7fd65e0-b9f1-11ee-9952-0e64038dba7e",
+      "AmplifyAppId": "dg2vrzmj4pecu"
+    },
+    "categories": {
+      "auth": {
+        "CVManagementApp": {}
+      },
+      "api": {
+        "CVManagementApp": {}
+      },
+      "storage": {
+        "s3cvmanagementappstorage7140768f": {}
+      }
+    }
   }
 }
