@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Card,
@@ -14,7 +13,7 @@ import {
 } from "@mui/material";
 import "../../styles/Profilemanager.css";
 
-//candidate filter 
+//candidate filter
 function CandidateFilterForm({ onFilter }) {
   const [education, setEducation] = useState("");
   const [workExperience, setWorkExperience] = useState("");
@@ -49,8 +48,7 @@ function CandidateFilterForm({ onFilter }) {
     });
   };
   return (
- 
-<Card className="filter-card">
+    <Card className="filter-card">
       <Button
         onClick={clearFilters}
         sx={{
@@ -65,6 +63,27 @@ function CandidateFilterForm({ onFilter }) {
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={2}>
+            <FormControl
+              variant="outlined"
+              className="custom-select"
+              sx={{ width: "15.5%", paddingLeft: "5px" }}
+            >
+              <InputLabel>Sort By:</InputLabel>
+              <Select
+                value={sortByField}
+                onChange={(e) => handleSortByChange(e.target.value)}
+                label="Sort By:"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value="education">Education</MenuItem>
+                <MenuItem value="skills">Skills</MenuItem>
+                <MenuItem value="gender">Gender</MenuItem>
+                <MenuItem value="location">Location</MenuItem>
+                <MenuItem value="application_date">Date</MenuItem>
+              </Select>
+            </FormControl>
             <FormControl fullWidth variant="outlined" className="custom-select">
               <InputLabel>Education</InputLabel>
               <Select
@@ -117,25 +136,24 @@ function CandidateFilterForm({ onFilter }) {
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth variant="outlined" className="custom-select">
-            <TextField
-            
-              fullWidth
-              label="Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              variant="outlined"
-            />
+              <TextField
+                fullWidth
+                label="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                variant="outlined"
+              />
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth variant="outlined" className="custom-select">
-            <TextField
-              fullWidth
-              label="Skills"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              variant="outlined"
-            />
+              <TextField
+                fullWidth
+                label="Skills"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+                variant="outlined"
+              />
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
@@ -145,13 +163,13 @@ function CandidateFilterForm({ onFilter }) {
               onClick={handleFilter}
               fullWidth
               sx={{
-               fontFamily:'"Calibri", sans-serif',
+                fontFamily: '"Calibri", sans-serif',
                 height: "50%",
-                width: '150px',
-                backgroundColor: '#ad2069',
-                marginTop: '15px',
-                '&:hover': {
-                  backgroundColor: '#9c27b0',
+                width: "150px",
+                backgroundColor: "#ad2069",
+                marginTop: "15px",
+                "&:hover": {
+                  backgroundColor: "#9c27b0",
                 },
               }}
             >
