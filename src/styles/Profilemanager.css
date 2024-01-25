@@ -20,7 +20,7 @@ body {
 }
 
 .filter-card {
-  background-color: black !important;
+  background-color: rgb(255, 255, 255) !important;
   box-shadow: none !important;
   width: 100%;
 }
