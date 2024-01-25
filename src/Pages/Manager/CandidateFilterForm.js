@@ -63,28 +63,28 @@ function CandidateFilterForm({ onFilter }) {
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={2}>
-            <FormControl
-              variant="outlined"
-              className="custom-select"
-              sx={{ width: "15.5%", paddingLeft: "5px" }}
-            >
-              <InputLabel>Sort By:</InputLabel>
-              <Select
-                value={sortByField}
-                onChange={(e) => handleSortByChange(e.target.value)}
-                label="Sort By:"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="education">Education</MenuItem>
-                <MenuItem value="skills">Skills</MenuItem>
-                <MenuItem value="gender">Gender</MenuItem>
-                <MenuItem value="location">Location</MenuItem>
-                <MenuItem value="application_date">Date</MenuItem>
-              </Select>
-            </FormControl>
             <FormControl fullWidth variant="outlined" className="custom-select">
+              <FormControl
+                variant="outlined"
+                className="custom-select"
+                sx={{ width: "15.5%", paddingLeft: "5px" }}
+              >
+                <InputLabel>Sort By:</InputLabel>
+                <Select
+                  value={sortByField}
+                  onChange={(e) => handleSortByChange(e.target.value)}
+                  label="Sort By:"
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="education">Education</MenuItem>
+                  <MenuItem value="skills">Skills</MenuItem>
+                  <MenuItem value="gender">Gender</MenuItem>
+                  <MenuItem value="location">Location</MenuItem>
+                  <MenuItem value="application_date">Date</MenuItem>
+                </Select>
+              </FormControl>
               <InputLabel>Education</InputLabel>
               <Select
                 value={education}
