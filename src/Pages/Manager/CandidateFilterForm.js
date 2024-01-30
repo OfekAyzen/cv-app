@@ -50,15 +50,45 @@ function CandidateFilterForm({ onFilter }) {
   return (
     <Card className="filter-card">
       <Button
+        variant="contained"
+        color="primary"
+        fullWidth
         onClick={clearFilters}
         sx={{
-          display: "flex",
-          marginLeft: "20px",
-          marginTop: "20px",
-          color: "Grey",
+          fontFamily: '"Calibri", sans-serif',
+          height: "50%",
+          width: "150px",
+          backgroundColor: "#ad2069",
+          marginTop: "15px",
+          "&:hover": {
+            backgroundColor: "#9c27b0",
+          },
+          // display: "flex",
+          // marginLeft: "20px",
+          // marginTop: "20px",
+          // color: "gray",
         }}
       >
         Clear Filters
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleFilter}
+        fullWidth
+        sx={{
+          fontFamily: '"Calibri", sans-serif',
+          height: "50%",
+          width: "150px",
+          backgroundColor: "#ad2069",
+          marginTop: "15px",
+          marginLeft: "15px",
+          "&:hover": {
+            backgroundColor: "#9c27b0",
+          },
+        }}
+      >
+        Apply Filters
       </Button>
       <CardContent>
         <Grid container spacing={2}>
@@ -135,26 +165,7 @@ function CandidateFilterForm({ onFilter }) {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleFilter}
-              fullWidth
-              sx={{
-                fontFamily: '"Calibri", sans-serif',
-                height: "50%",
-                width: "150px",
-                backgroundColor: "#ad2069",
-                marginTop: "15px",
-                "&:hover": {
-                  backgroundColor: "#9c27b0",
-                },
-              }}
-            >
-              Apply Filters
-            </Button>
-          </Grid>
+          <Grid item xs={12} sm={6} md={2}></Grid>
         </Grid>
       </CardContent>
     </Card>
