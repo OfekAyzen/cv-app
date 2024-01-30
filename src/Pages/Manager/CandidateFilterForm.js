@@ -60,6 +60,7 @@ function CandidateFilterForm({ onFilter }) {
           width: "150px",
           backgroundColor: "#ad2069",
           marginTop: "15px",
+          marginLeft: "15px",
           "&:hover": {
             backgroundColor: "#9c27b0",
           },

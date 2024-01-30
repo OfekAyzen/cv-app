@@ -349,9 +349,9 @@ const CandidateTable = ({
           <FormControl
             variant="outlined"
             className="custom-select"
-            sx={{ width: "15.5%", paddingLeft: "5px" }}
+            sx={{ width: "15.5%", paddingLeft: "15px" }}
           >
-            <InputLabel>Sort By:</InputLabel>
+            <InputLabel sx={{ paddingLeft: "15px" }}>Sort By:</InputLabel>
             <Select
               value={sortByField}
               onChange={(e) => handleSortByChange(e.target.value)}
