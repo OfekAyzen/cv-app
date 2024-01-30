@@ -344,30 +344,29 @@ const CandidateTable = ({
 
       <Container className="candidate-table">
         <div className="container" style={{ padding: "15px", width: "140%" }}>
-          <div className="orderby" style={{ display: "flex" }}>
-            <CandidateFilterForm onFilter={handleFilter} />
-            <FormControl
-              variant="outlined"
-              className="custom-select"
-              sx={{ width: "15.5%", paddingLeft: "5px" }}
+          <div className="orderby" style={{ display: "flex" }}></div>
+          <CandidateFilterForm onFilter={handleFilter} />
+          <FormControl
+            variant="outlined"
+            className="custom-select"
+            sx={{ width: "15.5%", paddingLeft: "5px" }}
+          >
+            <InputLabel>Sort By:</InputLabel>
+            <Select
+              value={sortByField}
+              onChange={(e) => handleSortByChange(e.target.value)}
+              label="Sort By:"
             >
-              <InputLabel>Sort By:</InputLabel>
-              <Select
-                value={sortByField}
-                onChange={(e) => handleSortByChange(e.target.value)}
-                label="Sort By:"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="education">Education</MenuItem>
-                <MenuItem value="skills">Skills</MenuItem>
-                <MenuItem value="gender">Gender</MenuItem>
-                <MenuItem value="location">Location</MenuItem>
-                <MenuItem value="application_date">Date</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="education">Education</MenuItem>
+              <MenuItem value="skills">Skills</MenuItem>
+              <MenuItem value="gender">Gender</MenuItem>
+              <MenuItem value="location">Location</MenuItem>
+              <MenuItem value="application_date">Date</MenuItem>
+            </Select>
+          </FormControl>
         </div>
         {/* <Table sx={{ minWidth: 1024 ,backgroundColor:'white'}}> */}
         <Table className="table-style">
