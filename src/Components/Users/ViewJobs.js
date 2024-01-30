@@ -1,9 +1,7 @@
-
-
-import React, { useState, useEffect } from 'react';
-import { API, graphqlOperation } from 'aws-amplify';
-import { listJobs } from '../../graphql/queries';
-import { styled } from '@mui/material/styles';
+import React, { useState, useEffect } from "react";
+import { API, graphqlOperation } from "aws-amplify";
+import { listJobs } from "../../graphql/queries";
+import { styled } from "@mui/material/styles";
 import {
   Button,
   Card,
@@ -19,17 +17,15 @@ import {
   DialogTitle,
   IconButton,
   Divider,
-
   DialogContent,
   DialogActions,
-
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { Auth } from 'aws-amplify';
-import { useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Auth } from "aws-amplify";
+import { useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
 // import "../../styles/User.css";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // import JobApplication from './JobApplication';
 // import JobDetailsPage from './JobDetailsPage';
 
@@ -43,18 +39,16 @@ import PropTypes from 'prop-types';
 // import MaterialIcon from './MaterialIcon';
 const ViewJobs = (props) => {
   const [open, setOpen] = React.useState(false);
-  const [selectedJobId, setSelectedJobId] = useState('');
+  const [selectedJobId, setSelectedJobId] = useState("");
   const [error, setError] = useState(null);
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 600);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
   useEffect(() => {
     fetchJobs();
   }, []);
-
-  
 
   const [selectedJob, setSelectedJob] = useState(null);
 
@@ -65,13 +59,15 @@ const ViewJobs = (props) => {
   async function fetchJobs() {
     try {
       const response = await API.graphql(graphqlOperation(listJobs));
-      const jobList = response.data.listJobs.items.filter(job => !job._deleted); // Filter out deleted jobs
-      
+      const jobList = response.data.listJobs.items.filter(
+        (job) => !job._deleted
+      ); // Filter out deleted jobs
+
       setJobsData(jobList);
       setLoading(false); // Set loading to false when data is fetched
     } catch (error) {
-      console.error('Error fetching jobs:', error);
-      setError('Error fetching jobs'); // Set an error message
+      console.error("Error fetching jobs:", error);
+      setError("Error fetching jobs"); // Set an error message
       setLoading(false); // Set loading to false in case of an error
     }
   }
@@ -81,42 +77,40 @@ const ViewJobs = (props) => {
       setIsMobileView(window.innerWidth < 600);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleButtonClick = async (job,job_id) => {
-  
+  const handleButtonClick = async (job, job_id) => {
     setSelectedJob(job);
     setSelectedJobId(job_id);
 
     try {
       // Check if the user is authenticated using Amplify Auth
       const user = await Auth.currentAuthenticatedUser();
-      localStorage.setItem('selectedJobId', job_id);
+      localStorage.setItem("selectedJobId", job_id);
       navigate(`/Apply/${job_id}`);
-      // If the user is authenticated, open the dialog 
+      // If the user is authenticated, open the dialog
       setOpen(true);
     } catch (error) {
       // If the user is not authenticated, store the selected job ID in localStorage
-      localStorage.setItem('selectedJobId', job_id);
+      localStorage.setItem("selectedJobId", job_id);
       navigate(`/Apply/${job_id}`);
       // Redirect the user to the login page
-     
     }
   };
 
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
+    "& .MuiDialogContent-root": {
       padding: theme.spacing(2),
     },
-    '& .MuiDialogActions-root': {
+    "& .MuiDialogActions-root": {
       padding: theme.spacing(1),
     },
   }));
@@ -125,11 +119,8 @@ const ViewJobs = (props) => {
     setSuccessMessage(message);
   };
 
-
   function BootstrapDialogTitle(props) {
     const { children, onClose, ...other } = props;
-
-
 
     return (
       <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
@@ -139,7 +130,7 @@ const ViewJobs = (props) => {
             aria-label="close"
             onClick={onClose}
             sx={{
-              position: 'absolute',
+              position: "absolute",
               right: 8,
               top: 8,
               color: (theme) => theme.palette.grey[500],
@@ -157,26 +148,41 @@ const ViewJobs = (props) => {
     onClose: PropTypes.func.isRequired,
   };
 
-
   return (
-    <div style={{ backgroundColor: 'white', width: '100%',height:isMobileView? '100%':'100%', display: 'flex' }}>
-     
+    <div
+      style={{
+        backgroundColor: "white",
+        width: "100%",
+        height: isMobileView ? "100%" : "100%",
+        display: "flex",
+      }}
+    >
       {loading ? (
-         
-          <CircularProgress style={{height:isMobileView? '800px':'300px',backgroundColor:'white', color: '#ad2069' ,display:'flex',marginLeft:'50%',marginTop:'20%' }} />
-        
-    
-
+        <CircularProgress
+          style={{
+            height: isMobileView ? "800px" : "300px",
+            backgroundColor: "white",
+            color: "#ad2069",
+            display: "flex",
+            marginLeft: "50%",
+            marginTop: "20%",
+          }}
+        />
       ) : error ? (
         <div>{error}</div>
       ) : jobsData.length > 0 ? (
-        <Container className="container-user"  >
+        <Container className="container-user">
           <Typography
             variant="h2"
             align="center"
             color="Black"
             gutterBottom
-            sx={{ paddingTop: '60px', fontSize: '40px' ,paddingBottom:'50px', fontFamily:'"Calibri", sans-serif',}}
+            sx={{
+              paddingTop: "60px",
+              fontSize: "40px",
+              paddingBottom: "50px",
+              fontFamily: '"Calibri", sans-serif',
+            }}
           >
             Careers
           </Typography>
@@ -189,63 +195,90 @@ const ViewJobs = (props) => {
           >
             Open Jobs
           </Typography> */}
-          <Grid container spacing={1}  sx={{display:isMobileView? 'contents':'flex'}}>
+          <Grid
+            container
+            spacing={1}
+            sx={{ display: isMobileView ? "contents" : "flex" }}
+          >
             {jobsData.map((job) => (
-              <Grid item key={job.id} sm={6} md={4} sx={{ paddingBottom: '2%' }}>
+              <Grid
+                item
+                key={job.id}
+                sm={6}
+                md={4}
+                sx={{ paddingBottom: "2%" }}
+              >
                 <Card
                   sx={{
-                    
-                    height: '100%',
-                    width: '80%',
-                    display: 'flex',
-                    marginLeft: '10%',
-                    flexDirection: 'column',
-                    backgroundColor: 'rgb(243 243 243)',
-                    paddingLeft: '5%',
+                    height: "100%",
+                    width: "80%",
+                    display: "flex",
+                    marginLeft: "10%",
+                    flexDirection: "column",
+                    backgroundColor: "rgb(243 243 243)",
+                    paddingLeft: "5%",
                     boxShadow:
-                     '-9px 7px 0px 0px rgb(0 0 0 / 10%), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);',
+                      "-9px 7px 0px 0px rgb(0 0 0 / 10%), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);",
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1 ,minWidth:'30px' }} className="jobs-cards">
-                    <Typography gutterBottom variant="h4" sx={{ fontFamily:'"Calibri", sans-serif',color: 'black',fontSize:'19px' }}>
+                  <CardContent
+                    sx={{ flexGrow: 1, minWidth: "30px" }}
+                    className="jobs-cards"
+                  >
+                    <Typography
+                      gutterBottom
+                      variant="h4"
+                      sx={{
+                        fontFamily: '"Calibri", sans-serif',
+                        color: "black",
+                        fontSize: "19px",
+                      }}
+                    >
                       {job.job_title}
                     </Typography>
-                    <Typography gutterBottom variant="h6" sx={{ fontFamily:'"Calibri", sans-serif',color: '#6d6363',fontSize:'16px' }}>
-                     
-                    Full-time  ·  Yeruham, israel                                                
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      sx={{
+                        fontFamily: '"Calibri", sans-serif',
+                        color: "#6d6363",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Full-time · Yeruham, israel
                     </Typography>
                   </CardContent>
                   <CardActions
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      backgroundColor: 'rgb(243 243 243)',
-                      padding: '0 16px',
+                      display: "flex",
+                      justifyContent: "space-between",
+                      backgroundColor: "rgb(243 243 243)",
+                      padding: "0 16px",
                     }}
                   >
-                    
                     <Button
-                      
-                      onClick={() => handleButtonClick(job,job.id)}
-                      sx={{fontFamily:'"Calibri", sans-serif',
-                        color: 'rgb(224, 104, 154)',
-                        borderBlockColor: ' rgb(224, 104, 154)',
-                        marginBottom:'5%',
+                      onClick={() => handleButtonClick(job, job.id)}
+                      sx={{
+                        fontFamily: '"Calibri", sans-serif',
+                        color: "rgb(224, 104, 154)",
+                        borderBlockColor: " rgb(224, 104, 154)",
+                        marginBottom: "5%",
                       }}
                     >
-                     apply
+                      apply
                     </Button>
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
-        
         </Container>
       ) : (
-        <p>No job data available.</p>
+        <p>
+          Sorry, we are currently not hiring for new positions but you can still
+          leave us your CV and we will get back to you!
+        </p>
       )}
-
     </div>
   );
 };
