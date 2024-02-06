@@ -172,7 +172,10 @@ function ProfileManager() {
   return (
     <div>
       <Container
-        style={{ backgroundColor: "rgb(224, 224, 224)", display: "contents" }}
+        style={{
+          backgroundColor: "rgb(224, 224, 224)",
+          display: "contents",
+        }}
       >
         <Grid container spacing={3} className="grid-container">
           <Grid item xs={12}>
@@ -195,9 +198,7 @@ function ProfileManager() {
           </Grid>
           <Grid item xs={6} sm={9} md={10} className="grid-candidateTable">
             {loading ? (
-              <div
-                style={{ display: "flex", height: "1500px", marginLeft: "15%" }}
-              >
+              <div style={{ display: "flex", marginLeft: "15%" }}>
                 {" "}
                 <CircularProgress
                   style={{

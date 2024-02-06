@@ -322,7 +322,7 @@ const CandidateTable = ({
     <div
       style={{
         width: "1700px",
-        height: "1200px",
+        height: "100%",
         paddingLeft: "5%",
         paddingRight: "4%",
       }}
