@@ -180,17 +180,26 @@ function Position(props) {
                     <TableRow>
                       {/* <TableCell>Job id</TableCell> */}
                       <TableCell
-                        style={{ fontFamily: '"Calibri", sans-serif' }}
+                        style={{
+                          fontFamily: '"Calibri", sans-serif',
+                          width: "750px",
+                        }}
                       >
                         Position Name
                       </TableCell>
                       <TableCell
-                        style={{ fontFamily: '"Calibri", sans-serif' }}
+                        style={{
+                          fontFamily: '"Calibri", sans-serif',
+                          width: "750px",
+                        }}
                       >
                         Description
                       </TableCell>
                       <TableCell
-                        style={{ fontFamily: '"Calibri", sans-serif' }}
+                        style={{
+                          fontFamily: '"Calibri", sans-serif',
+                          width: "750px",
+                        }}
                       >
                         Qualifications
                       </TableCell>
@@ -321,7 +330,11 @@ function Position(props) {
         </div>
       )}
       <Typography
-        sx={{ backgroundColor: "rgb(235 231 231)", paddingTop: "5%" }}
+        sx={{
+          backgroundColor: "rgb(235 231 231)",
+          paddingTop: "5%",
+          marginTop: "130px",
+        }}
         variant="body2"
         color="text.secondary"
         align="center"

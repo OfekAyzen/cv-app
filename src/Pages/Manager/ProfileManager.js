@@ -257,7 +257,10 @@ function ProfileManager() {
               variant="body2"
               color="text.secondary"
               align="center"
-              style={{ backgroundColor: "rgb(224, 224, 224)", padding: "8px" }}
+              style={{
+                backgroundColor: "rgb(224, 224, 224)",
+                padding: "8px",
+              }}
             >
               {"Copyright © "}
               <Link color="inherit" href="">

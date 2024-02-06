@@ -73,13 +73,13 @@ function AddJobForm(props) {
       }}
     >
       <Button
-        style={{ fontFamily: '"Calibri", sans-serif', marginTop: "30px" }}
+        style={{ fontFamily: '"Calibri", sans-serif', marginTop: "50px" }}
         variant="contained"
         color="primary"
         onClick={handleClickOpen}
         className="button-position"
       >
-        Add Position +
+        Add Position
       </Button>
       <Dialog
         open={open}
