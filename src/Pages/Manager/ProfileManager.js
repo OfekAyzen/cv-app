@@ -65,7 +65,6 @@ function ProfileManager() {
           const candidateId = candidates[index].id;
           candidateJobMap[candidateId] = response.data.listCandidateJobs.items;
         });
-
         // Fetch job data for all candidate jobs in parallel
         const jobResponses = await Promise.all(
           Object.values(candidateJobMap).flatMap((candidateJobs) =>

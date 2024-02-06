@@ -1,35 +1,61 @@
-
-
-
-import React, { useState, useEffect } from 'react';
-import { Container, Box, Card, CircularProgress, Typography, colors } from '@mui/material';
-import axios from 'axios';
-import JobApplicationStatus from './JobApplicationStatus';
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Box,
+  Avatar,
+  CircularProgress,
+  Typography,
+  colors,
+} from "@mui/material";
+import axios from "axios";
+import JobApplicationStatus from "./JobApplicationStatus";
 import "../../styles/User.css";
-
-
-
 import { Auth, API, graphqlOperation } from "aws-amplify";
-import { listCandidateJobs, getCandidate, getJobs, listCandidates, getCandidateJobs, candidateJobsByCandidateId } from "../../graphql/queries"; // Replace with your GraphQL queries
+import {
+  listCandidateJobs,
+  getCandidate,
+  getJobs,
+  listCandidates,
+  getCandidateJobs,
+  candidateJobsByCandidateId,
+} from "../../graphql/queries"; // Replace with your GraphQL queries
+import logo from "../images/logo_tech19.png";
+import { deepPurple } from "@mui/material/colors";
 
 export default function UserCard(props) {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [candidatesData, setCandidatesData] = useState([]);
-
   const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+
+  const fetchUsername = async () => {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      setUsername(user.attributes.email); // Assuming email is the username
+      setName(user.attributes.given_name + " " + user.attributes.family_name);
+    } catch (error) {
+      console.error("Error fetching username:", error);
+    }
+  };
+  const fetchCandidatesData = async () => {
+    try {
+      const candidatesResponse = await API.graphql(
+        graphqlOperation(listCandidates)
+      );
+      const candidates = candidatesResponse.data.listCandidates.items;
+      console.log(candidates);
+    } catch (error) {
+      console.error("Error fetching candidate data:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsername = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser();
-        setUsername(user.attributes.email); // Assuming email is the username
-        
-      } catch (error) {
-        console.error("Error fetching username:", error);
-      }
-    };
+    fetchCandidatesData();
+  }, []);
 
+  useEffect(() => {
     fetchUsername();
   }, []);
 
@@ -37,27 +63,30 @@ export default function UserCard(props) {
     try {
       const candidateJobsResponse = await API.graphql(
         graphqlOperation(candidateJobsByCandidateId, {
-          candidateId: candidateId
+          candidateId: candidateId,
         })
       );
 
-      const candidateJobs = candidateJobsResponse.data.candidateJobsByCandidateId.items;
-     
-      const jobIds = candidateJobs.map(item => item.jobsId);
+      const candidateJobs =
+        candidateJobsResponse.data.candidateJobsByCandidateId.items;
 
-      const jobs = await Promise.all(jobIds.map(async (jobId) => {
-        const jobResponse = await API.graphql(
-          graphqlOperation(getJobs, {
-            id: jobId
-          })
-        );
-       
-        return jobResponse.data.getJobs;
-      }));
+      const jobIds = candidateJobs.map((item) => item.jobsId);
+
+      const jobs = await Promise.all(
+        jobIds.map(async (jobId) => {
+          const jobResponse = await API.graphql(
+            graphqlOperation(getJobs, {
+              id: jobId,
+            })
+          );
+
+          return jobResponse.data.getJobs;
+        })
+      );
 
       return jobs;
     } catch (error) {
-      console.error('Error fetching candidate jobs:', error);
+      console.error("Error fetching candidate jobs:", error);
       return [];
     }
   };
@@ -70,9 +99,9 @@ export default function UserCard(props) {
           graphqlOperation(listCandidates, {
             filter: {
               email: {
-                eq: username // Fetch candidates where email matches the authenticated user's email
-              }
-            }
+                eq: username, // Fetch candidates where email matches the authenticated user's email
+              },
+            },
           })
         );
 
@@ -90,35 +119,27 @@ export default function UserCard(props) {
           })
         );
 
-       
-
         setCandidatesData(candidatesWithJobs);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching candidates data:', error);
+        console.error("Error fetching candidates data:", error);
         setLoading(false);
       }
     };
 
     // Fetch candidates data when the component mounts
     fetchCandidatesData();
-  }, [username]); 
+  }, [username]);
 
+  useEffect(() => {}, [candidatesData]);
 
-
-  useEffect(() => {
-   
-  }, [candidatesData]);
-
-  
   const getUsername = async () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
-      const username = user.attributes['cognito:username']; 
-      console.log('User attributes:', user.attributes); 
-      setUsername(username); 
+      const username = user.attributes["cognito:username"];
+      setUsername(username);
     } catch (error) {
-      console.error('Error getting username:', error);
+      console.error("Error getting username:", error);
     }
   };
 
@@ -126,13 +147,12 @@ export default function UserCard(props) {
     if (jobs && jobs.length > 0) {
       return jobs.map((job, jobIndex) => (
         <div key={jobIndex}>
-          <Typography variant="h6">Job Title:</Typography>
-          <Typography>{job.job_title}</Typography>
-          <Typography variant="h6">
-          Apply date:
-        </Typography>
-        <Typography>{formatDate(job.createdAt)}</Typography>
-         
+          {/* <Typography variant="h6">Job Title:</Typography> */}
+          <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
+            {job.job_title}
+          </Typography>
+          <Typography variant="h6">Apply date:</Typography>
+          <Typography>{formatDate(job.createdAt)}</Typography>
         </div>
       ));
     } else {
@@ -141,46 +161,85 @@ export default function UserCard(props) {
   };
   const renderCandidates = () => {
     return candidatesData.map((data, index) => (
-      <div  style={{color:'black'}} key={index}>
+      <div style={{ color: "black" }} key={index}>
         {renderJobDetails(data.jobs)}
-        <Typography sx={{ color: 'green' }}> 
-        Candidate Status: {data.status}
-        <br />
-      </Typography>
+        <Typography sx={{ color: "green" }}>
+          Candidate Status: {data.status}
+          <br />
+        </Typography>
         <hr />
       </div>
     ));
   };
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
-  
+
   return (
     <>
-      
       {/* <Container maxWidth="sm" sx={{ marginTop: '15%', borderRadius: '15px' ,display:'flex',alignContent:'center',textAlign:'center'}}> */}
-    
-      <Box  style={{alignContent:'center',textAlign:'center'}} >
-        <div style={{backgroundColor:'black' ,padding:'0px'}}>
-            <Typography  sx={{paddingTop: '35px', fontSize: '20px' ,color:'purple'}}>
-            Welcome {username} 
+
+      <Box style={{ alignContent: "center", textAlign: "center" }}>
+        <div
+          style={{
+            padding: "0px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={logo}
+            alt="Tech19 Logo"
+            style={{
+              backgroundColor: "white",
+              width: "30%",
+              alignContent: "",
+            }}
+          />
+
+          {/* <Avatar
+            sx={{
+              bgcolor: deepPurple[500],
+            }}
+          >
+            {username[0]}
+          </Avatar> */}
+          <Typography
+            sx={{
+              paddingTop: "10px",
+              fontSize: "23px",
+              fontFamily: '"Calibri", sans-serif',
+              fontWeight: "bold",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          >
+            Hello {name}!
           </Typography>
-            <Typography  sx={{ paddingTop: '30px', fontSize: '25px' ,color:'#ccadcc'}}>
-              You have applied for the following positions:
-            </Typography>
-          </div>
-     
-        <div>
-          <h3> </h3>
-          {loading ? <CircularProgress /> : renderCandidates()}
+
+          <Typography
+            sx={{
+              paddingTop: "30px",
+              fontSize: "18px",
+              fontFamily: '"Calibri", sans-serif',
+              marginLeft: "40px",
+              marginRight: "40px",
+              // height: "100vh",
+            }}
+          >
+            You have applied for the <br /> following positions:
+          </Typography>
+          <div>{loading ? <CircularProgress /> : renderCandidates()}</div>
         </div>
       </Box>
-    
-  {/* </Container> */}
+
+      {/* </Container> */}
     </>
   );
 }

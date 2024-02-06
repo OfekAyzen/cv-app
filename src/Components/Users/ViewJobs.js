@@ -106,19 +106,6 @@ const ViewJobs = (props) => {
     }
   };
 
-  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(2),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(1),
-    },
-  }));
-
-  const handleApplicationSuccess = (message) => {
-    setSuccessMessage(message);
-  };
-
   function BootstrapDialogTitle(props) {
     const { children, onClose, ...other } = props;
 
@@ -274,10 +261,16 @@ const ViewJobs = (props) => {
           </Grid>
         </Container>
       ) : (
-        <p>
+        <h3
+          style={{
+            color: "black",
+            paddingLeft: "5px",
+            backgroundColor: "rgb(243 243 243)",
+          }}
+        >
           Sorry, we are currently not hiring for new positions but you can still
           leave us your CV and we will get back to you!
-        </p>
+        </h3>
       )}
     </div>
   );
