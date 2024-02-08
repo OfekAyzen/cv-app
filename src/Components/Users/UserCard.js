@@ -184,25 +184,27 @@ export default function UserCard(props) {
       {/* <Container maxWidth="sm" sx={{ marginTop: '15%', borderRadius: '15px' ,display:'flex',alignContent:'center',textAlign:'center'}}> */}
 
       <Box style={{ alignContent: "center", textAlign: "center" }}>
-        <div
-          style={{
-            padding: "0px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={logo}
-            alt="Tech19 Logo"
+        <div>
+          <div
             style={{
-              backgroundColor: "white",
-              width: "30%",
-              alignContent: "",
+              padding: "0px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "",
             }}
-          />
-
+          >
+            <img
+              src={logo}
+              alt="Tech19 Logo"
+              style={{
+                backgroundColor: "white",
+                width: "30%",
+                alignContent: "",
+              }}
+            />
+          </div>
           {/* <Avatar
             sx={{
               bgcolor: deepPurple[500],
