@@ -18,6 +18,13 @@ import MuiAlert from "@mui/material/Alert";
 import { Link as RouterLink } from "react-router-dom"; // Import RouterLink
 import { Link } from "@mui/material";
 import { Auth } from "aws-amplify";
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const defaultTheme = createTheme();
 
@@ -28,6 +35,13 @@ export default function Login(props) {
   const navigate = useNavigate();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -47,8 +61,6 @@ export default function Login(props) {
     try {
       const user = await Auth.signIn(username, password);
       const my_user = user.signInUserSession.idToken.payload;
-      console.log(user);
-      console.log(my_user);
 
       // Check if the user is in the Admin group
       const isAdmin =
@@ -143,7 +155,36 @@ export default function Login(props) {
               onChange={(e) => setUsername(e.target.value)}
               className="custom-select"
             />
-            <TextField
+            <FormControl variant="outlined">
+              <InputLabel>Password</InputLabel>
+              <OutlinedInput
+                style={{ width: "400px" }}
+                id="password"
+                type={showPassword ? "text" : "password"}
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="custom-select"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+            {/* <TextField
               margin="normal"
               required
               fullWidth
@@ -155,8 +196,8 @@ export default function Login(props) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="custom-select"
-            />
-
+            /> */}
+            <br />
             <Button
               type="submit"
               fullWidth
